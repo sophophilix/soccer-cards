@@ -4,5 +4,9 @@ export default {
 	singleQuote: true,
 	trailingComma: 'none',
 	printWidth: 100,
-	overrides: [{ files: ['*.md', '*.yaml', '*.yml'], options: { useTabs: false } }]
+	plugins: ['prettier-plugin-svelte'],
+	overrides: [
+		{ files: ['*.md', '*.yaml', '*.yml'], options: { useTabs: false } },
+		{ files: '*.svelte', options: { parser: 'svelte' } }
+	]
 };
