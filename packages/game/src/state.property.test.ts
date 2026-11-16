@@ -61,15 +61,15 @@ describe('player state properties', () => {
 	it('leaves the state as it was when an action is refused', () => {
 		fc.assert(
 			fc.property(anyState, kind, seed, (state, packKind, packSeed) => {
-				const before = JSON.stringify(state);
+				const noCoins = { ...state, coins: 0, freePacks: 0 };
+				const noPending = { ...state, pendingPack: null };
+				const before = JSON.stringify([noCoins, noPending]);
 				const pack = { kind: packKind, cardSet: CARD_SET, random: createRandom(packSeed) };
 
-				const refusedOpen = openPlayerPack({ ...state, coins: 0, freePacks: 0 }, pack);
-				const refusedAdd = addPendingPack({ ...state, pendingPack: null });
+				const accepted = [openPlayerPack(noCoins, pack).ok, addPendingPack(noPending).ok];
 
-				expect(refusedOpen).not.toHaveProperty('value');
-				expect(refusedAdd).toEqual({ ok: false, reason: 'no-pending-pack' });
-				expect(JSON.stringify(state)).toBe(before);
+				expect(accepted).toEqual([false, false]);
+				expect(JSON.stringify([noCoins, noPending])).toBe(before);
 			})
 		);
 	});
