@@ -25,3 +25,5 @@ export {
 export type { PackToOpen, PendingPack, PlayerState, StateRefusal, StateResult } from './state.ts';
 export { addFavourite, isFavourite, removeFavourite } from './favourites.ts';
 export type { FavouriteRefusal, FavouriteResult } from './favourites.ts';
+export { tradeCard } from './trade.ts';
+export type { TradeRefusal, TradeResult } from './trade.ts';

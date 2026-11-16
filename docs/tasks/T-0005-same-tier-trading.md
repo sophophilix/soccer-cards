@@ -10,7 +10,7 @@ paths:
   - packages/game/src/trade.property.test.ts
   - packages/game/src/index.ts
 dependencies: []
-max_changed_lines: 250
+max_changed_lines: 290
 status: ready
 ---
 
@@ -26,7 +26,7 @@ can't be traded away by mistake.
   change `index.ts`.
 - The rule is pure and takes the random generator as an argument. Follow
   the result shape in `state.ts`.
-- Aim for about 170 changed lines. The limit is 250. The lead rewrote this
+- The limit is 290. The lead raised it from 250 for the review fix, and rewrote this
   brief to be smaller, and T-0008 took the favourite rules.
 
 ## Acceptance criteria
