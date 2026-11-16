@@ -142,10 +142,10 @@ class WriteTest(unittest.TestCase):
             self.assertEqual(self.repo.write("pnpm-lock.yaml", agent)[0], "deny")
             self.assertEqual(self.repo.write("data/pipeline/uv.lock", agent)[0], "deny")
 
-    def test_the_kit_is_closed_to_agents_and_asks_in_the_main_session(self) -> None:
+    def test_the_kit_is_closed_to_agents_and_logged_in_the_main_session(self) -> None:
         for rel in (".claude/settings.json", "tools/sdlc/sdlc.py", "AGENTS.md", "docs/decisions/0001-x.md", "Makefile"):
             self.assertEqual(self.repo.write(rel, "infra-implementer")[0], "deny", rel)
-            self.assertEqual(self.repo.write(rel, None)[0], "ask", rel)
+            self.assertEqual(self.repo.write(rel, None)[0], "note", rel)
 
     def test_the_main_session_is_otherwise_free(self) -> None:
         self.assertIsNone(self.repo.write("apps/web/src/routes/+page.svelte", None))
@@ -239,7 +239,22 @@ class CommandTest(unittest.TestCase):
         self.assert_denied("echo x > apps/web/src/a.ts")
         self.assert_allowed("echo x > packages/game/src/packs/a.ts")
         self.assert_allowed("pnpm test > /dev/null 2>&1")
-        self.assertEqual(self.repo.command("echo x > Makefile", agent=None)[0], "ask")
+        self.assertEqual(self.repo.command("echo x > Makefile", agent=None)[0], "note")
+        self.assertEqual(self.repo.command("echo x > Makefile; git reset --hard HEAD~1", agent=None)[0], "ask")
+
+    def test_the_lead_merges_without_a_prompt_and_a_subagent_never_does(self) -> None:
+        self.assertEqual(self.repo.command("gh pr merge 12 --squash", agent=None)[0], "note")
+        self.assertEqual(self.repo.command("gh pr merge 12 --squash --admin", agent=None)[0], "deny")
+        self.assertEqual(self.repo.command("gh pr merge 12 --squash", agent="reviewer")[0], "deny")
+        self.assertEqual(self.repo.command("gh pr review 12 --approve", agent=None)[0], "deny")
+
+    def test_a_relative_write_resolves_from_the_folder_the_line_moved_to(self) -> None:
+        self.assert_allowed("cd packages/game/src/packs && echo x > a.ts")
+        self.assert_allowed("cd packages/game && cd src/packs && echo x > a.ts")
+        self.assert_denied("cd apps/web && echo x > a.ts")
+        self.assert_denied("cd packages/game/src/packs && echo x > ../../../../AGENTS.md")
+        self.assert_denied("cd .claude && echo x > settings.json")
+        self.assert_denied("cd /tmp && npm install")
 
     def test_every_part_of_a_command_line_is_checked(self) -> None:
         self.assert_denied("git status; npm install x")
@@ -332,7 +347,8 @@ class AuditTest(unittest.TestCase):
         self.assertEqual(self.pre("Bash", {"command": "npm install"}), 2)
         self.assertEqual(self.pre("Edit", {"file_path": "AGENTS.md"}, agent=None), 0)
         allow, deny, ask = self.records()
-        self.assertEqual((allow["verdict"], deny["verdict"], ask["verdict"]), ("allow", "deny", "ask"))
+        self.assertEqual((allow["verdict"], deny["verdict"], ask["verdict"]), ("allow", "deny", "note"))
+        self.assertIn("changed by the lead session", str(ask["reason"]))
         self.assertEqual((deny["task"], deny["agent"], deny["tool"], deny["target"]), ("T-0007", "web-implementer", "Bash", "npm install"))
         self.assertIn("pnpm", str(deny["reason"]))
         self.assertEqual(ask["agent"], "lead")
@@ -394,6 +410,21 @@ class AuditTest(unittest.TestCase):
         self.assertIn("NOT VALID", text)
         self.assertIn("left out", text)
         self.assertLessEqual(len(text), sdlc.EVIDENCE_LIMIT + 1)
+
+    def test_the_lead_may_merge_only_an_approved_and_verified_task(self) -> None:
+        reviews = self.repo.root / ".sdlc" / "reviews"
+        reviews.mkdir()
+        self.assertTrue(any("no kept review" in e for e in sdlc.merge_errors(self.repo.root, "T-0007")))
+        (reviews / "T-0007.reviewer.json").write_text(json.dumps(self.REVIEW))
+        self.assertEqual(sdlc.merge_errors(self.repo.root, "T-0007"), ["no sdlc verify run is recorded for this task"])
+        sdlc.audit(self.repo.root, event="verify", verdict="pass", reason="gates not run")
+        self.assertTrue(any("did not pass with its gates" in e for e in sdlc.merge_errors(self.repo.root, "T-0007")))
+        sdlc.audit(self.repo.root, event="verify", verdict="pass", reason="")
+        self.assertEqual(sdlc.merge_errors(self.repo.root, "T-0007"), [])
+        rejected = json.loads(json.dumps(self.REVIEW))
+        rejected["review"].update(reviewer="security-reviewer", verdict="changes_requested")
+        (reviews / "T-0007.security-reviewer.json").write_text(json.dumps(rejected))
+        self.assertTrue(any("changes_requested" in e for e in sdlc.merge_errors(self.repo.root, "T-0007")))
 
     def test_evidence_for_a_task_with_no_records_says_so(self) -> None:
         text = sdlc.evidence(self.repo.root, "T-0042")
@@ -470,12 +501,12 @@ class HookTest(unittest.TestCase):
     def test_an_unreadable_event_refuses(self) -> None:
         self.assertEqual(self.run_hook("not json").returncode, 2)
 
-    def test_a_kit_edit_in_the_main_session_asks(self) -> None:
+    def test_a_kit_edit_in_the_main_session_is_allowed_and_logged(self) -> None:
         repo = Repo()
         self.addCleanup(repo.close)
         result = self.run_hook({"hook_event_name": "PreToolUse", "tool_name": "Edit", "tool_input": {"file_path": str(repo.root / "AGENTS.md")}, "cwd": str(repo.root)})
-        self.assertEqual(result.returncode, 0)
-        self.assertEqual(json.loads(result.stdout)["hookSpecificOutput"]["permissionDecision"], "ask")
+        self.assertEqual((result.returncode, result.stdout), (0, ""))
+        self.assertIn("changed by the lead session", (repo.root / ".sdlc" / "audit.jsonl").read_text())
 
 
 if __name__ == "__main__":

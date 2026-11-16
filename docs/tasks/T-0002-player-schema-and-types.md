@@ -11,7 +11,7 @@ dependencies:
   - ajv
   - json-schema-to-typescript
 max_changed_lines: 400
-status: ready
+status: done
 ---
 
 ## Goal
