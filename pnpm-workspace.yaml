@@ -16,3 +16,10 @@ trustPolicy: no-downgrade
 
 # allowBuilds lists the few packages that may run build scripts.
 # Its value format is on https://pnpm.io/settings. Read it before adding one.
+
+# Packages with build scripts, each decided by the tech lead. false means the
+# script never runs. esbuild and workerd come in through wrangler, and both
+# work without their scripts on the machines this project uses.
+allowBuilds:
+  esbuild: false
+  workerd: false
