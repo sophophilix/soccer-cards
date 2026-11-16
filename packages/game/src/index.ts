@@ -23,3 +23,5 @@ export {
 	packCostCoins
 } from './state.ts';
 export type { PackToOpen, PendingPack, PlayerState, StateRefusal, StateResult } from './state.ts';
+export { addFavourite, isFavourite, removeFavourite } from './favourites.ts';
+export type { FavouriteRefusal, FavouriteResult } from './favourites.ts';
