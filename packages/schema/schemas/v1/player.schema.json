@@ -2,31 +2,77 @@
 	"$schema": "https://json-schema.org/draft/2020-12/schema",
 	"$id": "player.schema.json",
 	"title": "Player",
-	"description": "One player in full, as served at players/{id}.json.",
+	"description": "One player in full, as served at players/{player}.json.",
 	"allOf": [{ "$ref": "#/$defs/playerSummary" }],
 	"type": "object",
 	"properties": {
+		"updateTime": {
+			"description": "When this player's content last changed, as an RFC 3339 moment in UTC.",
+			"type": "string",
+			"pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?Z$"
+		},
 		"clubGoals": { "$ref": "#/$defs/goalCount" },
 		"countryGoals": { "$ref": "#/$defs/goalCount" },
 		"transferFee": { "$ref": "#/$defs/transferFee" },
 		"awards": { "type": "array", "items": { "$ref": "#/$defs/award" } }
 	},
+	"required": ["updateTime"],
 	"$defs": {
 		"playerSummary": {
 			"title": "PlayerSummary",
 			"$comment": "One player as the list at players.json holds it.",
 			"type": "object",
 			"properties": {
-				"id": { "$comment": "Stable and never reused.", "type": "integer", "minimum": 1 },
-				"name": { "type": "string", "minLength": 1 },
-				"club": { "type": "string", "minLength": 1 },
-				"country": {
-					"$comment": "As the card shows it: ARG.",
+				"name": {
+					"description": "The resource name, players/{player}. The slug is stable and never reused.",
+					"type": "string",
+					"pattern": "^players/[a-z][a-z0-9-]{0,62}$"
+				},
+				"displayName": {
+					"description": "The player's name as the card shows it.",
+					"type": "string",
+					"minLength": 1
+				},
+				"givenName": {
+					"description": "The player's given name. Absent unless the player has a given and a family name.",
+					"type": "string",
+					"minLength": 1
+				},
+				"familyName": {
+					"description": "The player's family name. Absent unless the player has a given and a family name.",
+					"type": "string",
+					"minLength": 1
+				},
+				"state": {
+					"title": "State",
+					"description": "Whether the player still plays. Treat a value you don't know as unknown.",
+					"enum": ["ACTIVE", "RETIRED"]
+				},
+				"club": {
+					"description": "The resource name of the player's club, clubs/{club}. Absent for a retired player.",
+					"type": "string",
+					"pattern": "^clubs/[a-z][a-z0-9-]{0,62}$"
+				},
+				"nationalTeamCode": {
+					"description": "The FIFA three-letter code of the player's national team, such as ARG.",
 					"type": "string",
 					"pattern": "^[A-Z]{3}$"
 				},
-				"position": { "title": "Position", "enum": ["FW", "MF", "DF"] },
-				"tier": { "title": "Tier", "enum": ["base", "rare", "legend"] },
+				"position": {
+					"title": "Position",
+					"description": "Where the player plays. Treat a value you don't know as unknown.",
+					"enum": ["GOALKEEPER", "DEFENDER", "MIDFIELDER", "FORWARD"]
+				},
+				"tier": {
+					"title": "Tier",
+					"description": "How rare the card is. Treat a value you don't know as unknown.",
+					"enum": ["BASE", "RARE", "LEGEND"]
+				},
+				"cardNumber": {
+					"description": "The number printed on the card. Absent when the card has none.",
+					"type": "integer",
+					"minimum": 1
+				},
 				"ratings": { "$ref": "#/$defs/ratings" },
 				"playStats": { "$ref": "#/$defs/playStats" },
 				"photo": {
@@ -35,7 +81,16 @@
 					"pattern": "^photos/[A-Za-z0-9_-]+\\.webp$"
 				}
 			},
-			"required": ["id", "name", "club", "country", "position", "tier", "ratings", "playStats"]
+			"required": [
+				"name",
+				"displayName",
+				"state",
+				"nationalTeamCode",
+				"position",
+				"tier",
+				"ratings",
+				"playStats"
+			]
 		},
 		"rating": { "$comment": "A whole number.", "type": "integer", "minimum": 1, "maximum": 99 },
 		"ratings": {
