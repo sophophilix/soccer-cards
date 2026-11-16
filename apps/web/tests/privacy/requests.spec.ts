@@ -23,3 +23,15 @@ test('the home page runs with no Content Security Policy violation', async ({ pa
 
 	expect(consoleErrors).toEqual([]);
 });
+
+test('a move between pages without a reload breaks no security policy', async ({ page }) => {
+	const consoleMessages: string[] = [];
+	page.on('console', (message) => consoleMessages.push(message.text()));
+	await page.goto('/no-such-page');
+
+	await page.getByRole('link', { name: 'Go back to the start' }).click();
+
+	// SvelteKit fills its announcer, the element with the hashed style, only on such a move.
+	await expect(page.locator('#svelte-announcer')).toHaveText('Soccer Cards');
+	expect(consoleMessages.join('\n')).not.toContain('Content Security Policy');
+});
