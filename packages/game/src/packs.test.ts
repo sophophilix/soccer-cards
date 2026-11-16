@@ -60,6 +60,69 @@ describe('openPack', () => {
 		expect(new Set(ids).size).toBe(20);
 	});
 
+	it('never repeats a card that the card set lists under two tiers', () => {
+		const cardSet = aCardSet(STANDARD_PACK_MIX);
+		const baseCardsAsRare = cardSet
+			.filter((card) => card.tier === 'base')
+			.map((card) => aCard({ id: card.id, tier: 'rare' }));
+
+		const ids = idsOf(openPack([...cardSet, ...baseCardsAsRare], 'standard', createRandom(SEED)));
+
+		expect(new Set(ids).size).toBe(10);
+	});
+
+	it('counts only the first listing of a card when it checks a tier', () => {
+		const cardSet = [
+			...aCardSet({ base: 7, rare: 1, legend: 1 }),
+			aCard({ id: toCardId('base-1'), tier: 'rare' })
+		];
+
+		const result = openPack(cardSet, 'standard', createRandom(SEED));
+
+		expect(result).toEqual({ ok: false, reason: 'not-enough-cards', tier: 'rare' });
+	});
+
+	it('keeps the tier of the first listing when a later one differs', () => {
+		const cardSet = [
+			aCard({ id: toCardId('base-1'), tier: 'rare' }),
+			...aCardSet({ base: 7, rare: 1, legend: 1 })
+		];
+
+		const result = openPack(cardSet, 'standard', createRandom(SEED));
+
+		expect(result).toEqual({ ok: false, reason: 'not-enough-cards', tier: 'base' });
+	});
+
+	it('draws nothing from the generator when a repeated card leaves a tier short', () => {
+		const random = createRandom(SEED);
+		const sample = vi.spyOn(random, 'sample');
+		const cardSet = [
+			...aCardSet({ base: 7, rare: 1, legend: 1 }),
+			aCard({ id: toCardId('base-1'), tier: 'rare' })
+		];
+
+		openPack(cardSet, 'standard', random);
+
+		expect(sample).not.toHaveBeenCalled();
+	});
+
+	it('gives the pack it always gave for a seed and a set with no repeated card', () => {
+		const result = openPack(aCardSet(PLENTY), 'standard', createRandom(SEED));
+
+		expect(idsOf(result)).toEqual([
+			'base-10',
+			'base-8',
+			'base-32',
+			'base-13',
+			'base-30',
+			'base-37',
+			'base-1',
+			'rare-4',
+			'rare-6',
+			'legend-5'
+		]);
+	});
+
 	it('gives the same pack for the same seed and card set', () => {
 		const cardSet = aCardSet(PLENTY);
 
