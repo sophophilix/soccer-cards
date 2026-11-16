@@ -11,9 +11,6 @@ import {
 import type { CardId, OpenPackResult, PackKind } from './index.ts';
 import { aCardSet } from './testing/cards.ts';
 
-// A fixed seed, so every run of a commit checks the same inputs.
-fc.configureGlobal({ seed: 20261116 });
-
 const PACK_SIZES = { standard: STANDARD_PACK_SIZE, jumbo: JUMBO_PACK_SIZE } as const;
 const SPARE_CARDS = 30;
 

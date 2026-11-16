@@ -5,9 +5,6 @@ import type { PackKind, PlayerState } from './index.ts';
 import { aCardSet } from './testing/cards.ts';
 import { aPlayerState } from './testing/state.ts';
 
-// A fixed seed, so every run of a commit checks the same inputs.
-fc.configureGlobal({ seed: 20261116 });
-
 const CARD_SET = aCardSet({ base: 20, rare: 5, legend: 3 });
 const CARD_IDS = CARD_SET.map((card) => card.id);
 
