@@ -241,6 +241,14 @@ class CommandTest(unittest.TestCase):
         self.assert_allowed("pnpm test > /dev/null 2>&1")
         self.assertEqual(self.repo.command("echo x > Makefile", agent=None)[0], "ask")
 
+    def test_a_relative_write_resolves_from_the_folder_the_line_moved_to(self) -> None:
+        self.assert_allowed("cd packages/game/src/packs && echo x > a.ts")
+        self.assert_allowed("cd packages/game && cd src/packs && echo x > a.ts")
+        self.assert_denied("cd apps/web && echo x > a.ts")
+        self.assert_denied("cd packages/game/src/packs && echo x > ../../../../AGENTS.md")
+        self.assert_denied("cd .claude && echo x > settings.json")
+        self.assert_denied("cd /tmp && npm install")
+
     def test_every_part_of_a_command_line_is_checked(self) -> None:
         self.assert_denied("git status; npm install x")
         self.assert_denied("ls || npx thing")

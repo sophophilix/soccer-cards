@@ -322,6 +322,10 @@ def check_command(command: str, agent: str | None, event: dict[str, object], bra
         tokens = strip_wrappers(raw)
         if not tokens:
             continue
+        if tokens[0] in {"cd", "pushd"} and len(tokens) > 1 and tokens[1] != "-":
+            # Later parts of the line run in the new folder, so relative paths resolve there.
+            cwd = os.path.normpath(os.path.join(cwd, os.path.expanduser(tokens[1])))
+            continue
         decision = _check_segment(operator, tokens, agent, event, cwd, branch)
         if decision and decision[0] == "deny":
             return decision
