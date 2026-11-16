@@ -1,0 +1,38 @@
+# Agent run state (active task, review files, work notes)
+.sdlc/
+.claude/settings.local.json
+.claude/worktrees/
+CLAUDE.local.md
+
+# Secrets
+.env
+.env.*
+!.env.example
+.dev.vars
+*.pem
+*.key
+
+# Build output and caches
+node_modules/
+.svelte-kit/
+.wrangler/
+dist/
+build/
+coverage/
+.venv/
+__pycache__/
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+playwright-report/
+test-results/
+
+# Infrastructure state never goes in git
+*.tfstate
+*.tfstate.*
+.terraform/
+
+.DS_Store
+
+# Photos of commercial cards used as design inspiration. Not ours to publish.
+/images/

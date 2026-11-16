@@ -1,0 +1,947 @@
+<title>Soccer Cards Prototype</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Figtree:wght@400;600;700&family=Saira+Condensed:ital,wght@0,600;0,800;1,800&display=swap">
+<style>
+/* Layout: four views on a mown-pitch ground (Packs, Battle, Cards, Guide); one card component drawn at every size from its own width. */
+@property --mx { syntax: '<percentage>'; inherits: true; initial-value: 50%; }
+@property --my { syntax: '<percentage>'; inherits: true; initial-value: 50%; }
+
+:root {
+  --bg: #E7F0EA;
+  --stripe: #DDE9E1;
+  --surface: #FFFFFF;
+  --fg: #10231C;
+  --muted: #4F6A60;
+  --line: #C4D6CB;
+  --accent: #E8391D;        /* red card */
+  --accent-ink: #FFFFFF;
+  --booking: #FFC93C;       /* yellow card */
+  --booking-ink: #1B1503;
+  --focus: #3D8BFF;
+  --scrim: rgba(8, 20, 15, .78);
+  --card-ink: #0E1512;
+  --card-paper: #FFFFFF;
+  --card-shadow: rgba(16, 35, 28, .28);
+  --att: #FF5A3C;
+  --def: #3D8BFF;
+  --ctrl: #2FCB7A;
+  --font-display: 'Bowlby One', 'Arial Black', Impact, sans-serif;
+  --font-data: 'Saira Condensed', 'Arial Narrow', 'Helvetica Neue', sans-serif;
+  --font-body: 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0C1914; --stripe: #10211A; --surface: #162A21; --fg: #EAF4EE; --muted: #93AEA2;
+    --line: #29443A; --accent: #FF5A3C; --accent-ink: #1A0703; --card-shadow: rgba(0, 0, 0, .6);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0C1914; --stripe: #10211A; --surface: #162A21; --fg: #EAF4EE; --muted: #93AEA2;
+  --line: #29443A; --accent: #FF5A3C; --accent-ink: #1A0703; --card-shadow: rgba(0, 0, 0, .6);
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  background: var(--bg) repeating-linear-gradient(90deg, var(--bg) 0 72px, var(--stripe) 72px 144px);
+  color: var(--fg);
+  font: 400 16px/1.5 var(--font-body);
+  padding-block: 18px 72px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.page { max-width: 980px; margin: 0 auto; display: grid; gap: 22px; }
+.masthead { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 20px; }
+.titlerow { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+h1 { font: 400 clamp(24px, 6vw, 36px)/1 var(--font-display); margin: 0; letter-spacing: .01em; }
+h2 { font: 400 clamp(20px, 5vw, 26px)/1.1 var(--font-display); margin: 0; text-wrap: balance; }
+h3 { font: 800 15px/1.2 var(--font-data); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin: 0; }
+p { margin: 0; max-width: 60ch; }
+.muted { color: var(--muted); }
+.label { font: 800 15px/1.2 var(--font-data); letter-spacing: .12em; text-transform: uppercase; }
+.coins { display: inline-flex; align-items: center; gap: 7px; font: 800 18px/1 var(--font-data); letter-spacing: .06em; text-transform: uppercase; background: var(--surface); border: 2px solid var(--fg); border-radius: 999px; padding: 6px 12px 5px 7px; }
+.coin { width: 20px; height: 20px; border-radius: 50%; background: var(--booking); border: 2px solid var(--booking-ink); box-shadow: inset -3px -3px 0 rgba(0, 0, 0, .18); }
+
+.tabs { display: flex; gap: 4px; background: var(--surface); border: 2px solid var(--fg); border-radius: 999px; padding: 4px; }
+.tab {
+  all: unset; cursor: pointer; font: 800 16px/1 var(--font-data); letter-spacing: .08em; text-transform: uppercase;
+  padding: 10px 13px 9px; border-radius: 999px; color: var(--fg); white-space: nowrap;
+}
+.tab[aria-current="page"] { background: var(--fg); color: var(--bg); }
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+.btn {
+  font: 800 17px/1 var(--font-data); letter-spacing: .08em; text-transform: uppercase;
+  padding: 12px 18px 11px; border-radius: 999px; border: 2px solid var(--fg);
+  background: var(--surface); color: var(--fg); cursor: pointer;
+  box-shadow: 0 3px 0 var(--fg); transition: transform .08s, box-shadow .08s;
+}
+.btn.primary { background: var(--accent); color: var(--accent-ink); }
+.btn[aria-pressed="true"] { background: var(--booking); color: var(--booking-ink); }
+.btn.small { font-size: 15px; padding: 9px 13px 8px; }
+.btn:active { transform: translateY(3px); box-shadow: 0 0 0 var(--fg); }
+.btn:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; transform: none; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.row.center { justify-content: center; }
+.view { display: grid; gap: 18px; }
+
+/* ---------- Packs ---------- */
+.packzone { display: grid; justify-items: center; gap: 18px; text-align: center; }
+.shelf { display: flex; flex-wrap: wrap; justify-content: center; align-items: end; gap: 22px 28px; }
+.offer { display: grid; justify-items: center; gap: 14px; }
+.pack {
+  --p1: #1FA37A; --p2: #0B4F5C; --p3: #2B1F7A;
+  position: relative; width: min(38vw, 190px); aspect-ratio: 5 / 7.3; container-type: inline-size;
+  border: 0; padding: 0; cursor: pointer; border-radius: 3cqw; color: var(--card-paper);
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, .2) 0.6cqw, transparent 0.75cqw) 0 0 / 3.4cqw 3.4cqw,
+    linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, .35) 45%, transparent 60%),
+    linear-gradient(160deg, var(--p1), var(--p2) 55%, var(--p3));
+  box-shadow: 0 4cqw 10cqw var(--card-shadow); font-family: var(--font-data);
+  display: grid; align-content: center; justify-items: center; gap: 3cqw;
+}
+.pack.jumbo { --p1: #F0503C; --p2: #8A1F6B; --p3: #2B1F7A; width: min(42vw, 212px); }
+.pack::before, .pack::after {
+  content: ""; position: absolute; left: 0; right: 0; height: 8%;
+  background: repeating-linear-gradient(90deg, rgba(255, 255, 255, .35) 0 1.2cqw, rgba(0, 0, 0, .25) 1.2cqw 2.4cqw), var(--p2);
+}
+.pack::before { top: 0; border-radius: 3cqw 3cqw 0 0; }
+.pack::after { bottom: 0; border-radius: 0 0 3cqw 3cqw; }
+.pack .name { font: 400 15cqw/.92 var(--font-display); text-transform: uppercase; transform: rotate(-5deg); text-shadow: 1cqw 1cqw 0 var(--card-ink); }
+.pack .ten { background: var(--booking); color: var(--booking-ink); font-weight: 800; font-size: 8cqw; line-height: 1; letter-spacing: .08em; padding: 2cqw 4cqw 1.6cqw; transform: rotate(3deg); box-shadow: 1cqw 1cqw 0 var(--card-ink); }
+.pack .mix { font-weight: 800; font-size: 5.4cqw; line-height: 1.25; letter-spacing: .12em; }
+.pack.tearing { animation: shake .7s ease-in-out, drop .3s .7s forwards; }
+.pack.tearing::before { animation: rip .45s .35s forwards; }
+@keyframes shake { 20% { transform: rotate(-4deg); } 40% { transform: rotate(4deg) scale(1.03); } 60% { transform: rotate(-3deg); } 80% { transform: rotate(3deg) scale(1.05); } }
+@keyframes rip { to { transform: translate(40%, -260%) rotate(24deg); opacity: 0; } }
+@keyframes drop { to { transform: translateY(30px) scale(.9); opacity: 0; } }
+
+.reveal { display: grid; justify-items: center; gap: 14px; text-align: center; }
+.spot { position: relative; width: 100%; display: grid; justify-items: center; }
+.spot.legend::before {
+  content: ""; position: absolute; inset: -6% 0; margin: auto; width: min(100%, 460px); border-radius: 50%;
+  background: radial-gradient(closest-side, var(--booking), transparent); opacity: .7; animation: pulse 1.2s ease-in-out infinite alternate;
+}
+@keyframes pulse { to { opacity: .25; transform: scale(1.08); } }
+@keyframes arrive { from { transform: translateY(40px) rotate(-8deg) scale(.7); opacity: 0; } }
+.chip { display: inline-block; font: 800 15px/1 var(--font-data); letter-spacing: .12em; text-transform: uppercase; padding: 6px 9px 5px; border-radius: 4px; background: var(--fg); color: var(--bg); }
+.chip.new { background: var(--accent); color: var(--accent-ink); transform: rotate(-3deg); }
+.chip.legend { background: var(--booking); color: var(--booking-ink); }
+
+/* ---------- Grids ---------- */
+.grid { display: grid; grid-template-columns: repeat(var(--cols, 5), minmax(0, 1fr)); gap: clamp(4px, 1.4vw, 14px); }
+.grid.fixed { grid-template-columns: repeat(auto-fill, minmax(76px, 1fr)); gap: 10px; }
+.grid.summary { --cols: 5; max-width: 520px; width: 100%; }
+.grid.team { --cols: 6; gap: clamp(4px, 1vw, 8px); }
+.slot { all: unset; display: block; position: relative; cursor: pointer; container-type: inline-size; border-radius: 5cqw; transition: opacity .2s, transform .2s; }
+.slot:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.slot.dim { opacity: .4; }
+.slot.wait { opacity: .3; transform: scale(.92); }
+.badge {
+  position: absolute; z-index: 2; font: 800 max(11px, 9cqw)/1 var(--font-data); letter-spacing: .04em;
+  padding: .28em .45em .2em; border-radius: 999px; border: 2px solid var(--card-ink);
+}
+.badge.count { right: -3cqw; top: -3cqw; background: var(--card-paper); color: var(--card-ink); }
+.badge.star { left: -3cqw; top: -3cqw; background: var(--booking); color: var(--booking-ink); }
+.badge.tick { right: -3cqw; top: -3cqw; background: var(--ctrl); color: var(--card-ink); }
+.grid.trading .slot { animation: wiggle .32s ease-in-out infinite alternate; }
+.grid.trading .slot:nth-child(even) { animation-delay: .16s; }
+@keyframes wiggle { from { transform: rotate(-1.6deg); } to { transform: rotate(1.6deg); } }
+.missing {
+  aspect-ratio: 5 / 7; border: 2px dashed var(--line); border-radius: 5cqw; display: grid; align-content: center; justify-items: center; gap: 3cqw;
+  color: var(--muted); font-family: var(--font-data); text-align: center; padding: 4cqw; container-type: inline-size;
+}
+.missing b { font: 400 26cqw/1 var(--font-display); opacity: .5; }
+.missing span { font-weight: 800; font-size: max(10px, 10cqw); line-height: 1.05; letter-spacing: .06em; text-transform: uppercase; }
+.banner { background: var(--booking); color: var(--booking-ink); border: 2px solid var(--fg); border-radius: 10px; padding: 10px 14px; font-weight: 700; }
+.empty { border: 2px dashed var(--line); border-radius: 14px; padding: 28px 18px; display: grid; gap: 14px; justify-items: center; text-align: center; }
+.meter { height: 14px; border-radius: 999px; background: var(--surface); border: 2px solid var(--fg); overflow: hidden; max-width: 520px; }
+.meter i { display: block; height: 100%; background: var(--ctrl); }
+.tier { display: grid; gap: 10px; }
+.tierhead { display: flex; align-items: baseline; gap: 10px; }
+
+/* ---------- Battle ---------- */
+.board { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 10px; background: var(--card-ink); color: var(--card-paper); border-radius: 14px; padding: 14px 16px; max-width: 520px; width: 100%; justify-self: center; text-align: center; }
+.board .side { display: grid; gap: 2px; }
+.board .who { font: 800 15px/1 var(--font-data); letter-spacing: .16em; text-transform: uppercase; opacity: .8; }
+.board .pts { font: 800 italic clamp(34px, 10vw, 52px)/1 var(--font-data); font-variant-numeric: tabular-nums; }
+.board .vs { font: 400 18px/1 var(--font-display); color: var(--booking); }
+.board .lead .pts { color: var(--booking); }
+.result { display: grid; gap: 12px; justify-items: center; text-align: center; }
+.result h2 { font-size: clamp(28px, 8vw, 44px); }
+.teams { display: grid; gap: 14px; }
+@media (min-width: 760px) { .teams { grid-template-columns: 1fr 1fr; gap: 24px; } }
+.teambox { display: grid; gap: 8px; align-content: start; }
+
+/* ---------- Modal + toast ---------- */
+.modal {
+  position: fixed; inset: 0; z-index: 20; background: var(--scrim); display: grid; place-items: center; overflow: auto;
+  padding: calc(16px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(16px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+}
+.sheetbox { width: min(100%, 440px); display: grid; justify-items: center; gap: 14px; text-align: center; color: var(--card-paper); }
+.sheetbox h2 { color: var(--card-paper); }
+.swap { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.5fr); align-items: center; gap: 12px; width: 100%; }
+.swap .old { opacity: .55; filter: grayscale(1); }
+.swap .arrow { font: 400 30px/1 var(--font-display); color: var(--booking); }
+.toast {
+  position: fixed; z-index: 30; left: 50%; transform: translateX(-50%); bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  background: var(--fg); color: var(--bg); font-weight: 700; padding: 10px 16px; border-radius: 999px; max-width: calc(100% - 32px); text-align: center;
+}
+
+/* ---------- The card ---------- */
+.card {
+  --rx: 0deg; --ry: 0deg; --flip: 0deg;
+  width: 100%; aspect-ratio: 5 / 7; max-width: 100%;
+  container-type: inline-size; perspective: 1100px; display: block;
+  font-family: var(--font-data); color: var(--card-paper); text-align: left;
+  user-select: none; -webkit-user-select: none;
+}
+.card.big { width: min(100%, 320px, 52vh); cursor: pointer; touch-action: pan-y; border-radius: 5cqw; position: relative; }
+.card.flipped { --flip: 180deg; }
+.inner {
+  position: relative; width: 100%; height: 100%; transform-style: preserve-3d;
+  transform: rotateX(var(--rx)) rotateY(calc(var(--ry) + var(--flip)));
+  transition: transform .55s cubic-bezier(.3, 1.3, .5, 1);
+}
+.card.tracking .inner { transition: transform .08s linear; }
+.face {
+  position: absolute; inset: 0; border-radius: 5cqw; overflow: hidden;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  border: 1.6cqw solid var(--edge, var(--card-paper));
+  box-shadow: 0 2cqw 6cqw var(--card-shadow);
+  background: var(--card-ink);
+}
+.back { transform: rotateY(180deg); color: var(--card-paper); }
+.front .ground {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, .22) 0.5cqw, transparent 0.62cqw) 0 0 / 3cqw 3cqw,
+    repeating-linear-gradient(118deg, transparent 0 7cqw, rgba(0, 0, 0, .1) 7cqw 14cqw),
+    linear-gradient(160deg, var(--g1), var(--g2));
+}
+/* Foil sits on the background only, under the player and name plate. */
+.foil {
+  position: absolute; inset: 0; pointer-events: none; opacity: var(--foil, 0);
+  background: repeating-linear-gradient(115deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, .7) 5%, rgba(150, 240, 255, .5) 8%, rgba(255, 170, 235, .5) 11%, rgba(255, 255, 255, 0) 17%);
+  background-size: 300% 300%; background-position: var(--mx) var(--my);
+}
+.glare { position: absolute; inset: 0; pointer-events: none; display: none; background: radial-gradient(circle at var(--mx) var(--my), rgba(255, 255, 255, .3), transparent 44%); }
+.card.big .glare { display: block; }
+.card.big.idle { animation: sheen 5s ease-in-out infinite alternate; }
+.spot .card.big.idle { animation: arrive .5s cubic-bezier(.2, 1.2, .4, 1) both, sheen 5s ease-in-out infinite alternate; }
+@keyframes sheen { from { --mx: 10%; --my: 20%; } to { --mx: 90%; --my: 80%; } }
+
+.burst { position: absolute; left: 4%; top: 9%; width: 92%; aspect-ratio: 1; background: var(--burst); }
+.burst.two { transform: scale(.8) rotate(11deg); background: rgba(255, 255, 255, .88); }
+.avatar { position: absolute; left: 13%; width: 74%; bottom: 41cqw; display: block; }
+.photo {
+  position: absolute; left: 12%; right: 12%; top: 13cqw; bottom: 40cqw; overflow: hidden;
+  border: 1.3cqw solid var(--card-ink); border-radius: 38cqw 38cqw 3cqw 3cqw; background: var(--card-ink);
+}
+.photo img { width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: 50% 12%; display: block; }
+.corner { position: absolute; top: 4cqw; display: flex; align-items: center; gap: 1.6cqw; font-weight: 800; font-size: 5cqw; line-height: 1; background: var(--card-ink); border-radius: 1.4cqw; }
+.pos { left: 4cqw; padding: 1.6cqw 2.6cqw 1.3cqw; letter-spacing: .06em; }
+.nat { right: 4cqw; padding: 1.3cqw 2cqw 1.3cqw 1.4cqw; font-size: 4.2cqw; letter-spacing: .08em; }
+.flag { width: 6.4cqw; height: 4.4cqw; border-radius: .6cqw; display: block; }
+.serial { position: absolute; right: 3.2cqw; top: 14cqw; font-weight: 600; font-size: 3.4cqw; letter-spacing: .1em; writing-mode: vertical-rl; opacity: .9; }
+.edition {
+  position: absolute; left: 4cqw; bottom: 38cqw; transform: rotate(-5deg); transform-origin: left bottom;
+  font: 400 7.4cqw/1 var(--font-display); text-transform: uppercase;
+  background: var(--booking); color: var(--booking-ink); padding: 1.6cqw 3cqw 1.4cqw;
+  box-shadow: 1.2cqw 1.2cqw 0 var(--card-ink); white-space: nowrap;
+}
+.plate {
+  position: absolute; left: 0; right: 0; bottom: 0; background: var(--card-ink);
+  padding: 4.4cqw 4cqw 4cqw; display: grid; gap: 1.6cqw;
+  clip-path: polygon(0 3.2cqw, 100% 0, 100% 100%, 0 100%);
+}
+.who { display: flex; justify-content: space-between; align-items: baseline; gap: 2cqw; font-weight: 600; font-size: 4.2cqw; line-height: 1; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+.who .club { opacity: .75; text-align: right; overflow: hidden; text-overflow: ellipsis; }
+.surname { font: 400 9.4cqw/1 var(--font-display); text-transform: uppercase; white-space: nowrap; }
+.surname.long { font-size: 7.6cqw; line-height: 1.24; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr) 1.25fr; gap: 1.6cqw; margin-top: 1cqw; }
+.stat { border-radius: 1.6cqw; padding: 1.4cqw 0 1cqw; text-align: center; color: var(--card-ink); display: grid; gap: .4cqw; }
+.stat b { font-weight: 800; font-style: italic; font-size: 8.6cqw; line-height: .9; font-variant-numeric: tabular-nums; }
+.stat span { font-weight: 800; font-size: 3.2cqw; line-height: 1; letter-spacing: .12em; }
+.stat.att { background: var(--att); } .stat.def { background: var(--def); } .stat.ctrl { background: var(--ctrl); } .stat.total { background: var(--booking); }
+
+.back .ground {
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(62deg, transparent 0 5cqw, rgba(255, 255, 255, .05) 5cqw 10cqw), linear-gradient(200deg, var(--g2), var(--card-ink) 62%);
+}
+.sheet { position: absolute; inset: 0; padding: 5.5cqw 6cqw 4.5cqw; display: flex; flex-direction: column; gap: 2.8cqw; }
+.brand { display: flex; justify-content: space-between; align-items: center; font-weight: 800; font-size: 3.8cqw; letter-spacing: .18em; text-transform: uppercase; line-height: 1; }
+.brand i { font-style: normal; background: var(--booking); color: var(--booking-ink); padding: 1cqw 1.8cqw .8cqw; border-radius: .8cqw; letter-spacing: .1em; }
+.fullname { font: 400 7.6cqw/1.02 var(--font-display); text-transform: uppercase; margin: 0; max-width: none; }
+.meta { font-weight: 600; font-size: 4.2cqw; line-height: 1.2; letter-spacing: .08em; text-transform: uppercase; opacity: .85; margin: -1.2cqw 0 0; max-width: none; }
+.bars { display: grid; gap: 1.7cqw; margin: 0; }
+.bar { display: grid; grid-template-columns: 17cqw 1fr 8cqw; align-items: center; gap: 2cqw; font-weight: 800; font-size: 4cqw; line-height: 1; letter-spacing: .08em; }
+.bar dt, .bar dd { margin: 0; }
+.track { height: 2.4cqw; border-radius: 2cqw; background: rgba(255, 255, 255, .16); overflow: hidden; }
+.track i { display: block; height: 100%; border-radius: 2cqw; background: var(--booking); }
+.bar .num { text-align: right; font-style: italic; font-size: 5cqw; font-variant-numeric: tabular-nums; }
+.facts { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 1.6cqw; }
+.facts div { background: rgba(255, 255, 255, .1); border-radius: 2cqw; padding: 2.2cqw 1cqw 1.8cqw; text-align: center; display: grid; gap: .8cqw; }
+.facts b { font-weight: 800; font-style: italic; font-size: 7.4cqw; line-height: .9; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.facts span { font-weight: 800; font-size: 2.9cqw; line-height: 1; letter-spacing: .1em; color: var(--booking); }
+.box { background: rgba(255, 255, 255, .1); border-radius: 2cqw; padding: 2.4cqw 3cqw; font: 600 3.9cqw/1.25 var(--font-body); }
+.box strong { display: block; font: 800 3.2cqw/1 var(--font-data); letter-spacing: .16em; text-transform: uppercase; color: var(--booking); margin-bottom: 1.1cqw; }
+.credit { margin-top: auto; display: flex; justify-content: space-between; align-items: end; gap: 3cqw; font-weight: 600; font-size: 2.7cqw; line-height: 1.2; letter-spacing: .04em; opacity: .75; }
+.credit span:last-child { white-space: nowrap; }
+
+@media (prefers-reduced-motion: reduce) {
+  .inner, .slot { transition: none; }
+  .card.big.idle, .spot .card.big.idle, .pack.tearing, .pack.tearing::before, .grid.trading .slot, .spot.legend::before { animation: none; }
+}
+</style>
+
+<div class="page">
+  <header class="masthead">
+    <div class="titlerow">
+      <h1>Soccer Cards</h1>
+      <span class="coins" aria-live="polite"><span class="coin" aria-hidden="true"></span><span id="coins">0 coins</span></span>
+    </div>
+    <nav class="tabs" aria-label="Sections">
+      <button class="tab" type="button" data-go="packs">Packs</button>
+      <button class="tab" type="button" data-go="battle">Battle</button>
+      <button class="tab" type="button" data-go="cards" id="tab-cards">Cards</button>
+      <button class="tab" type="button" data-go="guide">Guide</button>
+    </nav>
+  </header>
+
+  <!-- Packs -->
+  <section class="view" id="view-packs">
+    <div class="packzone" id="packzone">
+      <h2>Open a pack</h2>
+      <div class="shelf">
+        <div class="offer">
+          <button class="pack" id="pack-pack" type="button" aria-label="Pack of 10 cards">
+            <span class="name">Soccer<br>Cards</span>
+            <span class="ten">10 CARDS</span>
+            <span class="mix">7 BASE · 2 RARE<br>1 LEGEND</span>
+          </button>
+          <button class="btn primary" id="buy-pack" type="button"></button>
+        </div>
+        <div class="offer">
+          <button class="pack jumbo" id="pack-jumbo" type="button" aria-label="Jumbo pack of 20 cards">
+            <span class="name">Jumbo<br>Pack</span>
+            <span class="ten">20 CARDS</span>
+            <span class="mix">15 BASE · 3 RARE<br>2 LEGENDS</span>
+          </button>
+          <button class="btn primary" id="buy-jumbo" type="button"></button>
+        </div>
+      </div>
+      <p class="muted" id="packnote"></p>
+    </div>
+    <div class="reveal" id="reveal" hidden>
+      <div class="row center" id="revealchips"></div>
+      <div class="spot" id="spot"></div>
+      <div class="row center">
+        <button class="btn primary" id="next" type="button">Next card</button>
+        <button class="btn" id="skip" type="button">Skip to all cards</button>
+      </div>
+    </div>
+    <div class="reveal" id="summary" hidden>
+      <h2 id="summarytitle">Your cards</h2>
+      <div class="grid summary" id="summarygrid"></div>
+      <button class="btn primary" id="add" type="button">Add to my collection</button>
+    </div>
+  </section>
+
+  <!-- Battle -->
+  <section class="view" id="view-battle" hidden>
+    <div class="empty" id="battlelocked" hidden>
+      <h2>Battle is locked</h2>
+      <p id="lockedtext"></p>
+      <button class="btn primary" type="button" data-go="packs" id="lockedbtn">Open packs</button>
+    </div>
+    <div class="view" id="battlepick" hidden>
+      <h2>Pick your 11</h2>
+      <p>Tap cards to put them in your team. The team with the highest total wins. Beat the AI to win 5 coins.</p>
+      <div class="row">
+        <span class="chip" id="pickcount"></span>
+        <span class="chip legend" id="picktotal"></span>
+        <span class="muted" id="record"></span>
+      </div>
+      <div class="row">
+        <button class="btn primary" type="button" id="fight">Battle</button>
+        <button class="btn small" type="button" id="best">Pick my best 11</button>
+        <button class="btn small" type="button" id="clearteam">Clear</button>
+      </div>
+      <div class="grid fixed" id="pickgrid"></div>
+    </div>
+    <div class="view" id="battlestage" hidden>
+      <div class="board" id="board">
+        <div class="side" id="side-you"><span class="who">You</span><span class="pts" id="pts-you">0</span></div>
+        <span class="vs">VS</span>
+        <div class="side" id="side-ai"><span class="who">AI</span><span class="pts" id="pts-ai">0</span></div>
+      </div>
+      <div class="result" id="result" hidden></div>
+      <div class="row center" id="skiprow"><button class="btn small" type="button" id="skipbattle">Skip to the result</button></div>
+      <div class="teams">
+        <div class="teambox"><h3>Your team</h3><div class="grid team" id="team-you"></div></div>
+        <div class="teambox"><h3>AI team</h3><div class="grid team" id="team-ai"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cards -->
+  <section class="view" id="view-cards" hidden>
+    <h2>My cards</h2>
+    <div class="row" id="tools">
+      <span class="label" id="colslabel">Cards per row</span>
+      <span class="row" role="group" aria-labelledby="colslabel" style="gap:6px">
+        <button class="btn small" type="button" data-cols="3">3</button>
+        <button class="btn small" type="button" data-cols="5">5</button>
+        <button class="btn small" type="button" data-cols="7">7</button>
+      </span>
+      <button class="btn small" type="button" id="favfilter" aria-pressed="false">★ Favourites</button>
+      <button class="btn small" type="button" id="trademode" aria-pressed="false">Trade</button>
+    </div>
+    <p class="banner" id="tradebanner" hidden>Tap a card you don't want. You get a different card of the same kind: base for base, rare for rare, legend for legend.</p>
+    <div class="grid" id="collectiongrid"></div>
+    <div class="empty" id="collectionempty" hidden>
+      <p id="emptytext"></p>
+      <button class="btn primary" type="button" data-go="packs">Open a pack</button>
+    </div>
+  </section>
+
+  <!-- Guide -->
+  <section class="view" id="view-guide" hidden>
+    <h2>Collector guide</h2>
+    <p id="guidecount" class="label"></p>
+    <div class="meter" aria-hidden="true"><i id="guidemeter"></i></div>
+    <p class="muted">Every card in the set. Cards join your collection only when you find them in a pack or trade for them.</p>
+    <div id="guidetiers" class="view"></div>
+    <p class="muted">Ratings, goals, fees and awards are sample numbers for the prototype, not live data. Photos come from Wikimedia Commons under free licences, and the back of each card names the photographer.</p>
+    <div class="row">
+      <button class="btn small" type="button" id="reset">Start again</button>
+      <span class="muted">Your cards are saved on this device only.</span>
+    </div>
+  </section>
+</div>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" hidden><div class="sheetbox" id="modalbody"></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+<script>
+(function () {
+  var FLAGS = {
+    ARG: 'linear-gradient(#74ACDF 0 33%, #fff 33% 67%, #74ACDF 67%)',
+    POR: 'linear-gradient(90deg, #046A38 0 40%, #DA291C 40%)',
+    FRA: 'linear-gradient(90deg, #0055A4 0 33%, #fff 33% 67%, #EF4135 67%)',
+    NOR: 'linear-gradient(90deg, transparent 31%, #00205B 31% 44%, transparent 44%), linear-gradient(transparent 38%, #00205B 38% 62%, transparent 62%), linear-gradient(90deg, transparent 25%, #fff 25% 50%, transparent 50%), linear-gradient(transparent 25%, #fff 25% 75%, transparent 75%), #BA0C2F',
+    EGY: 'linear-gradient(#CE1126 0 33%, #fff 33% 67%, #111 67%)',
+    ENG: 'linear-gradient(90deg, transparent 42%, #CE1124 42% 58%, transparent 58%), linear-gradient(transparent 36%, #CE1124 36% 64%, transparent 64%), #fff',
+    ESP: 'linear-gradient(#AA151B 0 25%, #F1BF00 25% 75%, #AA151B 75%)',
+    BRA: 'radial-gradient(circle, #002776 0 24%, transparent 26%), radial-gradient(ellipse, #FFDF00 0 58%, transparent 60%), #009C3B',
+    NED: 'linear-gradient(#AE1C28 0 33%, #fff 33% 67%, #21468B 67%)',
+    GER: 'linear-gradient(#111 0 33%, #DD0000 33% 67%, #FFCE00 67%)',
+    BEL: 'linear-gradient(90deg, #111 0 33%, #FAE042 33% 67%, #ED2939 67%)',
+    MAR: 'radial-gradient(circle, #006233 0 22%, transparent 24%), #C1272D',
+    KOR: 'radial-gradient(circle, #CD2E3A 0 20%, #0047A0 21% 32%, transparent 34%), #fff',
+    CRO: 'linear-gradient(#FF0000 0 33%, #fff 33% 67%, #171796 67%)',
+    URU: 'repeating-linear-gradient(#fff 0 12%, #0038A8 12% 22%)',
+    NGA: 'linear-gradient(90deg, #008751 0 33%, #fff 33% 67%, #008751 67%)',
+    ITA: 'linear-gradient(90deg, #009246 0 33%, #fff 33% 67%, #CE2B37 67%)'
+  };
+  var COUNTRY = { ARG: 'Argentina', POR: 'Portugal', FRA: 'France', NOR: 'Norway', EGY: 'Egypt', ENG: 'England', ESP: 'Spain', BRA: 'Brazil', NED: 'Netherlands', GER: 'Germany', BEL: 'Belgium', MAR: 'Morocco', KOR: 'South Korea', CRO: 'Croatia', URU: 'Uruguay', NGA: 'Nigeria', ITA: 'Italy' };
+  // club: [kit colour, second colour, striped shirt, card colour from, card colour to]
+  var CLUBS = {
+    'Inter Miami': ['#F4A6C6', '#111111', 0, '#E86AA6', '#7A1F52'],
+    'Al Nassr': ['#FFD400', '#1A4FA3', 0, '#2D6CDF', '#12306E'],
+    'Real Madrid': ['#FFFFFF', '#C9A227', 0, '#6C5CE7', '#2B1F7A'],
+    'Manchester City': ['#6CABDD', '#FFFFFF', 0, '#7CC4F2', '#1D5E9E'],
+    'Liverpool': ['#C8102E', '#F6EB61', 0, '#E2364B', '#7D0C1E'],
+    'Bayern Munich': ['#DC052D', '#FFFFFF', 0, '#F0503C', '#8A0F1E'],
+    'Barcelona': ['#004D98', '#A50044', 1, '#1E9E8A', '#0B4F5C'],
+    'Arsenal': ['#EF0107', '#FFFFFF', 0, '#F25C4A', '#8E1220'],
+    'Napoli': ['#12A0D7', '#FFFFFF', 0, '#35B8E8', '#0C5C8A'],
+    'Paris SG': ['#004170', '#DA291C', 0, '#2A5CAA', '#0A2248'],
+    'Chelsea': ['#034694', '#FFFFFF', 0, '#2F6FD0', '#0B2E6B'],
+    'Manchester United': ['#DA291C', '#111111', 0, '#E8503A', '#7A1210'],
+    'LAFC': ['#111111', '#C39E6D', 0, '#B8935A', '#3A2C14'],
+    'Atlético Madrid': ['#CB3524', '#FFFFFF', 1, '#D9534A', '#1F2F6B'],
+    'Inter': ['#0068A8', '#111111', 1, '#2B7FC4', '#0A1F3F'],
+    'Galatasaray': ['#A90432', '#FDB912', 1, '#E0932A', '#7A0A26']
+  };
+  var POSITIONS = { FW: 'Forward', MF: 'Midfielder', DF: 'Defender' };
+  var TIER_NAME = { legend: 'Legend', rare: 'Rare', base: 'Base' };
+  var TIER_ORDER = { legend: 0, rare: 1, base: 2 };
+  var RATING_NAMES = ['PACE', 'SHOOT', 'PASS', 'DRIBBLE', 'DEFEND', 'POWER'];
+  // [first, last, position, nation, club, shirt, tier, edition, pace, shoot, pass, dribble, defend, power,
+  //  transfer fee, club goals, country goals, award] (all sample values for the prototype)
+  var RAW = [
+    ['Lionel', 'Messi', 'FW', 'ARG', 'Inter Miami', 10, 'legend', 'Magician', 78, 90, 92, 94, 34, 62, 'Free', 75, 115, 'MLS Golden Boot 2025'],
+    ['Cristiano', 'Ronaldo', 'FW', 'POR', 'Al Nassr', 7, 'legend', 'Sky Jumper', 76, 91, 76, 82, 34, 76, 'Free', 110, 143, 'Saudi Pro League top scorer 2024/25'],
+    ['Kylian', 'Mbappé', 'FW', 'FRA', 'Real Madrid', 10, 'legend', 'Lightning', 97, 91, 81, 92, 36, 77, 'Free', 75, 55, 'European Golden Shoe 2024/25'],
+    ['Erling', 'Haaland', 'FW', 'NOR', 'Manchester City', 9, 'legend', 'Goal Machine', 89, 93, 68, 80, 45, 90, '€60m', 150, 55, 'Premier League Golden Boot 2023/24'],
+    ['Mohamed', 'Salah', 'FW', 'EGY', 'Liverpool', 11, 'legend', 'Egyptian King', 89, 89, 84, 88, 45, 75, '€42m', 250, 65, 'Premier League Player of the Season 2024/25'],
+    ['Harry', 'Kane', 'FW', 'ENG', 'Bayern Munich', 9, 'legend', 'Sharp Shooter', 68, 93, 85, 83, 48, 84, '€95m', 120, 78, 'Bundesliga top scorer 2024/25'],
+    ['Jude', 'Bellingham', 'MF', 'ENG', 'Real Madrid', 5, 'rare', 'Engine Room', 80, 84, 85, 88, 78, 84, '€103m', 45, 6, 'La Liga Player of the Season 2023/24'],
+    ['Lamine', 'Yamal', 'FW', 'ESP', 'Barcelona', 10, 'rare', 'Wonderkid', 90, 82, 84, 91, 30, 58, 'Academy', 40, 8, 'Kopa Trophy 2025'],
+    ['Vinícius', 'Júnior', 'FW', 'BRA', 'Real Madrid', 7, 'rare', 'Samba Star', 95, 85, 80, 91, 29, 68, '€45m', 115, 8, 'The Best FIFA Men’s Player 2024'],
+    ['Virgil', 'van Dijk', 'DF', 'NED', 'Liverpool', 4, 'rare', 'Brick Wall', 76, 60, 73, 70, 91, 88, '€85m', 30, 11, 'Premier League champion 2024/25'],
+    ['', 'Rodri', 'MF', 'ESP', 'Manchester City', 16, 'rare', 'The Anchor', 62, 78, 87, 82, 87, 86, '€70m', 27, 4, 'Ballon d’Or 2024'],
+    ['Bukayo', 'Saka', 'FW', 'ENG', 'Arsenal', 7, 'rare', 'Star Boy', 86, 83, 83, 87, 60, 70, 'Academy', 80, 14, 'England Player of the Year 2022/23'],
+    ['', 'Pedri', 'MF', 'ESP', 'Barcelona', 8, 'rare', 'Pass Master', 74, 72, 87, 89, 68, 66, '€5m', 30, 3, 'La Liga champion 2024/25'],
+    ['Jamal', 'Musiala', 'MF', 'GER', 'Bayern Munich', 10, 'rare', 'Twinkle Toes', 84, 80, 81, 92, 58, 64, 'Academy', 65, 8, 'Bundesliga champion 2024/25'],
+    ['Kevin', 'De Bruyne', 'MF', 'BEL', 'Napoli', 11, 'rare', 'Playmaker', 66, 86, 93, 85, 62, 74, 'Free', 10, 36, 'Premier League Player of the Season 2021/22'],
+    ['Ousmane', 'Dembélé', 'FW', 'FRA', 'Paris SG', 10, 'rare', 'Two Footed', 91, 85, 82, 90, 38, 62, '€50m', 50, 7, 'Ballon d’Or 2025'],
+    ['Declan', 'Rice', 'MF', 'ENG', 'Arsenal', 41, 'base', '', 73, 72, 80, 78, 84, 85, '€117m', 25, 6, 'PFA Team of the Year 2023/24'],
+    ['Phil', 'Foden', 'MF', 'ENG', 'Manchester City', 47, 'base', '', 81, 82, 84, 88, 56, 60, 'Academy', 100, 4, 'Premier League Player of the Season 2023/24'],
+    ['Cole', 'Palmer', 'MF', 'ENG', 'Chelsea', 10, 'base', '', 76, 84, 85, 86, 52, 66, '€47m', 50, 3, 'PFA Young Player of the Year 2023/24'],
+    ['Martin', 'Ødegaard', 'MF', 'NOR', 'Arsenal', 8, 'base', '', 74, 79, 89, 87, 60, 62, '€35m', 42, 4, 'PFA Team of the Year 2023/24'],
+    ['William', 'Saliba', 'DF', 'FRA', 'Arsenal', 2, 'base', '', 80, 40, 68, 70, 88, 84, '€30m', 8, 0, 'PFA Team of the Year 2023/24'],
+    ['', 'Raphinha', 'FW', 'BRA', 'Barcelona', 11, 'base', '', 89, 83, 81, 85, 50, 74, '€58m', 60, 11, 'La Liga Player of the Season 2024/25'],
+    ['Achraf', 'Hakimi', 'DF', 'MAR', 'Paris SG', 2, 'base', '', 92, 74, 80, 81, 78, 77, '€60m', 28, 11, 'African Footballer of the Year 2025'],
+    ['Bruno', 'Fernandes', 'MF', 'POR', 'Manchester United', 8, 'base', '', 72, 84, 89, 82, 66, 72, '€55m', 100, 28, 'Manchester United Player of the Year 2024/25'],
+    ['Rúben', 'Dias', 'DF', 'POR', 'Manchester City', 3, 'base', '', 66, 40, 68, 66, 89, 87, '€68m', 6, 3, 'Premier League Player of the Season 2020/21'],
+    ['Florian', 'Wirtz', 'MF', 'GER', 'Liverpool', 7, 'base', '', 80, 81, 87, 89, 48, 62, '€117m', 10, 8, 'Bundesliga Player of the Season 2023/24'],
+    ['Joshua', 'Kimmich', 'MF', 'GER', 'Bayern Munich', 6, 'base', '', 70, 74, 89, 82, 82, 76, '€8.5m', 45, 8, 'Bundesliga champion 2024/25'],
+    ['Heung-min', 'Son', 'FW', 'KOR', 'LAFC', 7, 'base', '', 85, 86, 80, 84, 42, 68, '€22m', 20, 54, 'Europa League winner 2024/25'],
+    ['Joško', 'Gvardiol', 'DF', 'CRO', 'Manchester City', 24, 'base', '', 80, 62, 72, 74, 85, 84, '€90m', 12, 4, 'Manchester City Player of the Season 2024/25'],
+    ['Federico', 'Valverde', 'MF', 'URU', 'Real Madrid', 8, 'base', '', 88, 82, 84, 82, 80, 84, '€5m', 33, 8, 'Champions League winner 2023/24'],
+    ['Alexis', 'Mac Allister', 'MF', 'ARG', 'Liverpool', 10, 'base', '', 70, 78, 85, 82, 78, 76, '€42m', 18, 4, 'Premier League champion 2024/25'],
+    ['Julián', 'Álvarez', 'FW', 'ARG', 'Atlético Madrid', 19, 'base', '', 82, 85, 78, 84, 56, 74, '€75m', 45, 13, 'World Cup winner 2022'],
+    ['Lautaro', 'Martínez', 'FW', 'ARG', 'Inter', 10, 'base', '', 80, 88, 74, 84, 50, 82, '€25m', 165, 36, 'Serie A top scorer 2023/24'],
+    ['Victor', 'Osimhen', 'FW', 'NGA', 'Galatasaray', 45, 'base', '', 90, 86, 66, 78, 42, 84, '€75m', 50, 31, 'Süper Lig top scorer 2024/25'],
+    ['Cody', 'Gakpo', 'FW', 'NED', 'Liverpool', 18, 'base', '', 84, 82, 76, 82, 42, 76, '€42m', 50, 18, 'Premier League champion 2024/25'],
+    ['Nicolò', 'Barella', 'MF', 'ITA', 'Inter', 23, 'base', '', 78, 76, 84, 84, 78, 76, '€37m', 28, 10, 'Serie A Best Midfielder 2022/23']
+  ];
+  var PLAYERS = RAW.map(function (a, i) {
+    var r = a.slice(8, 14);
+    return { id: i + 1, first: a[0], last: a[1], pos: a[2], nat: a[3], club: a[4], shirt: a[5], tier: a[6], edition: a[7], r: r, s: playStats(r), fee: a[14], clubGoals: a[15], natGoals: a[16], award: a[17] };
+  });
+  var BY_ID = {}; PLAYERS.forEach(function (p) { BY_ID[p.id] = p; });
+  var BY_TIER = { legend: [], rare: [], base: [] }; PLAYERS.forEach(function (p) { BY_TIER[p.tier].push(p.id); });
+  var PHOTOS = {}; // filled from photos/credits.json; cards without a photo use the kit avatar
+
+  // Draft ratings formula: the three play stats come from the six ratings.
+  function playStats(r) {
+    var att = Math.round(0.45 * r[1] + 0.30 * r[3] + 0.25 * r[0]);
+    var def = Math.round(0.60 * r[4] + 0.40 * r[5]);
+    var ctrl = Math.round(0.55 * r[2] + 0.45 * r[3]);
+    return { att: att, def: def, ctrl: ctrl, total: att + def + ctrl };
+  }
+
+  var STAR = (function () {
+    var pts = [];
+    for (var i = 0; i < 36; i++) {
+      var rad = i % 2 ? 31 + (i % 3) * 2 : 50, a = (i / 36) * Math.PI * 2;
+      pts.push((50 + rad * Math.cos(a)).toFixed(1) + '% ' + (50 + rad * Math.sin(a)).toFixed(1) + '%');
+    }
+    return 'polygon(' + pts.join(',') + ')';
+  })();
+
+  function isLight(hex) {
+    var n = parseInt(hex.slice(1), 16);
+    return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) > 170;
+  }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;'); }
+  var uid = 0;
+  function avatar(p) {
+    var k = CLUBS[p.club], id = 'kit' + (++uid), stripes = '';
+    if (k[2]) for (var x = 32; x < 180; x += 34) stripes += '<rect x="' + x + '" y="100" width="17" height="130" fill="' + k[1] + '"/>';
+    var numInk = isLight(k[0]) ? '#1B1F3B' : '#FFFFFF';
+    return '<svg class="avatar" viewBox="0 0 200 220" aria-hidden="true">' +
+      '<defs><clipPath id="' + id + '"><path d="M14 220 C14 160 34 128 76 116 L124 116 C166 128 186 160 186 220 Z"/></clipPath></defs>' +
+      '<rect x="86" y="92" width="28" height="34" rx="8" fill="#0E1512"/>' +
+      '<g clip-path="url(#' + id + ')"><rect x="0" y="100" width="200" height="130" fill="' + k[0] + '"/>' + stripes +
+      '<path d="M76 116 Q100 140 124 116 L124 108 L76 108 Z" fill="' + k[1] + '"/></g>' +
+      '<path d="M14 220 C14 160 34 128 76 116 L124 116 C166 128 186 160 186 220" fill="none" stroke="#0E1512" stroke-width="5"/>' +
+      '<circle cx="100" cy="62" r="40" fill="#0E1512"/>' +
+      '<text x="100" y="196" text-anchor="middle" font-family="Saira Condensed, Arial Narrow, sans-serif" font-weight="800" font-size="56" fill="' + numInk + '" stroke="#0E1512" stroke-width="2.5" paint-order="stroke">' + p.shirt + '</text>' +
+      '</svg>';
+  }
+  function fullName(p) { return (p.first ? p.first + ' ' : '') + p.last; }
+
+  function cardHTML(p, withBack) {
+    var k = CLUBS[p.club], s = p.s, serial = '#' + String(p.id).padStart(3, '0'), ph = PHOTOS[p.id];
+    var g1 = p.tier === 'legend' ? '#F5C542' : k[3], g2 = p.tier === 'legend' ? '#B8791A' : k[4];
+    var edge = p.tier === 'legend' ? '#F7D774' : p.tier === 'rare' ? '#D5DEE8' : '#FFFFFF';
+    var foil = p.tier === 'legend' ? 0.75 : p.tier === 'rare' ? 0.55 : 0;
+    var burst = isLight(k[1]) && p.tier !== 'legend' ? k[0] : k[1];
+    var html = '<div class="inner" style="--g1:' + g1 + ';--g2:' + g2 + ';--burst:' + burst + ';--foil:' + foil + ';--edge:' + edge + '">' +
+      '<div class="face front"><div class="ground"></div><div class="foil"></div>' +
+        '<div class="burst" style="clip-path:' + STAR + '"></div>' + (p.tier === 'base' ? '' : '<div class="burst two" style="clip-path:' + STAR + '"></div>') +
+        (ph ? '<div class="photo"><img src="photos/' + p.id + '.jpg" alt="" loading="lazy" decoding="async"></div>' : avatar(p)) +
+        '<div class="corner pos">' + p.pos + '</div>' +
+        '<div class="corner nat"><span class="flag" style="background:' + FLAGS[p.nat] + '"></span>' + p.nat + '</div>' +
+        '<div class="serial">' + serial + ' · ' + p.tier.toUpperCase() + '</div>' +
+        (p.edition ? '<div class="edition">' + p.edition + '</div>' : '') +
+        '<div class="plate"><div class="who"><span>' + (p.first || '&nbsp;') + '</span><span class="club">' + p.club + '</span></div>' +
+          '<div class="surname' + (p.last.length > 10 ? ' long' : '') + '">' + p.last + '</div>' +
+          '<div class="stats">' +
+            '<div class="stat att"><b>' + s.att + '</b><span>ATT</span></div>' +
+            '<div class="stat def"><b>' + s.def + '</b><span>DEF</span></div>' +
+            '<div class="stat ctrl"><b>' + s.ctrl + '</b><span>CTRL</span></div>' +
+            '<div class="stat total"><b>' + s.total + '</b><span>TOTAL</span></div>' +
+          '</div></div>' +
+        '<div class="glare"></div></div>';
+    if (withBack) {
+      var bars = p.r.map(function (v, i) {
+        return '<div class="bar"><dt>' + RATING_NAMES[i] + '</dt><dd class="track"><i style="width:' + v + '%"></i></dd><dd class="num">' + v + '</dd></div>';
+      }).join('');
+      html += '<div class="face back"><div class="ground"></div><div class="sheet">' +
+        '<div class="brand"><span>Soccer Cards</span><i>' + serial + '</i></div>' +
+        '<p class="fullname">' + fullName(p) + '</p>' +
+        '<p class="meta">' + POSITIONS[p.pos] + ' · ' + p.club + ' · ' + COUNTRY[p.nat] + '</p>' +
+        '<dl class="bars">' + bars + '</dl>' +
+        '<div class="facts"><div><b>' + p.clubGoals + '</b><span>CLUB GOALS</span></div><div><b>' + p.natGoals + '</b><span>COUNTRY GOALS</span></div><div><b>' + p.fee + '</b><span>TRANSFER FEE</span></div></div>' +
+        '<div class="box"><strong>Award</strong>' + p.award + '</div>' +
+        '<div class="credit"><span>' + (ph ? 'Photo: ' + esc(ph.credit) + ', via Wikimedia Commons' : 'No photo yet') + '</span><span>' + TIER_NAME[p.tier] + ' card</span></div>' +
+      '</div></div>';
+    }
+    return html + '</div>';
+  }
+
+  // A big card that tilts with the pointer. onTap decides what a tap does.
+  function bigCard(p, withBack, onTap, label) {
+    var el = document.createElement('div');
+    el.className = 'card big idle'; el.tabIndex = 0; el.setAttribute('role', 'button');
+    el.setAttribute('aria-label', fullName(p) + ', ' + TIER_NAME[p.tier] + ' card. ' + label);
+    el.innerHTML = cardHTML(p, withBack);
+    el.addEventListener('click', function () { onTap(el); });
+    el.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onTap(el); } });
+    el.addEventListener('pointermove', function (e) {
+      var b = el.getBoundingClientRect(), px = (e.clientX - b.left) / b.width, py = (e.clientY - b.top) / b.height;
+      el.classList.remove('idle'); el.classList.add('tracking');
+      el.style.setProperty('--rx', ((0.5 - py) * 16).toFixed(1) + 'deg');
+      el.style.setProperty('--ry', ((px - 0.5) * 20).toFixed(1) + 'deg');
+      el.style.setProperty('--mx', (px * 100).toFixed(0) + '%');
+      el.style.setProperty('--my', (py * 100).toFixed(0) + '%');
+    });
+    var rest = function () {
+      el.classList.remove('tracking'); el.classList.add('idle');
+      ['--rx', '--ry', '--mx', '--my'].forEach(function (k) { el.style.removeProperty(k); });
+    };
+    el.addEventListener('pointerleave', rest); el.addEventListener('pointercancel', rest);
+    return el;
+  }
+  function slot(p, onTap, label) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'slot'; b.setAttribute('aria-label', label);
+    b.innerHTML = '<span class="card">' + cardHTML(p, false) + '</span>';
+    b.addEventListener('click', onTap);
+    return b;
+  }
+
+  // ---------- State (saved on this device only) ----------
+  var KEY = 'soccer-cards-proto-v3';
+  function fresh() { return { owned: {}, favs: {}, cols: 5, opened: 0, coins: 0, free: 2, wins: 0, losses: 0, team: [], pending: null }; }
+  var S = fresh();
+  try { var saved = JSON.parse(localStorage.getItem(KEY) || 'null'); if (saved && saved.owned) { for (var k in saved) S[k] = saved[k]; } } catch (e) {}
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+  function ownedIds() { return Object.keys(S.owned).map(Number).filter(function (id) { return S.owned[id] > 0 && BY_ID[id]; }); }
+  function totalCards() { return ownedIds().reduce(function (n, id) { return n + S.owned[id]; }, 0); }
+  function sumTotals(ids) { return ids.reduce(function (n, id) { return n + BY_ID[id].s.total; }, 0); }
+  function fmt(n) { return n.toLocaleString('en'); }
+
+  var $ = function (id) { return document.getElementById(id); };
+  var toastTimer;
+  function toast(msg) {
+    var t = $('toast'); t.textContent = msg; t.hidden = false;
+    clearTimeout(toastTimer); toastTimer = setTimeout(function () { t.hidden = true; }, 2800);
+  }
+  function sample(list, n) {
+    var a = list.slice();
+    for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; }
+    return a.slice(0, n);
+  }
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------- Views ----------
+  var VIEWS = ['packs', 'battle', 'cards', 'guide'], view = 'packs';
+  function go(v) {
+    if (battle && !battle.done && v !== 'battle') finishBattle();
+    view = VIEWS.indexOf(v) < 0 ? 'packs' : v;
+    VIEWS.forEach(function (name) { $('view-' + name).hidden = name !== view; });
+    Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (t) {
+      if (t.dataset.go === view) t.setAttribute('aria-current', 'page'); else t.removeAttribute('aria-current');
+    });
+    if (location.hash.slice(1) !== view) { try { history.replaceState(null, '', '#' + view); } catch (e) { location.hash = view; } }
+    render();
+  }
+  function render() {
+    $('coins').textContent = S.coins + (S.coins === 1 ? ' coin' : ' coins');
+    $('tab-cards').textContent = 'Cards (' + totalCards() + ')';
+    if (view === 'packs') renderPacks();
+    if (view === 'battle') renderBattle();
+    if (view === 'cards') renderCollection();
+    if (view === 'guide') renderGuide();
+  }
+  document.addEventListener('click', function (e) {
+    var t = e.target.closest('[data-go]'); if (t) go(t.dataset.go);
+  });
+  window.addEventListener('hashchange', function () { var h = location.hash.slice(1); if (h !== view && VIEWS.indexOf(h) >= 0) go(h); });
+
+  // ---------- Packs ----------
+  var PACKS = {
+    pack: { size: 10, mix: [7, 2, 1], cost: 5 },      // 7 base, 2 rare, 1 legend
+    jumbo: { size: 20, mix: [15, 3, 2], cost: 10 }    // 15 base, 3 rare, 2 legends
+  };
+  var packIdx = 0, packStage = S.pending ? 'summary' : 'sealed', tearing = false;
+  function canOpen(type) { return (type === 'pack' && S.free > 0) || S.coins >= PACKS[type].cost; }
+  function renderPacks() {
+    $('packzone').hidden = packStage !== 'sealed';
+    $('reveal').hidden = packStage !== 'reveal';
+    $('summary').hidden = packStage !== 'summary';
+    if (packStage === 'sealed') {
+      $('pack-pack').classList.remove('tearing'); $('pack-jumbo').classList.remove('tearing');
+      $('buy-pack').textContent = S.free > 0 ? 'Open free pack (' + S.free + ' left)' : S.coins >= 5 ? 'Open pack · 5 coins' : 'Need 5 coins';
+      $('buy-jumbo').textContent = S.coins >= 10 ? 'Open jumbo · 10 coins' : 'Need 10 coins';
+      $('buy-pack').disabled = !canOpen('pack'); $('buy-jumbo').disabled = !canOpen('jumbo');
+      $('packnote').textContent = S.free > 0 ? 'You start with 2 free packs. After that, win battles to earn coins.' : 'Win a battle to earn 5 coins. Packs opened so far: ' + S.opened + '.';
+    }
+    if (packStage === 'reveal') showReveal();
+    if (packStage === 'summary') {
+      $('summarytitle').textContent = 'Your ' + S.pending.ids.length + ' cards';
+      var g = $('summarygrid'); g.innerHTML = '';
+      S.pending.ids.forEach(function (id) { var p = BY_ID[id]; g.appendChild(slot(p, function () { openDetail(id); }, 'Look at ' + fullName(p))); });
+    }
+  }
+  function openPack(type) {
+    if (packStage !== 'sealed' || tearing) return;
+    if (!canOpen(type)) { toast('You need ' + PACKS[type].cost + ' coins. Win a battle to earn 5.'); return; }
+    if (type === 'pack' && S.free > 0) S.free--; else S.coins -= PACKS[type].cost;
+    var m = PACKS[type].mix;
+    S.pending = { type: type, ids: sample(BY_TIER.base, m[0]).concat(sample(BY_TIER.rare, m[1]), sample(BY_TIER.legend, m[2])) };
+    save(); packIdx = 0; tearing = true;
+    $('coins').textContent = S.coins + (S.coins === 1 ? ' coin' : ' coins');
+    $('pack-' + type).classList.add('tearing');
+    setTimeout(function () { tearing = false; packStage = 'reveal'; if (view === 'packs') renderPacks(); }, reduceMotion ? 0 : 1000);
+  }
+  function showReveal() {
+    var ids = S.pending.ids, p = BY_ID[ids[packIdx]], have = S.owned[p.id] || 0;
+    $('revealchips').innerHTML = '<span class="chip">Card ' + (packIdx + 1) + ' of ' + ids.length + '</span>' +
+      '<span class="chip' + (p.tier === 'legend' ? ' legend' : '') + '">' + TIER_NAME[p.tier] + '</span>' +
+      (have ? '<span class="chip">You have ' + have + '</span>' : '<span class="chip new">New!</span>');
+    var spot = $('spot'); spot.innerHTML = ''; spot.className = 'spot' + (p.tier === 'legend' ? ' legend' : '');
+    spot.appendChild(bigCard(p, false, nextCard, 'Press for the next card.'));
+    $('next').textContent = packIdx < ids.length - 1 ? 'Next card' : 'See all ' + ids.length;
+    $('skip').hidden = packIdx >= ids.length - 1;
+  }
+  function nextCard() {
+    if (packIdx < S.pending.ids.length - 1) { packIdx++; showReveal(); } else { packStage = 'summary'; renderPacks(); }
+  }
+  function addPack() {
+    var n = S.pending.ids.length;
+    S.pending.ids.forEach(function (id) { S.owned[id] = (S.owned[id] || 0) + 1; });
+    S.opened++; S.pending = null; save(); packStage = 'sealed';
+    go('cards'); toast(n + ' cards added to your collection');
+  }
+  $('pack-pack').addEventListener('click', function () { openPack('pack'); });
+  $('buy-pack').addEventListener('click', function () { openPack('pack'); });
+  $('pack-jumbo').addEventListener('click', function () { openPack('jumbo'); });
+  $('buy-jumbo').addEventListener('click', function () { openPack('jumbo'); });
+  $('next').addEventListener('click', nextCard);
+  $('skip').addEventListener('click', function () { packStage = 'summary'; renderPacks(); });
+  $('add').addEventListener('click', addPack);
+
+  // ---------- Battle: 11 against 11, highest total wins, 5 coins for a win ----------
+  var TEAM = 11, WIN_COINS = 5, battle = null, battleTimer = null;
+  function teamIds() { return (S.team || []).filter(function (id) { return S.owned[id] > 0; }); }
+  function bestEleven(ids) { return ids.slice().sort(function (a, b) { return BY_ID[b].s.total - BY_ID[a].s.total; }).slice(0, TEAM); }
+  function renderBattle() {
+    var ids = ownedIds(), locked = ids.length < TEAM;
+    $('battlelocked').hidden = !locked || !!battle;
+    $('battlepick').hidden = locked || !!battle;
+    $('battlestage').hidden = !battle;
+    if (battle) return;
+    if (locked) {
+      $('lockedtext').textContent = 'You need 11 different players to battle. You have ' + ids.length + '.' +
+        (S.free > 0 ? ' Open your free packs first.' : ids.length ? ' Trade your doubles to find new players.' : '');
+      $('lockedbtn').textContent = S.free > 0 || S.coins >= 5 ? 'Open packs' : 'Go to packs';
+      return;
+    }
+    if (!teamIds().length) { S.team = bestEleven(ids); save(); }
+    var team = teamIds();
+    $('pickcount').textContent = team.length + ' of 11 picked';
+    $('picktotal').textContent = 'Team total ' + fmt(sumTotals(team));
+    $('record').textContent = 'Wins ' + S.wins + ' · Losses ' + S.losses;
+    $('fight').disabled = team.length !== TEAM;
+    var g = $('pickgrid'); g.innerHTML = '';
+    ids.sort(function (a, b) { return BY_ID[b].s.total - BY_ID[a].s.total; }).forEach(function (id) {
+      var p = BY_ID[id], inTeam = team.indexOf(id) >= 0;
+      var b = slot(p, function () { togglePick(id); }, (inTeam ? 'Take out ' : 'Pick ') + fullName(p) + ', total ' + p.s.total);
+      b.setAttribute('aria-pressed', String(inTeam));
+      if (inTeam) b.insertAdjacentHTML('beforeend', '<span class="badge tick" aria-hidden="true">✓</span>'); else b.classList.add('dim');
+      g.appendChild(b);
+    });
+  }
+  function togglePick(id) {
+    var team = teamIds(), i = team.indexOf(id);
+    if (i >= 0) team.splice(i, 1);
+    else if (team.length >= TEAM) { toast('You already have 11. Take one out first.'); return; }
+    else team.push(id);
+    S.team = team; save(); renderBattle();
+  }
+  $('best').addEventListener('click', function () { S.team = bestEleven(ownedIds()); save(); renderBattle(); });
+  $('clearteam').addEventListener('click', function () { S.team = []; save(); renderBattle(); $('pickcount').textContent = '0 of 11 picked'; });
+  $('fight').addEventListener('click', startBattle);
+  $('skipbattle').addEventListener('click', finishBattle);
+
+  function startBattle() {
+    var mine = teamIds(); if (mine.length !== TEAM) return;
+    // The AI picks its best 11 from 16 random players in the set.
+    var ai = bestEleven(sample(PLAYERS.map(function (p) { return p.id; }), 16));
+    battle = { mine: mine, ai: sample(ai, TEAM), step: 0, you: 0, them: 0, done: false };
+    $('battlelocked').hidden = true; $('battlepick').hidden = true; $('battlestage').hidden = false;
+    $('result').hidden = true; $('skiprow').hidden = false;
+    $('pts-you').textContent = '0'; $('pts-ai').textContent = '0';
+    $('side-you').classList.remove('lead'); $('side-ai').classList.remove('lead');
+    var gy = $('team-you'), ga = $('team-ai'); gy.innerHTML = ''; ga.innerHTML = '';
+    mine.forEach(function (id) { var b = slot(BY_ID[id], function () { openDetail(id); }, 'Look at ' + fullName(BY_ID[id])); b.classList.add('wait'); gy.appendChild(b); });
+    battle.ai.forEach(function () { var d = document.createElement('div'); d.className = 'missing'; d.innerHTML = '<b aria-hidden="true">?</b>'; ga.appendChild(d); });
+    battleTimer = setInterval(stepBattle, reduceMotion ? 120 : 600);
+  }
+  function stepBattle() {
+    if (!battle || battle.done) return;
+    var i = battle.step, mine = BY_ID[battle.mine[i]], theirs = BY_ID[battle.ai[i]];
+    $('team-you').children[i].classList.remove('wait');
+    var aiId = theirs.id;
+    $('team-ai').replaceChild(slot(theirs, function () { openDetail(aiId); }, 'Look at ' + fullName(theirs)), $('team-ai').children[i]);
+    battle.you += mine.s.total; battle.them += theirs.s.total; battle.step++;
+    $('pts-you').textContent = fmt(battle.you); $('pts-ai').textContent = fmt(battle.them);
+    $('side-you').classList.toggle('lead', battle.you > battle.them); $('side-ai').classList.toggle('lead', battle.them > battle.you);
+    if (battle.step >= TEAM) endBattle();
+  }
+  function finishBattle() { while (battle && !battle.done) stepBattle(); }
+  function endBattle() {
+    clearInterval(battleTimer); battle.done = true;
+    var won = battle.you > battle.them, draw = battle.you === battle.them, gap = Math.abs(battle.you - battle.them);
+    if (won) { S.coins += WIN_COINS; S.wins++; } else if (!draw) { S.losses++; }
+    save();
+    $('coins').textContent = S.coins + (S.coins === 1 ? ' coin' : ' coins');
+    $('skiprow').hidden = true;
+    var r = $('result'); r.hidden = false;
+    r.innerHTML = '<h2>' + (won ? 'You win!' : draw ? 'It’s a draw' : 'The AI wins') + '</h2>' +
+      '<p>' + (won ? 'You won by ' + fmt(gap) + ' and earned 5 coins.' : draw ? 'Same total. No coins this time.' : 'You lost by ' + fmt(gap) + '. Change your team or find stronger cards.') + '</p>' +
+      '<div class="row center"><button class="btn primary" type="button" id="again">Battle again</button>' +
+      (S.coins >= 5 ? '<button class="btn" type="button" data-go="packs">Open a pack</button>' : '') + '</div>';
+    $('again').addEventListener('click', function () { battle = null; renderBattle(); });
+  }
+
+  // ---------- Collection ----------
+  var favOnly = false, trading = false;
+  function renderCollection() {
+    var ids = ownedIds().sort(function (a, b) {
+      var p = BY_ID[a], q = BY_ID[b];
+      return TIER_ORDER[p.tier] - TIER_ORDER[q.tier] || q.s.total - p.s.total;
+    });
+    var shown = favOnly ? ids.filter(function (id) { return S.favs[id]; }) : ids;
+    $('tools').hidden = !ids.length;
+    Array.prototype.forEach.call(document.querySelectorAll('[data-cols]'), function (b) { b.setAttribute('aria-pressed', String(Number(b.dataset.cols) === S.cols)); });
+    $('favfilter').setAttribute('aria-pressed', String(favOnly));
+    $('trademode').setAttribute('aria-pressed', String(trading));
+    $('trademode').textContent = trading ? 'Done trading' : 'Trade';
+    $('tradebanner').hidden = !trading || !ids.length;
+    var g = $('collectiongrid'); g.innerHTML = ''; g.style.setProperty('--cols', S.cols);
+    g.classList.toggle('trading', trading);
+    shown.forEach(function (id) {
+      var p = BY_ID[id], n = S.owned[id];
+      var b = slot(p, function () { if (trading) trade(id); else openDetail(id); }, (trading ? 'Trade ' : 'Look at ') + fullName(p) + (n > 1 ? ', you have ' + n : ''));
+      if (n > 1) b.insertAdjacentHTML('beforeend', '<span class="badge count">×' + n + '</span>');
+      if (S.favs[id]) b.insertAdjacentHTML('beforeend', '<span class="badge star" aria-label="Favourite">★</span>');
+      g.appendChild(b);
+    });
+    $('collectionempty').hidden = shown.length > 0;
+    $('emptytext').textContent = ids.length ? 'No favourites yet. Open a card and tap the star.' : 'No cards yet. Open a pack to start your collection.';
+    $('collectionempty').querySelector('button').hidden = ids.length > 0;
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-cols]'), function (b) {
+    b.addEventListener('click', function () { S.cols = Number(b.dataset.cols); save(); renderCollection(); });
+  });
+  $('favfilter').addEventListener('click', function () { favOnly = !favOnly; renderCollection(); });
+  $('trademode').addEventListener('click', function () { trading = !trading; renderCollection(); });
+
+  // Trade: give one card away, get a different card of the same kind.
+  function trade(id) {
+    var p = BY_ID[id];
+    if (S.favs[id] && S.owned[id] === 1) { toast('That is a favourite. Take the star off before you trade it.'); return; }
+    var others = BY_TIER[p.tier].filter(function (x) { return x !== id; });
+    var got = others[Math.floor(Math.random() * others.length)];
+    S.owned[id]--; if (S.owned[id] <= 0) { delete S.owned[id]; delete S.favs[id]; }
+    S.owned[got] = (S.owned[got] || 0) + 1; save(); render();
+    var q = BY_ID[got], body = openModal();
+    body.innerHTML = '<h2>Trade done</h2><div class="swap"><span class="card old">' + cardHTML(p, false) + '</span><span class="arrow" aria-hidden="true">→</span><span id="swapnew"></span></div>' +
+      '<p>You swapped ' + fullName(p) + ' for ' + fullName(q) + '.</p><div class="row center"><button class="btn primary" type="button" id="closemodal">Nice</button></div>';
+    $('swapnew').appendChild(bigCard(q, true, function (el) { el.classList.toggle('flipped'); }, 'Press to flip.'));
+    $('closemodal').addEventListener('click', closeModal); $('closemodal').focus();
+  }
+
+  // ---------- Card detail ----------
+  var lastFocus = null;
+  function openModal() {
+    lastFocus = document.activeElement;
+    var m = $('modal'); m.hidden = false; $('modalbody').innerHTML = '';
+    return $('modalbody');
+  }
+  function closeModal() { $('modal').hidden = true; $('modalbody').innerHTML = ''; if (lastFocus && lastFocus.isConnected) lastFocus.focus(); }
+  $('modal').addEventListener('click', function (e) { if (e.target === $('modal')) closeModal(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !$('modal').hidden) closeModal(); });
+
+  function openDetail(id) {
+    var p = BY_ID[id], n = S.owned[id] || 0, body = openModal();
+    var card = bigCard(p, true, function (el) { el.classList.toggle('flipped'); }, 'Press to flip.');
+    body.appendChild(card);
+    var row = document.createElement('div'); row.className = 'row center';
+    row.innerHTML = '<button class="btn small" type="button" id="d-flip">Flip</button>' +
+      (n ? '<button class="btn small" type="button" id="d-fav" aria-pressed="' + !!S.favs[id] + '">★ Favourite</button>' + (battle ? '' : '<button class="btn small" type="button" id="d-trade">Trade</button>') : '') +
+      '<button class="btn small primary" type="button" id="closemodal">Close</button>';
+    body.appendChild(row);
+    $('d-flip').addEventListener('click', function () { card.classList.toggle('flipped'); });
+    if (n) {
+      $('d-fav').addEventListener('click', function () {
+        if (S.favs[id]) delete S.favs[id]; else S.favs[id] = 1;
+        save(); $('d-fav').setAttribute('aria-pressed', String(!!S.favs[id])); render();
+        toast(S.favs[id] ? fullName(p) + ' is now a favourite' : 'Star removed');
+      });
+      if ($('d-trade')) $('d-trade').addEventListener('click', function () { closeModal(); trade(id); });
+    }
+    $('closemodal').addEventListener('click', closeModal); $('closemodal').focus();
+  }
+
+  // ---------- Collector guide ----------
+  var resetArmed = false;
+  function renderGuide() {
+    var have = ownedIds().length;
+    $('guidecount').textContent = have + ' of ' + PLAYERS.length + ' collected';
+    $('guidemeter').style.width = (have / PLAYERS.length * 100) + '%';
+    var wrap = $('guidetiers'); wrap.innerHTML = '';
+    [['legend', 'Legends'], ['rare', 'Rares'], ['base', 'Base cards']].forEach(function (t) {
+      var ids = BY_TIER[t[0]], got = ids.filter(function (id) { return S.owned[id] > 0; }).length;
+      var sec = document.createElement('section'); sec.className = 'tier';
+      sec.innerHTML = '<div class="tierhead"><h3>' + t[1] + '</h3><span class="muted">' + got + ' of ' + ids.length + '</span></div>';
+      var g = document.createElement('div'); g.className = 'grid fixed';
+      ids.forEach(function (id) {
+        var p = BY_ID[id];
+        if (S.owned[id] > 0) {
+          var b = slot(p, function () { openDetail(id); }, 'Look at ' + fullName(p));
+          if (S.favs[id]) b.insertAdjacentHTML('beforeend', '<span class="badge star" aria-label="Favourite">★</span>');
+          g.appendChild(b);
+        } else {
+          var d = document.createElement('div'); d.className = 'missing';
+          d.innerHTML = '<b aria-hidden="true">?</b><span>#' + String(id).padStart(3, '0') + '<br>' + p.last + '</span>';
+          d.setAttribute('aria-label', fullName(p) + ', not collected yet');
+          g.appendChild(d);
+        }
+      });
+      sec.appendChild(g); wrap.appendChild(sec);
+    });
+    resetArmed = false; $('reset').textContent = 'Start again';
+  }
+  $('reset').addEventListener('click', function () {
+    if (!resetArmed) { resetArmed = true; $('reset').textContent = 'Tap again to delete all cards'; return; }
+    clearInterval(battleTimer); battle = null;
+    S = fresh(); save(); packStage = 'sealed'; trading = false; favOnly = false;
+    render(); toast('Collection cleared. You have 2 free packs again.');
+  });
+
+  // ---------- Start: load photo credits, then draw ----------
+  function start() { go(location.hash.slice(1) || 'packs'); }
+  fetch('photos/credits.json').then(function (r) { return r.ok ? r.json() : {}; }).then(function (j) { PHOTOS = j || {}; }).catch(function () {}).then(start);
+})();
+</script>

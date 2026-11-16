@@ -1,0 +1,28 @@
+# Local hooks only, so every tool version comes from this repository or the
+# machine, not from a second pinned copy (python-standards, "Pre-commit ownership").
+# Install: uv tool install pre-commit && pre-commit install --hook-type pre-commit --hook-type commit-msg
+# The scaffold tasks add the pnpm and uv quality hooks named in ts-standards.
+repos:
+  - repo: local
+    hooks:
+      - id: commit-message
+        name: commit message (Conventional Commits)
+        entry: bin/sdlc commit-msg
+        language: system
+        stages: [commit-msg]
+      - id: gitleaks
+        name: gitleaks (staged changes)
+        entry: gitleaks git --pre-commit --staged --redact --no-banner
+        language: system
+        pass_filenames: false
+      - id: task-briefs
+        name: task briefs
+        entry: bin/sdlc task-check
+        language: system
+        files: ^docs/tasks/T-\d{4}-.*\.md$
+      - id: sdlc-tests
+        name: SDLC kit tests
+        entry: make -s check-sdlc
+        language: system
+        pass_filenames: false
+        files: ^(tools/sdlc/|bin/sdlc)
