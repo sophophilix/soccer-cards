@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { createRandom, toCardId, tradeCard } from './index.ts';
-import type { CardId, PlayerState, TradeResult } from './index.ts';
+import type { CardId, PlayerState, Random, TradeResult } from './index.ts';
 import { aCard, aCardSet } from './testing/cards.ts';
 import { aPlayerState } from './testing/state.ts';
 
@@ -103,6 +103,32 @@ describe('tradeCard', () => {
 		const state = aPlayerState({ collection: { [RARE_1]: 1 } });
 
 		expect(trade(state, builtIn, cardSet)).toEqual({ ok: false, reason: 'card-not-owned' });
+	});
+
+	it('draws nothing from the generator when it refuses', () => {
+		const legend = toCardId('legend-1');
+		const random = createRandom(SEED);
+		const nextInt = vi.spyOn(random, 'nextInt');
+
+		tradeCard(aPlayerState({ collection: { [legend]: 2 } }), CARD_SET, legend, random);
+
+		expect(nextInt).not.toHaveBeenCalled();
+	});
+
+	it('gives the card at the place the generator picks', () => {
+		const state = aPlayerState({ collection: { [RARE_1]: 2 } });
+		const pickLast: Random = { nextInt: (_min, max) => max, sample: () => [] };
+
+		const result = tradeCard(state, CARD_SET, RARE_1, pickLast);
+
+		expect(receivedOf(result)).toBe(toCardId('rare-4'));
+	});
+
+	it('throws when the generator picks a place outside the list', () => {
+		const state = aPlayerState({ collection: { [RARE_1]: 2 } });
+		const pickPastEnd: Random = { nextInt: (_min, max) => max + 1, sample: () => [] };
+
+		expect(() => tradeCard(state, CARD_SET, RARE_1, pickPastEnd)).toThrow(RangeError);
 	});
 
 	it('gives the same card received for the same seed', () => {

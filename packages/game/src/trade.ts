@@ -33,9 +33,13 @@ export function tradeCard(
 		return { ok: false, reason: 'last-favourite' };
 	}
 	const others = cardSet.filter((card) => card.tier === given.tier && card.id !== cardId);
-	const received = others[random.nextInt(0, Math.max(others.length - 1, 0))];
-	if (received === undefined) {
+	// Checked before the draw, so a refusal uses no random numbers.
+	if (others.length === 0) {
 		return { ok: false, reason: 'no-other-card' };
+	}
+	const received = others[random.nextInt(0, others.length - 1)];
+	if (received === undefined) {
+		throw new RangeError('the generator picked a place outside the list of cards');
 	}
 	copies.set(cardId, held - 1);
 	if (held === 1) {
