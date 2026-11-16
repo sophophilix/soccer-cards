@@ -29,7 +29,8 @@ test('a move between pages without a reload breaks no security policy', async ({
 	page.on('console', (message) => consoleMessages.push(message.text()));
 	await page.goto('/no-such-page');
 
-	await page.getByRole('link', { name: 'Go back to the start' }).click();
+	// press() focuses the link first. A WebKit click fails when the laptop's display is off.
+	await page.getByRole('link', { name: 'Go back to the start' }).press('Enter');
 
 	// SvelteKit fills its announcer, the element with the hashed style, only on such a move.
 	await expect(page.locator('#svelte-announcer')).toHaveText('Soccer Cards');

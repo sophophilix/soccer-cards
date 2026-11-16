@@ -7,7 +7,7 @@
 		"prepare": "svelte-kit sync",
 		"dev": "vite dev",
 		"build": "vite build",
-		"preview": "WRANGLER_HIDE_BANNER=true CLOUDFLARE_CF_FETCH_ENABLED=false wrangler dev",
+		"preview": "WRANGLER_SEND_METRICS=false WRANGLER_HIDE_BANNER=true CLOUDFLARE_CF_FETCH_ENABLED=false wrangler dev",
 		"format:check": "prettier --check . --ignore-path ../../.prettierignore --ignore-path ../../.gitignore",
 		"lint": "eslint . --max-warnings 0",
 		"typecheck": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
