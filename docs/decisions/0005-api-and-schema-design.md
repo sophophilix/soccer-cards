@@ -1,8 +1,8 @@
 # 0005: API and schema design
 
-> Status: In review
+> Status: Approved
 > Created: 2026-11-16T12:06:57Z
-> Last reviewed: 2026-11-16T12:06:57Z
+> Last reviewed: 2026-11-16T12:08:46Z
 > Next review: Not scheduled
 
 ## Review guide
@@ -263,9 +263,14 @@ rating group that matches the position.
   sources. The data pipeline plan must name them.
 - **An OpenAPI description** of the files would give readable reference
   pages. It is not decided here.
+- **A local MCP server comes after the API.** The tech lead decided "api
+  first then local mcp later". It reads these same files on the tech lead's
+  machine, with read-only tools, and needs its own plan. A hosted MCP
+  server would add server code to the site and needs a decision record.
 
 ## Review history
 
 | Reviewed at          | Decision | Notes                                                                                                                 |
 | -------------------- | -------- | --------------------------------------------------------------------------------------------------------------------- |
 | 2026-11-16T12:06:57Z | Drafted  | Written by Claude at the tech lead's request for goalkeepers and a design that follows Google's or Microsoft's guide. |
+| 2026-11-16T12:08:46Z | Approved | The tech lead replied "approve, api first then local mcp later" in the lead session. |
