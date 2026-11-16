@@ -173,7 +173,8 @@ describe('player.schema.json', () => {
 describe('players.schema.json', () => {
 	it.each([
 		['an empty list', []],
-		['a list of players', [aPlayer(), aPlayer({ name: 'players/mira-oakes', tier: 'LEGEND' })]]
+		['a list of players', [aPlayer(), aPlayer({ name: 'players/mira-oakes', tier: 'LEGEND' })]],
+		['a summary with both names', [aPlayer({ givenName: 'Tavi', familyName: 'Brightwell' })]]
 	])('accepts %s', (_rule, players) => {
 		expect(isValidPlayerList({ players })).toBe(true);
 	});

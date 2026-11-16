@@ -6,16 +6,6 @@
 	"allOf": [{ "$ref": "#/$defs/playerSummary" }],
 	"type": "object",
 	"properties": {
-		"givenName": {
-			"description": "The player's given name. Absent unless the player has a given and a family name.",
-			"type": "string",
-			"minLength": 1
-		},
-		"familyName": {
-			"description": "The player's family name. Absent unless the player has a given and a family name.",
-			"type": "string",
-			"minLength": 1
-		},
 		"updateTime": {
 			"description": "When this player's content last changed, as an RFC 3339 moment in UTC.",
 			"type": "string",
@@ -40,6 +30,16 @@
 				},
 				"displayName": {
 					"description": "The player's name as the card shows it.",
+					"type": "string",
+					"minLength": 1
+				},
+				"givenName": {
+					"description": "The player's given name. Absent unless the player has a given and a family name.",
+					"type": "string",
+					"minLength": 1
+				},
+				"familyName": {
+					"description": "The player's family name. Absent unless the player has a given and a family name.",
 					"type": "string",
 					"minLength": 1
 				},

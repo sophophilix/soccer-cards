@@ -28,6 +28,14 @@ export interface PlayerSummary {
 	 * The player's name as the card shows it.
 	 */
 	displayName: string;
+	/**
+	 * The player's given name. Absent unless the player has a given and a family name.
+	 */
+	givenName?: string;
+	/**
+	 * The player's family name. Absent unless the player has a given and a family name.
+	 */
+	familyName?: string;
 	state: State;
 	/**
 	 * The resource name of the player's club, clubs/{club}. Absent for a retired player.
