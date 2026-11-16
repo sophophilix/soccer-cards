@@ -1,0 +1,99 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "player.schema.json",
+	"title": "Player",
+	"description": "One player in full, as served at players/{id}.json.",
+	"allOf": [{ "$ref": "#/$defs/playerSummary" }],
+	"type": "object",
+	"properties": {
+		"clubGoals": { "$ref": "#/$defs/goalCount" },
+		"countryGoals": { "$ref": "#/$defs/goalCount" },
+		"transferFee": { "$ref": "#/$defs/transferFee" },
+		"awards": { "type": "array", "items": { "$ref": "#/$defs/award" } }
+	},
+	"$defs": {
+		"playerSummary": {
+			"title": "PlayerSummary",
+			"$comment": "One player as the list at players.json holds it.",
+			"type": "object",
+			"properties": {
+				"id": { "$comment": "Stable and never reused.", "type": "integer", "minimum": 1 },
+				"name": { "type": "string", "minLength": 1 },
+				"club": { "type": "string", "minLength": 1 },
+				"country": {
+					"$comment": "As the card shows it: ARG.",
+					"type": "string",
+					"pattern": "^[A-Z]{3}$"
+				},
+				"position": { "title": "Position", "enum": ["FW", "MF", "DF"] },
+				"tier": { "title": "Tier", "enum": ["base", "rare", "legend"] },
+				"ratings": { "$ref": "#/$defs/ratings" },
+				"playStats": { "$ref": "#/$defs/playStats" },
+				"photo": {
+					"$comment": "A path inside the API folder. Absent when there is no licensed photo.",
+					"type": "string",
+					"pattern": "^photos/[A-Za-z0-9_-]+\\.webp$"
+				}
+			},
+			"required": ["id", "name", "club", "country", "position", "tier", "ratings", "playStats"]
+		},
+		"rating": { "$comment": "A whole number.", "type": "integer", "minimum": 1, "maximum": 99 },
+		"ratings": {
+			"title": "Ratings",
+			"type": "object",
+			"properties": {
+				"pace": { "$ref": "#/$defs/rating" },
+				"shooting": { "$ref": "#/$defs/rating" },
+				"passing": { "$ref": "#/$defs/rating" },
+				"dribbling": { "$ref": "#/$defs/rating" },
+				"defending": { "$ref": "#/$defs/rating" },
+				"power": { "$ref": "#/$defs/rating" }
+			},
+			"required": ["pace", "shooting", "passing", "dribbling", "defending", "power"]
+		},
+		"playStats": {
+			"title": "PlayStats",
+			"type": "object",
+			"properties": {
+				"attack": { "$ref": "#/$defs/rating" },
+				"defence": { "$ref": "#/$defs/rating" },
+				"control": { "$ref": "#/$defs/rating" }
+			},
+			"required": ["attack", "defence", "control"]
+		},
+		"source": { "$comment": "Where the fact was read.", "type": "string", "minLength": 1 },
+		"asOf": { "type": "string", "pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$" },
+		"goalCount": {
+			"title": "GoalCount",
+			"type": "object",
+			"properties": {
+				"goals": { "type": "integer", "minimum": 0 },
+				"source": { "$ref": "#/$defs/source" },
+				"asOf": { "$ref": "#/$defs/asOf" }
+			},
+			"required": ["goals", "source", "asOf"]
+		},
+		"transferFee": {
+			"title": "TransferFee",
+			"description": "An amount in the currency's minor units, such as cents, and an ISO 4217 code.",
+			"type": "object",
+			"properties": {
+				"amountMinor": { "type": "integer", "minimum": 0 },
+				"currency": { "type": "string", "pattern": "^[A-Z]{3}$" },
+				"source": { "$ref": "#/$defs/source" },
+				"asOf": { "$ref": "#/$defs/asOf" }
+			},
+			"required": ["amountMinor", "currency", "source", "asOf"]
+		},
+		"award": {
+			"title": "Award",
+			"type": "object",
+			"properties": {
+				"title": { "type": "string", "minLength": 1 },
+				"source": { "$ref": "#/$defs/source" },
+				"asOf": { "$ref": "#/$defs/asOf" }
+			},
+			"required": ["title", "source", "asOf"]
+		}
+	}
+}

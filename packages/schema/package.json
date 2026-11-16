@@ -1,0 +1,21 @@
+{
+	"name": "@soccer-cards/schema",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"exports": {
+		".": "./src/index.ts",
+		"./schemas/*": "./schemas/*"
+	},
+	"scripts": {
+		"format:check": "prettier --check . --ignore-path ../../.prettierignore --ignore-path ../../.gitignore",
+		"lint": "eslint . --max-warnings 0",
+		"typecheck": "tsc --noEmit",
+		"test": "vitest run --coverage",
+		"generate": "json2ts -i 'schemas/v1/*.json' -o src/generated --cwd schemas/v1 --no-additionalProperties --bannerComment '// Generated from schemas/v1 by `pnpm run generate`. Do not edit by hand.' --style.useTabs --style.singleQuote --style.trailingComma none --style.printWidth 100"
+	},
+	"devDependencies": {
+		"ajv": "^8.20.0",
+		"json-schema-to-typescript": "^16.0.0"
+	}
+}

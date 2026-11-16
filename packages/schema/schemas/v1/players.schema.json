@@ -1,0 +1,11 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "players.schema.json",
+	"title": "PlayerList",
+	"description": "Every player in the set, as served at players.json.",
+	"type": "object",
+	"properties": {
+		"players": { "type": "array", "items": { "$ref": "player.schema.json#/$defs/playerSummary" } }
+	},
+	"required": ["players"]
+}
