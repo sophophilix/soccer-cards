@@ -23,7 +23,7 @@ export default defineConfig(
 	},
 	{
 		// ADR 0001 D1 and D4: the game rules are pure and import nothing above them.
-		files: ['packages/game/**/*.ts'],
+		files: ['packages/game/**/*.{ts,js}'],
 		rules: {
 			'no-restricted-imports': [
 				'error',
@@ -35,5 +35,5 @@ export default defineConfig(
 			]
 		}
 	},
-	{ files: ['**/*.js'], extends: [tseslint.configs.disableTypeChecked] }
+	{ files: ['*.config.js'], extends: [tseslint.configs.disableTypeChecked] }
 );

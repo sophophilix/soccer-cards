@@ -2,6 +2,8 @@ import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
 import { createRandom } from './index.ts';
 
+// A fixed seed, so every run of a commit checks the same inputs.
+fc.configureGlobal({ seed: 20261116 });
 const DRAWS = 20;
 const bound = fc.integer({ min: -1_000_000, max: 1_000_000 });
 const range = fc
