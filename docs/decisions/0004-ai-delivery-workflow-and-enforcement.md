@@ -2,7 +2,7 @@
 
 > Status: Approved
 > Created: 2026-11-15T11:16:22Z
-> Last reviewed: 2026-11-16T11:26:43Z
+> Last reviewed: 2026-11-16T12:32:27Z
 > Next review: after the first five tasks delivered under this workflow
 
 ## Review guide
@@ -206,3 +206,5 @@ never changes a decision.
 | 2026-11-15T11:16:22Z | Drafted | Initial version, written by Claude for the tech lead. |
 | 2026-11-16T07:30:27Z | Approved | The tech lead replied "approve all" in the lead session. |
 | 2026-11-16T11:26:43Z | Amended | Added D12, the audit trail and the evidence comment, at the tech lead's request ("yes add all three before the next tasks start"). |
+| 2026-11-16T12:32:27Z | Amended | The lead session now changes kit files without a prompt, and each change is logged. The tech lead asked for this ("dont want you asking me for approvals for small changes as its slow"). Subagents are still refused. |
+| 2026-11-16T12:32:27Z | Amended | The lead session now merges a task pull request when `sdlc merge-check` passes, and plans and kit fixes inside decided scope. The tech lead asked for this ("can you change the rule of dont wait for my approval on everything"). Scope, product rules, decision records, risk acceptance, relaxed rules and deploys stay with the tech lead. |

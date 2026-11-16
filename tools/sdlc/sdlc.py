@@ -50,7 +50,7 @@ COMMIT_RE = re.compile(
     r"^(feat|fix|refactor|perf|test|docs|build|ci|chore|revert)(\([a-z0-9-]+\))?!?: [^\s].{0,71}$"
 )
 
-Decision = tuple[str, str]  # ("deny" | "ask", reason)
+Decision = tuple[str, str]  # ("deny" | "ask" | "note", reason). A note is allowed and logged.
 
 
 # ---------- paths ----------
@@ -239,7 +239,8 @@ def check_write(target: Path, agent: str | None, event: dict[str, object]) -> De
     if matches(rel, KIT_PATHS):
         if agent is not None:
             return ("deny", f"{rel} is part of the SDLC kit. Only the tech lead changes it (AGENTS.md rule 2).")
-        return ("ask", f"{rel} is part of the SDLC kit. The tech lead must confirm this change.")
+        # Allowed without a prompt, at the tech lead's request, and written to the audit log.
+        return ("note", f"{rel} is part of the SDLC kit, changed by the lead session.")
     if agent in REVIEWERS:
         if matches(rel, [".sdlc/reviews/**", ".sdlc/work/**"]):
             return None
@@ -331,7 +332,8 @@ def check_command(command: str, agent: str | None, event: dict[str, object], bra
             return decision
         if decision:
             asks.append(decision)
-    return asks[0] if asks else None
+    # A note never hides a question: an "ask" anywhere on the line wins.
+    return next((d for d in asks if d[0] == "ask"), asks[0] if asks else None)
 
 
 def _check_segment(operator: str, tokens: list[str], agent: str | None, event: dict[str, object], cwd: str, branch: str | None) -> Decision | None:
@@ -359,7 +361,7 @@ def _check_segment(operator: str, tokens: list[str], agent: str | None, event: d
         if decision:
             return decision
     if prog == "gh":
-        decision = _check_gh(args)
+        decision = _check_gh(args, agent)
         if decision:
             return decision
     if prog == "wrangler" and "--dry-run" not in args:
@@ -443,10 +445,14 @@ def _check_git(args: list[str], cwd: str, branch: str | None) -> Decision | None
     return None
 
 
-def _check_gh(args: list[str]) -> Decision | None:
+def _check_gh(args: list[str], agent: str | None = None) -> Decision | None:
     head = [a for a in args if not a.startswith("-")][:2]
     if head == ["pr", "merge"]:
-        return ("deny", "Only the tech lead merges a pull request (AGENTS.md rule 1).")
+        if agent is not None:
+            return ("deny", "A subagent never merges a pull request (AGENTS.md rule 1).")
+        if "--admin" in args:
+            return ("deny", "gh pr merge --admin skips the required checks. Only the tech lead does that.")
+        return ("note", "pull request merged by the lead session (AGENTS.md rule 1: run sdlc merge-check first).")
     if head == ["pr", "review"] and "--approve" in args:
         return ("deny", "An agent's review is advice. Only the tech lead approves (AGENTS.md rule 1).")
     if head[:1] and head[0] in {"secret", "ruleset", "variable"}:
@@ -721,7 +727,7 @@ def evidence(root: Path, task_id: str) -> str:
         # A shell command is never printed here: it can hold a secret, and this goes on a public page.
         out += [f"| {_cell(r.get('at'))} | {_cell(r.get('agent'))} | {_cell(r.get('tool'))} | {_cell(r.get('verdict'))} | {_cell(r.get('reason'))} |" for r in stopped]
 
-    checks = [r for r in records if r.get("event") in {"SubagentStop", "verify", "review-check"}]
+    checks = [r for r in records if r.get("event") in {"SubagentStop", "verify", "review-check", "merge-check"}]
     out += ["", "### Checks", ""]
     if checks:
         out += ["| At | Check | Agent | Result | Detail |", "|---|---|---|---|---|"]
@@ -753,6 +759,38 @@ def evidence(root: Path, task_id: str) -> str:
             break
         out[index] = f"(left out: {len(text)} characters is too long for one comment. The file is in .sdlc/reviews/ on the lead's machine.)"
     return "\n".join(out) + "\n"
+
+
+def merge_errors(root: Path, task_id: str) -> list[str]:
+    """Why the lead may not merge this task's pull request without the tech lead. Empty means it may."""
+    shared = shared_root(root) / ".sdlc"
+    errors: list[str] = []
+    reviews = sorted((shared / "reviews").glob(f"{task_id}.*.json"))
+    if not any(path.name == f"{task_id}.reviewer.json" for path in reviews):
+        errors.append("no kept review file from the reviewer: run sdlc review-check on it first")
+    for path in reviews:
+        problems = review_file_errors(path)
+        if problems:
+            errors.append(f"{path.name} is not valid: " + "; ".join(problems))
+            continue
+        review = json.loads(path.read_text(encoding="utf-8"))["review"]
+        if review["verdict"] != "approved":
+            errors.append(f"{path.name}: the verdict is {review['verdict']}")
+        if review["summary"]["must_fix"]:
+            errors.append(f"{path.name}: {review['summary']['must_fix']} must_fix finding(s) are open")
+    checks: list[dict[str, object]] = []
+    try:
+        for line in (shared / AUDIT_LOG).read_text(encoding="utf-8").splitlines():
+            record = json.loads(line)
+            if record.get("task") == task_id and record.get("event") == "verify":
+                checks.append(record)
+    except (OSError, ValueError):
+        pass
+    if not checks:
+        errors.append("no sdlc verify run is recorded for this task")
+    elif checks[-1].get("verdict") != "pass" or checks[-1].get("reason"):
+        errors.append("the last sdlc verify run for this task did not pass with its gates")
+    return errors
 
 
 # ---------- hook events ----------
@@ -871,6 +909,7 @@ USAGE = """usage: sdlc <command>
   verify [--no-gates]  check the working tree against the active task
   review-check FILE    validate a review file and keep a copy in the main checkout
   evidence TASK-ID     print the kit's records for one task, for the pull request
+  merge-check TASK-ID  say whether the lead may merge the task's pull request
   commit-msg FILE      check a commit message (Conventional Commits)
 """
 
@@ -920,6 +959,17 @@ def main(argv: list[str]) -> int:
             return 1
         sys.stdout.write(evidence(root, args[0]))
         return 0
+    if command == "merge-check" and len(args) == 1 and re.fullmatch(r"T-\d{4}", args[0]):
+        root = find_root(Path.cwd() / "AGENTS.md")
+        if root is None:
+            print("merge-check: run this inside the repository", file=sys.stderr)
+            return 1
+        errors = merge_errors(root, args[0])
+        audit(root, event="merge-check", agent="command line", verdict="fail" if errors else "pass", reason="; ".join(errors), task=args[0])
+        for error in errors:
+            print(f"- {error}", file=sys.stderr)
+        print("merge-check: " + ("the tech lead must merge this one" if errors else "the lead may merge"))
+        return 1 if errors else 0
     if command == "commit-msg" and len(args) == 1:
         subject = next((line for line in Path(args[0]).read_text(encoding="utf-8").splitlines() if line.strip() and not line.startswith("#")), "")
         if subject.startswith(("Merge ", "Revert ")) or COMMIT_RE.match(subject):

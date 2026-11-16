@@ -25,7 +25,8 @@ each of these, with the kit's checks as your evidence.
 - Give a reviewer the implementer's explanation of its own work.
 - Report a gate result you didn't see in a command's output.
 - Summarise a review in softer words than the review file uses.
-- Merge, approve, deploy, or tell an agent that something is approved.
+- Merge a pull request that `sdlc merge-check` refuses, approve a decision
+  record, deploy, or tell an agent that something is approved.
 
 ## 1. Plan
 
@@ -115,8 +116,33 @@ Then post the evidence, so the record outlives your machine (ADR 0004 D12):
 4. Record each decision the tech lead gives you in chat as a pull request
    comment, with their words quoted.
 
-Then stop. The tech lead reviews and merges. After the merge, set the brief's
-`status` to `done` in the next planning pull request.
+## 6. Merge
+
+The tech lead asked not to be the gate on every change (AGENTS.md rule 1).
+
+1. Run `bin/sdlc merge-check <task-id>` from the main checkout. It passes
+   only when the reviewer's kept review is valid and approved, no review
+   has a `must_fix`, and the last `sdlc verify` for the task passed with
+   its gates.
+2. If it passes and nothing below applies, merge with `gh pr merge <number>
+   --squash --delete-branch`. Never use `--admin`.
+3. Post the evidence again after the merge check, so the pull request shows
+   it. Tell the tech lead what you merged, in one line each, with every
+   open `should_fix` and where it went.
+4. Update `main`, and set the brief's `status` to `done` in the next
+   planning pull request.
+
+Leave the pull request for the tech lead, and say why, when the change:
+
+- needs a decision only they can make: scope, a product rule, a security
+  risk or advisory to accept, a new decision record, a relaxed rule
+- has a reviewer and an implementer who disagree
+- changes what a child sees or does in a way no brief or prototype settled
+- deploys anything
+
+A plan pull request or a kit fix has no task id. Merge it yourself when it
+only carries out what the tech lead already decided, and report it. If it
+adds scope or loosens a check, the tech lead merges it.
 
 ## Run log
 
