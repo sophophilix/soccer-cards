@@ -641,6 +641,116 @@ def review_file_errors(path: Path) -> list[str]:
         return [f"{path.name} can't be read as JSON ({exc})"]
 
 
+# ---------- audit trail ----------
+
+AUDIT_LOG = "audit.jsonl"
+EVIDENCE_LIMIT = 60000  # a GitHub comment holds 65,536 characters
+
+
+def _now() -> str:
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+
+
+def shared_root(root: Path) -> Path:
+    """The main checkout, so that every worktree writes to one audit trail."""
+    code, out = _git(root, "rev-parse", "--path-format=absolute", "--git-common-dir")
+    common = Path(out.strip()) if code == 0 and out.strip() else None
+    return common.parent if common is not None and common.name == ".git" else root
+
+
+def _active_task(root: Path) -> str:
+    try:
+        text = (root / ".sdlc" / "active-task").read_text(encoding="utf-8").strip()
+    except OSError:
+        return ""
+    return text if re.fullmatch(r"T-\d{4}", text) else ""
+
+
+def audit(root: Path | None, **fields: object) -> None:
+    """Append one decision to .sdlc/audit.jsonl. A log that can't be written never changes the decision."""
+    if root is None:
+        return
+    record = {"at": _now(), "task": _active_task(root), **fields}
+    try:
+        folder = shared_root(root) / ".sdlc"
+        folder.mkdir(exist_ok=True)
+        with (folder / AUDIT_LOG).open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps(record, sort_keys=True) + "\n")
+    except (OSError, subprocess.SubprocessError) as exc:
+        print(f"SDLC kit: the audit log could not be written ({exc})", file=sys.stderr)
+
+
+def keep_review(root: Path, path: Path) -> None:
+    """Copy a valid review file to the main checkout, so it outlives the agent's worktree."""
+    target = shared_root(root) / ".sdlc" / "reviews" / path.name
+    if target.resolve() != path.resolve():
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(path, target)
+
+
+def _cell(value: object) -> str:
+    return str(value).replace("|", "\\|").replace("\n", " ")
+
+
+def evidence(root: Path, task_id: str) -> str:
+    """The kit's records for one task, as Markdown for a pull request comment."""
+    shared = shared_root(root) / ".sdlc"
+    records: list[dict[str, object]] = []
+    try:
+        for line in (shared / AUDIT_LOG).read_text(encoding="utf-8").splitlines():
+            try:
+                record = json.loads(line)
+            except ValueError:
+                continue
+            if isinstance(record, dict) and record.get("task") == task_id:
+                records.append(record)
+    except OSError:
+        pass
+    out = [f"## Delivery evidence for {task_id}", "", f"Written by `bin/sdlc evidence` at {_now()} from the kit's own records. The review files and the run log are an agent's words. Everything else is a program's."]
+
+    tools = [r for r in records if r.get("event") == "PreToolUse"]
+    counts = {verdict: sum(1 for r in tools if r.get("verdict") == verdict) for verdict in ("allow", "ask", "deny")}
+    out += ["", "### Kit decisions on tool calls", "", f"Allowed {counts['allow']}, asked the tech lead {counts['ask']}, refused {counts['deny']}."]
+    stopped = [r for r in tools if r.get("verdict") in {"ask", "deny"}]
+    if stopped:
+        out += ["", "| At | Agent | Tool | Verdict | Reason |", "|---|---|---|---|---|"]
+        # A shell command is never printed here: it can hold a secret, and this goes on a public page.
+        out += [f"| {_cell(r.get('at'))} | {_cell(r.get('agent'))} | {_cell(r.get('tool'))} | {_cell(r.get('verdict'))} | {_cell(r.get('reason'))} |" for r in stopped]
+
+    checks = [r for r in records if r.get("event") in {"SubagentStop", "verify", "review-check"}]
+    out += ["", "### Checks", ""]
+    if checks:
+        out += ["| At | Check | Agent | Result | Detail |", "|---|---|---|---|---|"]
+        out += [f"| {_cell(r.get('at'))} | {_cell(r.get('event'))} | {_cell(r.get('agent'))} | {_cell(r.get('verdict'))} | {_cell(r.get('reason', ''))[:500]} |" for r in checks]
+    else:
+        out.append("No check is recorded for this task.")
+
+    out += ["", "### Review files", ""]
+    blocks: list[tuple[int, str]] = []
+    reviews = sorted((shared / "reviews").glob(f"{task_id}.*.json"))
+    for path in reviews:
+        errors = review_file_errors(path)
+        text = path.read_text(encoding="utf-8").strip()
+        state = "valid" if not errors else "NOT VALID: " + "; ".join(errors)
+        out += [f"<details><summary><code>{path.name}</code> ({state})</summary>", "", "```json", text, "```", "", "</details>", ""]
+        blocks.append((len(out) - 5, text))
+    if not reviews:
+        out.append("No review file is recorded for this task.")
+
+    out += ["", "### Run log", ""]
+    try:
+        lines = [line for line in (shared / "run-log.md").read_text(encoding="utf-8").splitlines() if task_id in line]
+    except OSError:
+        lines = []
+    out += lines or ["No run log line names this task."]
+
+    for index, text in blocks:  # too long for one comment: drop the review bodies, largest loss last
+        if len("\n".join(out)) <= EVIDENCE_LIMIT:
+            break
+        out[index] = f"(left out: {len(text)} characters is too long for one comment. The file is in .sdlc/reviews/ on the lead's machine.)"
+    return "\n".join(out) + "\n"
+
+
 # ---------- hook events ----------
 
 
@@ -653,19 +763,21 @@ def hook_pre(event: dict[str, object]) -> int:
     agent = event.get("agent_type") if isinstance(event.get("agent_type"), str) else None
     tool = event.get("tool_name")
     tool_input = event.get("tool_input") if isinstance(event.get("tool_input"), dict) else {}
+    cwd = Path(str(event.get("cwd") or os.getcwd()))
     decision: Decision | None = None
+    target = ""
     if tool == "Bash":
-        decision = check_command(str(tool_input.get("command", "")), agent, event)  # type: ignore[union-attr]
+        target = str(tool_input.get("command", ""))  # type: ignore[union-attr]
+        decision = check_command(target, agent, event)
     elif tool in {"Write", "Edit", "MultiEdit", "NotebookEdit"}:
-        raw = tool_input.get("file_path") or tool_input.get("notebook_path")  # type: ignore[union-attr]
-        if not raw:
-            return _refuse("the write has no file path")
-        decision = check_write(Path(str(event.get("cwd") or os.getcwd())) / str(raw), agent, event)
-    if decision is None:
-        return 0
-    if decision[0] == "deny":
-        return _refuse(decision[1])
-    print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "ask", "permissionDecisionReason": "SDLC kit: " + decision[1]}}))
+        target = str(tool_input.get("file_path") or tool_input.get("notebook_path") or "")  # type: ignore[union-attr]
+        decision = check_write(cwd / target, agent, event) if target else ("deny", "the write has no file path")
+    verdict, reason = decision or ("allow", "")
+    audit(find_root(cwd / "AGENTS.md"), event="PreToolUse", agent=agent or "lead", tool=tool, target=target[:300], verdict=verdict, reason=reason)
+    if verdict == "deny":
+        return _refuse(reason)
+    if verdict == "ask":
+        print(json.dumps({"hookSpecificOutput": {"hookEventName": "PreToolUse", "permissionDecision": "ask", "permissionDecisionReason": "SDLC kit: " + reason}}))
     return 0
 
 
@@ -704,10 +816,13 @@ def hook_post(event: dict[str, object]) -> int:
 
 def hook_subagent_stop(event: dict[str, object]) -> int:
     agent = event.get("agent_type")
-    if event.get("stop_hook_active") or agent not in IMPLEMENTERS | REVIEWERS:
-        return 0  # sent back once already (ADR 0004 D5), or not one of ours
+    if agent not in IMPLEMENTERS | REVIEWERS:
+        return 0  # not one of ours
     start = Path(str(event.get("cwd") or os.getcwd()))
     root = find_root(start / "AGENTS.md") or start
+    if event.get("stop_hook_active"):  # sent back once already (ADR 0004 D5)
+        audit(root, event="SubagentStop", agent=agent, verdict="not_checked", reason="second stop after being sent back once")
+        return 0
     if agent in IMPLEMENTERS:
         failures = verify(root)
     else:
@@ -715,7 +830,11 @@ def hook_subagent_stop(event: dict[str, object]) -> int:
         if not recent:
             failures = ["no review file was written under .sdlc/reviews/ (pr-review skill, 'Required output')"]
         else:
-            failures = review_file_errors(max(recent, key=lambda p: p.stat().st_mtime))
+            latest = max(recent, key=lambda p: p.stat().st_mtime)
+            failures = review_file_errors(latest)
+            if not failures:
+                keep_review(root, latest)
+    audit(root, event="SubagentStop", agent=agent, verdict="sent_back" if failures else "pass", reason="; ".join(failures))
     if failures:
         return _refuse("the work is not finished.\n- " + "\n- ".join(failures))
     return 0
@@ -746,7 +865,8 @@ USAGE = """usage: sdlc <command>
   hook                 read one Claude Code hook event on stdin
   task-check FILE...   validate task briefs
   verify [--no-gates]  check the working tree against the active task
-  review-check FILE    validate a review file
+  review-check FILE    validate a review file and keep a copy in the main checkout
+  evidence TASK-ID     print the kit's records for one task, for the pull request
   commit-msg FILE      check a commit message (Conventional Commits)
 """
 
@@ -771,16 +891,31 @@ def main(argv: list[str]) -> int:
         if root is None:
             print("verify: run this inside the repository", file=sys.stderr)
             return 1
-        failures = verify(root, run_gates="--no-gates" not in args)
+        gates = "--no-gates" not in args
+        failures = verify(root, run_gates=gates)
+        audit(root, event="verify", agent="command line", verdict="fail" if failures else "pass", reason="; ".join(failures) or ("" if gates else "gates not run"))
         for failure in failures:
             print(f"- {failure}", file=sys.stderr)
         print("verify: " + ("failed" if failures else "passed"))
         return 1 if failures else 0
     if command == "review-check" and len(args) == 1:
-        errors = review_file_errors(Path(args[0]))
+        path = Path(args[0])
+        errors = review_file_errors(path)
+        root = find_root(Path.cwd() / "AGENTS.md")
+        if root is not None:
+            if not errors:
+                keep_review(root, path)
+            audit(root, event="review-check", agent="command line", verdict="fail" if errors else "pass", reason=path.name + (": " + "; ".join(errors) if errors else ""), task=path.name.split(".")[0])
         for error in errors:
             print(f"{args[0]}: {error}", file=sys.stderr)
         return 1 if errors else 0
+    if command == "evidence" and len(args) == 1 and re.fullmatch(r"T-\d{4}", args[0]):
+        root = find_root(Path.cwd() / "AGENTS.md")
+        if root is None:
+            print("evidence: run this inside the repository", file=sys.stderr)
+            return 1
+        sys.stdout.write(evidence(root, args[0]))
+        return 0
     if command == "commit-msg" and len(args) == 1:
         subject = next((line for line in Path(args[0]).read_text(encoding="utf-8").splitlines() if line.strip() and not line.startswith("#")), "")
         if subject.startswith(("Merge ", "Revert ")) or COMMIT_RE.match(subject):

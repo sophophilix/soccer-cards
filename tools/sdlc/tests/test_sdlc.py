@@ -2,7 +2,10 @@
 
 from __future__ import annotations
 
+import contextlib
+import io
 import json
+import os
 import subprocess
 import sys
 import tempfile
@@ -292,6 +295,110 @@ class CommitMessageTest(unittest.TestCase):
             self.assertTrue(sdlc.COMMIT_RE.match(good), good)
         for bad in ("Add stuff", "feat:missing space", "feature: wrong type", "feat: " + "x" * 80):
             self.assertFalse(sdlc.COMMIT_RE.match(bad), bad)
+
+
+class AuditTest(unittest.TestCase):
+    """The audit trail and the evidence built from it."""
+
+    REVIEW = {
+        "review": {
+            "schema_version": 1,
+            "task": "T-0007",
+            "reviewed_at": "2026-11-15T11:16:22Z",
+            "commit": "abc1234",
+            "reviewer": "reviewer",
+            "verdict": "approved",
+            "gates": {"check": {"status": "pass", "evidence": "make check COMPONENT=game: 41 passed"}},
+            "findings": [],
+            "summary": {"must_fix": 0, "should_fix": 0, "suggestion": 0},
+        }
+    }
+
+    def setUp(self) -> None:
+        self.repo = Repo()
+        self.addCleanup(self.repo.close)
+        self.log = self.repo.root / ".sdlc" / "audit.jsonl"
+
+    def pre(self, tool: str, tool_input: dict[str, str], agent: str | None = "web-implementer") -> int:
+        event = {"hook_event_name": "PreToolUse", "tool_name": tool, "tool_input": tool_input, "cwd": str(self.repo.root), "agent_type": agent}
+        with contextlib.redirect_stderr(io.StringIO()), contextlib.redirect_stdout(io.StringIO()):
+            return sdlc.hook_pre(event)
+
+    def records(self) -> list[dict[str, object]]:
+        return [json.loads(line) for line in self.log.read_text().splitlines()]
+
+    def test_every_decision_is_logged_with_its_task_agent_and_reason(self) -> None:
+        self.assertEqual(self.pre("Bash", {"command": "ls"}), 0)
+        self.assertEqual(self.pre("Bash", {"command": "npm install"}), 2)
+        self.assertEqual(self.pre("Edit", {"file_path": "AGENTS.md"}, agent=None), 0)
+        allow, deny, ask = self.records()
+        self.assertEqual((allow["verdict"], deny["verdict"], ask["verdict"]), ("allow", "deny", "ask"))
+        self.assertEqual((deny["task"], deny["agent"], deny["tool"], deny["target"]), ("T-0007", "web-implementer", "Bash", "npm install"))
+        self.assertIn("pnpm", str(deny["reason"]))
+        self.assertEqual(ask["agent"], "lead")
+        self.assertRegex(str(allow["at"]), r"^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ$")
+
+    def test_a_log_that_cannot_be_written_does_not_change_the_decision(self) -> None:
+        self.log.mkdir()  # a folder where the file should be
+        self.assertEqual(self.pre("Bash", {"command": "ls"}), 0)
+        self.assertEqual(self.pre("Bash", {"command": "npm install"}), 2)
+
+    def test_a_worktree_logs_to_the_main_checkout(self) -> None:
+        # A commit hook sets GIT_INDEX_FILE for the real repository. This one must not inherit it.
+        env = {key: value for key, value in os.environ.items() if not key.startswith("GIT_")}
+
+        def git(*args: str) -> None:
+            subprocess.run(["git", "-C", str(self.repo.root), "-c", "user.name=t", "-c", "user.email=t@example.org", *args], check=True, capture_output=True, env=env)
+
+        (self.repo.root / ".gitignore").write_text(".sdlc/\n")
+        git("init", "-q", "-b", "main")
+        git("add", "-A")
+        git("commit", "-q", "-m", "chore: start")
+        tree = self.repo.root / "tree"
+        git("worktree", "add", "-q", str(tree), "-b", "feat/x")
+        sdlc.audit(tree, event="verify", verdict="pass")
+        self.assertEqual(sdlc.shared_root(tree), self.repo.root)
+        self.assertEqual(len(self.records()), 1)
+        self.assertFalse((tree / ".sdlc" / "audit.jsonl").exists())
+
+    def test_a_valid_review_is_kept_in_the_main_checkout(self) -> None:
+        elsewhere = self.repo.root / "elsewhere" / "T-0007.reviewer.json"
+        elsewhere.parent.mkdir()
+        elsewhere.write_text(json.dumps(self.REVIEW))
+        sdlc.keep_review(self.repo.root, elsewhere)
+        self.assertEqual(json.loads((self.repo.root / ".sdlc" / "reviews" / "T-0007.reviewer.json").read_text()), self.REVIEW)
+
+    def test_evidence_shows_refusals_checks_reviews_and_the_run_log(self) -> None:
+        self.pre("Bash", {"command": "ls"})
+        self.pre("Bash", {"command": "npm install --token=hunter2"})
+        sdlc.audit(self.repo.root, event="SubagentStop", agent="web-implementer", verdict="sent_back", reason="the change is 411 lines")
+        sdlc.audit(self.repo.root, event="verify", verdict="pass", task="T-0099")
+        (self.repo.root / ".sdlc" / "reviews").mkdir()
+        (self.repo.root / ".sdlc" / "reviews" / "T-0007.reviewer.json").write_text(json.dumps(self.REVIEW))
+        (self.repo.root / ".sdlc" / "run-log.md").write_text("- T-0007: built\n- T-0099: other\n")
+        text = sdlc.evidence(self.repo.root, "T-0007")
+        self.assertIn("Allowed 1, asked the tech lead 0, refused 1.", text)
+        self.assertIn("is not this repository's package manager", text)
+        self.assertNotIn("hunter2", text)  # a shell command never reaches the public page
+        self.assertIn("| SubagentStop | web-implementer | sent_back | the change is 411 lines |", text)
+        self.assertIn("<code>T-0007.reviewer.json</code> (valid)", text)
+        self.assertIn('"verdict": "approved"', text)
+        self.assertIn("- T-0007: built", text)
+        self.assertNotIn("T-0099", text)
+
+    def test_evidence_flags_an_invalid_review_and_stays_inside_one_comment(self) -> None:
+        reviews = self.repo.root / ".sdlc" / "reviews"
+        reviews.mkdir()
+        (reviews / "T-0007.reviewer.json").write_text(json.dumps({"review": {"padding": "x" * 70000}}))
+        text = sdlc.evidence(self.repo.root, "T-0007")
+        self.assertIn("NOT VALID", text)
+        self.assertIn("left out", text)
+        self.assertLessEqual(len(text), sdlc.EVIDENCE_LIMIT + 1)
+
+    def test_evidence_for_a_task_with_no_records_says_so(self) -> None:
+        text = sdlc.evidence(self.repo.root, "T-0042")
+        self.assertIn("No check is recorded", text)
+        self.assertIn("No review file is recorded", text)
 
 
 class VerifyTest(unittest.TestCase):

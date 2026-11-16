@@ -105,6 +105,16 @@ Fill in `.github/pull_request_template.md`:
 - each review file's verdict and finding counts, and any open `should_fix`
 - what was not done or could not be checked
 
+Then post the evidence, so the record outlives your machine (ADR 0004 D12):
+
+1. Run `bin/sdlc review-check` on each review file from the main checkout.
+   A valid file is copied to the main checkout's `.sdlc/reviews/`.
+2. Run `bin/sdlc evidence <task-id>` and post its output, unchanged, as a
+   comment on the pull request. Don't edit or shorten it.
+3. Post it again after any later round of fixes or review.
+4. Record each decision the tech lead gives you in chat as a pull request
+   comment, with their words quoted.
+
 Then stop. The tech lead reviews and merges. After the merge, set the brief's
 `status` to `done` in the next planning pull request.
 

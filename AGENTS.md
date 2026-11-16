@@ -86,6 +86,7 @@ covered by tests.
 | When a reviewer finishes | Checks the review file against the schema. An approval with a blocking finding or a failed gate is refused | 5 |
 | On `git commit` | Conventional Commits message, secret scan, task briefs valid | 3, 6 |
 | In CI | The same gates, plus the scanners in the `ci-supply-chain` skill. `main` accepts only a pull request with passing checks and the tech lead's approval | 1, 3, 5 |
+| Every time | Appends each decision above to `.sdlc/audit.jsonl` with the time, task, agent, verdict and reason. `bin/sdlc evidence <task-id>` prints a task's record for its pull request | 5, 14 |
 
 The hook is not a sandbox. A program an agent is allowed to run can still
 write a file the hook never sees. The pull request diff, CI and the tech

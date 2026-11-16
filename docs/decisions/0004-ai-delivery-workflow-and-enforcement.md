@@ -2,7 +2,7 @@
 
 > Status: Approved
 > Created: 2026-11-15T11:16:22Z
-> Last reviewed: 2026-11-16T07:30:27Z
+> Last reviewed: 2026-11-16T11:26:43Z
 > Next review: after the first five tasks delivered under this workflow
 
 ## Review guide
@@ -143,6 +143,18 @@ reviews of branches with planted defects, skill trigger and baseline runs,
 and product budgets. A change to a skill or an agent runs the evaluations
 that cover it.
 
+**D12. Every decision leaves a trace.** The kit appends one line to
+`.sdlc/audit.jsonl` in the main checkout for each tool call it allows, asks
+about or refuses, and for each `verify`, review check and agent finish. A
+line has the UTC time, the task, the agent, the tool, the verdict and the
+reason. A valid review file is copied to the main checkout, so it outlives
+the agent's worktree. `bin/sdlc evidence <task-id>` prints a task's
+refusals, checks, review files and run log lines, and the lead posts that
+output as a comment on the task's pull request. The pull request is the
+durable record. The comment never shows a shell command, because a command
+can hold a secret and the repository is public. A log that can't be written
+never changes a decision.
+
 ## Consequences
 
 - An agent that breaks a rule a program covers is stopped and reads why.
@@ -180,6 +192,12 @@ that cover it.
   `data-implementer` to preload them.
 - **Branch rulesets and CODEOWNERS** need the repository on GitHub and the
   tech lead's account name. Neither exists yet.
+- **The audit log is a local file until the evidence is posted.** It is not
+  tamper-proof: an allowed program can edit it. It records the lead's own
+  tool calls without a task id, so the evidence comment leaves them out.
+  The local log holds the first 300 characters of each shell command.
+- **Agent transcripts are not part of the trace.** They stay in Claude
+  Code's local files.
 
 ## Review history
 
@@ -187,3 +205,4 @@ that cover it.
 |---|---|---|
 | 2026-11-15T11:16:22Z | Drafted | Initial version, written by Claude for the tech lead. |
 | 2026-11-16T07:30:27Z | Approved | The tech lead replied "approve all" in the lead session. |
+| 2026-11-16T11:26:43Z | Amended | Added D12, the audit trail and the evidence comment, at the tech lead's request ("yes add all three before the next tasks start"). |
