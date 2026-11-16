@@ -1,11 +1,11 @@
 # Response headers for every file (ADR 0002 D5). tests/privacy/headers.spec.ts
 # asserts them: change the test with the header.
-# SvelteKit starts the app from an inline script, so the header allows inline
-# scripts and the policy in each page's <meta> tag narrows that to the hashes
-# of the scripts SvelteKit wrote. A browser applies both policies.
+# SvelteKit starts the app from an inline script, and its hash changes with
+# the build. The build adds each built page's script hashes to script-src in
+# the copy of this file in the build folder (vite.config.ts).
 # The style hash is the style attribute on SvelteKit's route announcer.
 /*
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-hashes' 'sha256-S8qMpvofolR8Mpjy4kQvEm7m1q8clzU4dfDH0AmvZjo='; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-hashes' 'sha256-S8qMpvofolR8Mpjy4kQvEm7m1q8clzU4dfDH0AmvZjo='; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=(), accelerometer=(), gyroscope=(), magnetometer=()
