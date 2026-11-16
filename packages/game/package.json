@@ -1,0 +1,13 @@
+{
+	"name": "@soccer-cards/game",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"exports": "./src/index.ts",
+	"scripts": {
+		"format:check": "prettier --check . --ignore-path ../../.prettierignore --ignore-path ../../.gitignore",
+		"lint": "eslint . --max-warnings 0",
+		"typecheck": "tsc --noEmit",
+		"test": "vitest run --coverage"
+	}
+}

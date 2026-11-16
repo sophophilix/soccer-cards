@@ -1,0 +1,10 @@
+pnpm-lock.yaml
+node_modules/
+coverage/
+dist/
+build/
+.svelte-kit/
+.claude/
+.sdlc/
+data/api/
+prototype/
