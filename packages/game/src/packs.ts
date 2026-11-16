@@ -39,10 +39,17 @@ export function packMix(kind: PackKind): PackMix {
 /** Opens a pack: draws its mix from the card set and returns the ids in reveal order. */
 export function openPack(cardSet: readonly Card[], kind: PackKind, random: Random): OpenPackResult {
 	const mix = packMix(kind);
-	// A set keeps a card listed twice from appearing twice in one pack.
+	// A map keeps the first listing of each id, so a card listed twice, even
+	// under two tiers, appears once in a pack.
+	const tierById = new Map<CardId, Tier>();
+	for (const card of cardSet) {
+		if (!tierById.has(card.id)) {
+			tierById.set(card.id, card.tier);
+		}
+	}
 	const idsByTier = TIERS.map((tier) => ({
 		tier,
-		ids: [...new Set(cardSet.filter((card) => card.tier === tier).map((card) => card.id))]
+		ids: [...tierById].filter(([, cardTier]) => cardTier === tier).map(([id]) => id)
 	}));
 
 	// Every tier is checked before any draw, so a refusal uses no random numbers.
