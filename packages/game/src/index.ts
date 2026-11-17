@@ -1,5 +1,5 @@
-export { TIERS, toCardId } from './cards.ts';
-export type { Card, CardId, Tier } from './cards.ts';
+export { TIERS, checkCardSet, toCardId } from './cards.ts';
+export type { Card, CardId, CardSetResult, CheckedCardSet, Tier } from './cards.ts';
 export {
 	JUMBO_PACK_MIX,
 	JUMBO_PACK_SIZE,
