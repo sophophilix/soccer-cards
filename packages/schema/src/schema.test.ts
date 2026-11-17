@@ -19,7 +19,28 @@ const GENERATE_OPTIONS = {
 	style: { useTabs: true, singleQuote: true, trailingComma: 'none', printWidth: 100 }
 } as const;
 
-const SOURCE = { source: 'Invented Football Almanac', asOf: '2026-01-31' };
+const SOURCED = { sourceUri: 'https://almanac.example/tavi', retrieveDate: '2026-01-31' };
+const CREDIT = { author: 'Ina Vented', licenseCode: 'CC-BY-4.0', sourceUri: 'https://a.example' };
+const PHOTO = { uri: 'photos/tavi.webp', widthPx: 600, heightPx: 800, mimeType: 'image/webp' };
+const FACTS = {
+	clubGoalCount: { value: 12, ...SOURCED },
+	nationalTeamGoalCount: { value: 0, ...SOURCED },
+	transferFee: { currencyCode: 'EUR', units: 42_000_000, nanos: 0, ...SOURCED },
+	awards: [{ displayName: 'Harbour Cup winner 2025', ...SOURCED }],
+	photo: { ...PHOTO, attribution: CREDIT }
+};
+/** The facts with the value at a dotted path replaced. A path goes into every item of a list. */
+function facts(path: string, value: unknown, node: unknown = FACTS): object {
+	const [key = '', ...rest] = path.split('.');
+	if (Array.isArray(node)) return node.map((item) => facts(path, value, item));
+	const fields = node as Record<string, unknown>;
+	return { ...fields, [key]: rest.length > 0 ? facts(rest.join('.'), value, fields[key]) : value };
+}
+const FACT_FIELDS = Object.entries({ ...FACTS, 'photo.attribution': CREDIT }).flatMap(
+	([kind, fact]) => Object.keys([fact].flat()[0] ?? {}).map((field) => `${kind}.${field}`)
+);
+const licences = (rule: string, codes: string): [string, object][] =>
+	codes.split(' ').map((code) => [`${rule} ${code}`, facts('photo.attribution.licenseCode', code)]);
 const OUTFIELD_RATINGS = {
 	...{ pace: 80, shooting: 70, passing: 60 },
 	...{ dribbling: 75, defending: 40, physical: 65 }
@@ -31,7 +52,7 @@ const GOALKEEPER_RATINGS = {
 const PLAY_STATS = { attack: 74, defence: 50, control: 67 };
 
 /** An invented player with only the fields the schema requires. */
-function aPlayer(overrides: Record<string, unknown> = {}): Record<string, unknown> {
+function aPlayer(overrides: object = {}): Record<string, unknown> {
 	return {
 		name: 'players/tavi-brightwell',
 		displayName: 'Tavi Brightwell',
@@ -83,13 +104,28 @@ describe('player.schema.json', () => {
 
 	it('accepts a player with a photo, goals, a transfer fee and awards', () => {
 		const player = aPlayer({
-			photo: 'photos/7.webp',
-			clubGoals: { goals: 12, ...SOURCE },
-			countryGoals: { goals: 0, ...SOURCE },
-			transferFee: { amountMinor: 4_200_000_000, currency: 'EUR', ...SOURCE },
-			awards: [{ title: 'Harbour Cup winner 2025', ...SOURCE }]
+			...{ ...FACTS, careerStartYear: 2019, careerEndYear: 2026 }
 		});
 		expect(isValidPlayer(player)).toBe(true);
+	});
+
+	describe.each([undefined, null])('with a field of a fact set to %s', (value) => {
+		it.each(FACT_FIELDS)('refuses %s', (path) => {
+			expect(isValidPlayer(aPlayer(facts(path, value)))).toBe(false);
+		});
+	});
+
+	it.each(
+		(['sourced', 'goalCount', 'transferFee', 'award', 'photo', 'attribution'] as const).flatMap(
+			(def) => Object.entries<object>(playerSchema.$defs[def].properties)
+		)
+	)('describes %s', (_field, property) => {
+		expect(property).toHaveProperty('description', expect.stringMatching(/\w/));
+	});
+
+	it('says that a retrieve date is not checked against the calendar', () => {
+		const { description } = playerSchema.$defs.sourced.properties.retrieveDate;
+		expect(description).toContain('2026-02-30');
 	});
 
 	it('accepts a field it does not know', () => {
@@ -106,7 +142,11 @@ describe('player.schema.json', () => {
 		['a given name and a family name', { givenName: 'Tavi', familyName: 'Brightwell' }],
 		['a club resource name', { club: 'clubs/harbour-town' }],
 		['a card number of 1', { cardNumber: 1 }],
-		['an update time with a fraction of a second', { updateTime: '2026-11-16T12:06:57.5Z' }]
+		['an update time with a fraction of a second', { updateTime: '2026-11-16T12:06:57.5Z' }],
+		['nanos of 999,999,999', facts('transferFee.nanos', 999_999_999)],
+		['a retrieve date of 2026-02-30', facts('awards.retrieveDate', '2026-02-30')],
+		...licences('the licence', 'CC0-1.0 CC-PDM-1.0 CC-BY-1.0 CC-BY-2.5-AU CC-BY-3.0-US CC-BY-4.0'),
+		...licences('the licence', 'CC-BY-SA-2.0-UK CC-BY-SA-2.1-JP CC-BY-SA-3.0-IGO CC-BY-SA-4.0')
 	])('accepts %s', (_rule, overrides) => {
 		expect(isValidPlayer(aPlayer(overrides))).toBe(true);
 	});
@@ -130,7 +170,8 @@ describe('player.schema.json', () => {
 
 	it.each([
 		...['name', 'displayName', 'givenName', 'familyName', 'state', 'position', 'tier'],
-		...['nationalTeamCode', 'club', 'cardNumber', 'updateTime'],
+		...['nationalTeamCode', 'club', 'cardNumber', 'updateTime', 'photo', 'transferFee'],
+		...['clubGoalCount', 'nationalTeamGoalCount', 'careerStartYear', 'careerEndYear'],
 		...['outfieldRatings', 'goalkeeperRatings', 'physical'],
 		...Object.keys(GOALKEEPER_RATINGS)
 	])('describes %s', (property) => {
@@ -202,16 +243,23 @@ describe('player.schema.json', () => {
 		['the old ratings group only', { outfieldRatings: undefined, ratings: OUTFIELD_RATINGS }],
 		['a null photo', { photo: null }],
 		['a photo on another host', { photo: 'https://photos.example/7.webp' }],
-		['null goals', { clubGoals: null }],
+		['a photo address with a scheme', facts('photo.uri', 'http://photos.example/7.webp')],
+		['a photo address with a host', facts('photo.uri', '//photos.example/7.webp')],
+		['a photo zero pixels wide', facts('photo.widthPx', 0)],
+		['a photo source over plain http', facts('photo.attribution.sourceUri', 'http://a.example')],
+		...licences('the licence', 'CC-BY-NC-4.0 CC-BY-ND-4.0 CC-BY-NC-SA-4.0 CC-PDDC CC-BY-5.0'),
+		...licences('the licence', 'CC-BY-SA CC-BY-SA-2.1 CC-BY-4.0-AU cc-by-4.0 MIT'),
 		['null awards', { awards: null }],
 		['a null transfer fee', { transferFee: null }],
-		['a transfer fee with no currency', { transferFee: { amountMinor: 500, ...SOURCE } }],
-		['a transfer fee in major units', { transferFee: { amount: 5, currency: 'EUR', ...SOURCE } }],
-		['goals below zero', { countryGoals: { goals: -1, ...SOURCE } }],
-		['goals with no source', { clubGoals: { goals: 3, asOf: '2026-01-31' } }],
-		['goals with no asOf', { clubGoals: { goals: 3, source: 'Invented Football Almanac' } }],
-		['an asOf that is not a date', { clubGoals: { goals: 3, ...SOURCE, asOf: 'last May' } }],
-		['an award with no source', { awards: [{ title: 'Harbour Cup winner 2025' }] }]
+		['a transfer fee below zero', facts('transferFee.units', -1)],
+		['a transfer fee with units as a string', facts('transferFee.units', '42000000')],
+		['nanos below zero', facts('transferFee.nanos', -1)],
+		['nanos of 1,000,000,000', facts('transferFee.nanos', 1_000_000_000)],
+		['club goals below zero', facts('clubGoalCount.value', -1)],
+		['a source over plain http', facts('awards.sourceUri', 'http://almanac.example/tavi')],
+		['a retrieve date that is not a date', facts('clubGoalCount.retrieveDate', 'last May')],
+		['a career start year with a fraction', { careerStartYear: 2019.5 }],
+		['a null career end year', { careerEndYear: null }]
 	])('refuses %s', (_rule, overrides) => {
 		expect(isValidPlayer(aPlayer(overrides))).toBe(false);
 	});
