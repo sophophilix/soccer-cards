@@ -51,17 +51,53 @@ export interface PlayerSummary {
 	 * The number printed on the card. Absent when the card has none.
 	 */
 	cardNumber?: number;
-	ratings: Ratings;
+	outfieldRatings?: OutfieldRatings;
+	goalkeeperRatings?: GoalkeeperRatings;
 	playStats: PlayStats;
 	photo?: string;
 }
-export interface Ratings {
+/**
+ * The six ratings of a player who is not a goalkeeper. Absent for a goalkeeper.
+ */
+export interface OutfieldRatings {
 	pace: number;
 	shooting: number;
 	passing: number;
 	dribbling: number;
 	defending: number;
-	power: number;
+	/**
+	 * Strength, stamina and jumping.
+	 */
+	physical: number;
+}
+/**
+ * The six ratings of a goalkeeper. Absent for every other position.
+ */
+export interface GoalkeeperRatings {
+	/**
+	 * Reaching a shot with a dive.
+	 */
+	diving: number;
+	/**
+	 * Catching and holding the ball.
+	 */
+	handling: number;
+	/**
+	 * Kicking the ball far and true.
+	 */
+	kicking: number;
+	/**
+	 * Reacting to a close shot.
+	 */
+	reflexes: number;
+	/**
+	 * Running off the goal line.
+	 */
+	speed: number;
+	/**
+	 * Standing in the right place for a shot.
+	 */
+	positioning: number;
 }
 export interface PlayStats {
 	attack: number;
