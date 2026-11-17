@@ -58,9 +58,16 @@ check-web: ## Gates for apps/web, including the end-to-end tests
 	$(call ts-gate,$(WEB))
 	@pnpm --dir $(WEB) run test:e2e
 
+# Workflows are linted by actionlint and audited by zizmor (the
+# ci-supply-chain skill). A missing tool fails the gate.
+check-ci: ## Lint and audit the GitHub Actions workflows
+	@for tool in actionlint zizmor; do command -v $$tool >/dev/null || { echo "$@: $$tool is not installed"; exit 1; }; done
+	@actionlint
+	@zizmor --offline .github
+
 # Each remaining gate is wired to the commands in the component's skill when
 # that component is scaffolded. The Makefile is a kit file, so the tech lead makes
 # that change in the main session. Until then the gate fails: a gate that
 # can't run is not a pass.
-check-data check-infra check-ci:
+check-data check-infra:
 	@echo "$@: this gate is not configured yet (see docs/decisions/0004)"; exit 1
