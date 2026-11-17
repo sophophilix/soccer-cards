@@ -8,7 +8,7 @@ paths:
   - packages/schema/schemas/v1/**
   - packages/schema/src/**
 dependencies: []
-max_changed_lines: 220
+max_changed_lines: 300
 status: ready
 ---
 
@@ -24,7 +24,11 @@ empty or invented rating.
 - Runs after T-0009, which changes the position values.
 - Review finding T-0002 F1: the 1 to 99 bound was tested on one field of
   each group only.
-- Aim for about 150 changed lines. The limit is 220.
+- Review finding T-0009 F1: the schema accepts `givenName` with no
+  `familyName`, and the reverse. T-0009 was at its size limit, so the fix
+  is here.
+- The generated type files repeat every description, which took T-0009 to
+  its limit. Aim for about 200 changed lines. The limit is 300.
 
 ## Acceptance criteria
 
@@ -37,6 +41,8 @@ empty or invented rating.
 - `playStats` stays the same for every player.
 - Every rating and play stat is a whole number from 1 to 99, and every
   field in a group is required.
+- In `playerSummary`, `givenName` and `familyName` come together: each one
+  requires the other (`dependentRequired`).
 - Every property this task adds or renames has a `description`.
 - The generated types are regenerated and committed.
 - `make check COMPONENT=schema` passes.
@@ -48,6 +54,8 @@ empty or invented rating.
 - 0, 100, 50.5 and a string are refused in every rating and play stat
   field, not in one field per group.
 - A group with one field missing is refused, for each field.
+- A player with `givenName` only is refused, and so is a player with
+  `familyName` only. A player with both, or with neither, is accepted.
 
 ## Tests
 

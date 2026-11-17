@@ -8,7 +8,7 @@ paths:
   - packages/schema/schemas/v1/**
   - packages/schema/src/**
 dependencies: []
-max_changed_lines: 280
+max_changed_lines: 340
 status: ready
 ---
 
@@ -26,7 +26,8 @@ with it. This is what lets the site show a photo lawfully.
 - Checked on 2026-11-16: the Protocol Buffers JSON form writes a 64-bit
   integer as a string. D7 keeps `units` as a JSON number, as a stated
   exception.
-- Aim for about 200 changed lines. The limit is 280.
+- The generated type files repeat every description. Aim for about 250
+  changed lines. The limit is 340.
 
 ## Acceptance criteria
 
