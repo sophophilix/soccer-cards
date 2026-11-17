@@ -83,3 +83,12 @@ jobs:
       # it. The tests use Chromium and WebKit (apps/web/playwright.config.ts).
       - run: pnpm exec playwright install --with-deps chromium webkit
       - run: make check COMPONENT=web
+      # Keeps the traces, screenshots and videos of failed Playwright tests.
+      # The folder is absent when the gate failed before those tests ran.
+      - if: ${{ failure() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: web-test-results
+          path: apps/web/test-results/
+          if-no-files-found: ignore
+          retention-days: 7
