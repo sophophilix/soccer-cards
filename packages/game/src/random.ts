@@ -18,7 +18,11 @@ function requireWholeNumber(value: number, name: string): void {
 	}
 }
 
-/** Creates a random number generator that gives the same sequence for the same seed. */
+/**
+ * Creates a random number generator that gives the same sequence for the same seed.
+ * Only the low 32 bits of the seed are used, so two seeds that differ by 2 ** 32 give
+ * the same sequence.
+ */
 export function createRandom(seed: number): Random {
 	requireWholeNumber(seed, 'seed');
 	let state = seed >>> 0;
