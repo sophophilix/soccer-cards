@@ -2,40 +2,69 @@ import { expect, test } from 'vitest';
 import { readScriptHashes, writeScriptSources } from './script-hashes.ts';
 
 const INLINE_SCRIPT = '<script>start()</script>';
+const SECOND_INLINE_SCRIPT = '<script>stop()</script>';
+// The SHA-256 hashes of `start()` and `stop()`.
+const START_HASH = "'sha256-DIm7WJS6ZKDYe5qFLPy+h4JFI9Bol5QmYC57mt3Fb00='";
+const STOP_HASH = "'sha256-+cxkFLprM1p+UYdsltwfzLJhu4c0AWgWWM2wCE77y2Q='";
+const REFUSED = { ok: false, reason: 'inline-script-without-hash' };
 
 function aPage(scriptSources: string, body: string): string {
 	const policy = `default-src 'self'; script-src ${scriptSources}; style-src 'self' 'sha256-style='`;
 	return `<html><head><meta http-equiv="content-security-policy" content="${policy}"></head><body>${body}</body></html>`;
 }
 
-test('reads the hash of the inline script from the policy in the page', () => {
-	const page = aPage("'self' 'sha256-abc+/123='", INLINE_SCRIPT);
+test('reads the hash of the inline script from the policy in the page', async () => {
+	const page = aPage(`'self' ${START_HASH}`, INLINE_SCRIPT);
 
-	expect(readScriptHashes(page)).toEqual({ ok: true, hashes: ["'sha256-abc+/123='"] });
+	expect(await readScriptHashes(page)).toEqual({ ok: true, hashes: [START_HASH] });
 });
 
-test('reads every script hash and leaves the style hash out', () => {
-	const page = aPage("'self' 'sha256-one=' 'sha384-two='", INLINE_SCRIPT + INLINE_SCRIPT);
+test('reads every script hash and leaves the style hash out', async () => {
+	const page = aPage(`'self' ${START_HASH} 'sha384-two='`, INLINE_SCRIPT + INLINE_SCRIPT);
 
-	expect(readScriptHashes(page)).toEqual({ ok: true, hashes: ["'sha256-one='", "'sha384-two='"] });
+	expect(await readScriptHashes(page)).toEqual({ ok: true, hashes: [START_HASH, "'sha384-two='"] });
 });
 
-test('reads no hash from a page with no inline script', () => {
+test('accepts two inline scripts that both have a hash', async () => {
+	const page = aPage(`'self' ${START_HASH} ${STOP_HASH}`, INLINE_SCRIPT + SECOND_INLINE_SCRIPT);
+
+	expect(await readScriptHashes(page)).toEqual({ ok: true, hashes: [START_HASH, STOP_HASH] });
+});
+
+test('refuses two inline scripts when only one has a hash', async () => {
+	const page = aPage(`'self' ${START_HASH}`, INLINE_SCRIPT + SECOND_INLINE_SCRIPT);
+
+	expect(await readScriptHashes(page)).toEqual(REFUSED);
+});
+
+test('reads no hash from a page with no inline script', async () => {
 	const page = aPage("'self'", '<script src="/app.js"></script>');
 
-	expect(readScriptHashes(page)).toEqual({ ok: true, hashes: [] });
+	expect(await readScriptHashes(page)).toEqual({ ok: true, hashes: [] });
 });
 
-test('refuses a page with an inline script and no hash in its policy', () => {
+test('needs no hash for an inline script of a type that browsers do not run', async () => {
+	const page = aPage("'self'", '<script type="application/json">{"coins":5}</script>');
+
+	expect(await readScriptHashes(page)).toEqual({ ok: true, hashes: [] });
+});
+
+test('refuses an inline module script that has no hash', async () => {
+	const page = aPage(`'self' ${STOP_HASH}`, '<script type="module">start()</script>');
+
+	expect(await readScriptHashes(page)).toEqual(REFUSED);
+});
+
+test('refuses a page with an inline script and no hash in its policy', async () => {
 	const page = aPage("'self'", INLINE_SCRIPT);
 
-	expect(readScriptHashes(page)).toEqual({ ok: false, reason: 'inline-script-without-hash' });
+	expect(await readScriptHashes(page)).toEqual(REFUSED);
 });
 
-test('refuses a page with an inline script and no policy', () => {
+test('refuses a page with an inline script and no policy', async () => {
 	const page = `<html><body>${INLINE_SCRIPT}</body></html>`;
 
-	expect(readScriptHashes(page)).toEqual({ ok: false, reason: 'inline-script-without-hash' });
+	expect(await readScriptHashes(page)).toEqual(REFUSED);
 });
 
 test('writes each hash once, in order, and changes no other header', () => {
