@@ -9,33 +9,54 @@ import tseslint from 'typescript-eslint';
 const MAX_FILE_LINES = 400;
 const MAX_COMPLEXITY = 15;
 const GAME_ROOT = path.join(import.meta.dirname, 'packages/game');
+const SEED_MESSAGE = 'Only src/testing/property-seed.ts sets the shared seed.';
 
 /**
  * Reports a relative import that resolves outside `packages/game`. The built-in
  * `no-restricted-imports` can't tell, because it doesn't know how deep the file is.
+ * It also reports a Node built-in in `import()`, which that rule doesn't visit.
  * @type {import('eslint').Rule.RuleModule}
  */
 const noImportOutsidePackage = {
 	meta: {
 		type: 'problem',
 		schema: [],
-		messages: { outside: "'{{source}}' leaves packages/game." }
+		messages: {
+			outside: "'{{source}}' leaves packages/game.",
+			builtIn: "'{{source}}' is a Node built-in, and packages/game imports none."
+		}
 	},
 	create(context) {
 		// `node` is an import or a re-export. A re-export with no `from` has no source.
+		const sourceOf = ({ source }) => {
+			if (source?.type === 'Literal') return source.value;
+			const isPlainTemplate = source?.type === 'TemplateLiteral' && source.expressions.length === 0;
+			return isPlainTemplate ? source.quasis[0].value.cooked : undefined;
+		};
 		const check = (node) => {
-			const source = node.source?.type === 'Literal' ? node.source.value : undefined;
+			const source = sourceOf(node);
 			if (typeof source !== 'string' || !source.startsWith('.')) return;
 			const target = path.resolve(path.dirname(context.filename), source);
 			if (path.relative(GAME_ROOT, target).startsWith('..')) {
 				context.report({ node, messageId: 'outside', data: { source } });
 			}
 		};
+		const checkDynamic = (node) => {
+			const source = sourceOf(node);
+			if (
+				typeof source === 'string' &&
+				(source.startsWith('node:') || builtinModules.includes(source))
+			) {
+				context.report({ node, messageId: 'builtIn', data: { source } });
+			}
+			check(node);
+		};
 		return {
 			ImportDeclaration: check,
 			ExportNamedDeclaration: check,
 			ExportAllDeclaration: check,
-			ImportExpression: check
+			ImportExpression: checkDynamic,
+			TSImportType: checkDynamic
 		};
 	}
 };
@@ -83,14 +104,7 @@ export default defineConfig(
 			'no-restricted-imports': [
 				'error',
 				{
-					paths: [
-						...builtinModules,
-						{
-							name: 'fast-check',
-							importNames: ['configureGlobal'],
-							message: 'Only src/testing/property-seed.ts sets the shared seed.'
-						}
-					],
+					paths: builtinModules,
 					patterns: ['node:*', 'svelte', 'svelte/*', '@sveltejs/*', '@soccer-cards/web']
 				}
 			],
@@ -100,8 +114,9 @@ export default defineConfig(
 				'error',
 				{
 					selector: "CallExpression[callee.property.name='configureGlobal']",
-					message: 'Only src/testing/property-seed.ts sets the shared seed.'
-				}
+					message: SEED_MESSAGE
+				},
+				{ selector: "ImportSpecifier[imported.name='configureGlobal']", message: SEED_MESSAGE }
 			],
 			'no-restricted-properties': [
 				'error',
