@@ -54,7 +54,7 @@ export interface PlayerSummary {
 	outfieldRatings?: OutfieldRatings;
 	goalkeeperRatings?: GoalkeeperRatings;
 	playStats: PlayStats;
-	photo?: string;
+	photo?: Photo;
 }
 /**
  * The six ratings of a player who is not a goalkeeper. Absent for a goalkeeper.
@@ -103,4 +103,43 @@ export interface PlayStats {
 	attack: number;
 	defence: number;
 	control: number;
+}
+/**
+ * Absent when no photo is licensed.
+ */
+export interface Photo {
+	/**
+	 * The photo file, as a path inside the API with no host.
+	 */
+	uri: string;
+	/**
+	 * The width in pixels.
+	 */
+	widthPx: number;
+	/**
+	 * The height in pixels.
+	 */
+	heightPx: number;
+	/**
+	 * The media type.
+	 */
+	mimeType: 'image/webp';
+	attribution: Attribution;
+}
+/**
+ * The credit and licence.
+ */
+export interface Attribution {
+	/**
+	 * The photo's author.
+	 */
+	author: string;
+	/**
+	 * The licence's SPDX id. Only CC0-1.0, CC-PDM-1.0 for the public domain, and the CC-BY and CC-BY-SA versions on the SPDX list are allowed.
+	 */
+	licenseCode: string;
+	/**
+	 * Where the photo came from.
+	 */
+	sourceUri: string;
 }
