@@ -1,0 +1,17 @@
+/* The base stylesheet for every page. The layout loads it. */
+
+:root {
+	/* The smallest size a thumb can hit (WCAG 2.2, target size). */
+	--tap-target-min: 44px;
+}
+
+/* An inline box ignores min-height, so a link in a sentence becomes a small
+   flex box that still sits on the line of text. */
+a,
+button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: var(--tap-target-min);
+	min-height: var(--tap-target-min);
+}
