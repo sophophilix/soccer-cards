@@ -34,6 +34,47 @@ for (const path of ['/', '/no-such-page']) {
 	});
 }
 
+test('the response header allows scripts by hash, never every inline script', async ({
+	request
+}) => {
+	const policy = (await request.get('/')).headers()['content-security-policy'] ?? '';
+	const scriptSources = /script-src ([^;]*)/.exec(policy)?.[1] ?? '';
+
+	expect(scriptSources).toMatch(/^'self' 'sha256-/);
+	expect(scriptSources).not.toContain('unsafe-inline');
+});
+
+for (const { path, heading } of [
+	{ path: '/', heading: 'Soccer Cards' },
+	{ path: '/no-such-page', heading: 'Page not found' }
+]) {
+	// The <meta> tag is taken out, so only the response header is left to decide.
+	test(`the header alone blocks an injected script at ${path} and runs the page's own`, async ({
+		page
+	}) => {
+		await page.addInitScript(() => {
+			document.addEventListener('securitypolicyviolation', (event) => {
+				const root = document.documentElement;
+				root.dataset.blocked = `${root.dataset.blocked ?? ''}${event.blockedURI} `;
+			});
+		});
+		await page.route(path, async (route) => {
+			const response = await route.fetch();
+			const html = (await response.text())
+				.replace(/<meta http-equiv="content-security-policy"[^>]*>/, '')
+				.replace('</body>', '<script>document.title = "Injected"</script></body>');
+			await route.fulfill({ response, body: html });
+		});
+
+		await page.goto(path);
+
+		await expect(page.getByRole('heading', { level: 1 })).toHaveText(heading);
+		await expect(page.locator('html')).toHaveAttribute('data-blocked', 'inline ');
+		await expect(page.locator('meta[http-equiv="content-security-policy"]')).toHaveCount(0);
+		await expect(page).not.toHaveTitle('Injected');
+	});
+}
+
 test('the preview sends the other security headers', async ({ request }) => {
 	const headers = (await request.get('/')).headers();
 
