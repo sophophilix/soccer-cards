@@ -23,6 +23,9 @@ cases that pass lint today and shouldn't.
 - ADR 0001 D1 and D4, and the `ts-standards` skill, "Compiler and lint
   decisions" and "Security floor".
 - Review findings T-0001 reviewer F1 and F3, and security F3, F4 and F5.
+- Review finding T-0016 F1: fast-check replaces its whole global
+  configuration on each `fc.configureGlobal` call, so one call in a test
+  file drops the shared seed for that file with no failure.
 - Aim for about 60 changed lines. The limit is 120.
 
 ## Acceptance criteria
@@ -35,6 +38,8 @@ cases that pass lint today and shouldn't.
   file.
 - The override that turns off type-checked rules applies to the config
   files at the repository root only, not to every `.js` file.
+- In `packages/game`, a call to `fc.configureGlobal` outside
+  `src/testing/property-seed.ts` is a lint error.
 - `knip.json` points `$schema` at the installed package, not at another
   host.
 - The JSDoc of `createRandom` says that only the low 32 bits of the seed
