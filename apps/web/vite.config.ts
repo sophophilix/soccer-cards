@@ -17,7 +17,7 @@ async function writeScriptHashesToHeaders(): Promise<void> {
 	const files = await readdir(BUILD_FOLDER, { recursive: true });
 	const hashes: string[] = [];
 	for (const file of files.filter((name) => name.endsWith('.html'))) {
-		const found = readScriptHashes(await readFile(`${BUILD_FOLDER}/${file}`, 'utf8'));
+		const found = await readScriptHashes(await readFile(`${BUILD_FOLDER}/${file}`, 'utf8'));
 		if (!found.ok) {
 			throw new Error(`${file} has an inline script and no hash for it in its policy.`);
 		}
