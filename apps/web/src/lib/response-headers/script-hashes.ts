@@ -4,7 +4,7 @@ const SCRIPT_SOURCES = /script-src [^;]*/;
 const HEADER_SCRIPT_SOURCES = /^([ \t]*Content-Security-Policy:[^\n]*?\bscript-src)\b[^;\n]*/m;
 const HASH_SOURCE = /'sha(?:256|384|512)-[A-Za-z0-9+/=_-]+'/g;
 // Captures the attributes and the text of each script with no src attribute.
-const INLINE_SCRIPT = /<script\b(?![^>]*\ssrc=)([^>]*)>([\s\S]*?)<\/script>/gi;
+const INLINE_SCRIPT = /<script\b(?![^>]*\ssrc=)([^>]*)>([\s\S]*?)<\/script\s*>/gi;
 const SCRIPT_TYPE = /\stype=["']?([^"'\s>]*)/i;
 // A type outside this list is data to a browser. An unknown type that names a
 // script still needs a hash, so a mistake here blocks a script and never allows one.

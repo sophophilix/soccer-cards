@@ -49,8 +49,17 @@ test('needs no hash for an inline script of a type that browsers do not run', as
 	expect(await readScriptHashes(page)).toEqual({ ok: true, hashes: [] });
 });
 
-test('refuses an inline module script that has no hash', async () => {
-	const page = aPage(`'self' ${STOP_HASH}`, '<script type="module">start()</script>');
+test.each(['module', 'text/javascript', 'importmap', 'speculationrules'])(
+	'refuses an inline script of type %s that has no hash',
+	async (type) => {
+		const page = aPage(`'self' ${STOP_HASH}`, `<script type="${type}">start()</script>`);
+
+		expect(await readScriptHashes(page)).toEqual(REFUSED);
+	}
+);
+
+test('refuses an unhashed inline script whose end tag has a space', async () => {
+	const page = aPage(`'self' ${STOP_HASH}`, '<script>start()</script >');
 
 	expect(await readScriptHashes(page)).toEqual(REFUSED);
 });
