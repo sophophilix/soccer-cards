@@ -73,7 +73,14 @@
 					"type": "integer",
 					"minimum": 1
 				},
-				"ratings": { "$ref": "#/$defs/ratings" },
+				"outfieldRatings": {
+					"description": "The six ratings of a player who is not a goalkeeper. Absent for a goalkeeper.",
+					"$ref": "#/$defs/outfieldRatings"
+				},
+				"goalkeeperRatings": {
+					"description": "The six ratings of a goalkeeper. Absent for every other position.",
+					"$ref": "#/$defs/goalkeeperRatings"
+				},
 				"playStats": { "$ref": "#/$defs/playStats" },
 				"photo": {
 					"$comment": "A path inside the API folder. Absent when there is no licensed photo.",
@@ -88,13 +95,16 @@
 				"nationalTeamCode",
 				"position",
 				"tier",
-				"ratings",
 				"playStats"
-			]
+			],
+			"dependentRequired": { "givenName": ["familyName"], "familyName": ["givenName"] },
+			"if": { "properties": { "position": { "const": "GOALKEEPER" } } },
+			"then": { "required": ["goalkeeperRatings"], "not": { "required": ["outfieldRatings"] } },
+			"else": { "required": ["outfieldRatings"], "not": { "required": ["goalkeeperRatings"] } }
 		},
 		"rating": { "$comment": "A whole number.", "type": "integer", "minimum": 1, "maximum": 99 },
-		"ratings": {
-			"title": "Ratings",
+		"outfieldRatings": {
+			"title": "OutfieldRatings",
 			"type": "object",
 			"properties": {
 				"pace": { "$ref": "#/$defs/rating" },
@@ -102,9 +112,28 @@
 				"passing": { "$ref": "#/$defs/rating" },
 				"dribbling": { "$ref": "#/$defs/rating" },
 				"defending": { "$ref": "#/$defs/rating" },
-				"power": { "$ref": "#/$defs/rating" }
+				"physical": {
+					"description": "Strength, stamina and jumping.",
+					"$ref": "#/$defs/rating"
+				}
 			},
-			"required": ["pace", "shooting", "passing", "dribbling", "defending", "power"]
+			"required": ["pace", "shooting", "passing", "dribbling", "defending", "physical"]
+		},
+		"goalkeeperRatings": {
+			"title": "GoalkeeperRatings",
+			"type": "object",
+			"properties": {
+				"diving": { "description": "Reaching a shot with a dive.", "$ref": "#/$defs/rating" },
+				"handling": { "description": "Catching and holding the ball.", "$ref": "#/$defs/rating" },
+				"kicking": { "description": "Kicking the ball far and true.", "$ref": "#/$defs/rating" },
+				"reflexes": { "description": "Reacting to a close shot.", "$ref": "#/$defs/rating" },
+				"speed": { "description": "Running off the goal line.", "$ref": "#/$defs/rating" },
+				"positioning": {
+					"description": "Standing in the right place for a shot.",
+					"$ref": "#/$defs/rating"
+				}
+			},
+			"required": ["diving", "handling", "kicking", "reflexes", "speed", "positioning"]
 		},
 		"playStats": {
 			"title": "PlayStats",

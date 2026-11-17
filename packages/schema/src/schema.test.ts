@@ -20,6 +20,15 @@ const GENERATE_OPTIONS = {
 } as const;
 
 const SOURCE = { source: 'Invented Football Almanac', asOf: '2026-01-31' };
+const OUTFIELD_RATINGS = {
+	...{ pace: 80, shooting: 70, passing: 60 },
+	...{ dribbling: 75, defending: 40, physical: 65 }
+};
+const GOALKEEPER_RATINGS = {
+	...{ diving: 82, handling: 77, kicking: 61 },
+	...{ reflexes: 85, speed: 48, positioning: 79 }
+};
+const PLAY_STATS = { attack: 74, defence: 50, control: 67 };
 
 /** An invented player with only the fields the schema requires. */
 function aPlayer(overrides: Record<string, unknown> = {}): Record<string, unknown> {
@@ -31,22 +40,40 @@ function aPlayer(overrides: Record<string, unknown> = {}): Record<string, unknow
 		position: 'FORWARD',
 		tier: 'BASE',
 		updateTime: '2026-11-16T12:06:57Z',
-		ratings: { pace: 80, shooting: 70, passing: 60, dribbling: 75, defending: 40, power: 65 },
-		playStats: { attack: 74, defence: 50, control: 67 },
+		outfieldRatings: OUTFIELD_RATINGS,
+		playStats: PLAY_STATS,
 		...overrides
 	};
 }
 
-const withRating = (pace: unknown): Record<string, unknown> =>
-	aPlayer({
-		ratings: { pace, shooting: 70, passing: 60, dribbling: 75, defending: 40, power: 65 }
-	});
-const withPlayStat = (attack: unknown): Record<string, unknown> =>
-	aPlayer({ playStats: { attack, defence: 50, control: 67 } });
+const GOALKEEPER = {
+	position: 'GOALKEEPER',
+	outfieldRatings: undefined,
+	goalkeeperRatings: GOALKEEPER_RATINGS
+};
+
+/** One row for each rating and play stat: a valid player, the group and the field. */
+const STAT_FIELDS = [
+	...Object.keys(OUTFIELD_RATINGS).map((field) => [aPlayer(), 'outfieldRatings', field] as const),
+	...Object.keys(GOALKEEPER_RATINGS).map(
+		(field) => [aPlayer(GOALKEEPER), 'goalkeeperRatings', field] as const
+	),
+	...Object.keys(PLAY_STATS).map((field) => [aPlayer(), 'playStats', field] as const),
+	...Object.keys(PLAY_STATS).map((field) => [aPlayer(GOALKEEPER), 'playStats', field] as const)
+].map(([player, group, field]) => ({ player, group, field, stats: player[group] as object }));
+const withEachStatAs = (values: readonly unknown[]): (readonly [string, unknown, object])[] =>
+	STAT_FIELDS.flatMap(({ player, group, field, stats }) =>
+		values.map(
+			(value) =>
+				[`${group}.${field}`, value, { ...player, [group]: { ...stats, [field]: value } }] as const
+		)
+	);
 
 const PROPERTIES: Record<string, object> = {
 	...playerSchema.properties,
-	...playerSchema.$defs.playerSummary.properties
+	...playerSchema.$defs.playerSummary.properties,
+	...playerSchema.$defs.outfieldRatings.properties,
+	...playerSchema.$defs.goalkeeperRatings.properties
 };
 
 describe('player.schema.json', () => {
@@ -87,7 +114,6 @@ describe('player.schema.json', () => {
 	it.each([
 		['state', 'ACTIVE'],
 		['state', 'RETIRED'],
-		['position', 'GOALKEEPER'],
 		['position', 'DEFENDER'],
 		['position', 'MIDFIELDER'],
 		['position', 'FORWARD'],
@@ -104,22 +130,35 @@ describe('player.schema.json', () => {
 
 	it.each([
 		...['name', 'displayName', 'givenName', 'familyName', 'state', 'position', 'tier'],
-		...['nationalTeamCode', 'club', 'cardNumber', 'updateTime']
+		...['nationalTeamCode', 'club', 'cardNumber', 'updateTime'],
+		...['outfieldRatings', 'goalkeeperRatings', 'physical'],
+		...Object.keys(GOALKEEPER_RATINGS)
 	])('describes %s', (property) => {
 		expect(PROPERTIES[property]).toHaveProperty('description', expect.stringMatching(/\w/));
 	});
 
-	it.each([1, 50, 99])('accepts %s as a rating and as a play stat', (value) => {
-		expect(isValidPlayer(withRating(value)) && isValidPlayer(withPlayStat(value))).toBe(true);
+	it('accepts a goalkeeper with goalkeeper ratings and no outfield ratings', () => {
+		expect(isValidPlayer(aPlayer(GOALKEEPER))).toBe(true);
 	});
 
-	it.each([0, 100, 50.5, '50', null])('refuses %s as a rating and as a play stat', (value) => {
-		expect(isValidPlayer(withRating(value)) || isValidPlayer(withPlayStat(value))).toBe(false);
+	it.each(withEachStatAs([1, 99]))('accepts %s of %s', (_field, _value, player) => {
+		expect(isValidPlayer(player)).toBe(true);
+	});
+
+	it.each(withEachStatAs([0, 100, 50.5, '50', null]))(
+		'refuses %s of %s',
+		(_field, _value, player) => {
+			expect(isValidPlayer(player)).toBe(false);
+		}
+	);
+
+	it.each(withEachStatAs([undefined]))('refuses a player with no %s', (_field, _value, player) => {
+		expect(isValidPlayer(player)).toBe(false);
 	});
 
 	it.each([
 		...['name', 'displayName', 'state', 'nationalTeamCode', 'position', 'tier'],
-		...['ratings', 'playStats', 'updateTime']
+		...['outfieldRatings', 'playStats', 'updateTime']
 	])('refuses a player with no %s', (field) => {
 		expect(isValidPlayer(aPlayer({ [field]: undefined }))).toBe(false);
 	});
@@ -151,8 +190,16 @@ describe('player.schema.json', () => {
 		['an update time with an offset of +01:00', { updateTime: '2026-11-16T13:06:57+01:00' }],
 		['an update time with an offset of +00:00', { updateTime: '2026-11-16T12:06:57+00:00' }],
 		['an update time that is only a day', { updateTime: '2026-11-16' }],
-		['a missing rating', { ratings: { pace: 80 } }],
-		['a missing play stat', { playStats: { attack: 74, defence: 50 } }],
+		['a given name with no family name', { givenName: 'Tavi' }],
+		['a family name with no given name', { familyName: 'Brightwell' }],
+		['a goalkeeper with both rating groups', { ...GOALKEEPER, outfieldRatings: OUTFIELD_RATINGS }],
+		['a goalkeeper with outfield ratings only', { position: 'GOALKEEPER' }],
+		['a goalkeeper with neither rating group', { ...GOALKEEPER, goalkeeperRatings: undefined }],
+		['a forward with both rating groups', { goalkeeperRatings: GOALKEEPER_RATINGS }],
+		['a forward with goalkeeper ratings only', { ...GOALKEEPER, position: 'FORWARD' }],
+		['a defender with goalkeeper ratings only', { ...GOALKEEPER, position: 'DEFENDER' }],
+		['a midfielder with goalkeeper ratings only', { ...GOALKEEPER, position: 'MIDFIELDER' }],
+		['the old ratings group only', { outfieldRatings: undefined, ratings: OUTFIELD_RATINGS }],
 		['a null photo', { photo: null }],
 		['a photo on another host', { photo: 'https://photos.example/7.webp' }],
 		['null goals', { clubGoals: null }],
@@ -174,7 +221,8 @@ describe('players.schema.json', () => {
 	it.each([
 		['an empty list', []],
 		['a list of players', [aPlayer(), aPlayer({ name: 'players/mira-oakes', tier: 'LEGEND' })]],
-		['a summary with both names', [aPlayer({ givenName: 'Tavi', familyName: 'Brightwell' })]]
+		['a summary with both names', [aPlayer({ givenName: 'Tavi', familyName: 'Brightwell' })]],
+		['a goalkeeper', [aPlayer(GOALKEEPER)]]
 	])('accepts %s', (_rule, players) => {
 		expect(isValidPlayerList({ players })).toBe(true);
 	});
@@ -184,7 +232,12 @@ describe('players.schema.json', () => {
 		['null players', { players: null }],
 		['a player with a tier outside the three', { players: [aPlayer({ tier: 'EPIC' })] }],
 		['a player with a numeric id and no name', { players: [aPlayer({ id: 7, name: undefined })] }],
-		['a player with a rating of 100', { players: [withRating(100)] }]
+		[
+			'a player with a pace of 100',
+			{ players: [aPlayer({ outfieldRatings: { ...OUTFIELD_RATINGS, pace: 100 } })] }
+		],
+		['a goalkeeper with outfield ratings', { players: [aPlayer({ position: 'GOALKEEPER' })] }],
+		['a summary with a given name only', { players: [aPlayer({ givenName: 'Tavi' })] }]
 	])('refuses %s', (_rule, list) => {
 		expect(isValidPlayerList(list)).toBe(false);
 	});
