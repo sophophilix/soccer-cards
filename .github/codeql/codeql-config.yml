@@ -1,0 +1,15 @@
+# CodeQL configuration for `.github/workflows/analysis.yml`.
+name: soccer-cards
+
+# Generated files and build output are not ours to fix, so they are not
+# analysed. The schema types are generated from the JSON Schema files.
+paths-ignore:
+  - packages/schema/src/generated
+  - '**/node_modules'
+  - '**/build'
+  - '**/dist'
+  - '**/.svelte-kit'
+  - '**/.wrangler'
+  - '**/coverage'
+  - '**/playwright-report'
+  - '**/test-results'
