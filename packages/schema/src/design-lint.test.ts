@@ -3,7 +3,7 @@ import { lintSchemaDesign } from './design-lint.ts';
 
 const SCHEMAS = import.meta.glob('../schemas/v1/*.json', { eager: true, import: 'default' });
 const TEXT = { description: 'An invented field.', type: 'string' };
-const REMOTE = { $ref: 'https://a.example/x' };
+const REMOTE = { $ref: 'https://a.example/x.schema.json#/$defs/a' };
 const BAD = { type: 'null', ...REMOTE };
 const RESOURCE_NAME = { ...TEXT, pattern: '^players/[a-z][a-z0-9-]{0,62}$' };
 
@@ -98,8 +98,12 @@ describe('lintSchemaDesign', () => {
 	it.each([
 		['#/examples/0', { examples: [REMOTE] }],
 		['#/default/photo', { default: { photo: REMOTE } }],
-		['#/properties/photo/examples/1', withProperty('photo', { ...TEXT, examples: ['a', REMOTE] })]
-	])('reports a remote reference in the data at %s', (path, schema) => {
+		['#/properties/photo/examples/1', withProperty('photo', { ...TEXT, examples: ['a', REMOTE] })],
+		['#/properties', { properties: REMOTE }],
+		['#/$defs', { $defs: REMOTE }],
+		['#/items', { items: { $ref: 'shared.yaml#/$defs/a' } }],
+		['#/items', { items: { $ref: '../x.schema.json#/$defs/a' } }]
+	])('reports a reference that leaves the folder at %s', (path, schema) => {
 		expect(lintSchemaDesign(schema)).toEqual([{ path, rule: 'ref-outside-folder' }]);
 	});
 
@@ -109,6 +113,7 @@ describe('lintSchemaDesign', () => {
 		['a true property and a false one', { properties: { photo: true }, allOf: [false] }],
 		['a property named items', withProperty('items', { ...TEXT, items: TEXT })],
 		['a local reference in an example', { examples: [{ $ref: '#/$defs/photo' }] }],
+		['a test under not', { not: withProperty('name', { const: 'players/tavi' }) }],
 		['a schema that is not an object', true],
 		[
 			'a code in a pattern and an example',

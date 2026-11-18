@@ -21,8 +21,8 @@ const RESOURCE_NAME_PATTERN = /^\^[a-z][A-Za-z]*\/\[a-z\]\[a-z0-9-\]\{0,62\}\$$/
 // part of D4 rests on review.
 const BROKEN_SUFFIX_RULE =
 	/^(is|num|urls?|counts?)(?![a-z])|(Urls?|Counts?)(?=[A-Z])|(Urls?|Counts)$/;
-// A place under `$defs`, in this file or in a file beside it. No scheme and no folder.
-const REF_INSIDE_FOLDER = /^(\w[\w.-]*)?#\/\$defs\/.+$/;
+// A place under `$defs`, in this file or a schema file beside it. No scheme and no folder.
+const REF_INSIDE_FOLDER = /^(\w[\w.-]*\.schema\.json)?#\/\$defs\/.+$/;
 // Every keyword of JSON Schema 2020-12 that holds subschemas, and the older `definitions`.
 const CHILD_MAPS = ['properties', 'patternProperties', '$defs', 'definitions', 'dependentSchemas'];
 const CHILD_LISTS = ['allOf', 'anyOf', 'oneOf', 'prefixItems'];
@@ -37,7 +37,7 @@ const isObject = (value: unknown): value is Schema => typeof value === 'object' 
 const isText = (value: unknown, form: RegExp): boolean =>
 	typeof value === 'string' && form.test(value);
 const leavesFolder = ({ $ref }: Schema): boolean =>
-	$ref !== undefined && !isText($ref, REF_INSIDE_FOLDER);
+	typeof $ref === 'string' && !REF_INSIDE_FOLDER.test($ref);
 
 /** Each rule, with a test that is true when the schema at a place breaks it. */
 const RULES = [
@@ -61,21 +61,25 @@ const RULES = [
 	['ref-outside-folder', leavesFolder]
 ] as const satisfies readonly (readonly [string, (schema: Schema, name: string) => boolean])[];
 
+// The type generator follows a text `$ref` in any object, so a map of schemas is tested too.
+const reportRef = (data: unknown, path: string): DesignProblem[] =>
+	isObject(data) && leavesFolder(data) ? [{ path, rule: 'ref-outside-folder' }] : [];
+
 /** Finds a `$ref` in data, such as `examples` or `default`, which the type generator would still follow. */
 function findRefs(data: unknown, path: string): DesignProblem[] {
 	if (!isObject(data)) return [];
-	const here: DesignProblem[] = leavesFolder(data) ? [{ path, rule: 'ref-outside-folder' }] : [];
 	return [
-		...here,
+		...reportRef(data, path),
 		...Object.entries(data).flatMap(([key, value]) => findRefs(value, `${path}/${key}`))
 	];
 }
 
 function walkKeyword(key: string, value: unknown, { path, ignored }: Place): DesignProblem[] {
 	if ([...CHILD_MAPS, ...CHILD_LISTS].includes(key)) {
-		return Object.entries(isObject(value) ? value : {}).flatMap(([id, child]) =>
+		const children = Object.entries(isObject(value) ? value : {}).flatMap(([id, child]) =>
 			walk(child, { path: `${path}/${id}`, name: key === 'properties' ? id : '', ignored })
 		);
+		return [...reportRef(value, path), ...children];
 	}
 	if (!CHILD_SCHEMAS.includes(key)) return findRefs(value, path);
 	const rulesOff = CONDITIONS.includes(key) ? DEFINITION_RULES : ignored;
