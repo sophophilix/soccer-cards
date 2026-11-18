@@ -1,7 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { lintSchemaDesign } from './design-lint.ts';
 
-const SCHEMAS = import.meta.glob('../schemas/v1/*.json', { eager: true, import: 'default' });
+// Each file as text: a JSON import would turn a key named `__proto__` into a prototype.
+const SCHEMAS = import.meta.glob('../schemas/v1/*.json', { eager: true, query: '?raw' });
 const TEXT = { description: 'An invented field.', type: 'string' };
 const REMOTE = { $ref: 'https://a.example/x.schema.json#/$defs/a' };
 const BAD = { type: 'null', ...REMOTE };
@@ -103,6 +104,7 @@ describe('lintSchemaDesign', () => {
 		['#/properties/photo/examples/1', withProperty('photo', { ...TEXT, examples: ['a', REMOTE] })],
 		['#/properties', { properties: REMOTE }],
 		['#/$defs', { $defs: REMOTE }],
+		['#/__proto__', JSON.parse('{ "__proto__": { "$ref": "https://a.example/x" } }') as object],
 		['#/items', { items: { $ref: 'shared.yaml#/$defs/a' } }],
 		['#/items', { items: { $ref: '../x.schema.json#/$defs/a' } }]
 	])('reports a reference that leaves the folder at %s', (path, schema) => {
@@ -157,7 +159,7 @@ describe('the schemas in schemas/v1', () => {
 		]);
 	});
 
-	it.each(Object.entries(SCHEMAS))('%s breaks no design rule', (_file, schema) => {
-		expect(lintSchemaDesign(schema)).toEqual([]);
+	it.each(Object.entries(SCHEMAS))('%s breaks no design rule', (_file, { default: text }) => {
+		expect(lintSchemaDesign(JSON.parse(text))).toEqual([]);
 	});
 });
