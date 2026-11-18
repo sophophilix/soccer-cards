@@ -9,7 +9,7 @@ paths:
   - apps/web/tests/a11y/**
 dependencies: []
 max_changed_lines: 120
-status: ready
+status: done
 ---
 
 ## Goal
