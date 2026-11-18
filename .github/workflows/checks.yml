@@ -83,8 +83,13 @@ jobs:
         with:
           persist-credentials: false
       # The image has no make. apt checks the package against the SHA-256 in
-      # Ubuntu's signed index.
-      - run: apt-get update && apt-get install -y --no-install-recommends make=4.3-4.1build2
+      # Ubuntu's signed index. The image also keeps NodeSource's apt source,
+      # which apt reads first and would trust for make too. Remove it, so
+      # Ubuntu is the only publisher. Node comes from setup-node below.
+      - run: |
+          rm -f /etc/apt/sources.list.d/nodesource.list
+          apt-get update
+          apt-get install -y --no-install-recommends make=4.3-4.1build2
       - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
       # The image has its own Node. The gate uses the repository's version.
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
