@@ -20,7 +20,12 @@ can't drift from the schema. This is check 3 of ADR 0005 D10.
 ## Context
 
 - `docs/decisions/0005-api-and-schema-design.md`, D10.
-- Runs after T-0012.
+- Runs after T-0012, T-0025 and T-0028.
+- T-0025 pinned the links: a photo's `sourceUri` is a
+  `https://commons.wikimedia.org/wiki/File:...` page, and a fact's
+  `sourceUri` is an `https` link on a host of two labels or more.
+- `packages/schema/src/schema.test.ts` is at 386 of its 400-line lint
+  limit. Put this task's tests in a new test file.
 - Aim for about 120 changed lines. The limit is 160.
 
 ## Acceptance criteria

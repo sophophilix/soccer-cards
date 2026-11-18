@@ -33,8 +33,11 @@ under `additionalProperties` passes, and the type generator would fetch it.
   `additionalProperties`, `patternProperties`, `prefixItems`, `contains`,
   `dependentSchemas`, `propertyNames`, `unevaluatedProperties`,
   `unevaluatedItems` and the older `definitions`.
-- A `$ref` that isn't a local `#/$defs/...` pointer is reported wherever it
-  appears in the document, including inside `examples` and `default`.
+- A `$ref` must point under `$defs`, in the same file or in a
+  `.schema.json` file beside it. Any other `$ref` is reported wherever it
+  appears in the document, including inside `examples` and `default`. (The
+  first wording allowed only a local pointer, which
+  `players.schema.json` can't meet. Reworded on 2026-11-18.)
 - `photoUrls` and `urls` are reported, as `url` already is.
 - A comment says the count rule can't catch a count named without the
   word, such as `clubGoals`, so that part of D4 rests on review.
