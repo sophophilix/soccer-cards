@@ -150,3 +150,10 @@ describe('checkCardSet', () => {
 		expect(result).toEqual({ ok: false, reason: 'repeated-card-id', cardId: 'a' });
 	});
 });
+
+describe('toCardId', () => {
+	it('refuses an empty or blank id', () => {
+		expect(() => toCardId('')).toThrow(RangeError);
+		expect(() => toCardId('  ')).toThrow(RangeError);
+	});
+});

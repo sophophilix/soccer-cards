@@ -1,6 +1,6 @@
 import type { CardId, CheckedCardSet } from './cards.ts';
 import { drawPack } from './draw-pack.ts';
-import type { PackKind } from './packs.ts';
+import type { PackKind } from './draw-pack.ts';
 import type { Random } from './random.ts';
 
 /** The version of the player state's shape. A change of shape raises it. */

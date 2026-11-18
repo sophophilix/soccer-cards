@@ -1,7 +1,9 @@
 import { TIERS } from './cards.ts';
 import type { CardId, CheckedCardSet, Tier } from './cards.ts';
-import type { PackKind } from './packs.ts';
 import type { Random } from './random.ts';
+
+/** The packs a player can open. */
+export type PackKind = 'standard' | 'jumbo';
 
 type LuckyTier = Exclude<Tier, 'base'>;
 
