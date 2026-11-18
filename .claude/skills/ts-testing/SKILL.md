@@ -46,13 +46,17 @@ test, not an end-to-end test.
 
 Write these as properties, with the seed as an input:
 
-- A standard pack has exactly 7 base, 2 rare and 1 legend. A jumbo pack has
-  15, 3 and 2. No card repeats within a pack.
+- A standard pack has exactly 8 base cards then 2 lucky cards. A jumbo pack
+  has 40 then 10. A lucky card is a rare, a legend or an icon, and the
+  lucky cards run from rare to icon.
+- A base card repeats within a pack only when the set has fewer base cards
+  than the pack needs.
 - The same seed gives the same pack.
 - A trade returns a different card of the same tier, and the collection's
   size doesn't change.
-- A battle's score is the sum of each side's totals, and the winner has the
-  higher score.
+- A match's score is the count of its goal moments for each side, and a
+  match that ends level is settled on penalties, so it always has a winner.
+- A win never lowers the player's coins or division.
 - Coins never go below zero, and a refused purchase changes nothing.
 - Saving and loading player state gives back the same state, for every
   version that has a migration.
@@ -72,8 +76,9 @@ Each runs on a phone-sized and a desktop-sized project.
 1. First visit: two free packs, 20 cards in the collection.
 2. Open a pack, add the cards, find them in the collection and the guide.
 3. Trade a double. Try to trade a favourite and get refused.
-4. Pick 11, battle, win, earn 5 coins, buy a pack.
-5. Buy a jumbo pack with 10 coins.
+4. Pick 11, a formation and a tactic, play a match to the end, and see the
+   division's coins added after a win.
+5. Buy a pack with 5 coins and a jumbo pack with 20 coins.
 6. Reload and find the same collection. Go offline and reload.
 7. Use every view with the keyboard only.
 
