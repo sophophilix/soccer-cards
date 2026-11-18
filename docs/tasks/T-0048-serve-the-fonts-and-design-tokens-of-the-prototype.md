@@ -8,6 +8,7 @@ paths:
   - apps/web/src/app.css
   - apps/web/src/lib/ui/**
   - apps/web/package.json
+  - knip.json
   - apps/web/static/_headers
   - apps/web/tests/**
   - pnpm-lock.yaml
@@ -38,6 +39,10 @@ the three fonts of the approved prototype load from the site's own domain.
   on the registry before adding it, and that it is older than
   `minimumReleaseAge`. If a name above is wrong, stop and tell the lead.
 - `THIRD_PARTY.md` lists what the site ships that others made.
+- Knip sees the font packages as unused, because only a stylesheet names
+  them. `knip.json` tells it to ignore the two Fontsource scopes for the
+  `apps/web` workspace. The first run of this task stopped there. Don't
+  add a script import of a font package to quiet Knip.
 - The lockfile is written by pnpm and is not counted by the kit.
 - Aim for about 180 changed lines without the lockfile. The limit is 300.
 
