@@ -11,6 +11,8 @@ paths:
   - packages/game/src/random.ts
   - packages/game/src/random.test.ts
   - packages/game/src/random.property.test.ts
+  - packages/game/src/testing/**
+  - packages/game/src/trade.test.ts
   - packages/game/src/index.ts
 dependencies: []
 max_changed_lines: 300
@@ -30,6 +32,9 @@ the team matter, not just a total.
 - Runs after T-0037.
 - `Random` has no way to roll a probability. This task adds one method to
   it for that.
+- `trade.test.ts` builds two `Random` stubs by hand, so a new method stops
+  it compiling. Give the stubs the new method, or move them to a helper in
+  `testing/`. No trade test changes its meaning.
 - The match is pure: it takes two sides and a `Random` and returns the
   whole result. Timing and commentary text belong to the web app.
 - Aim for about 200 changed lines. The limit is 300.
