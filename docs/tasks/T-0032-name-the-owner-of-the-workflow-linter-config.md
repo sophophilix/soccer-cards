@@ -9,7 +9,7 @@ paths:
   - .github/workflows/analysis.yml
 dependencies: []
 max_changed_lines: 20
-status: ready
+status: done
 ---
 
 ## Goal

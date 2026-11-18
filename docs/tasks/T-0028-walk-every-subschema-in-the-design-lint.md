@@ -9,7 +9,7 @@ paths:
   - packages/schema/src/design-lint.test.ts
 dependencies: []
 max_changed_lines: 120
-status: ready
+status: done
 ---
 
 ## Goal
