@@ -36,8 +36,8 @@ jobs:
           config-file: ./.github/codeql/codeql-config.yml
       - id: analyze
         uses: github/codeql-action/analyze@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
-      # The upload alone never fails the job. This step does, so a finding
-      # stops a pull request even where the results can't be uploaded.
+      # The upload alone never fails the job. This step counts the results
+      # in the SARIF files and fails the job when CodeQL reports any.
       - name: Fail on a finding
         env:
           SARIF_DIR: ${{ steps.analyze.outputs.sarif-output }}

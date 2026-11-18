@@ -24,8 +24,11 @@
 
 # The files that waive a scanner finding. Some of them don't exist yet.
 # gitleaks loads its two from a pull request's own tree, so the owner line
-# must exist before the file does.
+# must exist before the file does. zizmor loads its configuration the same
+# way, from the repository root or from .github/, which is owned above.
 /osv-scanner.toml @sophophilix
 /.gitleaks.toml @sophophilix
 /.gitleaksignore @sophophilix
+/zizmor.yml @sophophilix
+/zizmor.yaml @sophophilix
 /docs/security/accepted-advisories.md @sophophilix
