@@ -20,7 +20,9 @@ const GENERATE_OPTIONS = {
 } as const;
 
 const SOURCED = { sourceUri: 'https://almanac.example/tavi', retrieveDate: '2026-01-31' };
-const CREDIT = { author: 'Ina Vented', licenseCode: 'CC-BY-4.0', sourceUri: 'https://a.example' };
+const COMMONS = 'https://commons.wikimedia.org/wiki/File:';
+const SITE = 'https://almanac.example/';
+const CREDIT = { author: 'Ina Vented', licenseCode: 'CC-BY-4.0', sourceUri: `${COMMONS}Tavi.jpg` };
 const PHOTO = { uri: 'photos/tavi.webp', widthPx: 600, heightPx: 800, mimeType: 'image/webp' };
 const FACTS = {
 	clubGoalCount: { value: 12, ...SOURCED },
@@ -39,6 +41,9 @@ function facts(path: string, value: unknown, node: unknown = FACTS): object {
 const FACT_FIELDS = Object.entries({ ...FACTS, 'photo.attribution': CREDIT }).flatMap(
 	([kind, fact]) => Object.keys([fact].flat()[0] ?? {}).map((field) => `${kind}.${field}`)
 );
+const source = (uri: string): object => facts('awards.sourceUri', uri);
+const photoSource = (uri: string): object => facts('photo.attribution.sourceUri', uri);
+const author = (text: string): object => facts('photo.attribution.author', text);
 const licences = (rule: string, codes: string): [string, object][] =>
 	codes.split(' ').map((code) => [`${rule} ${code}`, facts('photo.attribution.licenseCode', code)]);
 const OUTFIELD_RATINGS = {
@@ -145,6 +150,14 @@ describe('player.schema.json', () => {
 		['an update time with a fraction of a second', { updateTime: '2026-11-16T12:06:57.5Z' }],
 		['nanos of 999,999,999', facts('transferFee.nanos', 999_999_999)],
 		['a retrieve date of 2026-02-30', facts('awards.retrieveDate', '2026-02-30')],
+		['a source with a port', source('https://almanac.example:8443/tavi')],
+		['a source with a query and a fragment', source(`${SITE}tavi?season=2025#goals`)],
+		['a source on an xn-- host', source('https://xn--mnchen-3ya.example/')],
+		['a source of 2,048 characters', source(SITE.padEnd(2048, 'a'))],
+		['a Commons file name', photoSource(`${COMMONS}Tavi_Brightwell_(2025)_caf%C3%A9.jpg`)],
+		['a photo source of 2,048 characters', photoSource(COMMONS.padEnd(2048, 'a'))],
+		['an author with accents', author('Zoë Árvíztűrő')],
+		['an author of 200 characters', author('a'.repeat(200))],
 		...licences('the licence', 'CC0-1.0 CC-PDM-1.0 CC-BY-1.0 CC-BY-2.5-AU CC-BY-3.0-US CC-BY-4.0'),
 		...licences('the licence', 'CC-BY-SA-2.0-UK CC-BY-SA-2.1-JP CC-BY-SA-3.0-IGO CC-BY-SA-4.0')
 	])('accepts %s', (_rule, overrides) => {
@@ -242,11 +255,26 @@ describe('player.schema.json', () => {
 		['a midfielder with goalkeeper ratings only', { ...GOALKEEPER, position: 'MIDFIELDER' }],
 		['the old ratings group only', { outfieldRatings: undefined, ratings: OUTFIELD_RATINGS }],
 		['a null photo', { photo: null }],
-		['a photo on another host', { photo: 'https://photos.example/7.webp' }],
+		['a photo on another host', facts('photo.uri', 'https://photos.example/7.webp')],
 		['a photo address with a scheme', facts('photo.uri', 'http://photos.example/7.webp')],
 		['a photo address with a host', facts('photo.uri', '//photos.example/7.webp')],
 		['a photo zero pixels wide', facts('photo.widthPx', 0)],
-		['a photo source over plain http', facts('photo.attribution.sourceUri', 'http://a.example')],
+		['a photo source over plain http', photoSource(COMMONS.replace('https', 'http') + 'Tavi.jpg')],
+		['a photo source on another host', photoSource('https://evil.example/wiki/File:X.jpg')],
+		['a photo source after userinfo', photoSource(COMMONS.replace('/wiki', '@evil.example/wiki'))],
+		[
+			'a photo source on a longer host',
+			photoSource(COMMONS.replace('/wiki', '.evil.example/wiki'))
+		],
+		['a photo source with no file name', photoSource(COMMONS)],
+		['a photo source with a space', photoSource(`${COMMONS}Tavi Brightwell.jpg`)],
+		['a photo source with a query', photoSource(`${COMMONS}Tavi.jpg?uselang=fr`)],
+		['a photo source of 2,049 characters', photoSource(COMMONS.padEnd(2049, 'a'))],
+		['an author with a tag', author('<a href="https://evil.example">Ina</a>')],
+		['an author with a closing bracket', author('Ina > Vented')],
+		['an author with a line break', author('Ina\nVented')],
+		['an author with an escape character', author('Ina\u001bVented')],
+		['an author of 201 characters', author('a'.repeat(201))],
 		...licences('the licence', 'CC-BY-NC-4.0 CC-BY-ND-4.0 CC-BY-NC-SA-4.0 CC-PDDC CC-BY-5.0'),
 		...licences('the licence', 'CC-BY-SA CC-BY-SA-2.1 CC-BY-4.0-AU cc-by-4.0 MIT'),
 		['null awards', { awards: null }],
@@ -256,12 +284,50 @@ describe('player.schema.json', () => {
 		['nanos below zero', facts('transferFee.nanos', -1)],
 		['nanos of 1,000,000,000', facts('transferFee.nanos', 1_000_000_000)],
 		['club goals below zero', facts('clubGoalCount.value', -1)],
-		['a source over plain http', facts('awards.sourceUri', 'http://almanac.example/tavi')],
+		['a source over plain http', source('http://almanac.example/tavi')],
+		['a source with userinfo', source('https://user:pass@evil.example/')],
+		['a source with a backslash', source('https://almanac.example\\@evil.example/')],
+		['a source with a control character', source(`${SITE}\u0000`)],
+		['a source with a space', source(`${SITE}tavi brightwell`)],
+		['a source with a bidirectional override', source(`${SITE}\u202Egpj.exe`)],
+		['a source with a zero-width character', source('https://alma\u200Bnac.example/')],
+		['a source with an empty host', source('https://@')],
+		['a source with nothing after the scheme', source('https://')],
+		['a source with an empty host label', source('https://almanac..example/')],
+		['a source on a host with an accent', source('https://münchen.example/')],
+		['a source of 2,049 characters', source(SITE.padEnd(2049, 'a'))],
+		['a null club goal count', { clubGoalCount: null }],
+		['a null national team goal count', { nationalTeamGoalCount: null }],
 		['a retrieve date that is not a date', facts('clubGoalCount.retrieveDate', 'last May')],
 		['a career start year with a fraction', { careerStartYear: 2019.5 }],
 		['a null career end year', { careerEndYear: null }]
 	])('refuses %s', (_rule, overrides) => {
 		expect(isValidPlayer(aPlayer(overrides))).toBe(false);
+	});
+
+	it.each([
+		['a source', source(`${SITE}${'a'.repeat(200_000)} `)],
+		['a source host', source(`https://${'a.'.repeat(100_000)} `)],
+		['a source port', source(`https://a${':1'.repeat(100_000)}`)],
+		['a source path', source(`${SITE}${'?#'.repeat(100_000)}\\`)],
+		['a photo source', photoSource(`${COMMONS}${'a'.repeat(200_000)} `)],
+		['an author', author(`${'a'.repeat(200_000)}<`)]
+	])('refuses %s of 200,000 characters in under 50 ms', (_rule, overrides) => {
+		const player = aPlayer(overrides);
+		isValidPlayer(aPlayer());
+		const startMs = Date.now();
+		const isValid = isValidPlayer(player);
+		expect([isValid, Date.now() - startMs < 50]).toEqual([false, true]);
+	});
+
+	it('says that the author is plain text', () => {
+		const { description } = playerSchema.$defs.attribution.properties.author;
+		expect(description).toContain('plain text');
+	});
+
+	it('compiles when every keyword must state its type', () => {
+		const strict = new Ajv2020({ strictTypes: true }).addSchema(playersSchema);
+		expect(() => strict.compile(playerSchema)).not.toThrow();
 	});
 });
 
