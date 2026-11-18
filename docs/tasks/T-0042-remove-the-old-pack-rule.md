@@ -7,6 +7,7 @@ agent: web-implementer
 paths:
   - packages/game/src/packs.ts
   - packages/game/src/packs.test.ts
+  - packages/game/src/cards.test.ts
   - packages/game/src/draw-pack.ts
   - packages/game/src/state.ts
   - packages/game/src/trade.ts
@@ -38,7 +39,10 @@ is deleted now that nothing uses it.
 - `index.ts` no longer exports `openPack`, `packMix`, the mixes, the old
   size constants, `PackMix` or `OpenPackResult`. It still exports
   `PackKind`.
-- No behaviour changes: every remaining test passes with no edit.
+- `packs.test.ts` also holds the only test that `toCardId` refuses an
+  empty or blank id. That test moves to `cards.test.ts`, unchanged in
+  meaning, so the refusal stays covered.
+- No behaviour changes: every other remaining test passes with no edit.
 - Knip reports no unused export in `packages/game`.
 - `make check COMPONENT=game` passes, with coverage still over its
   thresholds.
