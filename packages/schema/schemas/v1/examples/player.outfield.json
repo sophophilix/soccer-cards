@@ -8,6 +8,7 @@
 	"nationalTeamCode": "ENG",
 	"position": "FORWARD",
 	"tier": "RARE",
+	"cardTitle": "Speedster",
 	"cardNumber": 9,
 	"outfieldRatings": {
 		"pace": 88,
@@ -17,7 +18,7 @@
 		"defending": 38,
 		"physical": 67
 	},
-	"playStats": { "attack": 86, "defence": 45, "control": 79 },
+	"playStats": { "attack": 86, "defence": 45, "control": 79, "overall": 84 },
 	"photo": {
 		"uri": "photos/tavi-brightwell.webp",
 		"widthPx": 600,
