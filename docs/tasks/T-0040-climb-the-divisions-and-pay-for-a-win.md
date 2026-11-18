@@ -27,7 +27,8 @@ where the computer's team is stronger and the prize is bigger.
 
 - `prototype/soccer-cards-prototype.html`: `DIVISIONS`, `WINS_TO_GO_UP`,
   `aiSide`, `endBattle` and the `fresh` state.
-- Runs after T-0036, T-0037, T-0038 and T-0039.
+- Runs after T-0042, T-0037, T-0038 and T-0039. The computer opens its
+  packs with `drawPack`.
 - `packages/game/src/state.ts`: `PlayerState` and `STATE_VERSION`. No
   saved state exists outside tests yet, so the version goes up with no
   migration.
