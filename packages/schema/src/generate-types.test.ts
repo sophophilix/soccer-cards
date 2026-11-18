@@ -63,6 +63,16 @@ describe('compileSchemaTypes', () => {
 		expect(result).toMatch(/^(?!.*secretToken).*Unable to resolve.*link\.schema\.json/s);
 	});
 
+	it('refuses a schema file that is itself a symbolic link, and writes no types', async () => {
+		const folder = await aSchemaFolder({ '../secret.json': SECRET });
+		await symlink(path.join(folder, '../secret.json'), path.join(folder, 'root.schema.json'));
+		const result = await writeGeneratedTypes(folder, folder).catch(String);
+		expect([result, await readdir(folder)]).toEqual([
+			expect.stringMatching(/^(?!.*secretToken).*symbolic link.*root\.schema\.json/s),
+			['root.schema.json']
+		]);
+	});
+
 	it.each([
 		['in a folder with a space and an accent', 'café v1-', 'kit.schema.json', 'kit.schema.json'],
 		['with a percent sign in its name', 'v1-', '50%.schema.json', '50%25.schema.json'],

@@ -14,14 +14,18 @@ function toFilePath(url: string): string {
 }
 
 /** Compiles one schema file to TypeScript types. It reads only schema files beside that file. */
-export function compileSchemaTypes(schemaPath: string): Promise<string> {
+export async function compileSchemaTypes(schemaPath: string): Promise<string> {
 	const folder = path.resolve(path.dirname(schemaPath));
+	// A link could point outside the folder, so only a plain file is read.
+	const isLink = (file: string): boolean =>
+		lstatSync(file, { throwIfNoEntry: false })?.isSymbolicLink() ?? false;
 	const isBesideSchema = ({ url }: { url: string }): boolean => {
 		const file = toFilePath(url);
-		const isNamedBeside = path.dirname(file) === folder && file.endsWith(SCHEMA_SUFFIX);
-		// A link could point outside the folder, so only a plain file is read.
-		return isNamedBeside && !lstatSync(file, { throwIfNoEntry: false })?.isSymbolicLink();
+		return path.dirname(file) === folder && file.endsWith(SCHEMA_SUFFIX) && !isLink(file);
 	};
+	if (isLink(schemaPath)) {
+		throw new Error(`Refused to read a symbolic link as a schema file: ${schemaPath}`);
+	}
 	return compileFromFile(schemaPath, {
 		additionalProperties: false,
 		bannerComment: BANNER,
