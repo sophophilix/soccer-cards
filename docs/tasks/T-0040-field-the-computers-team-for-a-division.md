@@ -23,7 +23,7 @@ division: it opens more packs and fields the best 11 it finds.
 ## Context
 
 - `prototype/soccer-cards-prototype.html`: `DIVISIONS` and `aiSide`.
-- Runs after T-0042, T-0037 and T-0038. The computer opens its packs with
+- Runs after T-0042, T-0037 and T-0038, which exports the tactic ids. The computer opens its packs with
   `drawPack`, picks its team with `bestTeam`, and chooses from the
   formations of T-0037 and the tactics of T-0038.
 - Split in two: this task is the divisions table and the computer's side.

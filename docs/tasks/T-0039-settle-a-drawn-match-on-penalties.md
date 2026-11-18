@@ -23,7 +23,7 @@ for each kick and each dive. A match always has a winner.
 ## Context
 
 - `prototype/soccer-cards-prototype.html`: `askPen` and `takePen`.
-- Runs after T-0038.
+- Runs after T-0055.
 - A shoot-out is a small state that one kick moves forward. The player's
   choice of corner comes in as an argument; the other side's comes from
   `Random`.
