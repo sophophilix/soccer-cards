@@ -1,11 +1,76 @@
 import { describe, expect, it } from 'vitest';
-import { checkCardSet, toCardId } from './index.ts';
+import { POSITIONS, TIERS, checkCardSet, toCardId } from './index.ts';
 import type { Card } from './index.ts';
 import { aCard, aCardSet } from './testing/cards.ts';
 
 const cardWithId = (id: string): Card => aCard({ id: toCardId(id) });
+// A value from outside the type system, as a broken data file would hold.
+const cardFromData = (fields: Readonly<Record<string, unknown>>): Card =>
+	Object.assign(aCard({ id: toCardId('odd-one') }), fields);
+
+describe('TIERS and POSITIONS', () => {
+	it('lists the tiers from least to most rare', () => {
+		expect(TIERS).toEqual(['base', 'rare', 'legend', 'icon']);
+	});
+
+	it('lists the positions in the order a line-up shows them', () => {
+		expect(POSITIONS).toEqual(['FW', 'MF', 'DF', 'GK']);
+	});
+});
 
 describe('checkCardSet', () => {
+	it.each([
+		{ field: 'tier', fields: { tier: 'mythic' } },
+		{ field: 'position', fields: { position: 'ST' } },
+		{ field: 'position', fields: { position: 'gk' } },
+		{ field: 'overall', fields: { overall: 0 } },
+		{ field: 'overall', fields: { overall: 100 } },
+		{ field: 'overall', fields: { overall: 84.5 } },
+		{ field: 'overall', fields: { overall: Number.NaN } },
+		{ field: 'overall', fields: { overall: '84' } }
+	])('refuses a card with $fields and names the card and the $field', ({ field, fields }) => {
+		const cards = [cardWithId('fine'), cardFromData(fields)];
+
+		const result = checkCardSet(cards);
+
+		expect(result).toEqual({ ok: false, reason: 'invalid-card-field', cardId: 'odd-one', field });
+	});
+
+	it.each([{ overall: 1 }, { overall: 99 }])('accepts a card with $overall', (fields) => {
+		const cards = [aCard(fields)];
+
+		const result = checkCardSet(cards);
+
+		expect(result).toEqual({ ok: true, value: cards });
+	});
+
+	it('accepts a card of every tier and every position', () => {
+		const cards = [
+			aCard({ id: toCardId('a'), tier: 'base', position: 'GK' }),
+			aCard({ id: toCardId('b'), tier: 'rare', position: 'DF' }),
+			aCard({ id: toCardId('c'), tier: 'legend', position: 'MF' }),
+			aCard({ id: toCardId('d'), tier: 'icon', position: 'FW' })
+		];
+
+		const result = checkCardSet(cards);
+
+		expect(result).toEqual({ ok: true, value: cards });
+	});
+
+	it('accepts a card set with no Icon', () => {
+		const cards = aCardSet({ base: 2, rare: 1, legend: 1, icon: 0 });
+
+		const result = checkCardSet(cards);
+
+		expect(result).toEqual({ ok: true, value: cards });
+	});
+
+	it('builds Icon cards in the test helper when asked', () => {
+		const cards = aCardSet({ base: 1, rare: 0, legend: 0, icon: 2 });
+
+		expect(cards.map((card) => card.tier)).toEqual(['base', 'icon', 'icon']);
+	});
+
 	it('returns the same cards when every id appears once', () => {
 		const cards = aCardSet({ base: 3, rare: 2, legend: 1 });
 

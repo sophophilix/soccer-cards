@@ -208,12 +208,12 @@ describe('openPack', () => {
 
 describe('pack constants', () => {
 	it('state a standard pack as 7 base, 2 rare and 1 legend, 10 in all', () => {
-		expect(STANDARD_PACK_MIX).toEqual({ base: 7, rare: 2, legend: 1 });
+		expect(STANDARD_PACK_MIX).toEqual({ base: 7, rare: 2, legend: 1, icon: 0 });
 		expect(STANDARD_PACK_SIZE).toBe(10);
 	});
 
 	it('state a jumbo pack as 15 base, 3 rare and 2 legend, 20 in all', () => {
-		expect(JUMBO_PACK_MIX).toEqual({ base: 15, rare: 3, legend: 2 });
+		expect(JUMBO_PACK_MIX).toEqual({ base: 15, rare: 3, legend: 2, icon: 0 });
 		expect(JUMBO_PACK_SIZE).toBe(20);
 	});
 });

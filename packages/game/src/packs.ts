@@ -9,9 +9,14 @@ export type PackKind = 'standard' | 'jumbo';
 export type PackMix = Readonly<Record<Tier, number>>;
 
 /** The mix of a standard pack. */
-export const STANDARD_PACK_MIX = { base: 7, rare: 2, legend: 1 } as const satisfies PackMix;
+export const STANDARD_PACK_MIX = {
+	base: 7,
+	rare: 2,
+	legend: 1,
+	icon: 0
+} as const satisfies PackMix;
 /** The mix of a jumbo pack. */
-export const JUMBO_PACK_MIX = { base: 15, rare: 3, legend: 2 } as const satisfies PackMix;
+export const JUMBO_PACK_MIX = { base: 15, rare: 3, legend: 2, icon: 0 } as const satisfies PackMix;
 /** The number of cards in a standard pack. */
 export const STANDARD_PACK_SIZE = 10;
 /** The number of cards in a jumbo pack. */
