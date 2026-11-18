@@ -28,7 +28,8 @@ site lets a child follow.
   frozen at the first deploy. This task must merge before then.
 - `packages/schema/schemas/v1/player.schema.json`: `httpsUri`,
   `photoAttribution`, `goalCount`, `transferFee` and `award`.
-- Runs before T-0012 and T-0013, which change the same files.
+- Runs after T-0012, so the design lint already checks the schema, and
+  before T-0013, whose examples must use the links this task allows.
 - Aim for about 130 changed lines. The limit is 200.
 
 ## Acceptance criteria
