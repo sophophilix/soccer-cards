@@ -58,7 +58,7 @@ const RULES = [
 		({ enum: values }) =>
 			Array.isArray(values) && !values.every((value) => isText(value, UPPER_SNAKE_CASE))
 	],
-	['ref-outside-folder', leavesFolder]
+	['ref-outside-folder', ({ $ref }) => $ref !== undefined && !isText($ref, REF_INSIDE_FOLDER)]
 ] as const satisfies readonly (readonly [string, (schema: Schema, name: string) => boolean])[];
 
 // The type generator follows a text `$ref` in any object, so a map of schemas is tested too.

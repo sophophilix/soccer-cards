@@ -40,6 +40,8 @@ describe('lintSchemaDesign', () => {
 		['name-breaks-suffix-rule', 'urls at the end', 'photoUrls', TEXT],
 		['name-breaks-suffix-rule', 'urls alone', 'urls', TEXT],
 		['ref-outside-folder', 'a whole file', 'photo', { ...TEXT, $ref: 'x.schema.json' }],
+		['ref-outside-folder', 'a reference that is not text', 'photo', { ...TEXT, $ref: 5 }],
+		['ref-outside-folder', 'a pointer outside $defs', 'photo', { ...TEXT, $ref: '#/properties/a' }],
 		['ref-outside-folder', 'a remote reference', 'photo', { ...TEXT, $ref: 'https://a.example/x' }],
 		['ref-outside-folder', 'a parent folder', 'photo', { ...TEXT, $ref: '../x.schema.json#/a' }]
 	])('reports %s for %s', (rule, _case, name, property) => {
