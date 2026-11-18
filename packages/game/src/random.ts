@@ -4,6 +4,8 @@ export interface Random {
 	nextInt(min: number, max: number): number;
 	/** Returns `count` different items from `items`, in a random order. */
 	sample<T>(items: readonly T[], count: number): T[];
+	/** Returns true with the given probability, from 0 (never) to 1 (always). */
+	chance(probability: number): boolean;
 }
 
 const UINT32_RANGE = 2 ** 32;
@@ -63,5 +65,15 @@ export function createRandom(seed: number): Random {
 		return Array.from({ length: count }).flatMap(() => pool.splice(nextInt(0, pool.length - 1), 1));
 	};
 
-	return { nextInt, sample };
+	const chance = (probability: number): boolean => {
+		// The comparison is written so that NaN fails it too.
+		if (!(probability >= 0 && probability <= 1)) {
+			throw new RangeError(`probability must be from 0 to 1, got ${String(probability)}`);
+		}
+		// One draw whatever the probability, so a rule's later draws don't
+		// depend on the odds it asked for.
+		return nextUint32() / UINT32_RANGE < probability;
+	};
+
+	return { nextInt, sample, chance };
 }

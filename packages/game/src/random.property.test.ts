@@ -49,3 +49,30 @@ describe('createRandom properties', () => {
 		);
 	});
 });
+
+describe('chance properties', () => {
+	const ROLLS = 4000;
+	const TOLERANCE = 0.05;
+	const roll = (seed: number, probability: number): boolean[] => {
+		const random = createRandom(seed);
+		return Array.from({ length: ROLLS }, () => random.chance(probability));
+	};
+
+	it('is true about the given share of the time', () => {
+		fc.assert(
+			fc.property(fc.integer(), fc.constantFrom(0.1, 0.5, 0.9), (seed, probability) => {
+				const share = roll(seed, probability).filter(Boolean).length / ROLLS;
+
+				expect(Math.abs(share - probability)).toBeLessThan(TOLERANCE);
+			})
+		);
+	});
+
+	it('gives the same answers for the same seed', () => {
+		fc.assert(
+			fc.property(fc.integer(), fc.double({ min: 0, max: 1, noNaN: true }), (seed, probability) => {
+				expect(roll(seed, probability)).toEqual(roll(seed, probability));
+			})
+		);
+	});
+});
