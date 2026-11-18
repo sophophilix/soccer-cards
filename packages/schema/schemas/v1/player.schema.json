@@ -171,7 +171,12 @@
 			},
 			"required": ["attack", "defence", "control"]
 		},
-		"httpsUri": { "type": "string", "pattern": "^https://[^\\s/?#]+[^\\s]*$" },
+		"httpsUri": {
+			"$comment": "Only https, a host name of two labels or more that is not a number, an optional port and the characters of RFC 3986. No userinfo.",
+			"type": "string",
+			"maxLength": 2048,
+			"pattern": "^https://([A-Za-z0-9-]+\\.)+[A-Za-z][A-Za-z0-9-]*(:[0-9]{1,5})?([/?#][A-Za-z0-9._~:/?#\\[\\]@!$&'()*+,;=%-]*)?$"
+		},
 		"sourced": {
 			"title": "Sourced",
 			"type": "object",
@@ -187,6 +192,7 @@
 		},
 		"goalCount": {
 			"title": "GoalCount",
+			"type": "object",
 			"allOf": [{ "$ref": "#/$defs/sourced" }],
 			"properties": {
 				"value": { "description": "The number of goals.", "type": "integer", "minimum": 0 }
@@ -195,6 +201,7 @@
 		},
 		"transferFee": {
 			"title": "TransferFee",
+			"type": "object",
 			"allOf": [{ "$ref": "#/$defs/sourced" }],
 			"properties": {
 				"currencyCode": {
@@ -214,6 +221,7 @@
 		},
 		"award": {
 			"title": "Award",
+			"type": "object",
 			"allOf": [{ "$ref": "#/$defs/sourced" }],
 			"properties": {
 				"displayName": { "description": "The award's name.", "type": "string", "minLength": 1 }
@@ -227,6 +235,7 @@
 				"uri": {
 					"description": "The photo file, as a path inside the API with no host.",
 					"type": "string",
+					"maxLength": 2048,
 					"pattern": "^photos/[A-Za-z0-9_-]+\\.webp$"
 				},
 				"widthPx": { "description": "The width in pixels.", "type": "integer", "minimum": 1 },
@@ -240,13 +249,24 @@
 			"title": "Attribution",
 			"type": "object",
 			"properties": {
-				"author": { "description": "The photo's author.", "type": "string", "minLength": 1 },
+				"author": {
+					"description": "The photo's author, as plain text with no markup.",
+					"type": "string",
+					"minLength": 1,
+					"maxLength": 200,
+					"pattern": "^[^\\s<>\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069][^<>\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069]*$"
+				},
 				"licenseCode": {
 					"description": "The licence's SPDX id. Only CC0-1.0, CC-PDM-1.0 for the public domain, and the CC-BY and CC-BY-SA versions on the SPDX list are allowed.",
 					"type": "string",
 					"pattern": "^(CC0-1\\.0|CC-PDM-1\\.0|CC-BY-(1\\.0|2\\.0|2\\.5(-AU)?|3\\.0(-(AT|AU|DE|IGO|NL|US))?|4\\.0)|CC-BY-SA-(1\\.0|2\\.0(-UK)?|2\\.1-JP|2\\.5|3\\.0(-(AT|DE|IGO))?|4\\.0))$"
 				},
-				"sourceUri": { "description": "Where the photo came from.", "$ref": "#/$defs/httpsUri" }
+				"sourceUri": {
+					"description": "The photo's file page on Wikimedia Commons.",
+					"type": "string",
+					"maxLength": 2048,
+					"pattern": "^https://commons\\.wikimedia\\.org/wiki/File:[A-Za-z0-9._~:@!$&'()*+,;=%-]+$"
+				}
 			},
 			"required": ["author", "licenseCode", "sourceUri"]
 		}

@@ -68,20 +68,45 @@ jobs:
 
   web:
     runs-on: ubuntu-24.04
-    timeout-minutes: 20
+    timeout-minutes: 10
+    # Playwright's image holds the browsers and their system packages, so the
+    # job downloads none. The tag must equal the Playwright version in
+    # pnpm-lock.yaml. Change the tag, the digest and this comment together.
+    # The job runs as root, the image's default, which the apt step needs.
+    # `--init` and `--ipc=host` are what Playwright's Docker page recommends:
+    # without the second, Chromium can run out of memory.
+    container:
+      image: mcr.microsoft.com/playwright:v1.65.0-noble@sha256:9beb546099e11f52d62e505537914870e01a67e0e6b00ae41da4775324e73dbe # v1.65.0
+      options: --init --ipc=host
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      # The image has no make. apt checks the package against the SHA-256 in
+      # Ubuntu's signed index. The image also keeps NodeSource's apt source,
+      # which apt reads first and would trust for make too. Remove it, so
+      # Ubuntu is the only publisher. Node comes from setup-node below.
+      - run: |
+          rm -f /etc/apt/sources.list.d/nodesource.list
+          apt-get update
+          apt-get install -y --no-install-recommends make=4.3-4.1build2
       - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      # The image has its own Node. The gate uses the repository's version.
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
           node-version-file: .node-version
           package-manager-cache: false
       - run: pnpm install --frozen-lockfile
-      # `pnpm exec` runs the Playwright in the lockfile, so the browsers match
-      # it. The tests use Chromium and WebKit (apps/web/playwright.config.ts).
-      - run: pnpm exec playwright install --with-deps chromium webkit
+      # Playwright finds no browser when its version and the image's differ.
+      # The image records its version in /ms-playwright/.docker-info.
+      - name: Check that the image and the lockfile hold the same Playwright
+        run: |
+          image="$(node -p 'JSON.parse(require("fs").readFileSync("/ms-playwright/.docker-info", "utf8")).driverVersion')"
+          locked="$(pnpm exec playwright --version)"
+          if [ "$locked" != "Version $image" ]; then
+            echo "::error::The container image holds Playwright $image and pnpm-lock.yaml holds ${locked#Version }. Set the image tag and digest of the web job to the lockfile's version."
+            exit 1
+          fi
       - run: make check COMPONENT=web
       # Keeps the traces, screenshots and videos of failed Playwright tests.
       # The folder is absent when the gate failed before those tests ran.
