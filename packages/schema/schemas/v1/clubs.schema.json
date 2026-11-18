@@ -1,0 +1,16 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "clubs.schema.json",
+	"title": "ClubList",
+	"description": "Every club a player points to, as served at clubs.json.",
+	"type": "object",
+	"properties": {
+		"clubs": {
+			"description": "Each club in full. The list is one file, so it is capped.",
+			"type": "array",
+			"maxItems": 1000,
+			"items": { "$ref": "club.schema.json#/$defs/club" }
+		}
+	},
+	"required": ["clubs"]
+}
