@@ -1,5 +1,5 @@
-import { TIERS, toCardId } from '../cards.ts';
-import type { Card, Tier } from '../cards.ts';
+import { TIERS, checkCardSet, toCardId } from '../cards.ts';
+import type { Card, CheckedCardSet, Tier } from '../cards.ts';
 
 /** Builds one card for a test. Pass only the fields the test cares about. */
 export function aCard(overrides: Partial<Card> = {}): Card {
@@ -25,4 +25,13 @@ export function aCardSet(counts: TierCounts): Card[] {
 			aCard({ id: toCardId(`${tier}-${String(index + 1)}`), tier })
 		)
 	);
+}
+
+/** Builds a checked card set for a test, with the given number of cards in each tier. */
+export function aCheckedCardSet(counts: TierCounts): CheckedCardSet {
+	const result = checkCardSet(aCardSet(counts));
+	if (!result.ok) {
+		throw new RangeError(`a test card set must pass the check: ${result.reason}`);
+	}
+	return result.value;
 }
