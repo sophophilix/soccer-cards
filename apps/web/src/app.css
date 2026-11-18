@@ -1,6 +1,6 @@
-/* The base stylesheet for every page. The layout loads it. Every colour,
-   size and font a component uses is a token from here, and the values are
-   those of the approved prototype. */
+/* The base stylesheet for every page. The layout loads it. A component takes
+   its colours, sizes and fonts from these tokens, which are the prototype's.
+   The system setting chooses the theme. */
 
 @import './lib/ui/fonts.css';
 
@@ -32,7 +32,6 @@
 	color-scheme: light;
 }
 
-/* The system setting chooses the theme. The page has no switch. */
 @media (prefers-color-scheme: dark) {
 	:root {
 		--bg: #0c1914;
