@@ -3,6 +3,8 @@ import { lintSchemaDesign } from './design-lint.ts';
 
 const SCHEMAS = import.meta.glob('../schemas/v1/*.json', { eager: true, import: 'default' });
 const TEXT = { description: 'An invented field.', type: 'string' };
+const REMOTE = { $ref: 'https://a.example/x.schema.json#/$defs/a' };
+const BAD = { type: 'null', ...REMOTE };
 const RESOURCE_NAME = { ...TEXT, pattern: '^players/[a-z][a-z0-9-]{0,62}$' };
 
 /** An invented schema with one property. */
@@ -14,6 +16,7 @@ describe('lintSchemaDesign', () => {
 	it.each([
 		['name-not-lower-camel-case', 'a run of capitals', 'sourceURI', TEXT],
 		['name-not-lower-camel-case', 'a snake case name', 'source_uri', TEXT],
+		['name-not-lower-camel-case', 'a property named $ref', '$ref', TEXT],
 		['name-not-resource-name', 'a name with no pattern', 'name', TEXT],
 		['name-not-resource-name', 'a name that is a label', 'name', { ...TEXT, pattern: '^.+$' }],
 		['enum-not-upper-snake-case', 'a lowercase value', 'tier', { ...TEXT, enum: ['BASE', 'rare'] }],
@@ -34,6 +37,11 @@ describe('lintSchemaDesign', () => {
 		['name-breaks-suffix-rule', 'a num prefix', 'numGoals', TEXT],
 		['name-breaks-suffix-rule', 'url at the end', 'photoUrl', TEXT],
 		['name-breaks-suffix-rule', 'url alone', 'url', TEXT],
+		['name-breaks-suffix-rule', 'urls at the end', 'photoUrls', TEXT],
+		['name-breaks-suffix-rule', 'urls alone', 'urls', TEXT],
+		['ref-outside-folder', 'a whole file', 'photo', { ...TEXT, $ref: 'x.schema.json' }],
+		['ref-outside-folder', 'a reference that is not text', 'photo', { ...TEXT, $ref: 5 }],
+		['ref-outside-folder', 'a pointer outside $defs', 'photo', { ...TEXT, $ref: '#/properties/a' }],
 		['ref-outside-folder', 'a remote reference', 'photo', { ...TEXT, $ref: 'https://a.example/x' }],
 		['ref-outside-folder', 'a parent folder', 'photo', { ...TEXT, $ref: '../x.schema.json#/a' }]
 	])('reports %s for %s', (rule, _case, name, property) => {
@@ -62,7 +70,52 @@ describe('lintSchemaDesign', () => {
 	});
 
 	it.each([
+		['#/properties/photo', withProperty('photo', { ...TEXT, ...BAD })],
+		['#/patternProperties/^x', { patternProperties: { '^x': BAD } }],
+		['#/$defs/photo', { $defs: { photo: BAD } }],
+		['#/definitions/photo', { definitions: { photo: BAD } }],
+		['#/dependentSchemas/photo', { dependentSchemas: { photo: BAD } }],
+		['#/allOf/0', { allOf: [BAD] }],
+		['#/anyOf/0', { anyOf: [BAD] }],
+		['#/oneOf/1', { oneOf: [{}, BAD] }],
+		['#/prefixItems/0', { prefixItems: [BAD] }],
+		['#/if', { if: BAD }],
+		['#/then', { then: BAD }],
+		['#/else', { else: BAD }],
+		['#/not', { not: BAD }],
+		['#/items', { items: BAD }],
+		['#/contains', { contains: BAD }],
+		['#/additionalProperties', { additionalProperties: BAD }],
+		['#/propertyNames', { propertyNames: BAD }],
+		['#/unevaluatedProperties', { unevaluatedProperties: BAD }],
+		['#/unevaluatedItems', { unevaluatedItems: BAD }],
+		['#/contentSchema', { contentSchema: BAD }]
+	])('reports a null type and a remote reference at %s', (path, schema) => {
+		expect(lintSchemaDesign(schema)).toEqual([
+			{ path, rule: 'type-allows-null' },
+			{ path, rule: 'ref-outside-folder' }
+		]);
+	});
+
+	it.each([
+		['#/examples/0', { examples: [REMOTE] }],
+		['#/default/photo', { default: { photo: REMOTE } }],
+		['#/properties/photo/examples/1', withProperty('photo', { ...TEXT, examples: ['a', REMOTE] })],
+		['#/properties', { properties: REMOTE }],
+		['#/$defs', { $defs: REMOTE }],
+		['#/items', { items: { $ref: 'shared.yaml#/$defs/a' } }],
+		['#/items', { items: { $ref: '../x.schema.json#/$defs/a' } }]
+	])('reports a reference that leaves the folder at %s', (path, schema) => {
+		expect(lintSchemaDesign(schema)).toEqual([{ path, rule: 'ref-outside-folder' }]);
+	});
+
+	it.each([
 		['an empty schema', {}],
+		['true and false in place of a schema', { items: true, not: false, properties: true }],
+		['a true property and a false one', { properties: { photo: true }, allOf: [false] }],
+		['a property named items', withProperty('items', { ...TEXT, items: TEXT })],
+		['a local reference in an example', { examples: [{ $ref: '#/$defs/photo' }] }],
+		['a test under not', { not: withProperty('name', { const: 'players/tavi' }) }],
 		['a schema that is not an object', true],
 		[
 			'a code in a pattern and an example',

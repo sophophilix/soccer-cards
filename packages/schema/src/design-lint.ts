@@ -17,11 +17,18 @@ const UPPER_SNAKE_CASE = /^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$/;
 // ADR 0005 D2: a collection, then a slug of 63 characters at most.
 const RESOURCE_NAME_PATTERN = /^\^[a-z][A-Za-z]*\/\[a-z\]\[a-z0-9-\]\{0,62\}\$$/;
 // ADR 0005 D4: no `is` or `num` prefix, `uri` not `url`, and a count ends in `Count`.
-const BROKEN_SUFFIX_RULE = /^(is|num|url|counts?)(?![a-z])|(Url|Counts?)(?=[A-Z])|(Url|Counts)$/;
-// A file beside this one, a place inside this file, or both. No scheme and no folder.
-const REF_INSIDE_FOLDER = /^(\w[\w.-]*)?(#.*)?$/;
-const CHILD_MAPS = ['properties', '$defs', 'allOf', 'anyOf', 'oneOf'];
-const CHILD_SCHEMAS = ['if', 'then', 'else', 'not', 'items'];
+// A name can't show a count that leaves the word out, such as `clubGoals`, so that
+// part of D4 rests on review.
+const BROKEN_SUFFIX_RULE =
+	/^(is|num|urls?|counts?)(?![a-z])|(Urls?|Counts?)(?=[A-Z])|(Urls?|Counts)$/;
+// A place under `$defs`, in this file or a schema file beside it. No scheme and no folder.
+const REF_INSIDE_FOLDER = /^(\w[\w.-]*\.schema\.json)?#\/\$defs\/.+$/;
+// Every keyword of JSON Schema 2020-12 that holds subschemas, and the older `definitions`.
+const CHILD_MAPS = ['properties', 'patternProperties', '$defs', 'definitions', 'dependentSchemas'];
+const CHILD_LISTS = ['allOf', 'anyOf', 'oneOf', 'prefixItems'];
+const FIRST_SCHEMAS = ['if', 'then', 'else', 'not', 'items', 'contains', 'propertyNames'];
+const LAST_SCHEMAS = ['additionalProperties', 'unevaluatedProperties', 'unevaluatedItems'];
+const CHILD_SCHEMAS = [...FIRST_SCHEMAS, ...LAST_SCHEMAS, 'contentSchema'];
 // A condition tests a property that another place defines, so these two rules don't apply there.
 const CONDITIONS = ['if', 'not'];
 const DEFINITION_RULES: readonly DesignRule[] = ['name-not-resource-name', 'no-description'];
@@ -29,6 +36,8 @@ const DEFINITION_RULES: readonly DesignRule[] = ['name-not-resource-name', 'no-d
 const isObject = (value: unknown): value is Schema => typeof value === 'object' && value !== null;
 const isText = (value: unknown, form: RegExp): boolean =>
 	typeof value === 'string' && form.test(value);
+const leavesFolder = ({ $ref }: Schema): boolean =>
+	typeof $ref === 'string' && !REF_INSIDE_FOLDER.test($ref);
 
 /** Each rule, with a test that is true when the schema at a place breaks it. */
 const RULES = [
@@ -52,22 +61,39 @@ const RULES = [
 	['ref-outside-folder', ({ $ref }) => $ref !== undefined && !isText($ref, REF_INSIDE_FOLDER)]
 ] as const satisfies readonly (readonly [string, (schema: Schema, name: string) => boolean])[];
 
-function walk(schema: unknown, { path, name, ignored }: Place): DesignProblem[] {
+// The type generator follows a text `$ref` in any object, so a map of schemas is tested too.
+const reportRef = (data: unknown, path: string): DesignProblem[] =>
+	isObject(data) && leavesFolder(data) ? [{ path, rule: 'ref-outside-folder' }] : [];
+
+/** Finds a `$ref` in data, such as `examples` or `default`, which the type generator would still follow. */
+function findRefs(data: unknown, path: string): DesignProblem[] {
+	if (!isObject(data)) return [];
+	return [
+		...reportRef(data, path),
+		...Object.entries(data).flatMap(([key, value]) => findRefs(value, `${path}/${key}`))
+	];
+}
+
+function walkKeyword(key: string, value: unknown, { path, ignored }: Place): DesignProblem[] {
+	if ([...CHILD_MAPS, ...CHILD_LISTS].includes(key)) {
+		const children = Object.entries(isObject(value) ? value : {}).flatMap(([id, child]) =>
+			walk(child, { path: `${path}/${id}`, name: key === 'properties' ? id : '', ignored })
+		);
+		return [...reportRef(value, path), ...children];
+	}
+	if (!CHILD_SCHEMAS.includes(key)) return findRefs(value, path);
+	const rulesOff = CONDITIONS.includes(key) ? DEFINITION_RULES : ignored;
+	return walk(value, { path, name: '', ignored: rulesOff });
+}
+
+function walk(schema: unknown, place: Place): DesignProblem[] {
 	if (!isObject(schema)) return [];
+	const { path, name, ignored } = place;
 	const broken = RULES.filter(([rule, breaks]) => !ignored.includes(rule) && breaks(schema, name));
 	return [
 		...broken.map(([rule]) => ({ path, rule })),
-		...CHILD_MAPS.flatMap((key) =>
-			Object.entries(isObject(schema[key]) ? schema[key] : {}).flatMap(([id, child]) =>
-				walk(child, { path: `${path}/${key}/${id}`, name: key === 'properties' ? id : '', ignored })
-			)
-		),
-		...CHILD_SCHEMAS.flatMap((key) =>
-			walk(schema[key], {
-				path: `${path}/${key}`,
-				name: '',
-				ignored: CONDITIONS.includes(key) ? DEFINITION_RULES : ignored
-			})
+		...Object.entries(schema).flatMap(([key, value]) =>
+			walkKeyword(key, value, { ...place, path: `${path}/${key}` })
 		)
 	];
 }
