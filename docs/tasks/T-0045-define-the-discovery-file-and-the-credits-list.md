@@ -11,6 +11,7 @@ paths:
   - packages/schema/src/generated/**
   - packages/schema/src/index-and-credits.test.ts
   - packages/schema/src/examples.test.ts
+  - packages/schema/src/design-lint.test.ts
   - packages/schema/src/index.ts
 dependencies: []
 max_changed_lines: 260
@@ -29,7 +30,11 @@ lists every photo's credit in one place, which the credits page needs.
   page lists every photo with a link to its Commons page and its licence.
 - `player.schema.json`: the `photo` and `attribution` definitions. The
   credits list refers to `attribution` there and does not copy it.
-- Runs after T-0044.
+- Runs after T-0054. Copy the shape of the club schemas from T-0044: the
+  `$defs` layout, and how `examples.test.ts` chooses a schema by file name
+  (`index.example.json`, `credits.example.json`).
+- `design-lint.test.ts` pins the list of schema files; this task adds its
+  two. The kit counts the generated files toward the limit.
 - Aim for about 170 changed lines. The limit is 260.
 
 ## Acceptance criteria
@@ -48,7 +53,9 @@ lists every photo's credit in one place, which the credits page needs.
 - One invented example of each file sits in `examples/` and is checked by
   the examples test.
 - The design lint passes on both schemas with no rule relaxed.
-- The generated types exist, and `index.ts` exports them.
+- The generated types exist, a test proves they are fresh, and `index.ts`
+  exports them.
+- Both files accept a property they don't know.
 - `make check COMPONENT=schema` passes.
 
 ## Edge cases
