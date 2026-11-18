@@ -8,7 +8,7 @@ paths:
   - packages/schema/src/**
   - packages/schema/schemas/v1/**
 dependencies: []
-max_changed_lines: 200
+max_changed_lines: 320
 status: ready
 ---
 
