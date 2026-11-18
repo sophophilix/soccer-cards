@@ -11,7 +11,7 @@ paths:
   - packages/game/src/testing/**
   - packages/game/src/index.ts
 dependencies: []
-max_changed_lines: 200
+max_changed_lines: 300
 status: ready
 ---
 
@@ -27,7 +27,8 @@ for each kick and each dive. A match always has a winner.
 - A shoot-out is a small state that one kick moves forward. The player's
   choice of corner comes in as an argument; the other side's comes from
   `Random`.
-- Aim for about 130 changed lines. The limit is 200.
+- Aim for about 200 changed lines. The limit is 300. The first limit of 200
+  was set before T-0036 and T-0037 showed what a rule and its tests take.
 
 ## Acceptance criteria
 
