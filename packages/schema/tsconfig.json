@@ -7,7 +7,7 @@
 		"moduleResolution": "bundler",
 		"allowImportingTsExtensions": true,
 		"resolveJsonModule": true,
-		"types": []
+		"types": ["node"]
 	},
 	"include": ["src", "vitest.config.ts"]
 }
