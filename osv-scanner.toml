@@ -1,0 +1,14 @@
+# OSV-Scanner ignores. One entry for each open advisory in
+# docs/security/accepted-advisories.md, and no other. Only the tech lead
+# accepts an advisory (AGENTS.md rule 1). An entry stops hiding its finding
+# at the start of its `ignoreUntil` date, in UTC.
+
+[[IgnoredVulns]]
+id = "GHSA-g3hv-75wg-m249"
+ignoreUntil = 2026-12-18
+reason = "minimatch 10.2.6 through ESLint and typescript-eslint. Development tool, and the globs come from this repository. Accepted by the tech lead on 2026-11-16 and extended on 2026-11-18 until 2026-12-18. T-0030 upgrades ESLint and typescript-eslint."
+
+[[IgnoredVulns]]
+id = "GHSA-fc5q-39xc-vjpf"
+ignoreUntil = 2026-12-18
+reason = "picomatch 4.0.7 through fdir, knip, tinyglobby, vite and vitest. Development and build tools only. The patterns come from this repository, and the package is not sent to the browser. No fixed release existed on 2026-11-18. Accepted by the tech lead on 2026-11-18 for 30 days."
