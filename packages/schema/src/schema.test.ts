@@ -46,7 +46,7 @@ const GOALKEEPER_RATINGS = {
 	...{ diving: 82, handling: 77, kicking: 61 },
 	...{ reflexes: 85, speed: 48, positioning: 79 }
 };
-const PLAY_STATS = { attack: 74, defence: 50, control: 67 };
+const PLAY_STATS = { attack: 74, defence: 50, control: 67, overall: 84 };
 
 /** An invented player with only the fields the schema requires. */
 function aPlayer(overrides: object = {}): Record<string, unknown> {
@@ -211,7 +211,7 @@ describe('player.schema.json', () => {
 	});
 
 	it.each([
-		['a tier outside the three', { tier: 'ICON' }],
+		['a tier outside the four', { tier: 'EPIC' }],
 		['a lowercase tier', { tier: 'base' }],
 		['a position outside the four', { position: 'FW' }],
 		['a state outside the two', { state: 'INJURED' }],
@@ -355,7 +355,7 @@ describe('players.schema.json', () => {
 	it.each([
 		['no players field', {}],
 		['null players', { players: null }],
-		['a player with a tier outside the three', { players: [aPlayer({ tier: 'EPIC' })] }],
+		['a player with a tier outside the four', { players: [aPlayer({ tier: 'EPIC' })] }],
 		['a player with a numeric id and no name', { players: [aPlayer({ id: 7, name: undefined })] }],
 		[
 			'a player with a pace of 100',

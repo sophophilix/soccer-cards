@@ -6,7 +6,8 @@
 	"state": "RETIRED",
 	"nationalTeamCode": "SCO",
 	"position": "GOALKEEPER",
-	"tier": "LEGEND",
+	"tier": "ICON",
+	"cardTitle": "The Wall",
 	"cardNumber": 1,
 	"goalkeeperRatings": {
 		"diving": 90,
@@ -16,7 +17,7 @@
 		"speed": 52,
 		"positioning": 89
 	},
-	"playStats": { "attack": 20, "defence": 91, "control": 70 },
+	"playStats": { "attack": 20, "defence": 91, "control": 70, "overall": 88 },
 	"photo": {
 		"uri": "photos/juno-marshwick.webp",
 		"widthPx": 600,

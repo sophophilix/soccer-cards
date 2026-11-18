@@ -81,7 +81,14 @@
 				"tier": {
 					"title": "Tier",
 					"description": "How rare the card is. Treat a value you don't know as unknown.",
-					"enum": ["BASE", "RARE", "LEGEND"]
+					"enum": ["BASE", "RARE", "LEGEND", "ICON"]
+				},
+				"cardTitle": {
+					"description": "A short title under the name, such as Magician, as plain text with no markup. The project writes it. It is not a sourced fact. Absent when the card has none.",
+					"type": "string",
+					"minLength": 1,
+					"maxLength": 30,
+					"pattern": "^[^\\s<>\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069][^<>\\u0000-\\u001f\\u007f-\\u009f\\u202a-\\u202e\\u2066-\\u2069]*$"
 				},
 				"cardNumber": {
 					"description": "The number printed on the card. Absent when the card has none.",
@@ -97,7 +104,7 @@
 					"$ref": "#/$defs/goalkeeperRatings"
 				},
 				"playStats": {
-					"description": "The three numbers a battle uses.",
+					"description": "The three numbers a battle uses, and the overall rating.",
 					"$ref": "#/$defs/playStats"
 				},
 				"photo": { "description": "Absent when no photo is licensed.", "$ref": "#/$defs/photo" }
@@ -167,9 +174,13 @@
 				"control": {
 					"description": "How well the card keeps the ball in a battle.",
 					"$ref": "#/$defs/rating"
+				},
+				"overall": {
+					"description": "The big number on the front of the card.",
+					"$ref": "#/$defs/rating"
 				}
 			},
-			"required": ["attack", "defence", "control"]
+			"required": ["attack", "defence", "control", "overall"]
 		},
 		"httpsUri": {
 			"$comment": "Only https, a host name of two labels or more that is not a number, an optional port and the characters of RFC 3986. No userinfo.",

@@ -41,7 +41,7 @@ export type Position = 'GOALKEEPER' | 'DEFENDER' | 'MIDFIELDER' | 'FORWARD';
 /**
  * How rare the card is. Treat a value you don't know as unknown.
  */
-export type Tier = 'BASE' | 'RARE' | 'LEGEND';
+export type Tier = 'BASE' | 'RARE' | 'LEGEND' | 'ICON';
 export type GoalCount = Sourced & GoalCount1;
 /**
  * The highest fee a club paid for the player.
@@ -90,6 +90,10 @@ export interface PlayerSummary {
 	nationalTeamCode: string;
 	position: Position;
 	tier: Tier;
+	/**
+	 * A short title under the name, such as Magician, as plain text with no markup. The project writes it. It is not a sourced fact. Absent when the card has none.
+	 */
+	cardTitle?: string;
 	/**
 	 * The number printed on the card. Absent when the card has none.
 	 */
@@ -158,7 +162,7 @@ export interface GoalkeeperRatings {
 	positioning: number;
 }
 /**
- * The three numbers a battle uses.
+ * The three numbers a battle uses, and the overall rating.
  */
 export interface PlayStats {
 	/**
@@ -173,6 +177,10 @@ export interface PlayStats {
 	 * How well the card keeps the ball in a battle.
 	 */
 	control: number;
+	/**
+	 * The big number on the front of the card.
+	 */
+	overall: number;
 }
 /**
  * Absent when no photo is licensed.
