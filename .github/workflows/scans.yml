@@ -72,7 +72,7 @@ jobs:
           cat "$RUNNER_TEMP/osv.log"
           expected="$(grep --count '^    resolution:' pnpm-lock.yaml || true)"
           found="$(sed -nE 's/.*found ([0-9]+) packages.*/\1/p' "$RUNNER_TEMP/osv.log" | head -n 1)"
-          if [ "${found:-0}" -eq 0 ] || [ "${found:-0}" -lt "$expected" ]; then
+          if [ "$expected" -eq 0 ] || [ "${found:-0}" -lt "$expected" ]; then
             echo "::error::OSV-Scanner found ${found:-0} packages, and pnpm-lock.yaml resolves $expected"
             exit 1
           fi

@@ -5,16 +5,10 @@
 
 [[IgnoredVulns]]
 id = "GHSA-g3hv-75wg-m249"
-ignoreUntil = 2026-11-20
-reason = "minimatch 10.2.6 through ESLint and typescript-eslint. Development tool, and the globs come from this repository. Accepted by the tech lead on 2026-11-16 until 2026-11-20."
-
-# No fixed recheck date, so the entry gets 30 days from the acceptance.
-[[IgnoredVulns]]
-id = "GHSA-gcqx-w48m-w2h4"
-ignoreUntil = 2026-12-16
-reason = "deepmerge 4.3.1 through @sveltejs/vite-plugin-svelte. Build time only, it merges this project's own configuration and is not sent to the browser. Accepted by the tech lead on 2026-11-16 until a fixed release exists."
+ignoreUntil = 2026-12-18
+reason = "minimatch 10.2.6 through ESLint and typescript-eslint. Development tool, and the globs come from this repository. Accepted by the tech lead on 2026-11-16 and extended on 2026-11-18 until 2026-12-18. T-0030 upgrades ESLint and typescript-eslint."
 
 [[IgnoredVulns]]
 id = "GHSA-fc5q-39xc-vjpf"
 ignoreUntil = 2026-12-18
-reason = "picomatch 4.0.7 through fdir, knip, tinyglobby, vite and vitest. Development and build tools only. No fixed release existed on 2026-11-18. Accepted by the tech lead on 2026-11-18 for 30 days."
+reason = "picomatch 4.0.7 through fdir, knip, tinyglobby, vite and vitest. Development and build tools only. The patterns come from this repository, and the package is not sent to the browser. No fixed release existed on 2026-11-18. Accepted by the tech lead on 2026-11-18 for 30 days."
