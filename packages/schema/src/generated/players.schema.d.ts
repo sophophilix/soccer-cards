@@ -161,7 +161,7 @@ export interface Photo {
  */
 export interface Attribution {
 	/**
-	 * The photo's author.
+	 * The photo's author, as plain text with no markup.
 	 */
 	author: string;
 	/**
@@ -169,7 +169,7 @@ export interface Attribution {
 	 */
 	licenseCode: string;
 	/**
-	 * Where the photo came from.
+	 * The photo's file page on Wikimedia Commons.
 	 */
 	sourceUri: string;
 }
