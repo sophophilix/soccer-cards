@@ -12,7 +12,7 @@
 		"lint": "eslint . --max-warnings 0",
 		"typecheck": "tsc --noEmit",
 		"test": "vitest run --coverage",
-		"generate": "json2ts -i 'schemas/v1/*.json' -o src/generated --cwd schemas/v1 --no-additionalProperties --bannerComment '// Generated from schemas/v1 by `pnpm run generate`. Do not edit by hand.' --style.useTabs --style.singleQuote --style.trailingComma none --style.printWidth 100"
+		"generate": "node --eval \"import('./src/generate-types.ts').then((m) => m.writeGeneratedTypes('schemas/v1', 'src/generated'))\""
 	},
 	"devDependencies": {
 		"ajv": "^8.20.0",

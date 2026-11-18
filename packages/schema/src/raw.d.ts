@@ -6,5 +6,5 @@ declare module '*?raw' {
 
 // Vite's `import.meta.glob`, in the one form the design lint test uses to read every schema.
 interface ImportMeta {
-	glob(pattern: string, options: { eager: true; import: 'default' }): Record<string, unknown>;
+	glob(files: string, options: { eager: true; query: '?raw' }): Record<string, { default: string }>;
 }

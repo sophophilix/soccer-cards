@@ -1,23 +1,15 @@
 import { Ajv2020 } from 'ajv/dist/2020.js';
-import { compileFromFile } from 'json-schema-to-typescript';
 import { describe, expect, it } from 'vitest';
 import playerSchema from '../schemas/v1/player.schema.json' with { type: 'json' };
 import playersSchema from '../schemas/v1/players.schema.json' with { type: 'json' };
 import committedPlayerTypes from './generated/player.schema.d.ts?raw';
 import committedPlayersTypes from './generated/players.schema.d.ts?raw';
+import { compileSchemaTypes } from './generate-types.ts';
 import { SCHEMA_PATHS } from './index.ts';
 
 const ajv = new Ajv2020({ allErrors: true }).addSchema(playerSchema).addSchema(playersSchema);
 const isValidPlayer = (data: unknown): boolean => ajv.validate('player.schema.json', data);
 const isValidPlayerList = (data: unknown): boolean => ajv.validate('players.schema.json', data);
-
-// The same options as the `generate` script in package.json.
-const GENERATE_OPTIONS = {
-	cwd: 'schemas/v1',
-	additionalProperties: false,
-	bannerComment: '// Generated from schemas/v1 by `pnpm run generate`. Do not edit by hand.',
-	style: { useTabs: true, singleQuote: true, trailingComma: 'none', printWidth: 100 }
-} as const;
 
 const SOURCED = { sourceUri: 'https://almanac.example/tavi', retrieveDate: '2026-01-31' };
 const COMMONS = 'https://commons.wikimedia.org/wiki/File:';
@@ -381,6 +373,6 @@ describe('the generated types', () => {
 		[SCHEMA_PATHS.player, committedPlayerTypes],
 		[SCHEMA_PATHS.players, committedPlayersTypes]
 	])('match %s', async (path, committedTypes) => {
-		expect(committedTypes).toBe(await compileFromFile(path, GENERATE_OPTIONS));
+		expect(committedTypes).toBe(await compileSchemaTypes(path));
 	});
 });
