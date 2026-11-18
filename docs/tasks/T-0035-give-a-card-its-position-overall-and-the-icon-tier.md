@@ -12,7 +12,7 @@ paths:
   - packages/game/src/testing/**
   - packages/game/src/index.ts
 dependencies: []
-max_changed_lines: 180
+max_changed_lines: 160
 status: ready
 ---
 
@@ -32,8 +32,7 @@ rule in this plan needs them.
 - `packs.ts` types a pack mix as one count per tier, so a fourth tier
   stops it compiling. The first run of this task stopped there; the brief
   now lists the file.
-- Aim for about 90 changed lines. The limit is 180: it was 160 before the
-  two corrections that added `packs.ts` and `packs.test.ts`.
+- Aim for about 90 changed lines. The limit is 160.
 
 ## Acceptance criteria
 
