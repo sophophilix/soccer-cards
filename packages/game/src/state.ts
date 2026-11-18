@@ -1,6 +1,6 @@
-import type { Card, CardId } from './cards.ts';
-import { openPack } from './packs.ts';
-import type { PackKind } from './packs.ts';
+import type { CardId, CheckedCardSet } from './cards.ts';
+import { drawPack } from './draw-pack.ts';
+import type { PackKind } from './draw-pack.ts';
 import type { Random } from './random.ts';
 
 /** The version of the player state's shape. A change of shape raises it. */
@@ -12,7 +12,7 @@ export const STARTING_COINS = 0;
 /** The price of a standard pack once the free packs are used. */
 export const STANDARD_PACK_COST_COINS = 5;
 /** The price of a jumbo pack. A free pack never pays for it. */
-export const JUMBO_PACK_COST_COINS = 10;
+export const JUMBO_PACK_COST_COINS = 20;
 
 const PACK_COST_COINS = {
 	standard: STANDARD_PACK_COST_COINS,
@@ -48,7 +48,7 @@ export type StateResult<Reason extends StateRefusal> =
 /** What opening a pack needs besides the player's state. */
 export interface PackToOpen {
 	readonly kind: PackKind;
-	readonly cardSet: readonly Card[];
+	readonly cardSet: CheckedCardSet;
 	readonly random: Random;
 }
 
@@ -82,8 +82,8 @@ export function openPlayerPack(
 	if (state.coins < costCoins) {
 		return { ok: false, reason: 'not-enough-coins' };
 	}
-	// The cards are drawn before anything is paid, so a card set that is too small costs nothing.
-	const opened = openPack(pack.cardSet, pack.kind, pack.random);
+	// The cards are drawn before anything is paid, so a card set with an empty tier costs nothing.
+	const opened = drawPack(pack.cardSet, pack.kind, pack.random);
 	if (!opened.ok) {
 		return { ok: false, reason: opened.reason };
 	}
