@@ -13,3 +13,8 @@ reason = "minimatch 10.2.6 through ESLint and typescript-eslint. Development too
 id = "GHSA-gcqx-w48m-w2h4"
 ignoreUntil = 2026-12-16
 reason = "deepmerge 4.3.1 through @sveltejs/vite-plugin-svelte. Build time only, it merges this project's own configuration and is not sent to the browser. Accepted by the tech lead on 2026-11-16 until a fixed release exists."
+
+[[IgnoredVulns]]
+id = "GHSA-fc5q-39xc-vjpf"
+ignoreUntil = 2026-12-18
+reason = "picomatch 4.0.7 through fdir, knip, tinyglobby, vite and vitest. Development and build tools only. No fixed release existed on 2026-11-18. Accepted by the tech lead on 2026-11-18 for 30 days."

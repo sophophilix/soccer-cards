@@ -61,17 +61,19 @@ jobs:
           echo "$OSV_SCANNER_SHA256  $RUNNER_TEMP/osv-scanner" | sha256sum --check --strict
           chmod +x "$RUNNER_TEMP/osv-scanner"
       # Exit 1 is a known vulnerability. `osv-scanner.toml` holds the ignores.
-      # pnpm-lock.yaml has two YAML documents, and a scanner that can't read
-      # the file finds nothing and passes, so the step also fails unless the
-      # scanner says how many packages it found.
+      # pnpm-lock.yaml has two YAML documents, and a scanner that reads none
+      # or only the first finds less and still passes. So the step also fails
+      # unless the scanner found every package the lockfile resolves.
       - name: Scan pnpm-lock.yaml
         run: |
           status=0
           "$RUNNER_TEMP/osv-scanner" scan source --config=osv-scanner.toml \
             --lockfile=pnpm-lock.yaml >"$RUNNER_TEMP/osv.log" 2>&1 || status=$?
           cat "$RUNNER_TEMP/osv.log"
-          if ! grep --extended-regexp --quiet 'found [1-9][0-9]* packages' "$RUNNER_TEMP/osv.log"; then
-            echo "::error::OSV-Scanner reported no packages scanned in pnpm-lock.yaml"
+          expected="$(grep --count '^    resolution:' pnpm-lock.yaml || true)"
+          found="$(sed -nE 's/.*found ([0-9]+) packages.*/\1/p' "$RUNNER_TEMP/osv.log" | head -n 1)"
+          if [ "${found:-0}" -eq 0 ] || [ "${found:-0}" -lt "$expected" ]; then
+            echo "::error::OSV-Scanner found ${found:-0} packages, and pnpm-lock.yaml resolves $expected"
             exit 1
           fi
           exit "$status"
