@@ -10,11 +10,14 @@ const MAX_FILE_LINES = 400;
 const MAX_COMPLEXITY = 15;
 const GAME_ROOT = path.join(import.meta.dirname, 'packages/game');
 const SEED_MESSAGE = 'Only src/testing/property-seed.ts sets the shared seed.';
+// ADR 0001 D1 and D4: each name, and every path below it, is refused in packages/game.
+const GAME_RESTRICTED_PACKAGES = ['svelte', '@sveltejs', '@soccer-cards/web'];
 
 /**
  * Reports a relative import that resolves outside `packages/game`. The built-in
  * `no-restricted-imports` can't tell, because it doesn't know how deep the file is.
- * It also reports a Node built-in in `import()`, which that rule doesn't visit.
+ * It also reports a Node built-in or a restricted package in `import()` and in an
+ * import type, which that rule doesn't visit.
  * @type {import('eslint').Rule.RuleModule}
  */
 const noImportOutsidePackage = {
@@ -23,7 +26,8 @@ const noImportOutsidePackage = {
 		schema: [],
 		messages: {
 			outside: "'{{source}}' leaves packages/game.",
-			builtIn: "'{{source}}' is a Node built-in, and packages/game imports none."
+			builtIn: "'{{source}}' is a Node built-in, and packages/game imports none.",
+			restricted: "'{{source}}' is above packages/game, which imports nothing above it."
 		}
 	},
 	create(context) {
@@ -43,12 +47,14 @@ const noImportOutsidePackage = {
 		};
 		const checkDynamic = (node) => {
 			const source = sourceOf(node);
-			if (
-				typeof source === 'string' &&
-				(source.startsWith('node:') || builtinModules.includes(source))
-			) {
+			if (typeof source !== 'string') return;
+			if (source.startsWith('node:') || builtinModules.includes(source)) {
 				context.report({ node, messageId: 'builtIn', data: { source } });
 			}
+			const isRestricted = GAME_RESTRICTED_PACKAGES.some(
+				(name) => source === name || source.startsWith(`${name}/`)
+			);
+			if (isRestricted) context.report({ node, messageId: 'restricted', data: { source } });
 			check(node);
 		};
 		return {
@@ -105,7 +111,7 @@ export default defineConfig(
 				'error',
 				{
 					paths: builtinModules,
-					patterns: ['node:*', 'svelte', 'svelte/*', '@sveltejs/*', '@soccer-cards/web']
+					patterns: ['node:*', ...GAME_RESTRICTED_PACKAGES.flatMap((name) => [name, `${name}/*`])]
 				}
 			],
 			// fast-check replaces its whole configuration on each call, so a second

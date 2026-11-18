@@ -17,6 +17,9 @@ export type Player = PlayerSummary & {
 	 */
 	nationalTeamGoalCount?: GoalCount;
 	transferFee?: TransferFee;
+	/**
+	 * The awards the player won.
+	 */
 	awards?: Award[];
 	/**
 	 * The year of the first senior match.
@@ -39,7 +42,6 @@ export type Position = 'GOALKEEPER' | 'DEFENDER' | 'MIDFIELDER' | 'FORWARD';
  * How rare the card is. Treat a value you don't know as unknown.
  */
 export type Tier = 'BASE' | 'RARE' | 'LEGEND';
-export type Rating = number;
 export type GoalCount = Sourced & GoalCount1;
 /**
  * The highest fee a club paid for the player.
@@ -101,11 +103,26 @@ export interface PlayerSummary {
  * The six ratings of a player who is not a goalkeeper. Absent for a goalkeeper.
  */
 export interface OutfieldRatings {
-	pace: Rating;
-	shooting: Rating;
-	passing: Rating;
-	dribbling: Rating;
-	defending: Rating;
+	/**
+	 * Running fast.
+	 */
+	pace: number;
+	/**
+	 * Scoring with a shot.
+	 */
+	shooting: number;
+	/**
+	 * Finding a team-mate with the ball.
+	 */
+	passing: number;
+	/**
+	 * Running with the ball.
+	 */
+	dribbling: number;
+	/**
+	 * Winning the ball back.
+	 */
+	defending: number;
 	/**
 	 * Strength, stamina and jumping.
 	 */
@@ -140,10 +157,22 @@ export interface GoalkeeperRatings {
 	 */
 	positioning: number;
 }
+/**
+ * The three numbers a battle uses.
+ */
 export interface PlayStats {
-	attack: Rating;
-	defence: Rating;
-	control: Rating;
+	/**
+	 * How well the card scores in a battle.
+	 */
+	attack: number;
+	/**
+	 * How well the card stops a goal in a battle.
+	 */
+	defence: number;
+	/**
+	 * How well the card keeps the ball in a battle.
+	 */
+	control: number;
 }
 /**
  * Absent when no photo is licensed.

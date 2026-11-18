@@ -1,0 +1,77 @@
+# Static analysis of the code and of the workflows (the ci-supply-chain
+# skill, "The gates"). Each job name is a required check on `main`. Don't
+# rename one without the tech lead changing the ruleset.
+name: analysis
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  # Weekly, because new queries and advisories arrive without a commit.
+  schedule:
+    - cron: '23 5 * * 1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: analysis-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  codeql:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      security-events: write # CodeQL uploads its results to code scanning.
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # Neither language needs a build, so one job analyses both.
+      - uses: github/codeql-action/init@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
+        with:
+          languages: javascript-typescript,actions
+          config-file: ./.github/codeql/codeql-config.yml
+      - id: analyze
+        uses: github/codeql-action/analyze@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
+      # The upload alone never fails the job. This step does, so a finding
+      # stops a pull request even where the results can't be uploaded.
+      - name: Fail on a finding
+        env:
+          SARIF_DIR: ${{ steps.analyze.outputs.sarif-output }}
+        run: |
+          count="$(jq -s '[.[].runs[].results[]] | length' "$SARIF_DIR"/*.sarif)"
+          echo "CodeQL findings: $count"
+          [ "$count" -eq 0 ]
+
+  workflows:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      ACTIONLINT_VERSION: 1.7.12
+      ACTIONLINT_SHA256: 8aca8db96f1b94770f1b0d72b6dddcb1ebb8123cb3712530b08cc387b349a3d8
+      ZIZMOR_VERSION: 1.32.0
+      ZIZMOR_SHA256: bb110cc765eca9cd7efb2e284a956be5974c60027b0970f16397d86208a9957b
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # Each tool is pinned by version and checked against the SHA-256 of
+      # its Linux x86-64 release archive before it is unpacked.
+      - name: Install actionlint and zizmor
+        run: |
+          mkdir -p "$RUNNER_TEMP/bin"
+          cd "$RUNNER_TEMP"
+          releases=https://github.com
+          curl -fsSL -o actionlint.tar.gz \
+            "$releases/rhysd/actionlint/releases/download/v${ACTIONLINT_VERSION}/actionlint_${ACTIONLINT_VERSION}_linux_amd64.tar.gz"
+          curl -fsSL -o zizmor.tar.gz \
+            "$releases/zizmorcore/zizmor/releases/download/v${ZIZMOR_VERSION}/zizmor-x86_64-unknown-linux-gnu.tar.gz"
+          echo "${ACTIONLINT_SHA256}  actionlint.tar.gz" | sha256sum --check
+          echo "${ZIZMOR_SHA256}  zizmor.tar.gz" | sha256sum --check
+          tar -xzf actionlint.tar.gz -C bin actionlint
+          tar -xzf zizmor.tar.gz -C bin zizmor
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+      - run: make check COMPONENT=ci
