@@ -23,7 +23,11 @@
 			"description": "The highest fee a club paid for the player.",
 			"$ref": "#/$defs/transferFee"
 		},
-		"awards": { "type": "array", "items": { "$ref": "#/$defs/award" } },
+		"awards": {
+			"description": "The awards the player won.",
+			"type": "array",
+			"items": { "$ref": "#/$defs/award" }
+		},
 		"careerStartYear": { "description": "The year of the first senior match.", "type": "integer" },
 		"careerEndYear": { "description": "The year of the last senior match.", "type": "integer" }
 	},
@@ -92,7 +96,10 @@
 					"description": "The six ratings of a goalkeeper. Absent for every other position.",
 					"$ref": "#/$defs/goalkeeperRatings"
 				},
-				"playStats": { "$ref": "#/$defs/playStats" },
+				"playStats": {
+					"description": "The three numbers a battle uses.",
+					"$ref": "#/$defs/playStats"
+				},
 				"photo": { "description": "Absent when no photo is licensed.", "$ref": "#/$defs/photo" }
 			},
 			"required": [
@@ -114,11 +121,14 @@
 			"title": "OutfieldRatings",
 			"type": "object",
 			"properties": {
-				"pace": { "$ref": "#/$defs/rating" },
-				"shooting": { "$ref": "#/$defs/rating" },
-				"passing": { "$ref": "#/$defs/rating" },
-				"dribbling": { "$ref": "#/$defs/rating" },
-				"defending": { "$ref": "#/$defs/rating" },
+				"pace": { "description": "Running fast.", "$ref": "#/$defs/rating" },
+				"shooting": { "description": "Scoring with a shot.", "$ref": "#/$defs/rating" },
+				"passing": {
+					"description": "Finding a team-mate with the ball.",
+					"$ref": "#/$defs/rating"
+				},
+				"dribbling": { "description": "Running with the ball.", "$ref": "#/$defs/rating" },
+				"defending": { "description": "Winning the ball back.", "$ref": "#/$defs/rating" },
 				"physical": {
 					"description": "Strength, stamina and jumping.",
 					"$ref": "#/$defs/rating"
@@ -146,9 +156,18 @@
 			"title": "PlayStats",
 			"type": "object",
 			"properties": {
-				"attack": { "$ref": "#/$defs/rating" },
-				"defence": { "$ref": "#/$defs/rating" },
-				"control": { "$ref": "#/$defs/rating" }
+				"attack": {
+					"description": "How well the card scores in a battle.",
+					"$ref": "#/$defs/rating"
+				},
+				"defence": {
+					"description": "How well the card stops a goal in a battle.",
+					"$ref": "#/$defs/rating"
+				},
+				"control": {
+					"description": "How well the card keeps the ball in a battle.",
+					"$ref": "#/$defs/rating"
+				}
 			},
 			"required": ["attack", "defence", "control"]
 		},

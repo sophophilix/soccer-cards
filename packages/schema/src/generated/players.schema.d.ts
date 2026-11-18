@@ -17,6 +17,9 @@ export type Tier = 'BASE' | 'RARE' | 'LEGEND';
  * Every player in the set, as served at players.json.
  */
 export interface PlayerList {
+	/**
+	 * A summary of each player.
+	 */
 	players: PlayerSummary[];
 }
 export interface PlayerSummary {
@@ -60,10 +63,25 @@ export interface PlayerSummary {
  * The six ratings of a player who is not a goalkeeper. Absent for a goalkeeper.
  */
 export interface OutfieldRatings {
+	/**
+	 * Running fast.
+	 */
 	pace: number;
+	/**
+	 * Scoring with a shot.
+	 */
 	shooting: number;
+	/**
+	 * Finding a team-mate with the ball.
+	 */
 	passing: number;
+	/**
+	 * Running with the ball.
+	 */
 	dribbling: number;
+	/**
+	 * Winning the ball back.
+	 */
 	defending: number;
 	/**
 	 * Strength, stamina and jumping.
@@ -99,9 +117,21 @@ export interface GoalkeeperRatings {
 	 */
 	positioning: number;
 }
+/**
+ * The three numbers a battle uses.
+ */
 export interface PlayStats {
+	/**
+	 * How well the card scores in a battle.
+	 */
 	attack: number;
+	/**
+	 * How well the card stops a goal in a battle.
+	 */
 	defence: number;
+	/**
+	 * How well the card keeps the ball in a battle.
+	 */
 	control: number;
 }
 /**
