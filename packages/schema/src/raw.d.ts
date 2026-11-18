@@ -3,3 +3,8 @@ declare module '*?raw' {
 	const text: string;
 	export default text;
 }
+
+// Vite's `import.meta.glob`, in the one form the design lint test uses to read every schema.
+interface ImportMeta {
+	glob(pattern: string, options: { eager: true; import: 'default' }): Record<string, unknown>;
+}
