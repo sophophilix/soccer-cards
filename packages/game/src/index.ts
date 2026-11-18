@@ -20,3 +20,13 @@ export { addFavourite, isFavourite, removeFavourite } from './favourites.ts';
 export type { FavouriteRefusal, FavouriteResult } from './favourites.ts';
 export { tradeCard } from './trade.ts';
 export type { TradeRefusal, TradeResult } from './trade.ts';
+export {
+	FORMATIONS,
+	OUT_OF_POSITION_FACTOR,
+	TEAM_SIZE,
+	WRONG_IN_GOAL_FACTOR,
+	bestTeam,
+	lineUp,
+	lineWorth
+} from './lineup.ts';
+export type { Formation, LineUp, LineUpResult } from './lineup.ts';
