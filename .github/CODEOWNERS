@@ -1,0 +1,17 @@
+# The paths only the tech lead changes (AGENTS.md, rules 1 and 2).
+# GitHub shows the owner on a pull request that touches one of them.
+# Syntax: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+#
+# A leading slash anchors a path at the repository root. The last matching
+# line wins.
+#
+# infra/ is left out until the directory exists. Add it in the task that
+# scaffolds it.
+
+/.github/ @sophophilix
+/.claude/ @sophophilix
+/tools/sdlc/ @sophophilix
+/bin/sdlc @sophophilix
+/docs/decisions/ @sophophilix
+/pnpm-lock.yaml @sophophilix
+/pnpm-workspace.yaml @sophophilix

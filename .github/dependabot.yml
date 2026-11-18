@@ -1,0 +1,48 @@
+# Dependabot proposes updates as pull requests. Each one passes the same gates
+# and gets the same review as any other change. Nothing merges by itself.
+# Options: https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference
+#
+# The uv and terraform ecosystems are left out until data/ and infra/ exist.
+# Add each one in the task that scaffolds its directory.
+version: 2
+
+updates:
+  # pnpm uses the npm ecosystem. The root directory covers the whole workspace.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    # Wait 14 days after a release. This must not be shorter than
+    # minimumReleaseAge in pnpm-workspace.yaml (7 days), or the install fails.
+    cooldown:
+      default-days: 14
+    # One pull request for all minor and patch updates. A major update
+    # matches no group, so it gets its own pull request.
+    groups:
+      npm-minor-patch:
+        patterns: ['*']
+        update-types: [minor, patch]
+    # Gives "build(deps): ..." or "build(deps-dev): ...", which the commit
+    # hook accepts.
+    commit-message:
+      prefix: build
+      include: scope
+
+  # The actions pinned by commit SHA in .github/workflows/.
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    # This ecosystem supports default-days only.
+    cooldown:
+      default-days: 14
+    groups:
+      actions-minor-patch:
+        patterns: ['*']
+        update-types: [minor, patch]
+    # Gives "ci(deps): ...".
+    commit-message:
+      prefix: ci
+      include: scope
