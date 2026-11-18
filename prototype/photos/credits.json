@@ -12,10 +12,10 @@
   "h": 495
  },
  "3": {
-  "credit": "Bryan Berlin, CC BY-SA 4.0",
-  "file": "Kylian_Mbappe_France_v_Senegal_16_June_2026-391_(cropped).jpg",
+  "credit": "Эдгар Брещанов, CC BY-SA 4.0",
+  "file": "Kylian_Mbappé_Russia_2018_(cropped).jpg",
   "w": 330,
-  "h": 495
+  "h": 466
  },
  "4": {
   "credit": "Bryan Berlin, CC BY-SA 4.0",
@@ -30,28 +30,28 @@
   "h": 478
  },
  "6": {
-  "credit": "Bryan Berlin, CC BY-SA 4.0",
-  "file": "Harry_Kane_England_v_Ghana_23_June_2026-024_(cropped).jpg",
+  "credit": "Number 10, CC BY 2.0",
+  "file": "Harry_Kane_2023.jpg",
   "w": 330,
-  "h": 458
+  "h": 531
  },
  "7": {
-  "credit": "Bryan Berlin, CC BY-SA 4.0",
-  "file": "Jude_Bellingham_England_v_Ghana_23_June_2026-061_(cropped).jpg",
+  "credit": "Barcex, CC BY-SA 4.0",
+  "file": "Jude_Bellingham_Laureus_2024_(cropped2).jpg",
   "w": 330,
   "h": 495
  },
  "8": {
-  "credit": "Bryan Berlin, CC BY-SA 4.0",
-  "file": "Lamine_Yamal_France_v_Spain_7.24.26-142.jpg",
+  "credit": "中国新闻社, CC BY 3.0",
+  "file": "Lamine_Yamal_a_Xina.png",
   "w": 330,
-  "h": 495
+  "h": 332
  },
  "9": {
-  "credit": "Bryan Berlin, CC BY-SA 4.0",
-  "file": "Vinícius_Júnior_Brazil_V_Morocco_13_June_2026-207_(cropped).jpg",
+  "credit": "Real Madrid, CC BY 3.0",
+  "file": "Vinicius_Jr_2021.jpg",
   "w": 330,
-  "h": 495
+  "h": 392
  },
  "10": {
   "credit": "Ailura, CC BY-SA 3.0 at",
@@ -66,10 +66,10 @@
   "h": 454
  },
  "12": {
-  "credit": "Bryan Berlin, CC BY-SA 4.0",
-  "file": "Bukayo_Saka_England_v_Ghana_23_June_2026-057_(cropped).jpg",
+  "credit": "Chensiyuan, CC BY-SA 4.0",
+  "file": "1_bukayo_saka_arsenal_2025_(cropped).jpg",
   "w": 330,
-  "h": 495
+  "h": 390
  },
  "13": {
   "credit": "Bryan Berlin, CC BY-SA 4.0",
@@ -144,10 +144,10 @@
   "h": 495
  },
  "25": {
-  "credit": "Bryan Berlin, CC BY-SA 4.0",
-  "file": "Ruben_Dias_Croatia_v_Portugal_2_July_2026-228_(cropped).jpg",
+  "credit": "Creatina23, CC BY-SA 4.0",
+  "file": "RubenDiasPortugal.jpg",
   "w": 330,
-  "h": 495
+  "h": 372
  },
  "26": {
   "credit": "Bryan Berlin, CC BY-SA 4.0",
@@ -180,10 +180,10 @@
   "h": 251
  },
  "31": {
-  "credit": "Bryan Berlin, CC BY-SA 4.0",
-  "file": "Alexis_Mac_Allister_Argentina_v_Spain_19_July_2026-162_(cropped).jpg",
+  "credit": "Timmy96, CC0",
+  "file": "Alexis_Mac_Allister_04012026_(1).jpg",
   "w": 330,
-  "h": 463
+  "h": 448
  },
  "32": {
   "credit": "Bryan Berlin, CC BY-SA 4.0",
@@ -214,5 +214,257 @@
   "file": "Nicolò_Barella_in_2021_(cropped_2).jpg",
   "w": 330,
   "h": 495
+ },
+ "37": {
+  "credit": "Mikael Hervestad, CC BY-SA 4.0",
+  "file": "Alexander_Isak_-_Sweden_-_Greece21_(cropped).jpg",
+  "w": 330,
+  "h": 431
+ },
+ "38": {
+  "credit": "Антон Зайцев, CC BY-SA 3.0",
+  "file": "Trent_Alexander-Arnold_2018_(cropped).jpg",
+  "w": 288,
+  "h": 414
+ },
+ "39": {
+  "credit": "SIC, CC BY 3.0",
+  "file": "Bernardo_Silva_(Isto_É_Gozar_Com_Quem_Trabalha,_2024).png",
+  "w": 330,
+  "h": 411
+ },
+ "40": {
+  "credit": "Bryan Berlin, CC BY-SA 4.0",
+  "file": "Michael_Olise_France_v_Senegal_16_June_2026-307_(cropped).jpg",
+  "w": 330,
+  "h": 495
+ },
+ "41": {
+  "credit": "Timmy96, CC0",
+  "file": "Dominik_Szoboszlai_04012026_(1).jpg",
+  "w": 330,
+  "h": 422
+ },
+ "42": {
+  "credit": "Bryan Berlin, CC BY-SA 4.0",
+  "file": "Kai_Havertz_Ecuador_v_Germany_25_June_2026-118.jpg",
+  "w": 330,
+  "h": 495
+ },
+ "43": {
+  "credit": "Антон Зайцев, CC BY-SA 3.0",
+  "file": "FRA-ARG_(10)_(cropped).jpg",
+  "w": 330,
+  "h": 398
+ },
+ "44": {
+  "credit": "Bryan Berlin, CC BY-SA 4.0",
+  "file": "Robert_Lewandowski_NYCFC_v_Chicago_25_July_2026-383.jpg",
+  "w": 330,
+  "h": 495
+ },
+ "45": {
+  "credit": "Bryan Berlin, CC BY-SA 4.0",
+  "file": "Gabriel_Magalhaes_Brazil_V_Morocco_13_June_2026-132_(cropped).jpg",
+  "w": 330,
+  "h": 495
+ },
+ "46": {
+  "credit": "Bryan Berlin, CC BY-SA 4.0",
+  "file": "Enzo_Fernandez_Argentina_v_Spain_19_July_2026-050_(cropped).jpg",
+  "w": 330,
+  "h": 416
+ },
+ "47": {
+  "credit": "Bryan Berlin, CC BY-SA 4.0",
+  "file": "Marquinhos_Brazil_V_Morocco_13_June_2026-153_(cropped).jpg",
+  "w": 330,
+  "h": 495
+ },
+ "48": {
+  "credit": "Bryan Berlin, CC BY-SA 4.0",
+  "file": "Vitinha_USMNT_v_Portugal_Mar_31_2026-50_(cropped).jpg",
+  "w": 330,
+  "h": 440
+ },
+ "49": {
+  "credit": "Unknown author, Public domain",
+  "file": "Pele_con_brasil_(cropped).jpg",
+  "w": 330,
+  "h": 447
+ },
+ "50": {
+  "credit": "Unknown author, Public domain",
+  "file": "Argentina_celebrando_copa_(cropped).jpg",
+  "w": 330,
+  "h": 517
+ },
+ "51": {
+  "credit": "Hadi Abyar, CC BY 4.0",
+  "file": "Zinedine_Zidane_by_Tasnim_03.jpg",
+  "w": 330,
+  "h": 438
+ },
+ "52": {
+  "credit": "Lula Oficial, CC BY-SA 4.0",
+  "file": "12.12.2025_–_Cerimônia_de_lançamento_do_SBT_News_-_54980664160_(cropped2).jpg",
+  "w": 330,
+  "h": 476
+ },
+ "53": {
+  "credit": "Marcos Corrêa/PR, CC BY 2.0",
+  "file": "Ronaldinho_in_2019.jpg",
+  "w": 330,
+  "h": 440
+ },
+ "54": {
+  "credit": "Web Summit, CC BY 2.0",
+  "file": "Thierry_Henry_(51649035951)_(cropped).jpg",
+  "w": 330,
+  "h": 440
+ },
+ "55": {
+  "credit": "Rob Mieremet / Anefo, CC0",
+  "file": "Johan_Cruijff_(1974).jpg",
+  "w": 330,
+  "h": 440
+ },
+ "57": {
+  "credit": "GOAL TV, CC BY 3.0",
+  "file": "Paolo_Maldini_AC_Milan_Technical_director_2018.jpg",
+  "w": 330,
+  "h": 339
+ },
+ "58": {
+  "credit": "All-Pro Reels from District of Columbia, USA, CC BY-SA 2.0",
+  "file": "Wayne_Rooney_(50121495731)_(cropped).jpg",
+  "w": 330,
+  "h": 502
+ },
+ "59": {
+  "credit": "Soccer Aid for Unicef, CC BY 3.0",
+  "file": "David_Beckham_UNICEF_(cropped2).jpg",
+  "w": 330,
+  "h": 446
+ },
+ "60": {
+  "credit": "Colleen Sturtevant, CC BY-SA 4.0",
+  "file": "Zlatan_Ibrahimović_nyc.jpg",
+  "w": 330,
+  "h": 495
+ },
+ "61": {
+  "credit": "Bryan Berlin, CC BY-SA 4.0",
+  "file": "Andrés_Iniesta_Argentina_v_Spain_19_July_2026-034_(cropped).jpg",
+  "w": 330,
+  "h": 418
+ },
+ "62": {
+  "credit": "Евгений Асмолов, CC BY-SA 3.0",
+  "file": "Kaká_visited_Stadium_St._Petersburg.jpg",
+  "w": 330,
+  "h": 495
+ },
+ "63": {
+  "credit": "Эдгар Брещанов, CC BY-SA 3.0",
+  "file": "Steven_Gerrard_2018.jpg",
+  "w": 330,
+  "h": 496
+ },
+ "64": {
+  "credit": "Y.Leclercq©, CC BY-SA 4.0",
+  "file": "Didier_Drogba_(2019)_(cropped2).jpg",
+  "w": 330,
+  "h": 426
+ },
+ "67": {
+  "credit": "Bryan Berlin, CC BY-SA 4.0",
+  "file": "Alisson_Becker_Brazil_V_Morocco_13_June_2026-117_(cropped).jpg",
+  "w": 330,
+  "h": 495
+ },
+ "68": {
+  "credit": "Bryan Berlin, CC BY-SA 4.0",
+  "file": "Thibaut_Courtois_Belgium_v_USA_6_July_2026-076_(cropped).jpg",
+  "w": 330,
+  "h": 435
+ },
+ "69": {
+  "credit": "MichaelEmilio, CC BY 4.0",
+  "file": "Norway_Italy_-_June_2025_A_17_(Gianluigi_Donnarumma).jpg",
+  "w": 330,
+  "h": 435
+ },
+ "70": {
+  "credit": "Bryan Berlin, CC BY-SA 4.0",
+  "file": "Manuel_Neuer_Ecuador_v_Germany_25_June_2026-148.jpg",
+  "w": 330,
+  "h": 495
+ },
+ "71": {
+  "credit": "Bryan Berlin, CC BY-SA 4.0",
+  "file": "David_Raya_Argentina_v_Spain_19_July_2026-003_(cropped).jpg",
+  "w": 330,
+  "h": 526
+ },
+ "72": {
+  "credit": "Government of Catalonia, CC0",
+  "file": "Marc-Andre_Ter_Stegen_ACCI_FCBARCELONA_Turisme_Catalunya_gira_pretemporada_CATPRESS.jpg",
+  "w": 330,
+  "h": 413
+ },
+ "73": {
+  "credit": "Bryan Berlin, CC BY-SA 4.0",
+  "file": "Mike_Maignan_France_v_Norway_26_June_26-132_(cropped).jpg",
+  "w": 330,
+  "h": 474
+ },
+ "74": {
+  "credit": "The White House, Public domain",
+  "file": "Robert_Sánchez_FIFA_Club_World_Cup_final_extraction.jpg",
+  "w": 330,
+  "h": 413
+ },
+ "75": {
+  "credit": "Web Summit, CC BY 2.0",
+  "file": "Iker-Casillas-SportsTrade-2021-cropped.jpg",
+  "w": 330,
+  "h": 358
+ },
+ "76": {
+  "credit": "Steffen Prößdorf, CC BY-SA 4.0",
+  "file": "2022-07-30_Fußball,_Männer,_DFL-Supercup,_RB_Leipzig_-_FC_Bayern_München_1DX_3179_by_Stepro.jpg",
+  "w": 330,
+  "h": 330
+ },
+ "77": {
+  "credit": "MichaelEmilio, CC BY 4.0",
+  "file": "Norway_Italy_-_June_2025_A_44_(Gianluigi_Buffon).jpg",
+  "w": 330,
+  "h": 416
+ },
+ "78": {
+  "credit": "Web Summit, CC BY 2.0",
+  "file": "Edwin_van_der_Sar_2015.jpg",
+  "w": 330,
+  "h": 398
+ },
+ "56": {
+  "credit": "Immanuel Giel, cropped by afrank99, Public domain",
+  "file": "Franz_Beckenbauer_2006_06_17.jpg",
+  "w": 330,
+  "h": 376
+ },
+ "65": {
+  "credit": "Harry Pot for Anefo, CC BY-SA 3.0 nl",
+  "file": "Eusebio_(1963).jpg",
+  "w": 330,
+  "h": 451
+ },
+ "66": {
+  "credit": "Anefo, CC0",
+  "file": "Ferenc_Puskás_(cropped).jpg",
+  "w": 330,
+  "h": 505
  }
 }

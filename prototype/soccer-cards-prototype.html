@@ -215,10 +215,16 @@ p { margin: 0; max-width: 60ch; }
 .back { transform: rotateY(180deg); color: var(--card-paper); }
 .front .ground {
   position: absolute; inset: 0;
+  /* Radiant: a white-hot centre behind the player, sun rays, and two colour glows over the club colours. */
   background:
-    radial-gradient(circle, rgba(255, 255, 255, .22) 0.5cqw, transparent 0.62cqw) 0 0 / 3cqw 3cqw,
-    repeating-linear-gradient(118deg, transparent 0 7cqw, rgba(0, 0, 0, .1) 7cqw 14cqw),
-    linear-gradient(160deg, var(--g1), var(--g2));
+    radial-gradient(circle at 50% 36%, rgba(255, 255, 255, .92), rgba(255, 255, 255, 0) 32%),
+    repeating-conic-gradient(from 4deg at 50% 36%, rgba(255, 255, 255, .24) 0 6deg, rgba(255, 255, 255, 0) 6deg 12deg),
+    radial-gradient(circle at 8% 6%, var(--glow, var(--g1)), transparent 58%),
+    radial-gradient(circle at 94% 66%, var(--glow2, var(--g1)), transparent 52%),
+    radial-gradient(circle at 50% 36%, var(--g1), var(--g2) 96%);
+}
+@supports (color: oklch(from red l c h)) {
+  .inner { --glow: oklch(from var(--g1) .86 .19 calc(h + 55)); --glow2: oklch(from var(--g1) .8 .21 calc(h - 65)); }
 }
 /* Foil sits on the background only, under the player and name plate. */
 .foil {
@@ -290,9 +296,74 @@ p { margin: 0; max-width: 60ch; }
 .credit { margin-top: auto; display: flex; justify-content: space-between; align-items: end; gap: 3cqw; font-weight: 600; font-size: 2.7cqw; line-height: 1.2; letter-spacing: .04em; opacity: .75; }
 .credit span:last-child { white-space: nowrap; }
 
+/* ---------- Match: line-ups, commentary and penalties ---------- */
+.lines { display: grid; gap: 8px; }
+.line { display: grid; grid-template-columns: 3.4em minmax(0, 1fr); gap: 8px; align-items: center; }
+.line > b { font: 800 14px/1 var(--font-data); letter-spacing: .12em; }
+.line .grid { --cols: 5; gap: clamp(4px, 1vw, 8px); }
+.slot.oop { outline: 3px dashed var(--booking); outline-offset: 2px; }
+.log { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.log li { padding: 8px 10px; border-left: 4px solid var(--muted); }
+.log li.goal { border-left-color: var(--accent); font-weight: 700; }
+.pens { display: grid; gap: 10px; justify-items: center; text-align: center; }
+
+/* ---------- Tiers: base, rare (chrome), legend (gold), icon (all-time greats, black and prism) ---------- */
+.face { border: 0; }
+.frame {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none; border-radius: inherit; padding: 2cqw;
+  background: var(--frame);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
+.frame::after { content: ""; position: absolute; inset: 2cqw; border-radius: 3.4cqw; box-shadow: inset 0 0 0 .5cqw rgba(0, 0, 0, .35); }
+.t-base { --frame: linear-gradient(160deg, #FFFFFF, #DCE4EC 60%, #FFFFFF); }
+.t-rare { --frame: conic-gradient(from 210deg, #F6F8FB, #8C99A8, #FFFFFF, #6E7A89, #E8EDF3, #A3AFBD, #F6F8FB); }
+.t-legend { --frame: conic-gradient(from 210deg, #FFF4B8, #C8920F, #FFF9DC, #94650A, #FFE27A, #B07A0C, #FFF4B8); }
+.t-icon { --frame: conic-gradient(from 210deg, #FFD86B, #FF7AD9, #7AD7FF, #8DFFA0, #FFE27A, #C18CFF, #FFD86B); }
+.ovr {
+  position: absolute; left: 5cqw; top: 5cqw; z-index: 2; display: grid; justify-items: center; gap: .6cqw;
+  background: var(--ovr-bg, var(--card-paper)); color: var(--ovr-ink, var(--card-ink));
+  border-radius: 2.4cqw; padding: 1.8cqw 2.6cqw 1.4cqw; box-shadow: 1cqw 1cqw 0 var(--card-ink);
+}
+.ovr b { font: 800 italic 12cqw/.82 var(--font-data); font-variant-numeric: tabular-nums; }
+.ovr span { font: 800 4.4cqw/1 var(--font-data); letter-spacing: .08em; }
+.t-rare .ovr { --ovr-bg: linear-gradient(160deg, #FFFFFF, #B9C4D0); }
+.t-legend .ovr { --ovr-bg: linear-gradient(160deg, #FFF3A6, #D9A11A); }
+.t-icon .ovr { --ovr-bg: linear-gradient(160deg, #FFE7A0, #E0A82A); }
+.tiertag {
+  position: absolute; left: 50%; top: 5.4cqw; transform: translateX(-50%); z-index: 2;
+  font: 800 4cqw/1 var(--font-data); letter-spacing: .2em; text-transform: uppercase; white-space: nowrap;
+  padding: 1.2cqw 2.4cqw 1cqw; border-radius: 99cqw; background: var(--card-ink); color: var(--tag, var(--card-paper));
+}
+.t-rare .tiertag { --tag: #DCE4EC; }
+.t-legend .tiertag { --tag: #FFD86B; }
+.t-icon .tiertag { background: linear-gradient(90deg, #FFD86B, #FF7AD9, #7AD7FF); color: var(--card-ink); }
+.t-legend .foil { background: repeating-linear-gradient(115deg, rgba(255, 255, 255, 0) 0%, rgba(255, 245, 190, .85) 5%, rgba(255, 200, 80, .5) 9%, rgba(255, 255, 255, 0) 15%); background-size: 300% 300%; background-position: var(--mx) var(--my); }
+.t-icon .ground {
+  background:
+    radial-gradient(circle, rgba(255, 216, 107, .55) .35cqw, transparent .5cqw) 0 0 / 5cqw 5cqw,
+    radial-gradient(circle, rgba(255, 255, 255, .35) .25cqw, transparent .4cqw) 2.5cqw 2.5cqw / 7cqw 7cqw,
+    radial-gradient(circle at 50% 36%, rgba(255, 240, 190, .8), rgba(255, 240, 190, 0) 30%),
+    repeating-conic-gradient(from 4deg at 50% 36%, rgba(255, 216, 107, .2) 0 6deg, rgba(255, 216, 107, 0) 6deg 12deg),
+    conic-gradient(from 200deg at 50% 36%, rgba(255, 122, 217, .5), rgba(122, 215, 255, .5), rgba(141, 255, 160, .45), rgba(255, 216, 107, .5), rgba(193, 140, 255, .5), rgba(255, 122, 217, .5)),
+    linear-gradient(160deg, #26222E, #08070B);
+}
+.t-icon .foil { mix-blend-mode: color-dodge; background: repeating-linear-gradient(115deg, rgba(255, 255, 255, 0) 0%, rgba(255, 120, 220, .6) 4%, rgba(120, 215, 255, .6) 8%, rgba(140, 255, 160, .55) 12%, rgba(255, 216, 107, .6) 16%, rgba(255, 255, 255, 0) 22%); background-size: 300% 300%; background-position: var(--mx) var(--my); }
+.t-icon .surname { color: #FFD86B; }
+.t-icon .edition { background: linear-gradient(90deg, #FFD86B, #FF9AE0); }
+.t-icon .plate { background: linear-gradient(180deg, #17151C, #050407); }
+.spot.icon::before {
+  content: ""; position: absolute; inset: -8% 0; margin: auto; width: min(100%, 480px); border-radius: 50%;
+  background: conic-gradient(#FFD86B, #FF7AD9, #7AD7FF, #8DFFA0, #FFD86B); filter: blur(28px); opacity: .7;
+  animation: spin 3s linear infinite;
+}
+@keyframes spin { to { transform: rotate(1turn); } }
+.chip.icon { background: linear-gradient(90deg, #FFD86B, #FF7AD9, #7AD7FF); color: var(--card-ink); }
+.odds { font: 800 15px/1.3 var(--font-data); letter-spacing: .06em; text-transform: uppercase; }
+
 @media (prefers-reduced-motion: reduce) {
   .inner, .slot { transition: none; }
-  .card.big.idle, .spot .card.big.idle, .pack.tearing, .pack.tearing::before, .grid.trading .slot, .spot.legend::before { animation: none; }
+  .card.big.idle, .spot .card.big.idle, .pack.tearing, .pack.tearing::before, .grid.trading .slot, .spot.legend::before, .spot.icon::before { animation: none; }
 }
 </style>
 
@@ -316,22 +387,23 @@ p { margin: 0; max-width: 60ch; }
       <h2>Open a pack</h2>
       <div class="shelf">
         <div class="offer">
-          <button class="pack" id="pack-pack" type="button" aria-label="Pack of 10 cards">
+          <button class="pack" id="pack-pack" type="button" aria-label="Pack of 10 cards: 8 base and 2 lucky cards">
             <span class="name">Soccer<br>Cards</span>
             <span class="ten">10 CARDS</span>
-            <span class="mix">7 BASE · 2 RARE<br>1 LEGEND</span>
+            <span class="mix">8 BASE<br>2 LUCKY</span>
           </button>
           <button class="btn primary" id="buy-pack" type="button"></button>
         </div>
         <div class="offer">
-          <button class="pack jumbo" id="pack-jumbo" type="button" aria-label="Jumbo pack of 20 cards">
+          <button class="pack jumbo" id="pack-jumbo" type="button" aria-label="Jumbo pack of 50 cards: 40 base and 10 lucky cards">
             <span class="name">Jumbo<br>Pack</span>
-            <span class="ten">20 CARDS</span>
-            <span class="mix">15 BASE · 3 RARE<br>2 LEGENDS</span>
+            <span class="ten">50 CARDS</span>
+            <span class="mix">40 BASE<br>10 LUCKY</span>
           </button>
           <button class="btn primary" id="buy-jumbo" type="button"></button>
         </div>
       </div>
+      <p class="odds" id="packodds"></p>
       <p class="muted" id="packnote"></p>
     </div>
     <div class="reveal" id="reveal" hidden>
@@ -357,31 +429,59 @@ p { margin: 0; max-width: 60ch; }
       <button class="btn primary" type="button" data-go="packs" id="lockedbtn">Open packs</button>
     </div>
     <div class="view" id="battlepick" hidden>
-      <h2>Pick your 11</h2>
-      <p>Tap cards to put them in your team. The team with the highest total wins. Beat the AI to win 5 coins.</p>
+      <h2>Pick your team</h2>
+      <p>You are the manager. Choose a formation, put players in their own positions and pick a tactic. A weaker team with the right plan can beat a stronger one. Win 3 matches to go up a division.</p>
+      <div class="row">
+        <span class="chip legend" id="division"></span>
+        <span class="chip" id="aiform"></span>
+        <span class="muted" id="record"></span>
+      </div>
+      <h3>Formation</h3>
+      <div class="row" id="formations"></div>
+      <h3>Tactic</h3>
+      <div class="row" id="tactics"></div>
+      <p class="muted" id="tactichint"></p>
       <div class="row">
         <span class="chip" id="pickcount"></span>
         <span class="chip legend" id="picktotal"></span>
-        <span class="muted" id="record"></span>
       </div>
+      <div class="lines" id="lineup"></div>
+      <p class="muted" id="lineuphint"></p>
       <div class="row">
-        <button class="btn primary" type="button" id="fight">Battle</button>
-        <button class="btn small" type="button" id="best">Pick my best 11</button>
+        <button class="btn primary" type="button" id="fight">Kick off</button>
+        <button class="btn small" type="button" id="best">Pick my best team</button>
         <button class="btn small" type="button" id="clearteam">Clear</button>
       </div>
+      <h3>Your players</h3>
       <div class="grid fixed" id="pickgrid"></div>
     </div>
     <div class="view" id="battlestage" hidden>
       <div class="board" id="board">
         <div class="side" id="side-you"><span class="who">You</span><span class="pts" id="pts-you">0</span></div>
-        <span class="vs">VS</span>
+        <span class="vs" id="clock">0'</span>
         <div class="side" id="side-ai"><span class="who">AI</span><span class="pts" id="pts-ai">0</span></div>
       </div>
+      <div class="row center">
+        <span class="chip" id="plan-you"></span>
+        <span class="chip" id="plan-ai"></span>
+      </div>
+      <p class="banner" id="edge" hidden></p>
+      <div class="pens" id="pens" hidden>
+        <h2>Penalty shoot-out</h2>
+        <p class="pts" id="penscore">0 – 0</p>
+        <p id="penask"></p>
+        <div class="row center">
+          <button class="btn" type="button" data-pen="0">Left</button>
+          <button class="btn" type="button" data-pen="1">Middle</button>
+          <button class="btn" type="button" data-pen="2">Right</button>
+        </div>
+      </div>
       <div class="result" id="result" hidden></div>
-      <div class="row center" id="skiprow"><button class="btn small" type="button" id="skipbattle">Skip to the result</button></div>
+      <div class="row center" id="skiprow"><button class="btn small" type="button" id="skipbattle">Skip to full time</button></div>
+      <ol class="log" id="commentary" aria-live="polite"></ol>
       <div class="teams">
-        <div class="teambox"><h3>Your team</h3><div class="grid team" id="team-you"></div></div>
-        <div class="teambox"><h3>AI team</h3><div class="grid team" id="team-ai"></div></div>
+        <div class="teambox"><h3>Your team</h3><div class="lines" id="team-you"></div></div>
+        <div class="teambox"><h3>AI team</h3><div class="lines" id="team-ai"></div></div>
       </div>
     </div>
   </section>
@@ -399,7 +499,7 @@ p { margin: 0; max-width: 60ch; }
       <button class="btn small" type="button" id="favfilter" aria-pressed="false">★ Favourites</button>
       <button class="btn small" type="button" id="trademode" aria-pressed="false">Trade</button>
     </div>
-    <p class="banner" id="tradebanner" hidden>Tap a card you don't want. You get a different card of the same kind: base for base, rare for rare, legend for legend.</p>
+    <p class="banner" id="tradebanner" hidden>Tap a card you don't want. You get a different card of the same kind: base for base, rare for rare, legend for legend, icon for icon.</p>
     <div class="grid" id="collectiongrid"></div>
     <div class="empty" id="collectionempty" hidden>
       <p id="emptytext"></p>
@@ -414,7 +514,8 @@ p { margin: 0; max-width: 60ch; }
     <div class="meter" aria-hidden="true"><i id="guidemeter"></i></div>
     <p class="muted">Every card in the set. Cards join your collection only when you find them in a pack or trade for them.</p>
     <div id="guidetiers" class="view"></div>
-    <p class="muted">Ratings, goals, fees and awards are sample numbers for the prototype, not live data. Photos come from Wikimedia Commons under free licences, and the back of each card names the photographer.</p>
+    <p class="muted" id="guideodds"></p>
+    <p class="muted">Icons are all-time greats, picked by hand. Every other card earns its kind from the big number on its front: Legend is 88 or more, Rare is 84 to 87, and Base is 83 or less. Ratings, goals, fees and awards are sample numbers for the prototype, not live data. Photos come from Wikimedia Commons under free licences, and the back of each card names the photographer.</p>
     <div class="row">
       <button class="btn small" type="button" id="reset">Start again</button>
       <span class="muted">Your cards are saved on this device only.</span>
@@ -444,9 +545,13 @@ p { margin: 0; max-width: 60ch; }
     CRO: 'linear-gradient(#FF0000 0 33%, #fff 33% 67%, #171796 67%)',
     URU: 'repeating-linear-gradient(#fff 0 12%, #0038A8 12% 22%)',
     NGA: 'linear-gradient(90deg, #008751 0 33%, #fff 33% 67%, #008751 67%)',
-    ITA: 'linear-gradient(90deg, #009246 0 33%, #fff 33% 67%, #CE2B37 67%)'
+    ITA: 'linear-gradient(90deg, #009246 0 33%, #fff 33% 67%, #CE2B37 67%)',
+    SWE: 'linear-gradient(90deg, transparent 31%, #FECC02 31% 44%, transparent 44%), linear-gradient(transparent 40%, #FECC02 40% 60%, transparent 60%), #006AA7',
+    CIV: 'linear-gradient(90deg, #F77F00 0 33%, #fff 33% 67%, #009E60 67%)',
+    HUN: 'linear-gradient(#CE2939 0 33%, #fff 33% 67%, #477050 67%)',
+    POL: 'linear-gradient(#fff 0 50%, #DC143C 50%)'
   };
-  var COUNTRY = { ARG: 'Argentina', POR: 'Portugal', FRA: 'France', NOR: 'Norway', EGY: 'Egypt', ENG: 'England', ESP: 'Spain', BRA: 'Brazil', NED: 'Netherlands', GER: 'Germany', BEL: 'Belgium', MAR: 'Morocco', KOR: 'South Korea', CRO: 'Croatia', URU: 'Uruguay', NGA: 'Nigeria', ITA: 'Italy' };
+  var COUNTRY = { ARG: 'Argentina', POR: 'Portugal', FRA: 'France', NOR: 'Norway', EGY: 'Egypt', ENG: 'England', ESP: 'Spain', BRA: 'Brazil', NED: 'Netherlands', GER: 'Germany', BEL: 'Belgium', MAR: 'Morocco', KOR: 'South Korea', CRO: 'Croatia', URU: 'Uruguay', NGA: 'Nigeria', ITA: 'Italy', SWE: 'Sweden', CIV: 'Ivory Coast', HUN: 'Hungary', POL: 'Poland' };
   // club: [kit colour, second colour, striped shirt, card colour from, card colour to]
   var CLUBS = {
     'Inter Miami': ['#F4A6C6', '#111111', 0, '#E86AA6', '#7A1F52'],
@@ -464,66 +569,125 @@ p { margin: 0; max-width: 60ch; }
     'LAFC': ['#111111', '#C39E6D', 0, '#B8935A', '#3A2C14'],
     'Atlético Madrid': ['#CB3524', '#FFFFFF', 1, '#D9534A', '#1F2F6B'],
     'Inter': ['#0068A8', '#111111', 1, '#2B7FC4', '#0A1F3F'],
-    'Galatasaray': ['#A90432', '#FDB912', 1, '#E0932A', '#7A0A26']
+    'Galatasaray': ['#A90432', '#FDB912', 1, '#E0932A', '#7A0A26'],
+    'Santos': ['#FFFFFF', '#111111', 0, '#5A5A66', '#16161C'],
+    'Ajax': ['#FFFFFF', '#D2122E', 0, '#E8475A', '#7A0B1C'],
+    'AC Milan': ['#FB090B', '#111111', 1, '#E8392F', '#3A0A0A'],
+    'Benfica': ['#E83030', '#FFFFFF', 0, '#EF5A4A', '#7E1410'],
+    'Juventus': ['#FFFFFF', '#111111', 1, '#5A5A66', '#16161C']
   };
-  var POSITIONS = { FW: 'Forward', MF: 'Midfielder', DF: 'Defender' };
-  var TIER_NAME = { legend: 'Legend', rare: 'Rare', base: 'Base' };
-  var TIER_ORDER = { legend: 0, rare: 1, base: 2 };
+  var POSITIONS = { FW: 'Forward', MF: 'Midfielder', DF: 'Defender', GK: 'Goalkeeper' };
+  var TIER_NAME = { icon: 'Icon', legend: 'Legend', rare: 'Rare', base: 'Base' };
+  var TIER_ORDER = { icon: 0, legend: 1, rare: 2, base: 3 };
   var RATING_NAMES = ['PACE', 'SHOOT', 'PASS', 'DRIBBLE', 'DEFEND', 'POWER'];
-  // [first, last, position, nation, club, shirt, tier, edition, pace, shoot, pass, dribble, defend, power,
+  // A goalkeeper's six ratings sit in the same six columns.
+  var GK_RATING_NAMES = ['DIVING', 'HANDLING', 'KICKING', 'REFLEXES', 'SPEED', 'POSITION'];
+  // Tier rule: an Icon is picked by hand. Every other card's tier comes from its overall rating.
+  var LEGEND_FROM = 88, RARE_FROM = 84;
+  function tierFor(ovr) { return ovr >= LEGEND_FROM ? 'legend' : ovr >= RARE_FROM ? 'rare' : 'base'; }
+  // [first, last, position, nation, club, shirt, 'icon' or '', edition, pace, shoot, pass, dribble, defend, power,
   //  transfer fee, club goals, country goals, award] (all sample values for the prototype)
   var RAW = [
-    ['Lionel', 'Messi', 'FW', 'ARG', 'Inter Miami', 10, 'legend', 'Magician', 78, 90, 92, 94, 34, 62, 'Free', 75, 115, 'MLS Golden Boot 2025'],
-    ['Cristiano', 'Ronaldo', 'FW', 'POR', 'Al Nassr', 7, 'legend', 'Sky Jumper', 76, 91, 76, 82, 34, 76, 'Free', 110, 143, 'Saudi Pro League top scorer 2024/25'],
-    ['Kylian', 'Mbappé', 'FW', 'FRA', 'Real Madrid', 10, 'legend', 'Lightning', 97, 91, 81, 92, 36, 77, 'Free', 75, 55, 'European Golden Shoe 2024/25'],
-    ['Erling', 'Haaland', 'FW', 'NOR', 'Manchester City', 9, 'legend', 'Goal Machine', 89, 93, 68, 80, 45, 90, '€60m', 150, 55, 'Premier League Golden Boot 2023/24'],
-    ['Mohamed', 'Salah', 'FW', 'EGY', 'Liverpool', 11, 'legend', 'Egyptian King', 89, 89, 84, 88, 45, 75, '€42m', 250, 65, 'Premier League Player of the Season 2024/25'],
-    ['Harry', 'Kane', 'FW', 'ENG', 'Bayern Munich', 9, 'legend', 'Sharp Shooter', 68, 93, 85, 83, 48, 84, '€95m', 120, 78, 'Bundesliga top scorer 2024/25'],
-    ['Jude', 'Bellingham', 'MF', 'ENG', 'Real Madrid', 5, 'rare', 'Engine Room', 80, 84, 85, 88, 78, 84, '€103m', 45, 6, 'La Liga Player of the Season 2023/24'],
-    ['Lamine', 'Yamal', 'FW', 'ESP', 'Barcelona', 10, 'rare', 'Wonderkid', 90, 82, 84, 91, 30, 58, 'Academy', 40, 8, 'Kopa Trophy 2025'],
-    ['Vinícius', 'Júnior', 'FW', 'BRA', 'Real Madrid', 7, 'rare', 'Samba Star', 95, 85, 80, 91, 29, 68, '€45m', 115, 8, 'The Best FIFA Men’s Player 2024'],
-    ['Virgil', 'van Dijk', 'DF', 'NED', 'Liverpool', 4, 'rare', 'Brick Wall', 76, 60, 73, 70, 91, 88, '€85m', 30, 11, 'Premier League champion 2024/25'],
-    ['', 'Rodri', 'MF', 'ESP', 'Manchester City', 16, 'rare', 'The Anchor', 62, 78, 87, 82, 87, 86, '€70m', 27, 4, 'Ballon d’Or 2024'],
-    ['Bukayo', 'Saka', 'FW', 'ENG', 'Arsenal', 7, 'rare', 'Star Boy', 86, 83, 83, 87, 60, 70, 'Academy', 80, 14, 'England Player of the Year 2022/23'],
-    ['', 'Pedri', 'MF', 'ESP', 'Barcelona', 8, 'rare', 'Pass Master', 74, 72, 87, 89, 68, 66, '€5m', 30, 3, 'La Liga champion 2024/25'],
-    ['Jamal', 'Musiala', 'MF', 'GER', 'Bayern Munich', 10, 'rare', 'Twinkle Toes', 84, 80, 81, 92, 58, 64, 'Academy', 65, 8, 'Bundesliga champion 2024/25'],
-    ['Kevin', 'De Bruyne', 'MF', 'BEL', 'Napoli', 11, 'rare', 'Playmaker', 66, 86, 93, 85, 62, 74, 'Free', 10, 36, 'Premier League Player of the Season 2021/22'],
-    ['Ousmane', 'Dembélé', 'FW', 'FRA', 'Paris SG', 10, 'rare', 'Two Footed', 91, 85, 82, 90, 38, 62, '€50m', 50, 7, 'Ballon d’Or 2025'],
-    ['Declan', 'Rice', 'MF', 'ENG', 'Arsenal', 41, 'base', '', 73, 72, 80, 78, 84, 85, '€117m', 25, 6, 'PFA Team of the Year 2023/24'],
-    ['Phil', 'Foden', 'MF', 'ENG', 'Manchester City', 47, 'base', '', 81, 82, 84, 88, 56, 60, 'Academy', 100, 4, 'Premier League Player of the Season 2023/24'],
-    ['Cole', 'Palmer', 'MF', 'ENG', 'Chelsea', 10, 'base', '', 76, 84, 85, 86, 52, 66, '€47m', 50, 3, 'PFA Young Player of the Year 2023/24'],
-    ['Martin', 'Ødegaard', 'MF', 'NOR', 'Arsenal', 8, 'base', '', 74, 79, 89, 87, 60, 62, '€35m', 42, 4, 'PFA Team of the Year 2023/24'],
-    ['William', 'Saliba', 'DF', 'FRA', 'Arsenal', 2, 'base', '', 80, 40, 68, 70, 88, 84, '€30m', 8, 0, 'PFA Team of the Year 2023/24'],
-    ['', 'Raphinha', 'FW', 'BRA', 'Barcelona', 11, 'base', '', 89, 83, 81, 85, 50, 74, '€58m', 60, 11, 'La Liga Player of the Season 2024/25'],
-    ['Achraf', 'Hakimi', 'DF', 'MAR', 'Paris SG', 2, 'base', '', 92, 74, 80, 81, 78, 77, '€60m', 28, 11, 'African Footballer of the Year 2025'],
-    ['Bruno', 'Fernandes', 'MF', 'POR', 'Manchester United', 8, 'base', '', 72, 84, 89, 82, 66, 72, '€55m', 100, 28, 'Manchester United Player of the Year 2024/25'],
-    ['Rúben', 'Dias', 'DF', 'POR', 'Manchester City', 3, 'base', '', 66, 40, 68, 66, 89, 87, '€68m', 6, 3, 'Premier League Player of the Season 2020/21'],
-    ['Florian', 'Wirtz', 'MF', 'GER', 'Liverpool', 7, 'base', '', 80, 81, 87, 89, 48, 62, '€117m', 10, 8, 'Bundesliga Player of the Season 2023/24'],
-    ['Joshua', 'Kimmich', 'MF', 'GER', 'Bayern Munich', 6, 'base', '', 70, 74, 89, 82, 82, 76, '€8.5m', 45, 8, 'Bundesliga champion 2024/25'],
-    ['Heung-min', 'Son', 'FW', 'KOR', 'LAFC', 7, 'base', '', 85, 86, 80, 84, 42, 68, '€22m', 20, 54, 'Europa League winner 2024/25'],
-    ['Joško', 'Gvardiol', 'DF', 'CRO', 'Manchester City', 24, 'base', '', 80, 62, 72, 74, 85, 84, '€90m', 12, 4, 'Manchester City Player of the Season 2024/25'],
-    ['Federico', 'Valverde', 'MF', 'URU', 'Real Madrid', 8, 'base', '', 88, 82, 84, 82, 80, 84, '€5m', 33, 8, 'Champions League winner 2023/24'],
-    ['Alexis', 'Mac Allister', 'MF', 'ARG', 'Liverpool', 10, 'base', '', 70, 78, 85, 82, 78, 76, '€42m', 18, 4, 'Premier League champion 2024/25'],
-    ['Julián', 'Álvarez', 'FW', 'ARG', 'Atlético Madrid', 19, 'base', '', 82, 85, 78, 84, 56, 74, '€75m', 45, 13, 'World Cup winner 2022'],
-    ['Lautaro', 'Martínez', 'FW', 'ARG', 'Inter', 10, 'base', '', 80, 88, 74, 84, 50, 82, '€25m', 165, 36, 'Serie A top scorer 2023/24'],
-    ['Victor', 'Osimhen', 'FW', 'NGA', 'Galatasaray', 45, 'base', '', 90, 86, 66, 78, 42, 84, '€75m', 50, 31, 'Süper Lig top scorer 2024/25'],
-    ['Cody', 'Gakpo', 'FW', 'NED', 'Liverpool', 18, 'base', '', 84, 82, 76, 82, 42, 76, '€42m', 50, 18, 'Premier League champion 2024/25'],
-    ['Nicolò', 'Barella', 'MF', 'ITA', 'Inter', 23, 'base', '', 78, 76, 84, 84, 78, 76, '€37m', 28, 10, 'Serie A Best Midfielder 2022/23']
+    ['Lionel', 'Messi', 'FW', 'ARG', 'Inter Miami', 10, 'icon', 'Magician', 78, 90, 92, 94, 34, 62, '2004–now', 75, 115, 'MLS Golden Boot 2025'],
+    ['Cristiano', 'Ronaldo', 'FW', 'POR', 'Al Nassr', 7, 'icon', 'Sky Jumper', 82, 93, 80, 86, 34, 86, '2002–now', 110, 143, 'Saudi Pro League top scorer 2024/25'],
+    ['Kylian', 'Mbappé', 'FW', 'FRA', 'Real Madrid', 10, '', 'Lightning', 97, 91, 81, 92, 36, 77, 'Free', 75, 55, 'European Golden Shoe 2024/25'],
+    ['Erling', 'Haaland', 'FW', 'NOR', 'Manchester City', 9, '', 'Goal Machine', 89, 93, 68, 80, 45, 90, '€60m', 150, 55, 'Premier League Golden Boot 2023/24'],
+    ['Mohamed', 'Salah', 'FW', 'EGY', 'Liverpool', 11, '', 'Egyptian King', 89, 89, 84, 88, 45, 75, '€42m', 250, 65, 'Premier League Player of the Season 2024/25'],
+    ['Harry', 'Kane', 'FW', 'ENG', 'Bayern Munich', 9, '', 'Sharp Shooter', 68, 93, 87, 83, 48, 88, '€95m', 120, 78, 'Bundesliga top scorer 2024/25'],
+    ['Jude', 'Bellingham', 'MF', 'ENG', 'Real Madrid', 5, '', 'Engine Room', 80, 84, 85, 88, 78, 84, '€103m', 45, 6, 'La Liga Player of the Season 2023/24'],
+    ['Lamine', 'Yamal', 'FW', 'ESP', 'Barcelona', 10, '', 'Wonderkid', 90, 85, 84, 91, 30, 58, 'Academy', 40, 8, 'Kopa Trophy 2025'],
+    ['Vinícius', 'Júnior', 'FW', 'BRA', 'Real Madrid', 7, '', 'Samba Star', 95, 85, 80, 91, 29, 68, '€45m', 115, 8, 'The Best FIFA Men’s Player 2024'],
+    ['Virgil', 'van Dijk', 'DF', 'NED', 'Liverpool', 4, '', 'Brick Wall', 80, 60, 78, 70, 91, 88, '€85m', 30, 11, 'Premier League champion 2024/25'],
+    ['', 'Rodri', 'MF', 'ESP', 'Manchester City', 16, '', 'The Anchor', 62, 78, 87, 82, 87, 86, '€70m', 27, 4, 'Ballon d’Or 2024'],
+    ['Bukayo', 'Saka', 'FW', 'ENG', 'Arsenal', 7, '', 'Star Boy', 86, 83, 83, 87, 60, 70, 'Academy', 80, 14, 'England Player of the Year 2022/23'],
+    ['', 'Pedri', 'MF', 'ESP', 'Barcelona', 8, '', 'Pass Master', 78, 74, 90, 91, 76, 68, '€5m', 30, 3, 'La Liga champion 2024/25'],
+    ['Jamal', 'Musiala', 'MF', 'GER', 'Bayern Munich', 10, '', 'Twinkle Toes', 84, 80, 81, 92, 58, 64, 'Academy', 65, 8, 'Bundesliga champion 2024/25'],
+    ['Kevin', 'De Bruyne', 'MF', 'BEL', 'Napoli', 11, '', 'Playmaker', 66, 86, 93, 85, 62, 74, 'Free', 10, 36, 'Premier League Player of the Season 2021/22'],
+    ['Ousmane', 'Dembélé', 'FW', 'FRA', 'Paris SG', 10, '', 'Two Footed', 91, 85, 82, 90, 38, 62, '€50m', 50, 7, 'Ballon d’Or 2025'],
+    ['Declan', 'Rice', 'MF', 'ENG', 'Arsenal', 41, '', '', 73, 72, 80, 78, 84, 85, '€117m', 25, 6, 'PFA Team of the Year 2023/24'],
+    ['Phil', 'Foden', 'MF', 'ENG', 'Manchester City', 47, '', '', 81, 82, 84, 88, 56, 60, 'Academy', 100, 4, 'Premier League Player of the Season 2023/24'],
+    ['Cole', 'Palmer', 'MF', 'ENG', 'Chelsea', 10, '', '', 76, 84, 85, 86, 52, 66, '€47m', 50, 3, 'PFA Young Player of the Year 2023/24'],
+    ['Martin', 'Ødegaard', 'MF', 'NOR', 'Arsenal', 8, '', '', 74, 79, 89, 87, 60, 62, '€35m', 42, 4, 'PFA Team of the Year 2023/24'],
+    ['William', 'Saliba', 'DF', 'FRA', 'Arsenal', 2, '', '', 80, 40, 68, 70, 88, 84, '€30m', 8, 0, 'PFA Team of the Year 2023/24'],
+    ['', 'Raphinha', 'FW', 'BRA', 'Barcelona', 11, '', '', 89, 83, 81, 85, 50, 74, '€58m', 60, 11, 'La Liga Player of the Season 2024/25'],
+    ['Achraf', 'Hakimi', 'DF', 'MAR', 'Paris SG', 2, '', '', 92, 74, 80, 81, 78, 77, '€60m', 28, 11, 'African Footballer of the Year 2025'],
+    ['Bruno', 'Fernandes', 'MF', 'POR', 'Manchester United', 8, '', '', 72, 84, 89, 82, 66, 72, '€55m', 100, 28, 'Manchester United Player of the Year 2024/25'],
+    ['Rúben', 'Dias', 'DF', 'POR', 'Manchester City', 3, '', '', 66, 40, 68, 66, 89, 87, '€68m', 6, 3, 'Premier League Player of the Season 2020/21'],
+    ['Florian', 'Wirtz', 'MF', 'GER', 'Liverpool', 7, '', '', 80, 81, 87, 89, 48, 62, '€117m', 10, 8, 'Bundesliga Player of the Season 2023/24'],
+    ['Joshua', 'Kimmich', 'MF', 'GER', 'Bayern Munich', 6, '', '', 70, 74, 89, 82, 82, 76, '€8.5m', 45, 8, 'Bundesliga champion 2024/25'],
+    ['Heung-min', 'Son', 'FW', 'KOR', 'LAFC', 7, '', '', 85, 86, 80, 84, 42, 68, '€22m', 20, 54, 'Europa League winner 2024/25'],
+    ['Joško', 'Gvardiol', 'DF', 'CRO', 'Manchester City', 24, '', '', 80, 62, 72, 74, 85, 84, '€90m', 12, 4, 'Manchester City Player of the Season 2024/25'],
+    ['Federico', 'Valverde', 'MF', 'URU', 'Real Madrid', 8, '', '', 88, 82, 84, 82, 80, 84, '€5m', 33, 8, 'Champions League winner 2023/24'],
+    ['Alexis', 'Mac Allister', 'MF', 'ARG', 'Liverpool', 10, '', '', 70, 78, 85, 82, 78, 76, '€42m', 18, 4, 'Premier League champion 2024/25'],
+    ['Julián', 'Álvarez', 'FW', 'ARG', 'Atlético Madrid', 19, '', '', 82, 85, 78, 84, 56, 74, '€75m', 45, 13, 'World Cup winner 2022'],
+    ['Lautaro', 'Martínez', 'FW', 'ARG', 'Inter', 10, '', '', 80, 88, 74, 84, 50, 82, '€25m', 165, 36, 'Serie A top scorer 2023/24'],
+    ['Victor', 'Osimhen', 'FW', 'NGA', 'Galatasaray', 45, '', '', 90, 86, 66, 78, 42, 84, '€75m', 50, 31, 'Süper Lig top scorer 2024/25'],
+    ['Cody', 'Gakpo', 'FW', 'NED', 'Liverpool', 18, '', '', 84, 82, 76, 82, 42, 76, '€42m', 50, 18, 'Premier League champion 2024/25'],
+    ['Nicolò', 'Barella', 'MF', 'ITA', 'Inter', 23, '', '', 78, 76, 84, 84, 78, 76, '€37m', 28, 10, 'Serie A Best Midfielder 2022/23'],
+    ['Alexander', 'Isak', 'FW', 'SWE', 'Liverpool', 9, '', '', 86, 86, 74, 85, 40, 76, '€145m', 70, 16, 'League Cup winner 2024/25'],
+    ['Trent', 'Alexander-Arnold', 'DF', 'ENG', 'Real Madrid', 12, '', '', 76, 72, 90, 80, 76, 70, 'Free', 23, 4, 'Champions League winner 2018/19'],
+    ['Bernardo', 'Silva', 'MF', 'POR', 'Manchester City', 20, '', '', 76, 78, 86, 89, 66, 62, '€50m', 60, 13, 'Premier League champion 2022/23'],
+    ['Michael', 'Olise', 'FW', 'FRA', 'Bayern Munich', 17, '', '', 84, 82, 85, 87, 40, 60, '€53m', 30, 3, 'Bundesliga champion 2024/25'],
+    ['Dominik', 'Szoboszlai', 'MF', 'HUN', 'Liverpool', 8, '', '', 78, 82, 84, 82, 70, 78, '€70m', 20, 15, 'Premier League champion 2024/25'],
+    ['Kai', 'Havertz', 'FW', 'GER', 'Arsenal', 29, '', '', 74, 80, 80, 82, 56, 78, '€75m', 40, 20, 'Scored the 2020/21 Champions League final winner'],
+    ['Antoine', 'Griezmann', 'FW', 'FRA', 'Atlético Madrid', 7, '', '', 76, 86, 86, 85, 54, 68, '€20m', 200, 44, 'World Cup winner 2018'],
+    ['Robert', 'Lewandowski', 'FW', 'POL', 'Barcelona', 9, '', '', 72, 92, 78, 82, 42, 80, '€45m', 100, 85, 'Poland record scorer'],
+    ['', 'Gabriel', 'DF', 'BRA', 'Arsenal', 6, '', '', 72, 54, 66, 64, 86, 88, '€26m', 20, 0, 'Premier League runner-up 2023/24'],
+    ['Enzo', 'Fernández', 'MF', 'ARG', 'Chelsea', 8, '', '', 70, 76, 86, 80, 74, 74, '€121m', 15, 5, 'World Cup winner 2022'],
+    ['', 'Marquinhos', 'DF', 'BRA', 'Paris SG', 5, '', '', 74, 52, 74, 70, 88, 80, '€32m', 40, 7, 'Champions League winner 2024/25'],
+    ['', 'Vitinha', 'MF', 'POR', 'Paris SG', 17, '', '', 74, 74, 89, 87, 66, 62, '€41m', 15, 2, 'Champions League winner 2024/25'],
+    // Icons: all-time greats, picked by hand (Messi and Ronaldo above are Icons too).
+    // The transfer fee column holds the years they played.
+    ['', 'Pelé', 'FW', 'BRA', 'Santos', 10, 'icon', 'O Rei', 95, 97, 92, 96, 50, 80, '1956–77', 643, 77, 'World Cup winner 1958, 1962 and 1970'],
+    ['Diego', 'Maradona', 'FW', 'ARG', 'Napoli', 10, 'icon', 'Golden Boy', 92, 92, 93, 98, 40, 72, '1976–97', 115, 34, 'World Cup winner 1986'],
+    ['Zinedine', 'Zidane', 'MF', 'FRA', 'Real Madrid', 5, 'icon', 'Zizou', 78, 88, 95, 96, 60, 82, '1989–2006', 49, 31, 'Ballon d’Or 1998'],
+    ['Ronaldo', 'Nazário', 'FW', 'BRA', 'Real Madrid', 9, 'icon', 'The Phenomenon', 97, 96, 80, 95, 40, 84, '1993–2011', 104, 62, 'Ballon d’Or 1997 and 2002'],
+    ['', 'Ronaldinho', 'FW', 'BRA', 'Barcelona', 10, 'icon', 'Joga Bonito', 90, 88, 93, 97, 38, 74, '1998–2015', 94, 33, 'Ballon d’Or 2005'],
+    ['Thierry', 'Henry', 'FW', 'FRA', 'Arsenal', 14, 'icon', 'Va Va Voom', 96, 92, 85, 92, 42, 80, '1994–2014', 228, 51, 'Premier League Golden Boot four times'],
+    ['Johan', 'Cruyff', 'FW', 'NED', 'Ajax', 14, 'icon', 'Total Football', 93, 90, 94, 96, 45, 70, '1964–84', 257, 33, 'Ballon d’Or 1971, 1973 and 1974'],
+    ['Franz', 'Beckenbauer', 'DF', 'GER', 'Bayern Munich', 5, 'icon', 'Der Kaiser', 80, 74, 90, 82, 94, 84, '1964–83', 75, 14, 'World Cup winner 1974'],
+    ['Paolo', 'Maldini', 'DF', 'ITA', 'AC Milan', 3, 'icon', 'Il Capitano', 85, 58, 80, 78, 97, 86, '1985–2009', 33, 7, 'European Cup winner five times'],
+    ['Wayne', 'Rooney', 'FW', 'ENG', 'Manchester United', 10, 'icon', 'Wazza', 84, 91, 86, 86, 60, 88, '2002–21', 253, 53, 'Manchester United record scorer'],
+    ['David', 'Beckham', 'MF', 'ENG', 'Manchester United', 7, 'icon', 'Bend It', 76, 86, 96, 82, 58, 76, '1992–2013', 85, 17, 'Premier League champion six times'],
+    ['Zlatan', 'Ibrahimović', 'FW', 'SWE', 'Paris SG', 10, 'icon', 'Ibracadabra', 82, 95, 84, 90, 40, 94, '1999–2023', 156, 62, 'Sweden record scorer'],
+    ['Andrés', 'Iniesta', 'MF', 'ESP', 'Barcelona', 8, 'icon', 'The Illusionist', 78, 74, 94, 96, 62, 64, '2002–24', 57, 13, 'Scored the 2010 World Cup final winner'],
+    ['', 'Kaká', 'MF', 'BRA', 'AC Milan', 22, 'icon', 'The Glider', 92, 88, 88, 92, 48, 76, '2001–17', 104, 29, 'Ballon d’Or 2007'],
+    ['Steven', 'Gerrard', 'MF', 'ENG', 'Liverpool', 8, 'icon', 'Captain Fantastic', 82, 90, 92, 84, 76, 88, '1998–2016', 186, 21, 'Champions League winner 2005'],
+    ['Didier', 'Drogba', 'FW', 'CIV', 'Chelsea', 11, 'icon', 'Big Game', 86, 92, 74, 82, 46, 96, '1998–2018', 164, 65, 'Champions League winner 2012'],
+    ['', 'Eusébio', 'FW', 'POR', 'Benfica', 10, 'icon', 'Black Panther', 95, 95, 82, 90, 40, 82, '1957–79', 473, 41, 'Ballon d’Or 1965'],
+    ['Ferenc', 'Puskás', 'FW', 'HUN', 'Real Madrid', 10, 'icon', 'Galloping Major', 76, 98, 88, 90, 36, 74, '1943–66', 242, 84, 'Olympic champion 1952'],
+    // Goalkeepers. The six ratings are diving, handling, kicking, reflexes, speed and positioning.
+    // The two goal columns hold club clean sheets and country caps.
+    ['', 'Alisson', 'GK', 'BRA', 'Liverpool', 1, '', '', 86, 85, 85, 89, 56, 90, '€62m', 120, 75, 'Champions League winner 2018/19'],
+    ['Thibaut', 'Courtois', 'GK', 'BEL', 'Real Madrid', 1, '', 'The Wall', 85, 89, 76, 91, 46, 90, '€35m', 110, 105, 'Champions League winner 2021/22'],
+    ['Gianluigi', 'Donnarumma', 'GK', 'ITA', 'Manchester City', 25, '', '', 90, 82, 76, 91, 52, 86, '€30m', 130, 75, 'Euro 2020 Player of the Tournament'],
+    ['Manuel', 'Neuer', 'GK', 'GER', 'Bayern Munich', 1, '', '', 82, 85, 91, 84, 52, 89, '€30m', 250, 124, 'World Cup winner 2014'],
+    ['David', 'Raya', 'GK', 'ESP', 'Arsenal', 1, '', '', 84, 82, 86, 85, 54, 84, '€32m', 45, 10, 'Premier League Golden Glove 2023/24'],
+    ['Marc-André', 'ter Stegen', 'GK', 'GER', 'Barcelona', 1, '', '', 84, 82, 87, 86, 48, 85, '€12m', 175, 42, 'Champions League winner 2014/15'],
+    ['Mike', 'Maignan', 'GK', 'FRA', 'AC Milan', 16, '', '', 86, 82, 84, 88, 52, 84, '€15m', 60, 30, 'Serie A champion 2021/22'],
+    ['Robert', 'Sánchez', 'GK', 'ESP', 'Chelsea', 1, '', '', 80, 78, 80, 82, 50, 78, '€29m', 30, 3, 'Club World Cup winner 2025'],
+    ['Iker', 'Casillas', 'GK', 'ESP', 'Real Madrid', 1, 'icon', 'San Iker', 90, 86, 72, 95, 60, 90, '1999–2020', 264, 167, 'World Cup winner 2010'],
+    ['Oliver', 'Kahn', 'GK', 'GER', 'Bayern Munich', 1, 'icon', 'Der Titan', 91, 90, 74, 93, 54, 91, '1987–2008', 247, 86, 'World Cup Golden Ball 2002'],
+    ['Gianluigi', 'Buffon', 'GK', 'ITA', 'Juventus', 1, 'icon', 'Superman', 92, 91, 74, 92, 52, 93, '1995–2023', 500, 176, 'World Cup winner 2006'],
+    ['Edwin', 'van der Sar', 'GK', 'NED', 'Manchester United', 1, 'icon', 'Flying Dutchman', 88, 90, 86, 88, 50, 92, '1990–2011', 300, 130, 'Champions League winner 1995 and 2008']
   ];
   var PLAYERS = RAW.map(function (a, i) {
-    var r = a.slice(8, 14);
-    return { id: i + 1, first: a[0], last: a[1], pos: a[2], nat: a[3], club: a[4], shirt: a[5], tier: a[6], edition: a[7], r: r, s: playStats(r), fee: a[14], clubGoals: a[15], natGoals: a[16], award: a[17] };
+    var r = a.slice(8, 14), s = playStats(r, a[2]);
+    return { id: i + 1, first: a[0], last: a[1], pos: a[2], nat: a[3], club: a[4], shirt: a[5], tier: a[6] || tierFor(s.ovr), edition: a[7], r: r, s: s, fee: a[14], clubGoals: a[15], natGoals: a[16], award: a[17] };
   });
   var BY_ID = {}; PLAYERS.forEach(function (p) { BY_ID[p.id] = p; });
-  var BY_TIER = { legend: [], rare: [], base: [] }; PLAYERS.forEach(function (p) { BY_TIER[p.tier].push(p.id); });
+  var BY_TIER = { icon: [], legend: [], rare: [], base: [] }; PLAYERS.forEach(function (p) { BY_TIER[p.tier].push(p.id); });
   var PHOTOS = {}; // filled from photos/credits.json; cards without a photo use the kit avatar
 
   // Draft ratings formula: the three play stats come from the six ratings.
-  function playStats(r) {
-    var att = Math.round(0.45 * r[1] + 0.30 * r[3] + 0.25 * r[0]);
-    var def = Math.round(0.60 * r[4] + 0.40 * r[5]);
-    var ctrl = Math.round(0.55 * r[2] + 0.45 * r[3]);
-    return { att: att, def: def, ctrl: ctrl, total: att + def + ctrl };
+  function playStats(r, pos) {
+    var keeper = pos === 'GK';
+    var att = keeper ? Math.round(0.60 * r[2] + 0.40 * r[4]) : Math.round(0.45 * r[1] + 0.30 * r[3] + 0.25 * r[0]);
+    var def = keeper ? Math.round(0.35 * r[0] + 0.35 * r[3] + 0.30 * r[1]) : Math.round(0.60 * r[4] + 0.40 * r[5]);
+    var ctrl = keeper ? Math.round(0.50 * r[5] + 0.50 * r[2]) : Math.round(0.55 * r[2] + 0.45 * r[3]);
+    // Overall rating for the front badge: the mean of a player's four best ratings.
+    var ovr = Math.round(r.slice().sort(function (a, b) { return b - a; }).slice(0, 4).reduce(function (n, v) { return n + v; }, 0) / 4);
+    return { att: att, def: def, ctrl: ctrl, total: att + def + ctrl, ovr: ovr };
   }
 
   var STAR = (function () {
@@ -559,15 +723,16 @@ p { margin: 0; max-width: 60ch; }
 
   function cardHTML(p, withBack) {
     var k = CLUBS[p.club], s = p.s, serial = '#' + String(p.id).padStart(3, '0'), ph = PHOTOS[p.id];
-    var g1 = p.tier === 'legend' ? '#F5C542' : k[3], g2 = p.tier === 'legend' ? '#B8791A' : k[4];
-    var edge = p.tier === 'legend' ? '#F7D774' : p.tier === 'rare' ? '#D5DEE8' : '#FFFFFF';
-    var foil = p.tier === 'legend' ? 0.75 : p.tier === 'rare' ? 0.55 : 0;
-    var burst = isLight(k[1]) && p.tier !== 'legend' ? k[0] : k[1];
-    var html = '<div class="inner" style="--g1:' + g1 + ';--g2:' + g2 + ';--burst:' + burst + ';--foil:' + foil + ';--edge:' + edge + '">' +
+    var gold = p.tier === 'legend', icon = p.tier === 'icon';
+    var g1 = gold ? '#F5C542' : k[3], g2 = gold ? '#B8791A' : k[4];
+    var foil = icon ? 0.45 : gold ? 0.75 : p.tier === 'rare' ? 0.55 : 0;
+    var burst = icon ? '#FFD86B' : isLight(k[1]) && !gold ? k[0] : k[1];
+    var html = '<div class="inner t-' + p.tier + '" style="--g1:' + g1 + ';--g2:' + g2 + ';--burst:' + burst + ';--foil:' + foil + '">' +
       '<div class="face front"><div class="ground"></div><div class="foil"></div>' +
         '<div class="burst" style="clip-path:' + STAR + '"></div>' + (p.tier === 'base' ? '' : '<div class="burst two" style="clip-path:' + STAR + '"></div>') +
         (ph ? '<div class="photo"><img src="photos/' + p.id + '.jpg" alt="" loading="lazy" decoding="async"></div>' : avatar(p)) +
-        '<div class="corner pos">' + p.pos + '</div>' +
+        '<div class="ovr"><b>' + s.ovr + '</b><span>' + p.pos + '</span></div>' +
+        (p.tier === 'base' ? '' : '<div class="tiertag">' + TIER_NAME[p.tier] + '</div>') +
         '<div class="corner nat"><span class="flag" style="background:' + FLAGS[p.nat] + '"></span>' + p.nat + '</div>' +
         '<div class="serial">' + serial + ' · ' + p.tier.toUpperCase() + '</div>' +
         (p.edition ? '<div class="edition">' + p.edition + '</div>' : '') +
@@ -579,20 +744,20 @@ p { margin: 0; max-width: 60ch; }
             '<div class="stat ctrl"><b>' + s.ctrl + '</b><span>CTRL</span></div>' +
             '<div class="stat total"><b>' + s.total + '</b><span>TOTAL</span></div>' +
           '</div></div>' +
-        '<div class="glare"></div></div>';
+        '<div class="glare"></div><div class="frame"></div></div>';
     if (withBack) {
       var bars = p.r.map(function (v, i) {
-        return '<div class="bar"><dt>' + RATING_NAMES[i] + '</dt><dd class="track"><i style="width:' + v + '%"></i></dd><dd class="num">' + v + '</dd></div>';
+        return '<div class="bar"><dt>' + (p.pos === 'GK' ? GK_RATING_NAMES : RATING_NAMES)[i] + '</dt><dd class="track"><i style="width:' + v + '%"></i></dd><dd class="num">' + v + '</dd></div>';
       }).join('');
       html += '<div class="face back"><div class="ground"></div><div class="sheet">' +
         '<div class="brand"><span>Soccer Cards</span><i>' + serial + '</i></div>' +
         '<p class="fullname">' + fullName(p) + '</p>' +
         '<p class="meta">' + POSITIONS[p.pos] + ' · ' + p.club + ' · ' + COUNTRY[p.nat] + '</p>' +
         '<dl class="bars">' + bars + '</dl>' +
-        '<div class="facts"><div><b>' + p.clubGoals + '</b><span>CLUB GOALS</span></div><div><b>' + p.natGoals + '</b><span>COUNTRY GOALS</span></div><div><b>' + p.fee + '</b><span>TRANSFER FEE</span></div></div>' +
+        '<div class="facts"><div><b>' + p.clubGoals + '</b><span>' + (p.pos === 'GK' ? 'CLUB CLEAN SHEETS' : 'CLUB GOALS') + '</span></div><div><b>' + p.natGoals + '</b><span>' + (p.pos === 'GK' ? 'COUNTRY CAPS' : 'COUNTRY GOALS') + '</span></div><div><b>' + p.fee + '</b><span>' + (icon ? 'PLAYED' : 'TRANSFER FEE') + '</span></div></div>' +
         '<div class="box"><strong>Award</strong>' + p.award + '</div>' +
         '<div class="credit"><span>' + (ph ? 'Photo: ' + esc(ph.credit) + ', via Wikimedia Commons' : 'No photo yet') + '</span><span>' + TIER_NAME[p.tier] + ' card</span></div>' +
-      '</div></div>';
+      '</div><div class="frame"></div></div>';
     }
     return html + '</div>';
   }
@@ -629,14 +794,14 @@ p { margin: 0; max-width: 60ch; }
   }
 
   // ---------- State (saved on this device only) ----------
-  var KEY = 'soccer-cards-proto-v3';
-  function fresh() { return { owned: {}, favs: {}, cols: 5, opened: 0, coins: 0, free: 2, wins: 0, losses: 0, team: [], pending: null }; }
+  var KEY = 'soccer-cards-proto-v4';
+  function fresh() { return { owned: {}, favs: {}, cols: 5, opened: 0, coins: 0, free: 2, wins: 0, losses: 0, team: [], pending: null, div: 0, divWins: 0 }; }
   var S = fresh();
   try { var saved = JSON.parse(localStorage.getItem(KEY) || 'null'); if (saved && saved.owned) { for (var k in saved) S[k] = saved[k]; } } catch (e) {}
   function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
   function ownedIds() { return Object.keys(S.owned).map(Number).filter(function (id) { return S.owned[id] > 0 && BY_ID[id]; }); }
   function totalCards() { return ownedIds().reduce(function (n, id) { return n + S.owned[id]; }, 0); }
-  function sumTotals(ids) { return ids.reduce(function (n, id) { return n + BY_ID[id].s.total; }, 0); }
+  function sumTotals(ids) { return ids.reduce(function (n, id) { return n + BY_ID[id].s.ovr; }, 0); }
   function fmt(n) { return n.toLocaleString('en'); }
 
   var $ = function (id) { return document.getElementById(id); };
@@ -678,10 +843,35 @@ p { margin: 0; max-width: 60ch; }
   window.addEventListener('hashchange', function () { var h = location.hash.slice(1); if (h !== view && VIEWS.indexOf(h) >= 0) go(h); });
 
   // ---------- Packs ----------
+  // A pack holds base cards and lucky cards. Each lucky card is rolled on ODDS, out of 100.
   var PACKS = {
-    pack: { size: 10, mix: [7, 2, 1], cost: 5 },      // 7 base, 2 rare, 1 legend
-    jumbo: { size: 20, mix: [15, 3, 2], cost: 10 }    // 15 base, 3 rare, 2 legends
+    pack: { base: 8, lucky: 2, cost: 5 },
+    jumbo: { base: 40, lucky: 10, cost: 20 }
   };
+  var ODDS = [['icon', 3], ['legend', 12], ['rare', 85]];
+  var ODDS_TEXT = 'Each lucky card: Rare ' + ODDS[2][1] + ' in 100 · Legend ' + ODDS[1][1] + ' in 100 · Icon ' + ODDS[0][1] + ' in 100';
+  function rollTier() {
+    var n = Math.random() * 100;
+    for (var i = 0; i < ODDS.length; i++) { n -= ODDS[i][1]; if (n < 0) return ODDS[i][0]; }
+    return 'rare';
+  }
+  // Picks n cards from a list. Repeats only when the list is shorter than n.
+  function pickMany(list, n) {
+    var out = [];
+    while (out.length < n) out = out.concat(sample(list, Math.min(list.length, n - out.length)));
+    return out;
+  }
+  function drawPack(type) {
+    var pk = PACKS[type], ids = pickMany(BY_TIER.base, pk.base), lucky = [];
+    for (var i = 0; i < pk.lucky; i++) {
+      var pool = BY_TIER[rollTier()], fresh1 = pool.filter(function (id) { return lucky.indexOf(id) < 0; });
+      var from = fresh1.length ? fresh1 : pool;
+      lucky.push(from[Math.floor(Math.random() * from.length)]);
+    }
+    // The best cards come last, so the reveal builds up.
+    lucky.sort(function (a, b) { return TIER_ORDER[BY_ID[b].tier] - TIER_ORDER[BY_ID[a].tier]; });
+    return ids.concat(lucky);
+  }
   var packIdx = 0, packStage = S.pending ? 'summary' : 'sealed', tearing = false;
   function canOpen(type) { return (type === 'pack' && S.free > 0) || S.coins >= PACKS[type].cost; }
   function renderPacks() {
@@ -691,9 +881,10 @@ p { margin: 0; max-width: 60ch; }
     if (packStage === 'sealed') {
       $('pack-pack').classList.remove('tearing'); $('pack-jumbo').classList.remove('tearing');
       $('buy-pack').textContent = S.free > 0 ? 'Open free pack (' + S.free + ' left)' : S.coins >= 5 ? 'Open pack · 5 coins' : 'Need 5 coins';
-      $('buy-jumbo').textContent = S.coins >= 10 ? 'Open jumbo · 10 coins' : 'Need 10 coins';
+      $('buy-jumbo').textContent = S.coins >= PACKS.jumbo.cost ? 'Open jumbo · ' + PACKS.jumbo.cost + ' coins' : 'Need ' + PACKS.jumbo.cost + ' coins';
       $('buy-pack').disabled = !canOpen('pack'); $('buy-jumbo').disabled = !canOpen('jumbo');
-      $('packnote').textContent = S.free > 0 ? 'You start with 2 free packs. After that, win battles to earn coins.' : 'Win a battle to earn 5 coins. Packs opened so far: ' + S.opened + '.';
+      $('packodds').textContent = ODDS_TEXT;
+      $('packnote').textContent = S.free > 0 ? 'You start with 2 free packs. After that, win battles to earn coins.' : 'Win battles to earn coins. Higher divisions pay more. Packs opened so far: ' + S.opened + '.';
     }
     if (packStage === 'reveal') showReveal();
     if (packStage === 'summary') {
@@ -704,10 +895,9 @@ p { margin: 0; max-width: 60ch; }
   }
   function openPack(type) {
     if (packStage !== 'sealed' || tearing) return;
-    if (!canOpen(type)) { toast('You need ' + PACKS[type].cost + ' coins. Win a battle to earn 5.'); return; }
+    if (!canOpen(type)) { toast('You need ' + PACKS[type].cost + ' coins. Win battles to earn them.'); return; }
     if (type === 'pack' && S.free > 0) S.free--; else S.coins -= PACKS[type].cost;
-    var m = PACKS[type].mix;
-    S.pending = { type: type, ids: sample(BY_TIER.base, m[0]).concat(sample(BY_TIER.rare, m[1]), sample(BY_TIER.legend, m[2])) };
+    S.pending = { type: type, ids: drawPack(type) };
     save(); packIdx = 0; tearing = true;
     $('coins').textContent = S.coins + (S.coins === 1 ? ' coin' : ' coins');
     $('pack-' + type).classList.add('tearing');
@@ -716,9 +906,9 @@ p { margin: 0; max-width: 60ch; }
   function showReveal() {
     var ids = S.pending.ids, p = BY_ID[ids[packIdx]], have = S.owned[p.id] || 0;
     $('revealchips').innerHTML = '<span class="chip">Card ' + (packIdx + 1) + ' of ' + ids.length + '</span>' +
-      '<span class="chip' + (p.tier === 'legend' ? ' legend' : '') + '">' + TIER_NAME[p.tier] + '</span>' +
+      '<span class="chip' + (p.tier === 'legend' || p.tier === 'icon' ? ' ' + p.tier : '') + '">' + TIER_NAME[p.tier] + '</span>' +
       (have ? '<span class="chip">You have ' + have + '</span>' : '<span class="chip new">New!</span>');
-    var spot = $('spot'); spot.innerHTML = ''; spot.className = 'spot' + (p.tier === 'legend' ? ' legend' : '');
+    var spot = $('spot'); spot.innerHTML = ''; spot.className = 'spot' + (p.tier === 'legend' || p.tier === 'icon' ? ' ' + p.tier : '');
     spot.appendChild(bigCard(p, false, nextCard, 'Press for the next card.'));
     $('next').textContent = packIdx < ids.length - 1 ? 'Next card' : 'See all ' + ids.length;
     $('skip').hidden = packIdx >= ids.length - 1;
@@ -740,10 +930,95 @@ p { margin: 0; max-width: 60ch; }
   $('skip').addEventListener('click', function () { packStage = 'summary'; renderPacks(); });
   $('add').addEventListener('click', addPack);
 
-  // ---------- Battle: 11 against 11, highest total wins, 5 coins for a win ----------
-  var TEAM = 11, WIN_COINS = 5, battle = null, battleTimer = null;
+  // ---------- Match: formation, positions, tactics, eight moments, penalties on a draw ----------
+  // The AI opens `packs` standard packs with the same odds as the player and fields its best team. In the
+  // top division it also adds `form` percent. Three wins take you up a division. Losing never takes you down.
+  var DIVISIONS = [
+    { name: 'Division 4', packs: 2, form: 0, coins: 4 },
+    { name: 'Division 3', packs: 6, form: 0, coins: 5 },
+    { name: 'Division 2', packs: 15, form: 0, coins: 6 },
+    { name: 'Division 1', packs: 35, form: 0, coins: 8 },
+    { name: 'Champions League', packs: 80, form: 1, coins: 10 }
+  ];
+  var TEAM = 11, WINS_TO_GO_UP = 3, battle = null, battleTimer = null;
+  var LINES = ['FW', 'MF', 'DF', 'GK'], LINE_NAME = { FW: 'ATT', MF: 'MID', DF: 'DEF', GK: 'GK' };
+  var FORMATIONS = { '4-4-2': { DF: 4, MF: 4, FW: 2 }, '4-3-3': { DF: 4, MF: 3, FW: 3 }, '3-5-2': { DF: 3, MF: 5, FW: 2 }, '5-3-2': { DF: 5, MF: 3, FW: 2 } };
+  // Each tactic lifts one line, costs another, and beats one other tactic.
+  var TACTICS = {
+    attack: { name: 'All-out attack', att: 1.10, mid: 1, def: 0.90, beats: 'defend', tip: 'More shots, but a thin defence.' },
+    counter: { name: 'Counter-attack', att: 1.05, mid: 0.92, def: 1.05, beats: 'attack', tip: 'Sit back, then break fast into the space.' },
+    possession: { name: 'Keep the ball', att: 1, mid: 1.10, def: 1, beats: 'counter', tip: 'Win the midfield so they never get the ball.' },
+    defend: { name: 'Park the bus', att: 0.88, mid: 1, def: 1.12, beats: 'possession', tip: 'Everyone behind the ball. Hard to score against.' }
+  };
+  var EDGE = 1.08, OUT_OF_POSITION = 0.8, WRONG_IN_GOAL = 0.5, MINUTES = [7, 18, 29, 41, 53, 64, 76, 88];
+  function division() { return DIVISIONS[Math.min(S.div || 0, DIVISIONS.length - 1)]; }
+  function formation() { return FORMATIONS[S.formation] ? S.formation : '4-4-2'; }
+  function tactic() { return TACTICS[S.tactic] ? S.tactic : 'possession'; }
   function teamIds() { return (S.team || []).filter(function (id) { return S.owned[id] > 0; }); }
-  function bestEleven(ids) { return ids.slice().sort(function (a, b) { return BY_ID[b].s.total - BY_ID[a].s.total; }).slice(0, TEAM); }
+  function need(form) { var f = FORMATIONS[form]; return { GK: 1, DF: f.DF, MF: f.MF, FW: f.FW }; }
+  // What a player gives a line: attack up front, control in midfield, defence at the back and in goal.
+  function lineStat(p, line) {
+    var v = line === 'FW' ? p.s.att : line === 'MF' ? p.s.ctrl : p.s.def;
+    if (p.pos === line) return v;
+    return v * (line === 'GK' || p.pos === 'GK' ? WRONG_IN_GOAL : OUT_OF_POSITION);
+  }
+  // Puts players in their own position first, best first. Whoever is left fills the gaps, out of position.
+  function lineUp(ids, form) {
+    var n = need(form), out = { FW: [], MF: [], DF: [], GK: [], oop: {} }, left = [];
+    var sorted = ids.slice().sort(function (a, b) { return BY_ID[b].s.ovr - BY_ID[a].s.ovr; });
+    sorted.forEach(function (id) { var pos = BY_ID[id].pos; if (out[pos].length < n[pos]) out[pos].push(id); else left.push(id); });
+    LINES.forEach(function (line) { while (out[line].length < n[line] && left.length) { var id = left.shift(); out[line].push(id); out.oop[id] = true; } });
+    return out;
+  }
+  // The strongest team for a formation: the best players for each line, then the best of the rest.
+  function bestTeam(ids, form) {
+    var n = need(form), picked = [];
+    LINES.forEach(function (line) {
+      ids.filter(function (id) { return BY_ID[id].pos === line; })
+        .sort(function (a, b) { return lineStat(BY_ID[b], line) - lineStat(BY_ID[a], line); })
+        .slice(0, n[line]).forEach(function (id) { picked.push(id); });
+    });
+    ids.filter(function (id) { return picked.indexOf(id) < 0; })
+      .sort(function (a, b) { return BY_ID[b].s.ovr - BY_ID[a].s.ovr; })
+      .slice(0, TEAM - picked.length).forEach(function (id) { picked.push(id); });
+    return picked;
+  }
+  function strength(lu, tac, boost) {
+    function avg(line) { return lu[line].length ? lu[line].reduce(function (s, id) { return s + lineStat(BY_ID[id], line); }, 0) / lu[line].length : 30; }
+    var k = TACTICS[tac];
+    return { att: avg('FW') * k.att * boost, mid: avg('MF') * k.mid * boost, def: avg('DF') * k.def * boost, gk: avg('GK') * boost };
+  }
+  function aiSide() {
+    var all = [], forms = Object.keys(FORMATIONS), tacs = Object.keys(TACTICS);
+    function distinct() { return all.filter(function (id, i) { return all.indexOf(id) === i; }); }
+    for (var i = 0; i < division().packs || distinct().length < TEAM; i++) all = all.concat(drawPack('pack'));
+    all = distinct();
+    var form = forms[Math.floor(Math.random() * forms.length)];
+    return { form: form, tactic: tacs[Math.floor(Math.random() * tacs.length)], lu: lineUp(bestTeam(all, form), form) };
+  }
+  function drawLines(box, lu, onTap) {
+    box.innerHTML = '';
+    LINES.forEach(function (line) {
+      var row = document.createElement('div'); row.className = 'line';
+      row.innerHTML = '<b>' + LINE_NAME[line] + '</b><div class="grid"></div>';
+      lu[line].forEach(function (id) {
+        var p = BY_ID[id], off = lu.oop[id];
+        var s = slot(p, function () { onTap(id); }, fullName(p) + ', ' + POSITIONS[p.pos] + (off ? ', out of position' : ''));
+        if (off) s.classList.add('oop');
+        row.lastChild.appendChild(s);
+      });
+      box.appendChild(row);
+    });
+  }
+  function choice(boxId, options, current, label, onPick) {
+    var box = $(boxId); box.innerHTML = '';
+    options.forEach(function (key) {
+      var b = document.createElement('button');
+      b.className = 'btn small'; b.type = 'button'; b.textContent = label(key); b.setAttribute('aria-pressed', String(key === current));
+      b.addEventListener('click', function () { onPick(key); });
+      box.appendChild(b);
+    });
+  }
   function renderBattle() {
     var ids = ownedIds(), locked = ids.length < TEAM;
     $('battlelocked').hidden = !locked || !!battle;
@@ -751,21 +1026,32 @@ p { margin: 0; max-width: 60ch; }
     $('battlestage').hidden = !battle;
     if (battle) return;
     if (locked) {
-      $('lockedtext').textContent = 'You need 11 different players to battle. You have ' + ids.length + '.' +
+      $('lockedtext').textContent = 'You need 11 different players for a match. You have ' + ids.length + '.' +
         (S.free > 0 ? ' Open your free packs first.' : ids.length ? ' Trade your doubles to find new players.' : '');
       $('lockedbtn').textContent = S.free > 0 || S.coins >= 5 ? 'Open packs' : 'Go to packs';
       return;
     }
-    if (!teamIds().length) { S.team = bestEleven(ids); save(); }
-    var team = teamIds();
+    var form = formation(), tac = tactic();
+    if (!teamIds().length) { S.team = bestTeam(ids, form); save(); }
+    var team = teamIds(), lu = lineUp(team, form), st = strength(lu, tac, 1), offs = Object.keys(lu.oop).length;
+    choice('formations', Object.keys(FORMATIONS), form, function (k) { return k; }, function (k) { S.formation = k; save(); renderBattle(); });
+    choice('tactics', Object.keys(TACTICS), tac, function (k) { return TACTICS[k].name; }, function (k) { S.tactic = k; save(); renderBattle(); });
+    var loser = Object.keys(TACTICS).filter(function (k) { return TACTICS[k].beats === tac; })[0];
+    $('tactichint').textContent = TACTICS[tac].tip + ' Beats ' + TACTICS[TACTICS[tac].beats].name + '. Loses to ' + TACTICS[loser].name + '.';
     $('pickcount').textContent = team.length + ' of 11 picked';
-    $('picktotal').textContent = 'Team total ' + fmt(sumTotals(team));
+    $('picktotal').textContent = 'ATT ' + Math.round(st.att) + ' · MID ' + Math.round(st.mid) + ' · DEF ' + Math.round(st.def) + ' · GK ' + Math.round(st.gk);
+    $('lineuphint').textContent = offs ? offs + (offs === 1 ? ' player is' : ' players are') + ' out of position (dashed outline) and plays worse there. Try another formation or swap them.' :
+      team.length === TEAM ? 'Everyone is in their own position.' : 'Tap players below to fill the team.';
     $('record').textContent = 'Wins ' + S.wins + ' · Losses ' + S.losses;
+    var d = division(), top = (S.div || 0) >= DIVISIONS.length - 1;
+    $('division').textContent = d.name + (top ? ' · top division' : ' · ' + (S.divWins || 0) + ' of ' + WINS_TO_GO_UP + ' wins to go up');
+    $('aiform').textContent = 'AI opens ' + d.packs + ' packs' + (d.form ? ' · form +' + d.form + '%' : '') + ' · win ' + d.coins + ' coins';
     $('fight').disabled = team.length !== TEAM;
+    drawLines($('lineup'), lu, togglePick);
     var g = $('pickgrid'); g.innerHTML = '';
-    ids.sort(function (a, b) { return BY_ID[b].s.total - BY_ID[a].s.total; }).forEach(function (id) {
+    ids.sort(function (a, b) { return LINES.indexOf(BY_ID[a].pos) - LINES.indexOf(BY_ID[b].pos) || BY_ID[b].s.ovr - BY_ID[a].s.ovr; }).forEach(function (id) {
       var p = BY_ID[id], inTeam = team.indexOf(id) >= 0;
-      var b = slot(p, function () { togglePick(id); }, (inTeam ? 'Take out ' : 'Pick ') + fullName(p) + ', total ' + p.s.total);
+      var b = slot(p, function () { togglePick(id); }, (inTeam ? 'Take out ' : 'Pick ') + fullName(p) + ', ' + POSITIONS[p.pos] + ', rating ' + p.s.ovr);
       b.setAttribute('aria-pressed', String(inTeam));
       if (inTeam) b.insertAdjacentHTML('beforeend', '<span class="badge tick" aria-hidden="true">✓</span>'); else b.classList.add('dim');
       g.appendChild(b);
@@ -778,48 +1064,107 @@ p { margin: 0; max-width: 60ch; }
     else team.push(id);
     S.team = team; save(); renderBattle();
   }
-  $('best').addEventListener('click', function () { S.team = bestEleven(ownedIds()); save(); renderBattle(); });
-  $('clearteam').addEventListener('click', function () { S.team = []; save(); renderBattle(); $('pickcount').textContent = '0 of 11 picked'; });
+  $('best').addEventListener('click', function () { S.team = bestTeam(ownedIds(), formation()); save(); renderBattle(); });
+  $('clearteam').addEventListener('click', function () { S.team = []; save(); renderBattle(); });
   $('fight').addEventListener('click', startBattle);
   $('skipbattle').addEventListener('click', finishBattle);
 
+  function say(text, goal) {
+    var li = document.createElement('li'); li.textContent = text; if (goal) li.className = 'goal';
+    $('commentary').insertBefore(li, $('commentary').firstChild);
+  }
+  function pickFrom(list, lu) {
+    if (!list.length) list = lu.FW.concat(lu.MF, lu.DF, lu.GK);
+    return BY_ID[list[Math.floor(Math.random() * list.length)]];
+  }
   function startBattle() {
     var mine = teamIds(); if (mine.length !== TEAM) return;
-    // The AI picks its best 11 from 16 random players in the set.
-    var ai = bestEleven(sample(PLAYERS.map(function (p) { return p.id; }), 16));
-    battle = { mine: mine, ai: sample(ai, TEAM), step: 0, you: 0, them: 0, done: false };
+    var ai = aiSide(), form = formation(), tac = tactic(), lu = lineUp(mine, form);
+    var myEdge = TACTICS[tac].beats === ai.tactic, aiEdge = TACTICS[ai.tactic].beats === tac;
+    battle = {
+      lu: lu, ai: ai, step: 0, you: 0, them: 0, done: false, pens: null,
+      me: strength(lu, tac, myEdge ? EDGE : 1),
+      op: strength(ai.lu, ai.tactic, (aiEdge ? EDGE : 1) * (1 + division().form / 100))
+    };
     $('battlelocked').hidden = true; $('battlepick').hidden = true; $('battlestage').hidden = false;
-    $('result').hidden = true; $('skiprow').hidden = false;
-    $('pts-you').textContent = '0'; $('pts-ai').textContent = '0';
+    $('result').hidden = true; $('pens').hidden = true; $('skiprow').hidden = false;
+    $('pts-you').textContent = '0'; $('pts-ai').textContent = '0'; $('clock').textContent = "0'";
     $('side-you').classList.remove('lead'); $('side-ai').classList.remove('lead');
-    var gy = $('team-you'), ga = $('team-ai'); gy.innerHTML = ''; ga.innerHTML = '';
-    mine.forEach(function (id) { var b = slot(BY_ID[id], function () { openDetail(id); }, 'Look at ' + fullName(BY_ID[id])); b.classList.add('wait'); gy.appendChild(b); });
-    battle.ai.forEach(function () { var d = document.createElement('div'); d.className = 'missing'; d.innerHTML = '<b aria-hidden="true">?</b>'; ga.appendChild(d); });
-    battleTimer = setInterval(stepBattle, reduceMotion ? 120 : 600);
+    $('commentary').innerHTML = '';
+    $('plan-you').textContent = 'You: ' + form + ' · ' + TACTICS[tac].name;
+    $('plan-ai').textContent = 'AI: ' + ai.form + ' · ' + TACTICS[ai.tactic].name;
+    var e = $('edge'); e.hidden = !(myEdge || aiEdge);
+    e.textContent = myEdge ? 'Good read! ' + TACTICS[tac].name + ' beats ' + TACTICS[ai.tactic].name + '. Your whole team plays better.' :
+      'The AI out-thought you. ' + TACTICS[ai.tactic].name + ' beats ' + TACTICS[tac].name + '. Its whole team plays better.';
+    drawLines($('team-you'), lu, openDetail); drawLines($('team-ai'), ai.lu, openDetail);
+    say('Kick-off!');
+    battleTimer = setInterval(stepBattle, reduceMotion ? 150 : 1100);
   }
+  // One moment: the midfields fight for the ball, then the attack takes on the defence and the keeper.
   function stepBattle() {
-    if (!battle || battle.done) return;
-    var i = battle.step, mine = BY_ID[battle.mine[i]], theirs = BY_ID[battle.ai[i]];
-    $('team-you').children[i].classList.remove('wait');
-    var aiId = theirs.id;
-    $('team-ai').replaceChild(slot(theirs, function () { openDetail(aiId); }, 'Look at ' + fullName(theirs)), $('team-ai').children[i]);
-    battle.you += mine.s.total; battle.them += theirs.s.total; battle.step++;
-    $('pts-you').textContent = fmt(battle.you); $('pts-ai').textContent = fmt(battle.them);
+    if (!battle || battle.done || battle.pens) return;
+    var min = MINUTES[battle.step], me = battle.me, op = battle.op;
+    var mine = Math.random() < (me.mid * me.mid) / (me.mid * me.mid + op.mid * op.mid);
+    var a = mine ? me : op, d = mine ? op : me, alu = mine ? battle.lu : battle.ai.lu, dlu = mine ? battle.ai.lu : battle.lu;
+    var chance = Math.min(0.7, Math.max(0.06, 0.34 * Math.pow(a.att / d.def, 2) * Math.pow(84 / d.gk, 1.5)));
+    var winner = pickFrom(alu.MF, alu), shooter = pickFrom(alu.FW, alu), keeper = pickFrom(dlu.GK, dlu);
+    var start = min + "' " + winner.last + ' wins the ball for ' + (mine ? 'you' : 'the AI') + '. ' + shooter.last + ' shoots… ';
+    if (Math.random() < chance) {
+      if (mine) battle.you++; else battle.them++;
+      say(start + 'GOAL for ' + (mine ? 'you' : 'the AI') + '!', true);
+    } else {
+      say(start + (Math.random() < 0.6 ? 'saved by ' + keeper.last + '.' : 'just wide.'));
+    }
+    battle.step++;
+    $('clock').textContent = min + "'";
+    $('pts-you').textContent = battle.you; $('pts-ai').textContent = battle.them;
     $('side-you').classList.toggle('lead', battle.you > battle.them); $('side-ai').classList.toggle('lead', battle.them > battle.you);
-    if (battle.step >= TEAM) endBattle();
+    if (battle.step >= MINUTES.length) fullTime();
   }
-  function finishBattle() { while (battle && !battle.done) stepBattle(); }
-  function endBattle() {
+  function finishBattle() { while (battle && !battle.done && !battle.pens) stepBattle(); }
+  function fullTime() {
+    clearInterval(battleTimer); $('skiprow').hidden = true; $('clock').textContent = 'FT';
+    if (battle.you !== battle.them) { endBattle(battle.you > battle.them, false); return; }
+    say('Full time. It is level, so it goes to penalties!');
+    battle.pens = { you: 0, them: 0, kicksYou: 0, kicksThem: 0, turn: 'you' };
+    $('pens').hidden = false; askPen();
+  }
+  function askPen() {
+    var q = battle.pens;
+    $('penscore').textContent = q.you + ' – ' + q.them;
+    $('penask').textContent = q.turn === 'you' ? 'Your kick. Pick where to shoot.' : 'Their kick. Pick where your keeper dives.';
+  }
+  // Shooter and keeper each pick a corner. The same corner is usually a save, and a better keeper saves more.
+  function takePen(corner) {
+    if (!battle || !battle.pens || battle.done) return;
+    var q = battle.pens, names = ['left', 'the middle', 'right'], other = Math.floor(Math.random() * 3), mine = q.turn === 'you';
+    var keeperGk = mine ? battle.op.gk : battle.me.gk, same = corner === other;
+    var saved = same && Math.random() < Math.min(0.9, Math.max(0.3, 0.6 + (keeperGk - 80) / 100));
+    var scored = !saved && Math.random() > 0.05;
+    if (mine) { q.kicksYou++; if (scored) q.you++; } else { q.kicksThem++; if (scored) q.them++; }
+    say((mine ? 'You shoot ' + names[corner] + ', the keeper goes ' + names[other] : 'They shoot ' + names[other] + ', your keeper goes ' + names[corner]) + ': ' +
+      (scored ? 'GOAL!' : saved ? 'SAVED!' : 'over the bar!'), scored);
+    q.turn = mine ? 'ai' : 'you';
+    var leftYou = Math.max(0, 5 - q.kicksYou), leftThem = Math.max(0, 5 - q.kicksThem), even = q.kicksYou === q.kicksThem;
+    var over = q.you > q.them + leftThem || q.them > q.you + leftYou || (even && q.kicksYou >= 5 && q.you !== q.them);
+    if (over) { $('pens').hidden = true; $('penscore').textContent = q.you + ' – ' + q.them; endBattle(q.you > q.them, true); } else askPen();
+  }
+  document.querySelectorAll('[data-pen]').forEach(function (b) { b.addEventListener('click', function () { takePen(Number(b.getAttribute('data-pen'))); }); });
+  function endBattle(won, onPens) {
     clearInterval(battleTimer); battle.done = true;
-    var won = battle.you > battle.them, draw = battle.you === battle.them, gap = Math.abs(battle.you - battle.them);
-    if (won) { S.coins += WIN_COINS; S.wins++; } else if (!draw) { S.losses++; }
+    var d = division(), up = '', q = battle.pens;
+    if (won) {
+      S.coins += d.coins; S.wins++; S.divWins = (S.divWins || 0) + 1;
+      if (S.divWins >= WINS_TO_GO_UP && (S.div || 0) < DIVISIONS.length - 1) { S.div = (S.div || 0) + 1; S.divWins = 0; up = ' You go up to ' + division().name + '!'; }
+    } else { S.losses++; }
     save();
     $('coins').textContent = S.coins + (S.coins === 1 ? ' coin' : ' coins');
     $('skiprow').hidden = true;
+    var score = battle.you + ' – ' + battle.them + (onPens ? ' (' + q.you + ' – ' + q.them + ' on penalties)' : '');
     var r = $('result'); r.hidden = false;
-    r.innerHTML = '<h2>' + (won ? 'You win!' : draw ? 'It’s a draw' : 'The AI wins') + '</h2>' +
-      '<p>' + (won ? 'You won by ' + fmt(gap) + ' and earned 5 coins.' : draw ? 'Same total. No coins this time.' : 'You lost by ' + fmt(gap) + '. Change your team or find stronger cards.') + '</p>' +
-      '<div class="row center"><button class="btn primary" type="button" id="again">Battle again</button>' +
+    r.innerHTML = '<h2>' + (won ? 'You win!' : 'The AI wins') + '</h2>' +
+      '<p>' + score + '. ' + (won ? 'You earned ' + d.coins + ' coins.' + up : 'Try another formation or tactic, or find stronger cards.') + '</p>' +
+      '<div class="row center"><button class="btn primary" type="button" id="again">Play again</button>' +
       (S.coins >= 5 ? '<button class="btn" type="button" data-go="packs">Open a pack</button>' : '') + '</div>';
     $('again').addEventListener('click', function () { battle = null; renderBattle(); });
   }
@@ -829,7 +1174,7 @@ p { margin: 0; max-width: 60ch; }
   function renderCollection() {
     var ids = ownedIds().sort(function (a, b) {
       var p = BY_ID[a], q = BY_ID[b];
-      return TIER_ORDER[p.tier] - TIER_ORDER[q.tier] || q.s.total - p.s.total;
+      return TIER_ORDER[p.tier] - TIER_ORDER[q.tier] || q.s.ovr - p.s.ovr;
     });
     var shown = favOnly ? ids.filter(function (id) { return S.favs[id]; }) : ids;
     $('tools').hidden = !ids.length;
@@ -911,7 +1256,8 @@ p { margin: 0; max-width: 60ch; }
     $('guidecount').textContent = have + ' of ' + PLAYERS.length + ' collected';
     $('guidemeter').style.width = (have / PLAYERS.length * 100) + '%';
     var wrap = $('guidetiers'); wrap.innerHTML = '';
-    [['legend', 'Legends'], ['rare', 'Rares'], ['base', 'Base cards']].forEach(function (t) {
+    $('guideodds').textContent = 'A pack has 8 base cards and 2 lucky cards. A jumbo pack has 40 base cards and 10 lucky cards. ' + ODDS_TEXT + '.';
+    [['icon', 'Icons'], ['legend', 'Legends'], ['rare', 'Rares'], ['base', 'Base cards']].forEach(function (t) {
       var ids = BY_TIER[t[0]], got = ids.filter(function (id) { return S.owned[id] > 0; }).length;
       var sec = document.createElement('section'); sec.className = 'tier';
       sec.innerHTML = '<div class="tierhead"><h3>' + t[1] + '</h3><span class="muted">' + got + ' of ' + ids.length + '</span></div>';
