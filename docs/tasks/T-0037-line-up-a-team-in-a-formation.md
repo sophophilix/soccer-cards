@@ -8,6 +8,7 @@ paths:
   - packages/game/src/lineup.ts
   - packages/game/src/lineup.test.ts
   - packages/game/src/lineup.property.test.ts
+  - packages/game/src/testing/**
   - packages/game/src/index.ts
 dependencies: []
 max_changed_lines: 240

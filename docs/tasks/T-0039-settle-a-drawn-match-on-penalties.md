@@ -8,6 +8,7 @@ paths:
   - packages/game/src/penalties.ts
   - packages/game/src/penalties.test.ts
   - packages/game/src/penalties.property.test.ts
+  - packages/game/src/testing/**
   - packages/game/src/index.ts
 dependencies: []
 max_changed_lines: 200

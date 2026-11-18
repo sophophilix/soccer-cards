@@ -11,6 +11,7 @@ paths:
   - packages/game/src/state.ts
   - packages/game/src/state.test.ts
   - packages/game/src/state.property.test.ts
+  - packages/game/src/testing/**
   - packages/game/src/index.ts
 dependencies: []
 max_changed_lines: 260
@@ -30,6 +31,9 @@ any pack.
 - `packages/game/src/packs.ts` holds the older rule, a fixed count per
   tier. This task replaces it.
 - Runs after T-0035.
+- The test helpers in `testing/` may gain what the new tests need, such as
+  a card set with a chosen count per tier. No existing test changes its
+  meaning.
 - Functions stay pure and take `Random` as an argument.
 - Aim for about 170 changed lines. The limit is 260.
 
