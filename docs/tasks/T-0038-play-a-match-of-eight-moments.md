@@ -8,14 +8,10 @@ paths:
   - packages/game/src/match.ts
   - packages/game/src/match.test.ts
   - packages/game/src/match.property.test.ts
-  - packages/game/src/random.ts
-  - packages/game/src/random.test.ts
-  - packages/game/src/random.property.test.ts
   - packages/game/src/testing/**
-  - packages/game/src/trade.test.ts
   - packages/game/src/index.ts
 dependencies: []
-max_changed_lines: 300
+max_changed_lines: 380
 status: ready
 ---
 
@@ -30,17 +26,16 @@ the team matter, not just a total.
 - `prototype/soccer-cards-prototype.html`: `TACTICS`, `EDGE`, `MINUTES`,
   `strength`, `startBattle` and `stepBattle`.
 - Runs after T-0037.
-- `Random` has no way to roll a probability. This task adds one method to
-  it for that.
-- `trade.test.ts` builds two `Random` stubs by hand, so a new method stops
-  it compiling. Give the stubs the new method, or move them to a helper in
-  `testing/`. No trade test changes its meaning.
+- Runs after T-0046, which gives `Random` a way to roll a probability.
 - The match is pure: it takes two sides and a `Random` and returns the
   whole result. Timing and commentary text belong to the web app.
-- Aim for about 200 changed lines. The limit is 300.
+- Aim for about 300 changed lines. The limit is 380. If the tests don't fit,
+  stop and tell the lead before trimming one.
 
 ## Acceptance criteria
 
+- The tactic ids are exported as a list, so a later task can choose one
+  at random.
 - The tactics are All-out attack, Counter-attack, Keep the ball and Park
   the bus, with the prototype's factors for attack, midfield and defence.
   Each beats exactly one other, in one loop of four.
@@ -75,8 +70,6 @@ the team matter, not just a total.
 - Property tests: the score equals the count of goal moments for each
   side; there are always eight moments in minute order; a stronger attack
   never lowers the scoring probability; the same seed gives the same match.
-- Tests for the new `Random` method: it never returns true for 0, always
-  for 1, and refuses a value outside 0 to 1.
 
 ## Out of scope
 
