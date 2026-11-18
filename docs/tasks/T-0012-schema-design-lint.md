@@ -9,7 +9,7 @@ paths:
   - packages/schema/schemas/v1/**
 dependencies: []
 max_changed_lines: 320
-status: ready
+status: done
 ---
 
 ## Goal
@@ -23,7 +23,8 @@ it. This is check 1 of ADR 0005 D10.
 - Runs after T-0011, so the schemas already follow the rules.
 - Review finding T-0002 security F1: the type generator can fetch a remote
   `$ref`. A rule here keeps one from being written.
-- Aim for about 150 changed lines. The limit is 200.
+- Aim for about 150 changed lines. The limit was 200 and the tech lead
+  raised it to 320 on 2026-11-18.
 
 ## Acceptance criteria
 
