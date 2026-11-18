@@ -8,6 +8,7 @@ paths:
   - packages/game/src/cards.ts
   - packages/game/src/cards.test.ts
   - packages/game/src/packs.ts
+  - packages/game/src/packs.test.ts
   - packages/game/src/testing/**
   - packages/game/src/index.ts
 dependencies: []
@@ -44,6 +45,8 @@ rule in this plan needs them.
 - The two pack mixes in `packs.ts` gain `icon: 0`, and nothing else in
   that file changes. A pack opens exactly as before. T-0036 replaces the
   mixes.
+- The two tests in `packs.test.ts` that pin the mixes expect `icon: 0`
+  too. No other test in that file changes.
 - The comment on `TIERS` says the order is least to most rare.
 - `checkCardSet` refuses a card with an unknown position or tier, and an
   `overall` that is not a whole number from 1 to 99. Each refusal names the
