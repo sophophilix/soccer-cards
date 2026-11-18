@@ -9,6 +9,8 @@ export {
 	packMix
 } from './packs.ts';
 export type { OpenPackResult, PackKind, PackMix } from './packs.ts';
+export { LUCKY_ODDS, PACK_CONTENTS, drawPack, packSize } from './draw-pack.ts';
+export type { DrawPackResult } from './draw-pack.ts';
 export { createRandom } from './random.ts';
 export type { Random } from './random.ts';
 export {
