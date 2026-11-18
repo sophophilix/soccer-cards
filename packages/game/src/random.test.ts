@@ -122,3 +122,57 @@ describe('sample', () => {
 		expect(list).toEqual(['a', 'b', 'c', 'd', 'e']);
 	});
 });
+
+describe('chance', () => {
+	const UINT32_MAX = 2 ** 32 - 1;
+	const answers = (seed: number, probability: number): boolean[] => {
+		const random = createRandom(seed);
+		return Array.from({ length: 200 }, () => random.chance(probability));
+	};
+	const rawAfterChance = (probability: number): number => {
+		const random = createRandom(21);
+		random.chance(probability);
+		return random.nextInt(0, UINT32_MAX);
+	};
+	const secondRaw = (): number => {
+		const random = createRandom(21);
+		random.nextInt(0, UINT32_MAX);
+		return random.nextInt(0, UINT32_MAX);
+	};
+
+	it('is never true for a probability of 0', () => {
+		expect(answers(4, 0)).not.toContain(true);
+	});
+
+	it('is always true for a probability of 1', () => {
+		expect(answers(4, 1)).not.toContain(false);
+	});
+
+	it('gives both answers for a probability of 0.5', () => {
+		expect(new Set(answers(4, 0.5)).size).toBe(2);
+	});
+
+	it('is not true in 200 rolls for a very small probability', () => {
+		expect(answers(4, 1e-9)).not.toContain(true);
+	});
+
+	it.each([Number.NaN, -0.1, 1.1])('refuses a probability of %s and names it', (probability) => {
+		const random = createRandom(1);
+
+		expect(() => random.chance(probability)).toThrow(RangeError);
+		expect(() => random.chance(probability)).toThrow(String(probability));
+	});
+
+	it('gives the same answers for the same seed', () => {
+		expect(answers(42, 0.5)).toEqual(answers(42, 0.5));
+	});
+
+	it.each([0, 1e-9, 0.5, 1])('moves the sequence on by one step for %s', (probability) => {
+		expect(rawAfterChance(probability)).toBe(secondRaw());
+	});
+
+	it('leaves the nextInt and sample sequences as they were', () => {
+		expect(drawTen(42).slice(0, 3)).toEqual([718375, 391365, 309043]);
+		expect(createRandom(11).sample(['a', 'b', 'c', 'd', 'e'], 3)).toEqual(['d', 'a', 'c']);
+	});
+});

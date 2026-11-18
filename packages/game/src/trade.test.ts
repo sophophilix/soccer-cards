@@ -117,7 +117,7 @@ describe('tradeCard', () => {
 
 	it('gives the card at the place the generator picks', () => {
 		const state = aPlayerState({ collection: { [RARE_1]: 2 } });
-		const pickLast: Random = { nextInt: (_min, max) => max, sample: () => [] };
+		const pickLast: Random = { nextInt: (_min, max) => max, sample: () => [], chance: () => false };
 
 		const result = tradeCard(state, CARD_SET, RARE_1, pickLast);
 
@@ -126,7 +126,11 @@ describe('tradeCard', () => {
 
 	it('throws when the generator picks a place outside the list', () => {
 		const state = aPlayerState({ collection: { [RARE_1]: 2 } });
-		const pickPastEnd: Random = { nextInt: (_min, max) => max + 1, sample: () => [] };
+		const pickPastEnd: Random = {
+			nextInt: (_min, max) => max + 1,
+			sample: () => [],
+			chance: () => false
+		};
 
 		expect(() => tradeCard(state, CARD_SET, RARE_1, pickPastEnd)).toThrow(RangeError);
 	});

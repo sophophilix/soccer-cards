@@ -19,7 +19,8 @@ function aRandomThatRolls(rolls: readonly number[]): Random {
 	const queue = [...rolls];
 	return {
 		nextInt: () => queue.shift() ?? RARE_ROLL,
-		sample: <T>(items: readonly T[], count: number): T[] => items.slice(0, count)
+		sample: <T>(items: readonly T[], count: number): T[] => items.slice(0, count),
+		chance: () => false
 	};
 }
 
