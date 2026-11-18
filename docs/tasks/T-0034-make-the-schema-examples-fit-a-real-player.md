@@ -9,7 +9,7 @@ paths:
   - packages/schema/src/examples.test.ts
 dependencies: []
 max_changed_lines: 100
-status: ready
+status: done
 ---
 
 ## Goal
