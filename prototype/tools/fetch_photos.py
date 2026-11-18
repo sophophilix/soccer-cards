@@ -19,6 +19,18 @@ TITLES = [
     "Alexis Mac Allister", "Julián Álvarez", "Lautaro Martínez", "Victor Osimhen", "Cody Gakpo", "Nicolò Barella",
 ]
 
+# Players after the first 36 are read from a JSON list of names in card order (argv[2]).
+# Wikipedia page titles that differ from the name on the card:
+OVERRIDES = {
+    "Gabriel": "Gabriel Magalhães", "Vitinha": "Vitinha (footballer, born February 2000)",
+    "Ronaldo Nazário": "Ronaldo (Brazilian footballer)", "Alisson": "Alisson Becker",
+    "Robert Sánchez": "Robert Sánchez (footballer)",
+}
+ALLOWED = ("CC0", "CC BY", "Public domain", "PD")  # CC BY covers CC BY-SA. Anything else gets the avatar.
+if len(sys.argv) > 2:
+    names = json.load(open(sys.argv[2], encoding="utf-8"))
+    TITLES += [OVERRIDES.get(n, n) for n in names[len(TITLES):]]
+
 
 def get(url, raw=False):
     req = urllib.request.Request(url, headers=UA)
@@ -63,8 +75,8 @@ def main(out):
             meta = info.get("imageinfo", [{}])[0].get("extmetadata", {})
             artist = clean(meta.get("Artist", {}).get("value"))[:60]
             lic = clean(meta.get("LicenseShortName", {}).get("value"))
-            if not lic:
-                print("%2d NO-LICENCE %s %s" % (i, title, name))
+            if not lic.startswith(ALLOWED) or "NC" in lic or "ND" in lic:
+                print("%2d NO-LICENCE %s %s (%s)" % (i, title, name, lic or "none"))
                 continue
             with open("%s/%d.jpg" % (out, i), "wb") as f:
                 f.write(get(page["thumbnail"]["source"], raw=True))
