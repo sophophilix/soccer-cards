@@ -129,6 +129,7 @@ describe('drawPack', () => {
 	});
 
 	it.each([
+		['base', { ...PLENTY, base: 0 }],
 		['legend', { ...PLENTY, legend: 0 }],
 		['icon', { ...PLENTY, icon: 0 }],
 		['rare', { ...PLENTY, rare: 0, icon: 0 }]
