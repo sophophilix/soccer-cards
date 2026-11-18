@@ -9,7 +9,7 @@ paths:
   - packages/schema/src/**
 dependencies: []
 max_changed_lines: 200
-status: ready
+status: done
 ---
 
 ## Goal

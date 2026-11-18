@@ -2,8 +2,8 @@
 
 > Status: Draft
 > Created: 2026-11-16T20:49:05Z
-> Last reviewed: 2026-11-18T03:10:00Z
-> Next review: 2026-11-20
+> Last reviewed: 2026-11-18T03:35:33Z
+> Next review: 2026-11-23
 
 Only the tech lead accepts a security risk (AGENTS.md rule 1). This page
 lists each acceptance in the tech lead's own words, so a scanner finding

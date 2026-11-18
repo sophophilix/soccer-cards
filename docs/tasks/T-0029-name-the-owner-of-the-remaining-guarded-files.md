@@ -8,7 +8,7 @@ paths:
   - .github/CODEOWNERS
 dependencies: []
 max_changed_lines: 30
-status: ready
+status: done
 ---
 
 ## Goal

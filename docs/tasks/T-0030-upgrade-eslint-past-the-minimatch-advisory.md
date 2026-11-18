@@ -31,6 +31,9 @@ the accepted advisory can be closed and its scanner ignore removed.
 - `pnpm-workspace.yaml`: `minimumReleaseAge` is seven days. A release
   younger than that can't be installed. Don't change the setting.
 - Runs after T-0022, which adds `osv-scanner.toml`.
+- Not before 2026-11-23T17:10Z. The first run on 2026-11-18 stopped at the
+  release-age edge case: `eslint` 10.15.0 is installable from
+  2026-11-20T21:33Z and `typescript-eslint` 8.73.0 from 2026-11-23T17:07Z.
 - The lockfile is written by `pnpm`, never by hand. Most of the changed
   lines are the lockfile, which is why the limit is 400.
 
