@@ -2,10 +2,11 @@ import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
 import { addPendingPack, createRandom, openPlayerPack } from './index.ts';
 import type { PackKind, PlayerState } from './index.ts';
-import { aCardSet } from './testing/cards.ts';
+import { aCheckedCardSet } from './testing/cards.ts';
 import { aPlayerState } from './testing/state.ts';
 
-const CARD_SET = aCardSet({ base: 20, rare: 5, legend: 3 });
+const CARD_SET = aCheckedCardSet({ base: 20, rare: 5, legend: 3, icon: 1 });
+const PACK_SIZE = { standard: 10, jumbo: 50 } as const satisfies Record<PackKind, number>;
 const CARD_IDS = CARD_SET.map((card) => card.id);
 
 type Action = { readonly do: 'open'; readonly kind: PackKind } | { readonly do: 'add' };
@@ -71,15 +72,28 @@ describe('player state properties', () => {
 		);
 	});
 
+	it('holds 10 pending cards for a standard pack and 50 for a jumbo pack', () => {
+		fc.assert(
+			fc.property(anyState, kind, seed, (state, packKind, packSeed) => {
+				const ready = { ...state, coins: 20, pendingPack: null };
+
+				const opened = act(ready, { do: 'open', kind: packKind }, packSeed);
+
+				expect(opened.pendingPack?.kind).toBe(packKind);
+				expect(opened.pendingPack?.cardIds).toHaveLength(PACK_SIZE[packKind]);
+			})
+		);
+	});
+
 	it('grows the collection by the size of the pack when a pack is added', () => {
 		fc.assert(
 			fc.property(anyState, kind, seed, (state, packKind, packSeed) => {
-				const ready = { ...state, coins: 10, pendingPack: null };
+				const ready = { ...state, coins: 20, pendingPack: null };
 				const opened = act(ready, { do: 'open', kind: packKind }, packSeed);
 
 				const added = act(opened, { do: 'add' }, packSeed);
 
-				expect(sizeOf(added) - sizeOf(ready)).toBe(packKind === 'standard' ? 10 : 20);
+				expect(sizeOf(added) - sizeOf(ready)).toBe(PACK_SIZE[packKind]);
 				expect(added.pendingPack).toBeNull();
 			})
 		);
