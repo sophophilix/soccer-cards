@@ -73,14 +73,14 @@ describe.each(FILES)('the card fields of %s', (_file, isValid) => {
 		['an empty card title', { cardTitle: '' }],
 		['a card title of 31 characters', { cardTitle: 'a'.repeat(31) }],
 		['a card title of spaces only', { cardTitle: '   ' }],
-		['a card title of a no-break space only', { cardTitle: ' ' }],
+		['a card title of a no-break space only', { cardTitle: '\u{00A0}' }],
 		['a card title with a tag', { cardTitle: '<b>Magician</b>' }],
 		['a card title with an opening bracket', { cardTitle: 'Magic <3' }],
 		['a card title with a closing bracket', { cardTitle: 'Magic > all' }],
 		['a card title with a line break', { cardTitle: 'Magic\nman' }],
 		['a card title with a control character', { cardTitle: 'Magic\u0085man' }],
-		['a card title with a direction override', { cardTitle: 'Magic‮nam' }],
-		['a card title with a direction isolate', { cardTitle: 'Magic⁦man' }],
+		['a card title with a direction override', { cardTitle: 'Magic\u{202E}nam' }],
+		['a card title with a direction isolate', { cardTitle: 'Magic\u{2066}man' }],
 		['a card title that is a number', { cardTitle: 10 }],
 		['a null card title', { cardTitle: null }]
 	])('refuse %s', (_rule, overrides) => {

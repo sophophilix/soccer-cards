@@ -54,6 +54,13 @@ describe('the examples beside the player schema', () => {
 		expect([...Object.keys(example), ...unfit].sort()).toEqual(FIELDS);
 	});
 
+	it('one example is an Icon', () => {
+		const tiers = Object.values(EXAMPLES).map(
+			(raw) => (JSON.parse(raw.default) as { tier?: string }).tier
+		);
+		expect(tiers).toContain('ICON');
+	});
+
 	it('a field that no example carries is named', () => {
 		const outfield = '../schemas/v1/examples/player.outfield.json';
 		const missing = fieldsMissingFrom({ [outfield]: EXAMPLES[outfield] ?? { default: '{}' } });
