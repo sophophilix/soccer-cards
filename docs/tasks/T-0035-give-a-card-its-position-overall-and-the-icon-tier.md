@@ -7,6 +7,7 @@ agent: web-implementer
 paths:
   - packages/game/src/cards.ts
   - packages/game/src/cards.test.ts
+  - packages/game/src/packs.ts
   - packages/game/src/testing/**
   - packages/game/src/index.ts
 dependencies: []
@@ -27,6 +28,9 @@ rule in this plan needs them.
   2026-11-18.
 - `packages/game/src/cards.ts`: `Card`, `TIERS` and `checkCardSet`.
 - The game does not compute a tier or a rating. Both arrive on the card.
+- `packs.ts` types a pack mix as one count per tier, so a fourth tier
+  stops it compiling. The first run of this task stopped there; the brief
+  now lists the file.
 - Aim for about 90 changed lines. The limit is 160.
 
 ## Acceptance criteria
@@ -37,6 +41,10 @@ rule in this plan needs them.
   whole number from 1 to 99.
 - `POSITIONS` is exported, in the order a line-up shows them: `FW`, `MF`,
   `DF`, `GK`.
+- The two pack mixes in `packs.ts` gain `icon: 0`, and nothing else in
+  that file changes. A pack opens exactly as before. T-0036 replaces the
+  mixes.
+- The comment on `TIERS` says the order is least to most rare.
 - `checkCardSet` refuses a card with an unknown position or tier, and an
   `overall` that is not a whole number from 1 to 99. Each refusal names the
   card id and the field.
