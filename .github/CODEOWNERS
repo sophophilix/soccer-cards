@@ -15,3 +15,17 @@
 /docs/decisions/ @sophophilix
 /pnpm-lock.yaml @sophophilix
 /pnpm-workspace.yaml @sophophilix
+
+# The rest of the kit (AGENTS.md, rule 2).
+/AGENTS.md @sophophilix
+/CLAUDE.md @sophophilix
+/Makefile @sophophilix
+/.pre-commit-config.yaml @sophophilix
+
+# The files that waive a scanner finding. Some of them don't exist yet.
+# gitleaks loads its two from a pull request's own tree, so the owner line
+# must exist before the file does.
+/osv-scanner.toml @sophophilix
+/.gitleaks.toml @sophophilix
+/.gitleaksignore @sophophilix
+/docs/security/accepted-advisories.md @sophophilix
