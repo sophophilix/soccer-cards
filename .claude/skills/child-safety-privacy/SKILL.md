@@ -47,7 +47,9 @@ A task that would do any of these needs a decision record before any code:
 
 - No real money, and no way to buy coins, packs or cards.
 - Coins come from play. Their price list is fixed and shown.
-- Pack odds are stated on the pack: 7 base, 2 rare, 1 legend.
+- Pack contents and odds are stated on the pack: 8 base cards and 2 lucky
+  cards, and each lucky card is a Rare 85 times in 100, a Legend 12 and an
+  Icon 3. The odds shown are the odds the game uses.
 - No pressure to keep playing or to come back: no streak that resets, no
   countdown, no "last chance", no notification.
 - No reward for sharing the site or inviting a friend.

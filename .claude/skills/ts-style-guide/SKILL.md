@@ -24,7 +24,8 @@ you before applying a preference of your own.
 | Identifier type | Branded | `PlayerId`, `CardId` |
 
 - Use the game's own words, as the prototype and the children use them:
-  pack, jumbo pack, card, collection, trade, favourite, battle, coins, tier.
+  pack, jumbo pack, lucky card, card, collection, trade, favourite, match,
+  formation, tactic, division, coins, tier.
   Use one word for one thing.
 - Put the unit in the name when a number has one: `durationMs`, `widthPx`.
 - No abbreviations a child's parent wouldn't know. `stats` is fine. `cfg` is
