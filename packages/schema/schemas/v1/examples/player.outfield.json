@@ -1,0 +1,59 @@
+{
+	"name": "players/tavi-brightwell",
+	"displayName": "Tavi Brightwell",
+	"givenName": "Tavi",
+	"familyName": "Brightwell",
+	"state": "ACTIVE",
+	"club": "clubs/harbour-rovers",
+	"nationalTeamCode": "ENG",
+	"position": "FORWARD",
+	"tier": "RARE",
+	"cardNumber": 9,
+	"outfieldRatings": {
+		"pace": 88,
+		"shooting": 84,
+		"passing": 71,
+		"dribbling": 86,
+		"defending": 38,
+		"physical": 67
+	},
+	"playStats": { "attack": 86, "defence": 45, "control": 79 },
+	"photo": {
+		"uri": "photos/tavi-brightwell.webp",
+		"widthPx": 600,
+		"heightPx": 800,
+		"mimeType": "image/webp",
+		"attribution": {
+			"author": "Ina Vented",
+			"licenseCode": "CC-BY-SA-4.0",
+			"sourceUri": "https://commons.wikimedia.org/wiki/File:Tavi_Brightwell_2026.jpg"
+		}
+	},
+	"updateTime": "2026-11-16T12:06:57Z",
+	"clubGoalCount": {
+		"value": 112,
+		"sourceUri": "https://almanac.example/players/tavi-brightwell",
+		"retrieveDate": "2026-11-01"
+	},
+	"nationalTeamGoalCount": {
+		"value": 14,
+		"sourceUri": "https://almanac.example/players/tavi-brightwell",
+		"retrieveDate": "2026-11-01"
+	},
+	"transferFee": {
+		"currencyCode": "EUR",
+		"units": 42000000,
+		"nanos": 0,
+		"sourceUri": "https://almanac.example/transfers/2024",
+		"retrieveDate": "2026-11-01"
+	},
+	"awards": [
+		{
+			"displayName": "Harbour Cup winner 2025",
+			"sourceUri": "https://almanac.example/cups/harbour-2025",
+			"retrieveDate": "2026-11-01"
+		}
+	],
+	"careerStartYear": 2017,
+	"careerEndYear": 2026
+}

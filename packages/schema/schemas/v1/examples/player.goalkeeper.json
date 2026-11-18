@@ -1,0 +1,59 @@
+{
+	"name": "players/juno-marshwick",
+	"displayName": "Juno Marshwick",
+	"givenName": "Juno",
+	"familyName": "Marshwick",
+	"state": "ACTIVE",
+	"club": "clubs/lantern-town",
+	"nationalTeamCode": "SCO",
+	"position": "GOALKEEPER",
+	"tier": "LEGEND",
+	"cardNumber": 1,
+	"goalkeeperRatings": {
+		"diving": 90,
+		"handling": 87,
+		"kicking": 74,
+		"reflexes": 92,
+		"speed": 52,
+		"positioning": 89
+	},
+	"playStats": { "attack": 20, "defence": 91, "control": 70 },
+	"photo": {
+		"uri": "photos/juno-marshwick.webp",
+		"widthPx": 600,
+		"heightPx": 800,
+		"mimeType": "image/webp",
+		"attribution": {
+			"author": "Cam Rafield",
+			"licenseCode": "CC0-1.0",
+			"sourceUri": "https://commons.wikimedia.org/wiki/File:Juno_Marshwick_2025.jpg"
+		}
+	},
+	"updateTime": "2026-11-16T12:06:57Z",
+	"clubGoalCount": {
+		"value": 1,
+		"sourceUri": "https://almanac.example/players/juno-marshwick",
+		"retrieveDate": "2026-11-01"
+	},
+	"nationalTeamGoalCount": {
+		"value": 0,
+		"sourceUri": "https://almanac.example/players/juno-marshwick",
+		"retrieveDate": "2026-11-01"
+	},
+	"transferFee": {
+		"currencyCode": "GBP",
+		"units": 7500000,
+		"nanos": 0,
+		"sourceUri": "https://almanac.example/transfers/2019",
+		"retrieveDate": "2026-11-01"
+	},
+	"awards": [
+		{
+			"displayName": "Lantern Shield golden glove 2024",
+			"sourceUri": "https://almanac.example/shields/lantern-2024",
+			"retrieveDate": "2026-11-01"
+		}
+	],
+	"careerStartYear": 2009,
+	"careerEndYear": 2026
+}
