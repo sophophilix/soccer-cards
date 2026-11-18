@@ -1,0 +1,15 @@
+# OSV-Scanner ignores. One entry for each open advisory in
+# docs/security/accepted-advisories.md, and no other. Only the tech lead
+# accepts an advisory (AGENTS.md rule 1). An entry stops hiding its finding
+# at the start of its `ignoreUntil` date, in UTC.
+
+[[IgnoredVulns]]
+id = "GHSA-g3hv-75wg-m249"
+ignoreUntil = 2026-11-20
+reason = "minimatch 10.2.6 through ESLint and typescript-eslint. Development tool, and the globs come from this repository. Accepted by the tech lead on 2026-11-16 until 2026-11-20."
+
+# No fixed recheck date, so the entry gets 30 days from the acceptance.
+[[IgnoredVulns]]
+id = "GHSA-gcqx-w48m-w2h4"
+ignoreUntil = 2026-12-16
+reason = "deepmerge 4.3.1 through @sveltejs/vite-plugin-svelte. Build time only, it merges this project's own configuration and is not sent to the browser. Accepted by the tech lead on 2026-11-16 until a fixed release exists."
