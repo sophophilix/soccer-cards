@@ -38,13 +38,16 @@ export {
 	GOALKEEPER_EXPONENT,
 	MAX_SCORING_CHANCE,
 	MIN_SCORING_CHANCE,
+	MOMENT_MINUTES,
+	SAVE_CHANCE,
 	SHOT_EXPONENT,
 	TACTICAL_EDGE_FACTOR,
 	TACTICS,
 	TACTIC_IDS,
 	TYPICAL_GOALKEEPER_WORTH,
 	ballChance,
+	playMatch,
 	scoringChance,
 	sideStrength
 } from './match.ts';
-export type { MatchSide, Strength, Tactic } from './match.ts';
+export type { MatchResult, MatchSide, Moment, SideName, Strength, Tactic } from './match.ts';
