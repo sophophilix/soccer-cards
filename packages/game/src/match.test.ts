@@ -96,13 +96,36 @@ describe('sideStrength', () => {
 
 	it.each([
 		['adds a form bonus in percent to', 10, 1.1],
-		['takes a negative form bonus from', -50, 0.5]
+		['takes a negative form bonus from', -50, 0.5],
+		['takes a form bonus of -100 percent, the lowest, from', -100, 0]
 	])('%s every line', (_name, formPercent, factor) => {
 		expect(sideStrength(aMatchSide(team('home'), { formPercent }), 'attack')).toEqual({
 			attack: 70 * factor,
 			midfield: 65 * 1.1 * factor,
 			defence: 60 * factor,
 			goalkeeper: 60 * factor
+		});
+	});
+
+	it.each([-101, Number.NaN])('refuses a form bonus of %d percent, and names it', (formPercent) => {
+		const side = aMatchSide(team('home'), { formPercent });
+
+		expect(() => sideStrength(side, 'attack')).toThrow(
+			new RangeError(`form ${String(formPercent)}`)
+		);
+	});
+
+	it('lowers the worth of a card in a line that is not its own', () => {
+		const [mid, back] = [card('mid', 'MF'), card('back', 'DF')];
+		const lines = { FW: [mid.id], MF: [], DF: [], GK: [back.id] };
+		const outOfPosition = [mid.id, back.id];
+		const side = aMatchSide([mid, back], { lineUp: { lines, outOfPosition } });
+
+		expect(sideStrength(side, 'attack')).toEqual({
+			attack: 70 * 0.8,
+			midfield: 30 * 1.1,
+			defence: 30,
+			goalkeeper: 60 * 0.5
 		});
 	});
 

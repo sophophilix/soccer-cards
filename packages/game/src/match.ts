@@ -62,9 +62,13 @@ export interface Strength {
 /** The strength of each line: the mean worth of its cards, times the tactic, edge and form. */
 export function sideStrength(side: MatchSide, opponentTactic: Tactic): Strength {
 	const tactic = TACTICS[side.tactic];
+	const formPercent = side.formPercent ?? 0;
+	// Below -100 a line would be worth less than nothing. Written so that NaN fails it too.
+	if (!(formPercent >= -PERCENT)) {
+		throw new RangeError(`form ${String(formPercent)}`);
+	}
 	const boost =
-		(tactic.beats === opponentTactic ? TACTICAL_EDGE_FACTOR : 1) *
-		(1 + (side.formPercent ?? 0) / PERCENT);
+		(tactic.beats === opponentTactic ? TACTICAL_EDGE_FACTOR : 1) * (1 + formPercent / PERCENT);
 	const cardOf = new Map(side.cards.map((card) => [card.id, card]));
 	const mean = (line: Position): number => {
 		const worths = side.lineUp.lines[line].map((id) => {
