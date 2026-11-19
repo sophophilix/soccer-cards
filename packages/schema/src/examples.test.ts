@@ -1,6 +1,7 @@
 import { Ajv2020 } from 'ajv/dist/2020.js';
 import { describe, expect, it } from 'vitest';
 import clubSchema from '../schemas/v1/club.schema.json' with { type: 'json' };
+import editionSchema from '../schemas/v1/edition.schema.json' with { type: 'json' };
 import playerSchema from '../schemas/v1/player.schema.json' with { type: 'json' };
 
 // Every file in the folder, as text, so a new example is checked without a change here.
@@ -11,10 +12,12 @@ const ajv = new Ajv2020({ allErrors: true });
 // The first part of a file's name selects its schema: `club.example.json` is a club.
 const VALIDATORS = new Map([
 	['player', ajv.compile(playerSchema)],
-	['club', ajv.compile(clubSchema)]
+	['club', ajv.compile(clubSchema)],
+	['edition', ajv.compile(editionSchema)]
 ]);
 const kindOf = (file: string): string => file.split('/').at(-1)?.split('.')[0] ?? '';
 const CLUB = '../schemas/v1/examples/club.example.json';
+const EDITION = '../schemas/v1/examples/edition.example.json';
 const OUTFIELD = '../schemas/v1/examples/player.outfield.json';
 const PLAYERS = Object.fromEntries(
 	Object.entries(EXAMPLES).filter(([file]) => kindOf(file) === 'player')
@@ -57,15 +60,16 @@ describe('the examples beside the schemas', () => {
 		expect(Object.keys(club)).toEqual(Object.keys(clubSchema.$defs.club.properties));
 	});
 
+	it('include an edition that uses every field', () => {
+		const edition = JSON.parse(EXAMPLES[EDITION]?.default ?? '{}') as object;
+		expect(Object.keys(edition)).toEqual(Object.keys(editionSchema.$defs.edition.properties));
+	});
+
 	it.each([
 		['a club named as a player', 'player.club.json', CLUB, /^player\.club\.json: .*required/],
 		['a player named as a club', 'club.player.json', OUTFIELD, /^club\.player\.json: .*pattern/],
-		[
-			'a file with no schema',
-			'edition.example.json',
-			CLUB,
-			/^edition\.example\.json: .*no schema$/
-		],
+		['a club named as an edition', 'edition.club.json', CLUB, /^edition\.club\.json: .*required/],
+		['a file with no schema', 'league.example.json', CLUB, /^league\.example\.json: .*no schema$/],
 		[
 			'a file named from the prototype chain',
 			'constructor.json',
