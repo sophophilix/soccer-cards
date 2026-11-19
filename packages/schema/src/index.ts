@@ -1,8 +1,12 @@
 /** Where each schema file is, from the root of this package. */
 export const SCHEMA_PATHS = {
 	players: 'schemas/v1/players.schema.json',
-	player: 'schemas/v1/player.schema.json'
+	player: 'schemas/v1/player.schema.json',
+	clubs: 'schemas/v1/clubs.schema.json',
+	club: 'schemas/v1/club.schema.json'
 } as const;
 
 export type { PlayerList } from './generated/players.schema.d.ts';
 export type * from './generated/player.schema.d.ts';
+export type { ClubList } from './generated/clubs.schema.d.ts';
+export type { Club } from './generated/club.schema.d.ts';

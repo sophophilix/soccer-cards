@@ -152,8 +152,10 @@ describe('lintSchemaDesign', () => {
 });
 
 describe('the schemas in schemas/v1', () => {
-	it('include the player and the player list', () => {
+	it('include the club, the player and their lists', () => {
 		expect(Object.keys(SCHEMAS)).toEqual([
+			'../schemas/v1/club.schema.json',
+			'../schemas/v1/clubs.schema.json',
 			'../schemas/v1/player.schema.json',
 			'../schemas/v1/players.schema.json'
 		]);

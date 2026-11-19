@@ -1,5 +1,6 @@
 import { Ajv2020 } from 'ajv/dist/2020.js';
 import { describe, expect, it } from 'vitest';
+import clubSchema from '../schemas/v1/club.schema.json' with { type: 'json' };
 import playerSchema from '../schemas/v1/player.schema.json' with { type: 'json' };
 
 // Every file in the folder, as text, so a new example is checked without a change here.
@@ -7,10 +8,22 @@ const EXAMPLES = import.meta.glob('../schemas/v1/examples/*', { eager: true, que
 const { $defs, properties } = playerSchema;
 const FIELDS = Object.keys({ ...$defs.playerSummary.properties, ...properties }).sort();
 const ajv = new Ajv2020({ allErrors: true });
-const validate = ajv.compile(playerSchema);
+// The first part of a file's name selects its schema: `club.example.json` is a club.
+const VALIDATORS = new Map([
+	['player', ajv.compile(playerSchema)],
+	['club', ajv.compile(clubSchema)]
+]);
+const kindOf = (file: string): string => file.split('/').at(-1)?.split('.')[0] ?? '';
+const CLUB = '../schemas/v1/examples/club.example.json';
+const OUTFIELD = '../schemas/v1/examples/player.outfield.json';
+const PLAYERS = Object.fromEntries(
+	Object.entries(EXAMPLES).filter(([file]) => kindOf(file) === 'player')
+);
 
-/** Why a file fails the player schema, with the file's name. Empty when it passes. */
+/** Why a file fails the schema its name selects, with the file's name. Empty when it passes. */
 function failureOf(file: string, text: string): string[] {
+	const validate = VALIDATORS.get(kindOf(file));
+	if (validate === undefined) return [`${file}: its name selects no schema`];
 	let value: unknown;
 	try {
 		value = JSON.parse(text);
@@ -20,7 +33,7 @@ function failureOf(file: string, text: string): string[] {
 	return validate(value) ? [] : [`${file}: ${ajv.errorsText(validate.errors)}`];
 }
 
-/** The files that fail the player schema, each with its reason. An empty folder fails too. */
+/** The files that fail their schema, each with its reason. An empty folder fails too. */
 function failuresIn(files: Readonly<Record<string, { default: string }>>): string[] {
 	const failures = Object.entries(files).flatMap(([file, raw]) => failureOf(file, raw.default));
 	return Object.keys(files).length === 0 ? ['no examples found'] : failures;
@@ -34,13 +47,38 @@ function fieldsMissingFrom(files: Readonly<Record<string, { default: string }>>)
 	return FIELDS.filter((field) => !used.includes(field));
 }
 
-describe('the examples beside the player schema', () => {
-	it('all pass the schema', () => {
+describe('the examples beside the schemas', () => {
+	it('all pass the schema their name selects', () => {
 		expect(failuresIn(EXAMPLES)).toEqual([]);
 	});
 
-	it('between them use every field', () => {
-		expect(fieldsMissingFrom(EXAMPLES)).toEqual([]);
+	it('include a club that uses every field', () => {
+		const club = JSON.parse(EXAMPLES[CLUB]?.default ?? '{}') as object;
+		expect(Object.keys(club)).toEqual(Object.keys(clubSchema.$defs.club.properties));
+	});
+
+	it.each([
+		['a club named as a player', 'player.club.json', CLUB, /^player\.club\.json: .*required/],
+		['a player named as a club', 'club.player.json', OUTFIELD, /^club\.player\.json: .*pattern/],
+		[
+			'a file with no schema',
+			'edition.example.json',
+			CLUB,
+			/^edition\.example\.json: .*no schema$/
+		],
+		[
+			'a file named from the prototype chain',
+			'constructor.json',
+			CLUB,
+			/^constructor\.json: .*no schema$/
+		]
+	])('%s is named', (_fault, file, example, reason) => {
+		const failures = failuresIn({ [file]: EXAMPLES[example] ?? { default: '' } });
+		expect(failures).toEqual([expect.stringMatching(reason)]);
+	});
+
+	it('the players between them use every field', () => {
+		expect(fieldsMissingFrom(PLAYERS)).toEqual([]);
 	});
 
 	// An active player has no end year, and a retired player has no club.
@@ -55,24 +93,23 @@ describe('the examples beside the player schema', () => {
 	});
 
 	it('one example is an Icon', () => {
-		const tiers = Object.values(EXAMPLES).map(
+		const tiers = Object.values(PLAYERS).map(
 			(raw) => (JSON.parse(raw.default) as { tier?: string }).tier
 		);
 		expect(tiers).toContain('ICON');
 	});
 
 	it('a field that no example carries is named', () => {
-		const outfield = '../schemas/v1/examples/player.outfield.json';
-		const missing = fieldsMissingFrom({ [outfield]: EXAMPLES[outfield] ?? { default: '{}' } });
+		const missing = fieldsMissingFrom({ [OUTFIELD]: EXAMPLES[OUTFIELD] ?? { default: '{}' } });
 		expect(missing).toEqual(['careerEndYear', 'goalkeeperRatings']);
 	});
 
 	it.each([
-		['fails the schema', '{ "tier": "GOLD" }', /^bad\.json: .*tier/],
-		["isn't valid JSON", '{ "tier": ', /^bad\.json: not valid JSON/],
-		["isn't an object", '[]', /^bad\.json: .*must be object/]
+		['fails the schema', '{ "tier": "GOLD" }', /^player\.bad\.json: .*tier/],
+		["isn't valid JSON", '{ "tier": ', /^player\.bad\.json: not valid JSON/],
+		["isn't an object", '[]', /^player\.bad\.json: .*must be object/]
 	])('a file that %s is named', (_fault, text, reason) => {
-		const failures = failuresIn({ ...EXAMPLES, 'bad.json': { default: text } });
+		const failures = failuresIn({ ...EXAMPLES, 'player.bad.json': { default: text } });
 		expect(failures).toEqual([expect.stringMatching(reason)]);
 	});
 
