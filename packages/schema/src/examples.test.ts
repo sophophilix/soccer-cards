@@ -60,8 +60,18 @@ describe('the examples beside the schemas', () => {
 	it.each([
 		['a club named as a player', 'player.club.json', CLUB, /^player\.club\.json: .*required/],
 		['a player named as a club', 'club.player.json', OUTFIELD, /^club\.player\.json: .*pattern/],
-		['a file whose name selects no schema', 'edition.example.json', CLUB, /selects no schema$/],
-		['a file named from the prototype chain', 'constructor.json', CLUB, /selects no schema$/]
+		[
+			'a file with no schema',
+			'edition.example.json',
+			CLUB,
+			/^edition\.example\.json: .*no schema$/
+		],
+		[
+			'a file named from the prototype chain',
+			'constructor.json',
+			CLUB,
+			/^constructor\.json: .*no schema$/
+		]
 	])('%s is named', (_fault, file, example, reason) => {
 		const failures = failuresIn({ [file]: EXAMPLES[example] ?? { default: '' } });
 		expect(failures).toEqual([expect.stringMatching(reason)]);
