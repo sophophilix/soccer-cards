@@ -1,0 +1,72 @@
+/* The three fonts of the prototype, served from the site's own origin
+   (ADR 0003 D5). Only the weights the prototype uses, as WOFF2. A font has
+   a Latin file and a Latin Extended file. The second comes after the first
+   and has a unicode-range, so the browser fetches it only for a letter such
+   as the last one in Modrić. Bowlby One has no Latin Extended file, and
+   Saira Condensed has no italic. Figtree is one variable file for each
+   subset, and the prototype uses it from 400 to 700. */
+
+@font-face {
+	font-family: 'Bowlby One';
+	font-weight: 400;
+	font-display: swap;
+	src: url('@fontsource/bowlby-one/files/bowlby-one-latin-400-normal.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Saira Condensed';
+	font-weight: 600;
+	font-display: swap;
+	src: url('@fontsource/saira-condensed/files/saira-condensed-latin-600-normal.woff2')
+		format('woff2');
+}
+
+@font-face {
+	font-family: 'Saira Condensed';
+	font-weight: 600;
+	font-display: swap;
+	src: url('@fontsource/saira-condensed/files/saira-condensed-latin-ext-600-normal.woff2')
+		format('woff2');
+	unicode-range:
+		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+		U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+		U+A720-A7FF;
+}
+
+@font-face {
+	font-family: 'Saira Condensed';
+	font-weight: 800;
+	font-display: swap;
+	src: url('@fontsource/saira-condensed/files/saira-condensed-latin-800-normal.woff2')
+		format('woff2');
+}
+
+@font-face {
+	font-family: 'Saira Condensed';
+	font-weight: 800;
+	font-display: swap;
+	src: url('@fontsource/saira-condensed/files/saira-condensed-latin-ext-800-normal.woff2')
+		format('woff2');
+	unicode-range:
+		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+		U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+		U+A720-A7FF;
+}
+
+@font-face {
+	font-family: 'Figtree';
+	font-weight: 400 700;
+	font-display: swap;
+	src: url('@fontsource-variable/figtree/files/figtree-latin-wght-normal.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Figtree';
+	font-weight: 400 700;
+	font-display: swap;
+	src: url('@fontsource-variable/figtree/files/figtree-latin-ext-wght-normal.woff2') format('woff2');
+	unicode-range:
+		U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+		U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+		U+A720-A7FF;
+}

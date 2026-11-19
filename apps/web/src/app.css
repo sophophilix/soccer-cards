@@ -1,12 +1,80 @@
 /* The base stylesheet for every page. The layout loads it. */
 
+@import './lib/ui/fonts.css';
+
 :root {
+	--bg: #e7f0ea;
+	--stripe: #dde9e1;
+	--surface: #ffffff;
+	--fg: #10231c;
+	--muted: #4f6a60;
+	--line: #c4d6cb;
+	/* The accent is the red card and the booking is the yellow card. */
+	--accent: #e8391d;
+	--accent-ink: #ffffff;
+	--booking: #ffc93c;
+	--booking-ink: #1b1503;
+	--focus: #3d8bff;
+	--scrim: rgba(8, 20, 15, 0.78);
+	--card-ink: #0e1512;
+	--card-paper: #ffffff;
+	--card-shadow: rgba(16, 35, 28, 0.28);
+	--att: #ff5a3c;
+	--def: #3d8bff;
+	--ctrl: #2fcb7a;
+	--font-display: 'Bowlby One', 'Arial Black', Impact, sans-serif;
+	--font-data: 'Saira Condensed', 'Arial Narrow', 'Helvetica Neue', sans-serif;
+	--font-body: 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
 	/* The smallest size a thumb can hit (WCAG 2.2, target size). */
 	--tap-target-min: 44px;
+	color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg: #0c1914;
+		--stripe: #10211a;
+		--surface: #162a21;
+		--fg: #eaf4ee;
+		--muted: #93aea2;
+		--line: #29443a;
+		--accent: #ff5a3c;
+		--accent-ink: #1a0703;
+		--card-shadow: rgba(0, 0, 0, 0.6);
+		color-scheme: dark;
+	}
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	padding-block: 18px 72px;
+	padding-inline: max(16px, env(safe-area-inset-left, 0px))
+		max(16px, env(safe-area-inset-right, 0px));
+	background: var(--bg);
+	color: var(--fg);
+	font: 400 16px/1.5 var(--font-body);
+}
+
+h1 {
+	margin: 0;
+	font: 400 clamp(24px, 6vw, 36px) / 1 var(--font-display);
+	letter-spacing: 0.01em;
+}
+
+p {
+	margin: 0;
+	max-width: 60ch;
 }
 
 /* An inline box ignores min-height, so a link in a sentence becomes a small
-   flex box that still sits on the line of text. */
+   flex box that still sits on the line of text. A link keeps its underline
+   and takes the text colour, which has enough contrast in both themes. */
 a,
 button {
 	display: inline-flex;
@@ -14,4 +82,8 @@ button {
 	justify-content: center;
 	min-width: var(--tap-target-min);
 	min-height: var(--tap-target-min);
+}
+
+a {
+	color: inherit;
 }

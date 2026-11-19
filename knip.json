@@ -3,7 +3,8 @@
 	"workspaces": {
 		".": {},
 		"apps/web": {
-			"project": ["src/**/*.{ts,svelte}", "tests/**/*.ts"]
+			"project": ["src/**/*.{ts,svelte}", "tests/**/*.ts"],
+			"ignoreDependencies": ["@fontsource/*"]
 		},
 		"packages/*": {
 			"project": ["src/**/*.ts"]
