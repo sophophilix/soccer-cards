@@ -37,7 +37,16 @@ _FIFA = re.compile(r"[A-Z]{3}")
 _SLUG = re.compile(r"[a-z][a-z0-9-]{0,62}")
 _PHOTO_URI = re.compile(r"photos/[A-Za-z0-9_-]+\.webp")
 _MOMENT = re.compile(r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ")
-_YOUTH = re.compile(r"\bunder-?\d+\b|\bU-?\d\d\b", re.IGNORECASE)
+# Youth and reserve teams: "Under-21s", "U23", "Juvenil A", "Youth", "Academy",
+# "Reserves", "B team", and a last word of B, C, II or III ("FC Schalke 04 II").
+# Whole words only, so "Youthville", "Academical" and "B36" stay senior.
+_YOUTH = re.compile(
+    r"\b(?:under[- ]?\d{1,2}|u-?\d\d)s?\b"
+    r"|\b(?:juvenil|youth|academy|reserves?)\b"
+    r"|\bB[- ]team\b"
+    r"|\s(?:B|C|II|III)$",
+    re.IGNORECASE,
+)
 
 
 class NormaliseError(ValueError):

@@ -91,7 +91,7 @@ def test_outfield_player_from_saved_facts_is_schema_valid() -> None:
     assert player["club"] == "clubs/inter-miami-cf"
     assert record.club_display_name == "Inter Miami CF"
     assert player["clubGoalCount"] == {
-        "value": 5 + 6 + 474 + 22 + 68,
+        "value": 6 + 474 + 22 + 68,  # Not FC Barcelona C, a reserve team.
         "sourceUri": MESSI,
         "retrieveDate": "2026-08-30",
     }
@@ -137,11 +137,12 @@ def test_player_with_no_spells_is_retired_with_no_counts() -> None:
         assert key not in record.player
 
 
-@pytest.mark.parametrize(("label", "total"), [(None, None), ("Barca U19", 570)])
+@pytest.mark.parametrize(("label", "total"), [(None, None), ("Barca U19", 564)])
 def test_unknown_count_voids_total_unless_youth(label: Any, total: Any) -> None:
-    first = _facts().clubs[0]  # FC Barcelona C: 5 of the 575 club goals.
-    first = replace(first, goals=None, team_label=label or first.team_label)
-    record: Any = _build(replace(_facts(), clubs=(first, *_facts().clubs[1:])))
+    clubs = _facts().clubs
+    second = clubs[1]  # FC Barcelona Atlètic: 6 of the 570 club goals.
+    second = replace(second, goals=None, team_label=label or second.team_label)
+    record: Any = _build(replace(_facts(), clubs=(clubs[0], second, *clubs[2:])))
     assert record.player.get("clubGoalCount", {}).get("value") == total
     _assert_structure(record)
 
@@ -189,3 +190,96 @@ def test_one_word_name_has_no_given_or_family_name() -> None:
     assert record.player["displayName"] == "Pelé"
     assert not {"givenName", "familyName"} & set(record.player)
     _assert_structure(record)
+
+
+YOUTH_LABELS = [
+    "Rivertown Under-21s",
+    "Rivertown under 19",
+    "Rivertown U23",
+    "RIVERTOWN U-18S",
+    "Rivertown Juvenil A",
+    "Rivertown Youth",
+    "rivertown academy",
+    "Rivertown Reserves",
+    "Rivertown Reserve",
+    "Rivertown B",
+    "Rivertown b team",
+    "Rivertown B-Team",
+    "Rivertown C",
+    "Rivertown II",
+]
+SENIOR_LABELS = [
+    "Youthville Rovers",
+    "Academical Rivertown",
+    "Juvenilia FC",
+    "Reservoir City",
+    "Underhill United",
+    "Union 23 FC",
+    "U2 Rovers",
+    "B36 Rivertown",
+    "Rivertown Bees",
+    "Rivertown Bulls FC",
+    "Rivertown Cobras",
+]
+
+
+def _with_current_club(label: str, **changes: Any) -> normalise.PlayerRecord:
+    """Add a newer current spell at an invented club to Messi's saved facts."""
+    newest = replace(
+        _facts().clubs[-1], team="Q999001", team_label=label, start="2026-01-01"
+    )
+    clubs = (*_facts().clubs, replace(newest, **changes))
+    return _build(replace(_facts(), clubs=clubs))
+
+
+@pytest.mark.parametrize("label", YOUTH_LABELS)
+def test_youth_and_reserve_spells_are_left_out(label: str) -> None:
+    record: Any = _with_current_club(label, goals=999, as_of="2019-05")
+    assert record.club_display_name == "Inter Miami CF"  # The current club.
+    assert record.player["clubGoalCount"] == {
+        "value": 6 + 474 + 22 + 68,
+        "sourceUri": MESSI,
+        "retrieveDate": "2026-08-30",  # Not the youth spell's 2019-05-01.
+    }
+    _assert_structure(record)
+
+
+@pytest.mark.parametrize("label", SENIOR_LABELS)
+def test_senior_clubs_with_youth_letters_are_kept(label: str) -> None:
+    record: Any = _with_current_club(label, goals=1, as_of="2019-05")
+    assert record.club_display_name == label
+    assert record.player["clubGoalCount"]["value"] == 6 + 474 + 22 + 68 + 1
+    assert record.player["clubGoalCount"]["retrieveDate"] == "2019-05-01"
+
+
+def test_youth_national_team_is_left_out() -> None:
+    teams = _facts().national_teams
+    youth = replace(teams[-1], team="Q999002", team_label="Rivertown national U21s")
+    record: Any = _build(replace(_facts(), national_teams=(*teams, youth)))
+    assert record.player["nationalTeamGoalCount"]["value"] == 126
+    assert record.problems == ()
+
+
+def test_more_than_one_senior_national_team_drops_the_counts() -> None:
+    teams = _facts().national_teams
+    other = replace(teams[-1], team="Q999003", team_label="Rivertown national team")
+    record = _build(replace(_facts(), national_teams=(*teams, other)))
+    assert "nationalTeamGoalCount" not in record.player
+    assert record.problems == ("Q615: plays for more than one senior national team",)
+    _assert_structure(record)
+
+
+def test_photo_record_holds_size_type_and_credit() -> None:
+    record = _build(_facts())
+    assert record.player["photo"] == record.summary["photo"]
+    assert record.player["photo"] == {
+        "uri": "photos/invented-slug.webp",
+        "widthPx": 600,
+        "heightPx": 800,
+        "mimeType": "image/webp",
+        "attribution": {
+            "author": "Ina Vented",
+            "licenseCode": "CC-BY-SA-4.0",
+            "sourceUri": FILE,
+        },
+    }
