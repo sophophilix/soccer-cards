@@ -36,7 +36,7 @@ takes one too.
 
 ## Acceptance criteria
 
-- `lineUp`, `bestTeam` and `tradeCard` take the card set as a
+- `lineUp` and `tradeCard` take the card set as a
   `CheckedCardSet`. A plain list no longer compiles.
 - `lineUp` decides "11 different cards from the set" by the ids it finds,
   so its two refusal reasons are right for every checked set.
@@ -57,6 +57,9 @@ takes one too.
   two edge cases for `lineUp`.
 
 ## Out of scope
+
+- `bestTeam`: its caller in `divisions.ts` is outside these paths. T-0062
+  does it.
 
 - `index.ts`. No export is added or removed.
 - The match, which takes a line-up, not a card set.
