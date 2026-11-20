@@ -9,9 +9,10 @@ paths:
   - data/pipeline/tests/test_ratings.py
   - data/pipeline/pyproject.toml
   - data/pipeline/uv.lock
+  - .gitignore
 dependencies:
   - hypothesis
-max_changed_lines: 360
+max_changed_lines: 400
 status: ready
 ---
 
