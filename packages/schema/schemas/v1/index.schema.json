@@ -1,0 +1,55 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "index.schema.json",
+	"title": "Discovery",
+	"description": "What the API holds and which data release it is, as served at index.json.",
+	"type": "object",
+	"properties": {
+		"dataVersion": {
+			"description": "The data release. A whole number from 1 that goes up with each release.",
+			"type": "integer",
+			"minimum": 1
+		},
+		"generateTime": {
+			"description": "When the pipeline wrote this release, as an RFC 3339 moment in UTC.",
+			"type": "string",
+			"pattern": "^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T([01][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)(\\.[0-9]+)?Z$"
+		},
+		"collections": {
+			"description": "Each collection the API holds, with its list file.",
+			"type": "array",
+			"items": { "$ref": "#/$defs/collection" }
+		}
+	},
+	"required": ["dataVersion", "generateTime", "collections"],
+	"$defs": {
+		"collection": {
+			"title": "DiscoveryCollection",
+			"type": "object",
+			"properties": {
+				"collectionId": {
+					"description": "The collection's id, the first part of its resource names, such as players.",
+					"type": "string",
+					"pattern": "^[a-z][a-z0-9-]{0,62}$"
+				},
+				"uri": {
+					"description": "The collection's list file, as a path inside the API with no host.",
+					"type": "string",
+					"maxLength": 2048,
+					"pattern": "^[a-z][a-z0-9-]{0,62}\\.json$"
+				},
+				"schemaId": {
+					"description": "The $id of the schema the list file follows, such as players.schema.json.",
+					"type": "string",
+					"pattern": "^[a-z][a-z0-9-]{0,62}\\.schema\\.json$"
+				},
+				"itemCount": {
+					"description": "How many items the list file holds.",
+					"type": "integer",
+					"minimum": 0
+				}
+			},
+			"required": ["collectionId", "uri", "schemaId", "itemCount"]
+		}
+	}
+}

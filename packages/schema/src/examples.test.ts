@@ -1,7 +1,9 @@
 import { Ajv2020 } from 'ajv/dist/2020.js';
 import { describe, expect, it } from 'vitest';
 import clubSchema from '../schemas/v1/club.schema.json' with { type: 'json' };
+import creditsSchema from '../schemas/v1/credits.schema.json' with { type: 'json' };
 import editionSchema from '../schemas/v1/edition.schema.json' with { type: 'json' };
+import indexSchema from '../schemas/v1/index.schema.json' with { type: 'json' };
 import playerSchema from '../schemas/v1/player.schema.json' with { type: 'json' };
 
 // Every file in the folder, as text, so a new example is checked without a change here.
@@ -13,7 +15,9 @@ const ajv = new Ajv2020({ allErrors: true });
 const VALIDATORS = new Map([
 	['player', ajv.compile(playerSchema)],
 	['club', ajv.compile(clubSchema)],
-	['edition', ajv.compile(editionSchema)]
+	['edition', ajv.compile(editionSchema)],
+	['index', ajv.compile(indexSchema)],
+	['credits', ajv.compile(creditsSchema)]
 ]);
 const kindOf = (file: string): string => file.split('/').at(-1)?.split('.')[0] ?? '';
 const CLUB = '../schemas/v1/examples/club.example.json';
@@ -55,6 +59,11 @@ describe('the examples beside the schemas', () => {
 		expect(failuresIn(EXAMPLES)).toEqual([]);
 	});
 
+	it('include an index and a credits list', () => {
+		const kinds = Object.keys(EXAMPLES).map(kindOf);
+		expect(kinds).toEqual(expect.arrayContaining(['index', 'credits']));
+	});
+
 	it('include a club that uses every field', () => {
 		const club = JSON.parse(EXAMPLES[CLUB]?.default ?? '{}') as object;
 		expect(Object.keys(club)).toEqual(Object.keys(clubSchema.$defs.club.properties));
@@ -69,6 +78,8 @@ describe('the examples beside the schemas', () => {
 		['a club named as a player', 'player.club.json', CLUB, /^player\.club\.json: .*required/],
 		['a player named as a club', 'club.player.json', OUTFIELD, /^club\.player\.json: .*pattern/],
 		['a club named as an edition', 'edition.club.json', CLUB, /^edition\.club\.json: .*required/],
+		['a club named as an index', 'index.club.json', CLUB, /^index\.club\.json: .*required/],
+		['a club named as credits', 'credits.club.json', CLUB, /^credits\.club\.json: .*required/],
 		['a file with no schema', 'league.example.json', CLUB, /^league\.example\.json: .*no schema$/],
 		[
 			'a file named from the prototype chain',
