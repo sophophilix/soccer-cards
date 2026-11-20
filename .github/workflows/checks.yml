@@ -1,19 +1,22 @@
 # Runs the gates a developer runs: `make check COMPONENT=<name>` (ADR 0004 D4).
 # Each job name is a required check on `main`. Don't rename one without the
 # tech lead changing the ruleset.
+# On `main`, `deploy.yml` calls this workflow and deploys only when it passes.
 name: checks
 
 on:
   pull_request:
-  push:
-    branches: [main]
+  workflow_call:
 
 permissions:
   contents: read
 
+# A newer push cancels a pull request's older run. A run called from `main`
+# is never cancelled here: deploy.yml queues those runs. Called from there,
+# `github.workflow` is `deploy`, so this group never equals the caller's.
 concurrency:
   group: checks-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   # The kit gates use the runner image's Python 3 and need no packages.
@@ -108,6 +111,15 @@ jobs:
             exit 1
           fi
       - run: make check COMPONENT=web
+      # On `main`, deploy.yml deploys this build, the one the gate tested
+      # (ADR 0002 D3). Seven days covers a wait for the tech lead's approval.
+      - if: ${{ github.event_name == 'push' }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: site
+          path: apps/web/build/
+          if-no-files-found: error
+          retention-days: 7
       # Keeps the traces, screenshots and videos of failed Playwright tests.
       # The folder is absent when the gate failed before those tests ran.
       - if: ${{ failure() }}

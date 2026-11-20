@@ -2,7 +2,7 @@
 
 > Status: Approved, with the amendment of 2026-11-20 (D8 to D10).
 > Created: 2026-11-15T11:16:22Z
-> Last reviewed: 2026-11-20T11:15:20Z
+> Last reviewed: 2026-11-20T11:32:16Z
 > Next review: Not scheduled
 
 ## Review guide for the amendment of 2026-11-20
@@ -108,16 +108,20 @@ identities once, from `docs/how-to/set-up-hosting.md`.
 | GitHub environment | Required reviewer | Azure identity and role | Used for |
 |---|---|---|---|
 | `preview` | The tech lead | `soccercards-github-plan`, Storage Blob Data Reader | Uploading a Worker version for a pull request, and `tofu plan -lock=false` |
-| `production` | The tech lead | `soccercards-github-infra`, Storage Blob Data Contributor | `wrangler deploy` and `tofu apply` from `main` |
+| `infra-plan` | None, `main` only | `soccercards-github-plan`, Storage Blob Data Reader | `tofu plan -lock=false` on every `main` run, shown in the run summary |
+| `production` | The tech lead | `soccercards-github-infra`, Storage Blob Data Contributor | `wrangler deploy`, and `tofu apply` only when the `infra-plan` plan has changes |
 
 Any branch can use `preview`, so its identity can read the state but never
 write or lock it. Only `production` can change the state. Cloudflare has no
 token that can upload a Worker version without also being able to deploy
 one, so every `preview` run waits for the tech lead's approval too.
+`infra-plan` holds only read-only credentials and runs only code already on
+`main`, so it needs no approval. The tech lead reads its plan before
+approving the apply.
 
 Each environment has its own Cloudflare tokens. The `preview` tokens can
-upload a version and read the zone. Only the `production` tokens can deploy
-or change DNS.
+upload a version and read the zone. The `infra-plan` token can only read.
+Only the `production` tokens can deploy or change DNS.
 
 **D10. No logs or analytics.** The Worker's observability (logs and traces)
 is off in `wrangler.jsonc`, and Cloudflare Web Analytics is not enabled. Logs
@@ -165,3 +169,4 @@ Logs are billed by volume. The free traffic graphs in the dashboard remain.
 | 2026-11-20T00:05:00Z | Amended (draft) | D8 to D10 added by Claude after the tech lead said "yes go with soccercards.dsantmaj.com and azure". Awaits approval. |
 | 2026-11-20T09:43:42Z | Approved | The tech lead replied "yes do the read-only identity, and approve" in the lead session. D8 to D10 approved. D9 now gives `preview` a separate read-only Azure identity, as that reply decided. |
 | 2026-11-20T11:15:20Z | Amended | The security review of T-0057 found that the `preview` upload token can also deploy. The tech lead chose "Approve each preview (Recommended)": `preview` gets the tech lead as required reviewer (D9). |
+| 2026-11-20T11:32:16Z | Amended | The review of T-0060 found that every `main` run waited for a second approval, before any plan was visible. The tech lead chose "Add a read-only plan env (Recommended)": D9 adds `infra-plan`. |
