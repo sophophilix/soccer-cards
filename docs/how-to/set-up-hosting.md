@@ -19,12 +19,16 @@ permissions to `dsantmaj.com` only.
 | Token name | Permissions | Goes in environment | Secret name |
 |---|---|---|---|
 | `soccercards-preview-upload` | Account: Workers Scripts, Edit | `preview` | `CLOUDFLARE_API_TOKEN` |
-| `soccercards-preview-plan` | Account: Workers Scripts, Read. Zone: Workers Routes, Read. Zone: DNS, Read | `preview` | `CLOUDFLARE_INFRA_TOKEN` |
+| `soccercards-preview-plan` | Account: Workers Scripts, Read. Zone: Zone, Read. Zone: Workers Routes, Read. Zone: DNS, Read | `preview` | `CLOUDFLARE_INFRA_TOKEN` |
 | `soccercards-deploy` | Account: Workers Scripts, Edit | `production` | `CLOUDFLARE_API_TOKEN` |
-| `soccercards-infra` | Account: Workers Scripts, Edit. Zone: Workers Routes, Edit. Zone: DNS, Edit | `production` | `CLOUDFLARE_INFRA_TOKEN` |
+| `soccercards-infra` | Account: Workers Scripts, Edit. Zone: Zone, Read. Zone: Workers Routes, Edit. Zone: DNS, Edit | `production` | `CLOUDFLARE_INFRA_TOKEN` |
 
 Set an expiry date on each token, and put a reminder in your calendar a week
 before it.
+
+Zone: Zone, Read lets OpenTofu look up the zone ID of `dsantmaj.com` from its
+name. Leave **Client IP Address Filtering** empty, because GitHub's runners
+change address.
 
 Before step 4, check that **DNS → Records** for `dsantmaj.com` has no record
 named `soccercards`. Cloudflare can't attach the custom domain over one.
