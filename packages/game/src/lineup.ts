@@ -1,5 +1,5 @@
 import { POSITIONS } from './cards.ts';
-import type { Card, CardId, Position } from './cards.ts';
+import type { Card, CardId, CheckedCardSet, Position } from './cards.ts';
 
 /** The number of cards in a team. */
 export const TEAM_SIZE = 11;
@@ -51,14 +51,16 @@ export function lineWorth(card: Card, line: Position): number {
 /** Places a team of 11 different cards in the lines of a formation. */
 export function lineUp(
 	team: readonly CardId[],
-	cardSet: readonly Card[],
+	cardSet: CheckedCardSet,
 	formation: Formation
 ): LineUpResult {
 	const teamIds = new Set(team);
 	if (team.length !== TEAM_SIZE || teamIds.size !== TEAM_SIZE) {
 		return { ok: false, reason: 'not-eleven-different-cards' };
 	}
-	const cards = cardSet.filter((card) => teamIds.has(card.id));
+	const byId = new Map(cardSet.map((card) => [card.id, card]));
+	// One card for each id the set holds, so the count is of the team's ids it found.
+	const cards = [...teamIds].flatMap((id) => byId.get(id) ?? []);
 	if (cards.length !== TEAM_SIZE) {
 		return { ok: false, reason: 'card-not-in-set' };
 	}
