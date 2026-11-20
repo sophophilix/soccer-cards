@@ -7,8 +7,10 @@ agent: infra-implementer
 paths:
   - .github/workflows/preview.yml
   - apps/web/playwright.config.ts
+  - apps/web/preview-target.ts
+  - apps/web/tests/preview-target.spec.ts
 dependencies: []
-max_changed_lines: 160
+max_changed_lines: 220
 status: ready
 ---
 
@@ -44,6 +46,9 @@ preview instead of the local one (ADR 0002 D4).
 - The end-to-end tests then run against that address. `playwright.config.ts`
   uses a `PREVIEW_URL` environment variable when it is set and starts no
   local server in that case. Without it, local runs behave as today.
+- The choice between `PREVIEW_URL` and a local server is a function in
+  `apps/web/preview-target.ts`, next to `preview-port.ts`, so it has a unit
+  test. The config only calls it.
 - The job is skipped, not failed, for a pull request from a fork or from
   Dependabot, which get no secrets. The skip is visible in the run.
 - The report says whether preview URLs work with the `workers.dev` address
@@ -61,8 +66,14 @@ preview instead of the local one (ADR 0002 D4).
 
 ## Tests
 
-- No new test file. The existing Playwright suite is the test. Report the
-  first run's result on the pull request, with the preview address.
+- `apps/web/tests/preview-target.spec.ts`, in the same style as
+  `preview-port.spec.ts`: with `PREVIEW_URL` set, the base URL is its origin
+  and there is no local server; without it, the local server and port are
+  as today; an address that isn't `https://` (or `http://localhost`) is
+  refused with a message that names the rule.
+- The Playwright suite then runs against the real preview. Report the first
+  run's result on the pull request, with the preview address. That run can
+  pass only after T-0058 has deployed the Worker once.
 
 ## Out of scope
 
