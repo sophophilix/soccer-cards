@@ -1,0 +1,38 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "credits.schema.json",
+	"title": "CreditList",
+	"description": "The credit of every photo the API serves, as served at credits.json.",
+	"type": "object",
+	"properties": {
+		"credits": {
+			"description": "Each photo's credit. The list is one file, so it is capped.",
+			"type": "array",
+			"maxItems": 1000,
+			"items": { "$ref": "#/$defs/credit" }
+		}
+	},
+	"required": ["credits"],
+	"$defs": {
+		"credit": {
+			"title": "Credit",
+			"type": "object",
+			"properties": {
+				"player": {
+					"description": "The resource name of the player in the photo, players/{player}.",
+					"type": "string",
+					"pattern": "^players/[a-z][a-z0-9-]{0,62}$"
+				},
+				"uri": {
+					"description": "The photo file, as a path inside the API with no host.",
+					"$ref": "player.schema.json#/$defs/photo/properties/uri"
+				},
+				"attribution": {
+					"description": "The photo's credit and licence.",
+					"$ref": "player.schema.json#/$defs/attribution"
+				}
+			},
+			"required": ["player", "uri", "attribution"]
+		}
+	}
+}

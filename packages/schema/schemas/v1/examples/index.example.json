@@ -1,0 +1,12 @@
+{
+	"dataVersion": 3,
+	"generateTime": "2026-11-16T12:06:57Z",
+	"collections": [
+		{
+			"collectionId": "players",
+			"uri": "players.json",
+			"schemaId": "players.schema.json",
+			"itemCount": 2
+		}
+	]
+}
