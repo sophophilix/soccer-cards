@@ -1,4 +1,6 @@
-import { createPlayerState } from '@soccer-cards/game';
+import { DIVISIONS, createPlayerState, toCardId } from '@soccer-cards/game';
+import type { PlayerState } from '@soccer-cards/game';
+import fc from 'fast-check';
 import { describe, expect, test } from 'vitest';
 import { checkPlayerState } from './check-player-state.ts';
 import type { Migration } from './check-player-state.ts';
@@ -15,8 +17,10 @@ describe('checkPlayerState', () => {
 	});
 
 	test.each([
-		['not an object', 'hello'],
+		['a string', 'hello'],
 		['null', null],
+		['a list', [createPlayerState()]],
+		['a number', 2],
 		['a wrong type', aSavedState({ coins: '5' })],
 		['a missing field', aSavedState({ losses: undefined })],
 		['a negative count', aSavedState({ freePacks: -1 })],
@@ -70,5 +74,36 @@ describe('checkPlayerState', () => {
 			ok: false,
 			reason: 'invalid'
 		});
+	});
+
+	test('passes any valid state unchanged', () => {
+		const count = fc.nat(1000);
+		const cardId = fc
+			.string()
+			.filter((text) => text.trim() !== '')
+			.map(toCardId);
+		const pendingPack = fc.record({
+			kind: fc.constantFrom('standard', 'jumbo'),
+			cardIds: fc.array(cardId)
+		});
+		const validState: fc.Arbitrary<PlayerState> = fc.record({
+			version: fc.constant(2 as const),
+			...{ freePacks: count, coins: count, divisionWins: count, wins: count, losses: count },
+			collection: fc.array(fc.tuple(cardId, count)).map((entries) => Object.fromEntries(entries)),
+			favourites: fc.array(cardId),
+			pendingPack: fc.option(pendingPack),
+			division: fc.constantFrom(...DIVISIONS.map((division) => division.id))
+		});
+
+		fc.assert(
+			fc.property(validState, (state) => {
+				// Through JSON, as a saved state comes back.
+				expect(checkPlayerState(JSON.parse(JSON.stringify(state)))).toEqual({
+					ok: true,
+					value: state
+				});
+			}),
+			{ seed: 20261120 }
+		);
 	});
 });
