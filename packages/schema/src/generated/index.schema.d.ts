@@ -9,6 +9,10 @@ export interface Discovery {
 	 */
 	dataVersion: number;
 	/**
+	 * The ratings formula these ratings follow. A whole number from 1 that goes up when the formula changes.
+	 */
+	formulaVersion: number;
+	/**
 	 * When the pipeline wrote this release, as an RFC 3339 moment in UTC.
 	 */
 	generateTime: string;
