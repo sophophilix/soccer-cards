@@ -10,7 +10,7 @@ paths:
   - apps/web/src/lib/ui/**
   - apps/web/tests/**
 dependencies: []
-max_changed_lines: 340
+max_changed_lines: 400
 status: ready
 ---
 
