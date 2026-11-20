@@ -37,15 +37,45 @@ run "refuses_an_account_id_that_is_too_short" {
   expect_failures = [var.account_id]
 }
 
+run "refuses_an_account_id_that_is_too_long" {
+  command = plan
+  variables { account_id = "0123456789abcdef0123456789abcdef0" }
+  expect_failures = [var.account_id]
+}
+
+run "refuses_an_account_id_that_is_not_hexadecimal" {
+  command = plan
+  variables { account_id = "0123456789abcdef0123456789abcdeg" }
+  expect_failures = [var.account_id]
+}
+
 run "refuses_a_zone_name_with_one_label" {
   command = plan
   variables { zone_name = "example" }
   expect_failures = [var.zone_name]
 }
 
+run "refuses_a_zone_name_with_capitals" {
+  command = plan
+  variables { zone_name = "Example.com" }
+  expect_failures = [var.zone_name]
+}
+
+run "refuses_a_zone_name_label_that_starts_with_a_hyphen" {
+  command = plan
+  variables { zone_name = "-example.com" }
+  expect_failures = [var.zone_name]
+}
+
 run "refuses_a_hostname_with_capitals" {
   command = plan
   variables { hostname = "Game.example.com" }
+  expect_failures = [var.hostname]
+}
+
+run "refuses_a_hostname_with_an_underscore" {
+  command = plan
+  variables { hostname = "the_game.example.com" }
   expect_failures = [var.hostname]
 }
 
@@ -70,6 +100,18 @@ run "refuses_the_zone_apex_as_the_hostname" {
 run "refuses_a_worker_name_that_starts_with_a_hyphen" {
   command = plan
   variables { worker_name = "-test-worker" }
+  expect_failures = [var.worker_name]
+}
+
+run "refuses_a_worker_name_that_ends_with_a_hyphen" {
+  command = plan
+  variables { worker_name = "test-worker-" }
+  expect_failures = [var.worker_name]
+}
+
+run "refuses_a_worker_name_with_capitals" {
+  command = plan
+  variables { worker_name = "Test-Worker" }
   expect_failures = [var.worker_name]
 }
 

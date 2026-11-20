@@ -1,12 +1,10 @@
-# Test helper with no resources: decodes production.tfvars. Only the tests
-# need the built-in provider. Cloudflare is declared so the test's mock
-# resolves to the same provider.
-
+# Test helper with no resources: decodes production.tfvars for the tests.
 terraform {
   required_providers {
     terraform = {
       source = "terraform.io/builtin/terraform"
     }
+    # Declared only so the test file's Cloudflare mock resolves here.
     cloudflare = {
       source  = "cloudflare/cloudflare"
       version = "5.28.1"
