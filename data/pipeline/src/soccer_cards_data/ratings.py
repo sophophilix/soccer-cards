@@ -69,8 +69,7 @@ EXPECTED_GOALS_PER_100 = {
     Position.MIDFIELDER: 15,
     Position.DEFENDER: 5,
 }
-# Each 10 goals per 100 matches above or below that rate moves shooting by 1.
-GOALS_PER_100_PER_POINT = 10
+GOALS_PER_100_PER_POINT = 10  # Each 10 per 100 off that rate moves shooting by 1.
 
 PACE_PEAK_AGE = 28  # Pace starts to fall after this age.
 PHYSICAL_PEAK_AGE = 31  # Physical starts to fall after this age.

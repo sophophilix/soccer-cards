@@ -22,6 +22,9 @@ from soccer_cards_data.ratings import (
 AS_OF = date(2026, 11, 1)
 GK, FW, MF = Position.GOALKEEPER, Position.FORWARD, Position.MIDFIELDER
 VETERAN = Facts(400, 300, 100, 60, date(1988, 6, 24), AS_OF)
+NO_MATCHES = Facts(club_appearances=0, club_goals=5, caps=0, international_goals=1)
+UNBORN = Facts(birth_date=date(2026, 11, 2), as_of=AS_OF)
+Case = tuple[Position, dict[str, int], Facts]
 
 
 def _names(position: Position) -> tuple[str, ...]:
@@ -33,7 +36,7 @@ def _grades(position: Position) -> dict[str, int]:
 
 
 @st.composite
-def _cards(draw: st.DrawFn) -> tuple[Position, dict[str, int], Facts]:
+def _cards(draw: st.DrawFn) -> Case:
     position = draw(st.sampled_from(Position))
     grades = {n: draw(st.integers(1, 5)) for n in _names(position)}
     count = st.none() | st.integers(0, 1500)
@@ -47,9 +50,7 @@ def _numbers(card: Card) -> list[int]:
 
 
 @given(_cards())
-def test_every_output_is_a_whole_number_from_1_to_99(
-    case: tuple[Position, dict[str, int], Facts],
-) -> None:
+def test_every_output_is_a_whole_number_from_1_to_99(case: Case) -> None:
     card = compute_card(*case)
     assert all(type(n) is int and 1 <= n <= 99 for n in [*_numbers(card), card.overall])
     assert tuple(card.ratings) == _names(case[0])
@@ -57,46 +58,29 @@ def test_every_output_is_a_whole_number_from_1_to_99(
 
 
 @given(_cards(), st.integers(0, 5))
-def test_raising_one_grade_never_lowers_its_rating(
-    case: tuple[Position, dict[str, int], Facts], index: int
-) -> None:
+def test_raising_one_grade_never_lowers_its_rating(case: Case, index: int) -> None:
     position, grades, facts = case
     name = _names(position)[index]
     raised = {**grades, name: min(5, grades[name] + 1)}
-    before, after = (
-        compute_card(position, grades, facts),
-        compute_card(position, raised, facts),
-    )
+    before = compute_card(position, grades, facts)
+    after = compute_card(position, raised, facts)
     assert after.ratings[name] >= before.ratings[name]
 
 
 @given(_cards())
-def test_adding_facts_never_moves_a_rating_past_the_bound(
-    case: tuple[Position, dict[str, int], Facts],
-) -> None:
+def test_adding_facts_never_moves_a_rating_past_the_bound(case: Case) -> None:
     bare, card = compute_card(*case[:2]), compute_card(*case)
-    assert all(
-        abs(a - b) <= FACT_BOUND
-        for a, b in zip(_numbers(card), _numbers(bare), strict=True)
-    )
+    pairs = zip(_numbers(card), _numbers(bare), strict=True)
+    assert all(abs(a - b) <= FACT_BOUND for a, b in pairs)
     assert abs(card.overall - bare.overall) <= FACT_BOUND + EXPERIENCE_BOUND
 
 
 @given(_cards())
-def test_the_same_inputs_give_the_same_outputs(
-    case: tuple[Position, dict[str, int], Facts],
-) -> None:
+def test_the_same_inputs_give_the_same_outputs(case: Case) -> None:
     assert compute_card(*case) == compute_card(case[0], dict(case[1]), case[2])
 
 
-@pytest.mark.parametrize(
-    "facts",
-    [
-        None,
-        Facts(),
-        Facts(club_appearances=0, club_goals=5, caps=0, international_goals=1),
-    ],
-)
+@pytest.mark.parametrize("facts", [None, Facts(), NO_MATCHES])
 def test_no_facts_or_zero_appearances_leave_the_grades_alone(
     facts: Facts | None,
 ) -> None:
@@ -106,16 +90,11 @@ def test_no_facts_or_zero_appearances_leave_the_grades_alone(
 
 def test_facts_move_only_the_ratings_the_adr_names() -> None:
     bare, card = compute_card(FW, _grades(FW)), compute_card(FW, _grades(FW), VETERAN)
-    assert {n for n in OUTFIELD_RATINGS if card.ratings[n] != bare.ratings[n]} == {
-        "shooting",
-        "pace",
-        "physical",
-    }
+    moved = {n for n in OUTFIELD_RATINGS if card.ratings[n] != bare.ratings[n]}
+    assert moved == {"shooting", "pace", "physical"}
     assert card.ratings["shooting"] > bare.ratings["shooting"]
-    keeper, keeper_bare = (
-        compute_card(GK, _grades(GK), VETERAN),
-        compute_card(GK, _grades(GK)),
-    )
+    keeper = compute_card(GK, _grades(GK), VETERAN)
+    keeper_bare = compute_card(GK, _grades(GK))
     assert keeper.ratings == keeper_bare.ratings
     assert keeper.overall == keeper_bare.overall + EXPERIENCE_BOUND
 
@@ -141,12 +120,7 @@ def test_a_tier_override_replaces_the_rule() -> None:
         (MF, {**_grades(MF), "pace": True}, None, "grades.pace"),
         (GK, _grades(FW), None, "grades"),
         (FW, _grades(GK), None, "grades"),
-        (
-            FW,
-            _grades(FW),
-            Facts(birth_date=date(2026, 11, 2), as_of=AS_OF),
-            "facts.birth_date",
-        ),
+        (FW, _grades(FW), UNBORN, "facts.birth_date"),
         (FW, _grades(FW), Facts(caps=-1), "facts.caps"),
     ],
 )
