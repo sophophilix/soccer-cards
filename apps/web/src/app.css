@@ -10,11 +10,12 @@
 	--muted: #4f6a60;
 	--line: #c4d6cb;
 	/* The accent is the red card and the booking is the yellow card. */
-	--accent: #e8391d;
+	/* Darker than the prototype's red and blue, to meet WCAG 2.2 AA (T-0049). */
+	--accent: #e03317;
 	--accent-ink: #ffffff;
 	--booking: #ffc93c;
 	--booking-ink: #1b1503;
-	--focus: #3d8bff;
+	--focus: #3586ff;
 	--scrim: rgba(8, 20, 15, 0.78);
 	--card-ink: #0e1512;
 	--card-paper: #ffffff;
@@ -40,6 +41,8 @@
 		--line: #29443a;
 		--accent: #ff5a3c;
 		--accent-ink: #1a0703;
+		/* The prototype's blue already passes on the dark background. */
+		--focus: #3d8bff;
 		--card-shadow: rgba(0, 0, 0, 0.6);
 		color-scheme: dark;
 	}
@@ -56,7 +59,8 @@ body {
 	padding-block: 18px 72px;
 	padding-inline: max(16px, env(safe-area-inset-left, 0px))
 		max(16px, env(safe-area-inset-right, 0px));
-	background: var(--bg);
+	/* The mown pitch. Text never sits on it: axe can't measure contrast over a gradient. */
+	background: var(--bg) repeating-linear-gradient(90deg, var(--bg) 0 72px, var(--stripe) 72px 144px);
 	color: var(--fg);
 	font: 400 16px/1.5 var(--font-body);
 }
@@ -70,6 +74,20 @@ h1 {
 p {
 	margin: 0;
 	max-width: 60ch;
+}
+
+main {
+	display: grid;
+	gap: 12px;
+	padding: 18px;
+	border: 2px solid var(--line);
+	border-radius: 14px;
+	background: var(--surface);
+}
+
+:focus-visible {
+	outline: 3px solid var(--focus);
+	outline-offset: 3px;
 }
 
 /* An inline box ignores min-height, so a link in a sentence becomes a small

@@ -5,16 +5,18 @@ for (const colorScheme of ['light', 'dark'] as const) {
 	test.describe(`with the system in ${colorScheme} mode`, () => {
 		test.use({ colorScheme });
 
-		test('the home page has no accessibility violation', async ({ page }) => {
-			await page.goto('/');
-			await page.evaluate(async () => document.fonts.ready);
+		for (const path of ['/', '/packs', '/match', '/cards', '/guide']) {
+			test(`${path} has no accessibility violation`, async ({ page }) => {
+				await page.goto(path);
+				await page.evaluate(async () => document.fonts.ready);
 
-			const results = await new AxeBuilder({ page }).analyze();
+				const results = await new AxeBuilder({ page }).analyze();
 
-			expect(results.violations).toEqual([]);
-			// Axe sets aside text it can't measure. None may be set aside here.
-			expect(results.incomplete.filter((check) => check.id === 'color-contrast')).toEqual([]);
-		});
+				expect(results.violations).toEqual([]);
+				// Axe sets aside text it can't measure, such as text on the stripes. None may be.
+				expect(results.incomplete.filter((check) => check.id === 'color-contrast')).toEqual([]);
+			});
+		}
 
 		test('the not-found page has no accessibility violation', async ({ page }) => {
 			await page.goto('/no-such-page');
