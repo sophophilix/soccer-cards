@@ -53,7 +53,8 @@ def test_outfield_player_facts_from_saved_responses() -> None:
     assert (miami.start, miami.end, miami.as_of) == ("2023-07-15", None, "2026-08-30")
     senior = next(s for s in facts.national_teams if s.team == "Q79800")
     assert (senior.appearances, senior.goals, senior.source) == (208, 126, MESSI)
-    assert len(facts.national_teams) == 3
+    assert [s.code for s in facts.national_teams] == ["ARG", "ARG", "ARG"]
+    assert all(s.code is None for s in facts.clubs)
     assert len(facts.honours) == 66  # 67 statements, one of them deprecated.
     assert facts.honours[0] == Honour("Q17355204", ("2014-07-13",), MESSI, "2026-11-12")
     ballon_dor = next(h for h in facts.honours if h.award == "Q166177")
@@ -86,7 +87,12 @@ def test_goalkeeper_facts_from_saved_responses() -> None:
     assert facts.clubs[1].goals == 0
     germany = next(s for s in facts.national_teams if s.team == "Q43310")
     assert (germany.appearances, germany.start, germany.end) == (128, "2009", "2026")
+    assert germany.code == "GER"
     assert len(facts.national_teams) == 5
+    # The fixture has no FIFA code for the under-18 team: it stays national, codeless.
+    under_18 = next(s for s in facts.national_teams if s.team == "Q2016992")
+    assert under_18.code is None
+    assert facts.skipped == ("P54 Q2016992 P3441: no FIFA code",)
 
 
 def _player(
@@ -174,3 +180,100 @@ def test_a_team_reply_in_maxlag_is_retried_then_fails_uncached(tmp_path: Path) -
         fetch_player(client, "Q615")
     assert len(seen) == 5
     assert len(list(tmp_path.iterdir())) == 1  # The player's reply, not the teams'.
+
+
+def _spells(*teams: str) -> Json:
+    return {"P54": [{"rank": "normal", "mainsnak": _item(team)} for team in teams]}
+
+
+def test_home_nations_get_their_fifa_codes_without_an_iso_code() -> None:
+    saved = (FIXTURES / "home-nations-teams.json").read_text(encoding="utf-8")
+    player = _player(_spells("Q47762", "Q34044", "Q180857"))
+    source = SavedResponses({"Q1": player, "teams": json.loads(saved)})
+
+    facts = fetch_player(source, "Q1")
+
+    assert [s.code for s in facts.national_teams] == ["ENG", "SCO", "WAL"]
+    assert (facts.clubs, facts.skipped) == ((), ())
+
+
+def _team(qid: str, codes: list[object], preferred: int | None = None) -> Json:
+    country = {"rank": "normal", "mainsnak": _item("Q2")}
+    found = [
+        {"rank": "preferred" if i == preferred else "normal", "mainsnak": _code(code)}
+        for i, code in enumerate(codes)
+    ]
+    claims = {"P1532": [country], "P3441": found}
+    return {"id": qid, "labels": {}, "claims": claims}
+
+
+def _code(value: object) -> Json:
+    kind = "string" if isinstance(value, str) else "quantity"
+    return {"snaktype": "value", "datavalue": {"type": kind, "value": value}}
+
+
+@pytest.mark.parametrize(
+    ("codes", "reason"),
+    [
+        ([], "P54 Q9 P3441: no FIFA code"),
+        (["Arg"], "P54 Q9 P3441: unusable FIFA code 'Arg'"),
+        (["A" * 99], f"P54 Q9 P3441: unusable FIFA code '{'A' * 56}..."),
+        ([{"amount": "+32"}], "P54 Q9 P3441: expected string, got quantity"),
+        (["ARG", "URU"], "P54 Q9 P3441: 2 values, kept none"),
+    ],
+)
+def test_a_national_team_without_one_usable_code_has_none(
+    codes: list[object], reason: str
+) -> None:
+    teams = {"entities": {"Q9": _team("Q9", codes)}}
+    source = SavedResponses({"Q1": _player(_spells("Q9")), "Q9": teams})
+
+    facts = fetch_player(source, "Q1")
+
+    (spell,) = facts.national_teams
+    assert spell.code is None
+    assert reason in facts.skipped
+
+
+def test_the_same_code_twice_is_one_code() -> None:
+    teams = {"entities": {"Q9": _team("Q9", ["ARG", "ARG"])}}
+    source = SavedResponses({"Q1": _player(_spells("Q9")), "Q9": teams})
+
+    (spell,) = fetch_player(source, "Q1").national_teams
+    assert spell.code == "ARG"
+
+
+def test_a_preferred_code_wins_over_a_normal_one() -> None:
+    teams = {"entities": {"Q9": _team("Q9", ["ENG", "GBR"], preferred=0)}}
+    source = SavedResponses({"Q1": _player(_spells("Q9")), "Q9": teams})
+
+    facts = fetch_player(source, "Q1")
+
+    (spell,) = facts.national_teams
+    assert (spell.code, facts.skipped) == ("ENG", ())
+
+
+@pytest.mark.parametrize("entities", [[], "Q9", None])
+def test_a_team_reply_without_an_entities_dict_fails_the_read(
+    entities: object,
+) -> None:
+    reply = {"entities": entities}
+    source = SavedResponses({"Q1": _player(_spells("Q9")), "Q9": reply})
+    with pytest.raises(WikidataError, match="unexpected reply"):
+        fetch_player(source, "Q1")
+
+
+def test_a_team_missing_from_the_reply_is_reported_not_filed_as_a_club() -> None:
+    gone = {"id": "Q8", "missing": ""}
+    teams = {"entities": {"Q8": gone, "Q9": _team("Q9", ["ARG"])}}
+    player = _player(_spells("Q7", "Q8", "Q9"))
+    source = SavedResponses({"Q1": player, "teams": teams})
+
+    facts = fetch_player(source, "Q1")
+
+    assert facts.clubs == ()
+    assert [s.team for s in facts.national_teams] == ["Q9"]
+    assert facts.skipped == (
+        "P54 Q7: not in Wikidata's reply, spell dropped",
+        "P54 Q8: Wikidata has no item, spell dropped",
+    )

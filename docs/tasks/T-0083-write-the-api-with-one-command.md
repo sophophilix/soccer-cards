@@ -12,9 +12,10 @@ paths:
   - data/pipeline/pyproject.toml
   - data/pipeline/uv.lock
   - data/pipeline/ids.toml
+  - data/pipeline/src/soccer_cards_data/normalise.py
 dependencies:
   - jsonschema
-max_changed_lines: 380
+max_changed_lines: 400
 status: ready
 ---
 
@@ -33,6 +34,11 @@ replaces `data/api/v1/` in one step (the `game-data-api` skill).
 - Writes `index.json` (with `FORMULA_VERSION`), `players.json`,
   `players/{id}.json`, `clubs.json`, `credits.json` and `photos/`. Sorted
   keys and lists, fixed formatting, so a rerun with no change gives no diff.
+- The stages it joins are already built: `grades.load`, `wikidata.fetch_player`
+  (with FIFA codes), `commons.check_photo`, `http.get_bytes`,
+  `photos.write_photo`, `names` and `normalise.build_player`. `build_player`
+  gains the club's Q-id in its result, so clubs are keyed by Q-id and slugged
+  together (T-0092 review).
 - Every file is validated against its schema before anything is replaced.
   A failed stage leaves the last good output untouched (write to a temp
   folder, then swap).
