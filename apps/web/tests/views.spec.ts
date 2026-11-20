@@ -1,5 +1,8 @@
 import { expect, test, type Page } from '@playwright/test';
 
+const MIN_TARGET_PX = 44;
+const NARROW_PHONE = { width: 320, height: 568 };
+
 /** Checks the page shows one view: its address, title, single heading and current tab. */
 async function expectView(page: Page, name: string): Promise<void> {
 	await expect(page).toHaveURL(new RegExp(`/${name.toLowerCase()}$`));
@@ -19,6 +22,28 @@ function tab(page: Page, name: string): ReturnType<Page['getByRole']> {
 function focusNextKey(browserName: string): string {
 	return browserName === 'webkit' ? 'Alt+Tab' : 'Tab';
 }
+
+for (const name of ['Packs', 'Match', 'Cards', 'Guide']) {
+	test(`/${name.toLowerCase()} shows the ${name} view as its own page`, async ({ page }) => {
+		await page.goto(`/${name.toLowerCase()}`);
+
+		await expectView(page, name);
+	});
+}
+
+test('every tab is at least 44 pixels each way at 320 pixels wide', async ({ page }) => {
+	await page.setViewportSize(NARROW_PHONE);
+	await page.goto('/packs');
+
+	const boxes = await page
+		.getByRole('navigation', { name: 'Views' })
+		.getByRole('link')
+		.evaluateAll((links) => links.map((link) => link.getBoundingClientRect()));
+
+	expect(boxes.filter((box) => box.width < MIN_TARGET_PX || box.height < MIN_TARGET_PX)).toEqual(
+		[]
+	);
+});
 
 test.describe('on a touch screen', () => {
 	test.use({ hasTouch: true });
