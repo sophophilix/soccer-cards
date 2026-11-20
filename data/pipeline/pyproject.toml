@@ -12,6 +12,37 @@ scdata = "soccer_cards_data.cli:main"
 requires = ["uv_build>=0.11,<0.12"]
 build-backend = "uv_build"
 
+[tool.uv]
+# Only releases at least two weeks old (the brief's cutoff). Moving it is a
+# reviewed change to this line, never a command-line flag.
+exclude-newer = "2026-11-07T00:00:00Z"
+# A dependency without a wheel fails the sync instead of building from source.
+# uv's `no-build = true` also refuses to build this project, so every locked
+# package is named here instead. tests/test_project.py fails if one is missing.
+no-build-package = [
+    "ast-serialize",
+    "bandit",
+    "colorama",
+    "coverage",
+    "iniconfig",
+    "librt",
+    "markdown-it-py",
+    "mdurl",
+    "mypy",
+    "mypy-extensions",
+    "packaging",
+    "pathspec",
+    "pluggy",
+    "pygments",
+    "pytest",
+    "pytest-cov",
+    "pyyaml",
+    "rich",
+    "ruff",
+    "stevedore",
+    "typing-extensions",
+]
+
 [tool.uv.build-backend]
 module-name = "soccer_cards_data"
 
