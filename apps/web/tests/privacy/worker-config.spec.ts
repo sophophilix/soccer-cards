@@ -55,6 +55,10 @@ test('the Worker declares no environment that could override these settings', as
 	expect(valueAt(await readWorkerConfig(), ['env'])).toBeUndefined();
 });
 
+test('the Worker declares no previews block that could override these settings', async () => {
+	expect(valueAt(await readWorkerConfig(), ['previews'])).toBeUndefined();
+});
+
 test('the Worker keeps preview URLs on for the end-to-end tests', async () => {
 	expect(valueAt(await readWorkerConfig(), ['preview_urls'])).toBe(true);
 });
