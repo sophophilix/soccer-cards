@@ -1,6 +1,8 @@
-import type { Card, Position } from './cards.ts';
+import { POSITIONS } from './cards.ts';
+import type { Card, CardId, Position } from './cards.ts';
 import { lineWorth } from './lineup.ts';
 import type { LineUp } from './lineup.ts';
+import type { Random } from './random.ts';
 
 /** The tactics: All-out attack, Counter-attack, Keep the ball and Park the bus. */
 export const TACTIC_IDS = ['attack', 'counter', 'possession', 'defend'] as const;
@@ -23,6 +25,8 @@ export const TACTICS = {
 export const TACTICAL_EDGE_FACTOR = 1.08;
 /** What a line with no card in it is worth. */
 export const EMPTY_LINE_WORTH = 30;
+/** The minute of each moment of a match. */
+export const MOMENT_MINUTES = [7, 18, 29, 41, 53, 64, 76, 88] as const;
 /** The power the midfields are raised to in the fight for the ball. */
 export const BALL_EXPONENT = 2;
 /** The probability of winning the ball when neither midfield is worth anything. */
@@ -39,6 +43,8 @@ export const GOALKEEPER_EXPONENT = 1.5;
 export const MIN_SCORING_CHANCE = 0.06;
 /** The highest scoring probability. */
 export const MAX_SCORING_CHANCE = 0.7;
+/** How often a shot that isn't a goal is saved. The rest go wide. */
+export const SAVE_CHANCE = 0.6;
 
 const PERCENT = 100;
 
@@ -57,6 +63,26 @@ export interface Strength {
 	readonly midfield: number;
 	readonly defence: number;
 	readonly goalkeeper: number;
+}
+
+/** Which of the two sides. */
+export type SideName = 'home' | 'away';
+
+/** One moment of a match: who won the ball, who shot, who kept goal and how it ended. */
+export interface Moment {
+	readonly minute: number;
+	readonly side: SideName;
+	readonly ballWinner: CardId;
+	readonly shooter: CardId;
+	readonly keeper: CardId;
+	readonly outcome: 'goal' | 'save' | 'wide';
+}
+
+/** A whole match: its moments, the final score and who had the tactical edge. */
+export interface MatchResult {
+	readonly moments: readonly Moment[];
+	readonly score: Readonly<Record<SideName, number>>;
+	readonly tacticalEdge: SideName | 'none';
 }
 
 /** The strength of each line: the mean worth of its cards, times the tactic, edge and form. */
@@ -105,4 +131,42 @@ export function scoringChance(attacking: Strength, defending: Strength): number 
 		(TYPICAL_GOALKEEPER_WORTH / defending.goalkeeper) ** GOALKEEPER_EXPONENT;
 	// Nothing over nothing is not a number. It counts as the lowest chance.
 	return Math.min(MAX_SCORING_CHANCE, Math.max(MIN_SCORING_CHANCE, chance || 0));
+}
+
+function pickCard(side: MatchSide, line: Position, random: Random): CardId {
+	const inLine = side.lineUp.lines[line];
+	const from = inLine.length > 0 ? inLine : POSITIONS.flatMap((each) => side.lineUp.lines[each]);
+	const [picked] = random.sample(from, 1);
+	if (picked === undefined) {
+		throw new RangeError('a side in a match needs at least one card');
+	}
+	return picked;
+}
+
+/** Plays a match of eight moments between two sides and returns the whole result. */
+export function playMatch(home: MatchSide, away: MatchSide, random: Random): MatchResult {
+	const sides = { home, away };
+	const strengths = {
+		home: sideStrength(home, away.tactic),
+		away: sideStrength(away, home.tactic)
+	};
+	const moments = MOMENT_MINUTES.map((minute): Moment => {
+		const hasHomeBall = random.chance(ballChance(strengths.home, strengths.away));
+		const [side, other] = hasHomeBall ? (['home', 'away'] as const) : (['away', 'home'] as const);
+		const isGoal = random.chance(scoringChance(strengths[side], strengths[other]));
+		const miss = (): 'save' | 'wide' => (random.chance(SAVE_CHANCE) ? 'save' : 'wide');
+		const outcome = isGoal ? 'goal' : miss();
+		const ballWinner = pickCard(sides[side], 'MF', random);
+		const shooter = pickCard(sides[side], 'FW', random);
+		const keeper = pickCard(sides[other], 'GK', random);
+		return { minute, side, ballWinner, shooter, keeper, outcome };
+	});
+	const goalsOf = (side: SideName): number =>
+		moments.filter((moment) => moment.side === side && moment.outcome === 'goal').length;
+	const awayEdge = TACTICS[away.tactic].beats === home.tactic ? 'away' : 'none';
+	return {
+		moments,
+		score: { home: goalsOf('home'), away: goalsOf('away') },
+		tacticalEdge: TACTICS[home.tactic].beats === away.tactic ? 'home' : awayEdge
+	};
 }
