@@ -8,7 +8,7 @@ paths:
   - apps/web/src/lib/cards/**
 dependencies: []
 max_changed_lines: 300
-status: ready
+status: done
 ---
 
 ## Goal

@@ -14,7 +14,7 @@ paths:
   - packages/schema/src/design-lint.test.ts
   - packages/schema/src/index.ts
 dependencies: []
-max_changed_lines: 260
+max_changed_lines: 300
 status: ready
 ---
 
