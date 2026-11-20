@@ -8,10 +8,11 @@ paths:
   - .github/workflows/infra.yml
   - .github/workflows/checks.yml
   - .github/workflows/deploy.yml
+  - .github/CODEOWNERS
 dependencies:
   - opentofu/setup-opentofu
   - azure/login
-max_changed_lines: 200
+max_changed_lines: 280
 status: ready
 ---
 
@@ -48,12 +49,19 @@ infra gate also runs on every pull request.
   `-backend-config` with the `TF_STATE_*` variables.
 - On `main`, the pipeline in `deploy.yml` (T-0058) gains an apply job that
   `needs` the deploy job, so the Worker exists before the custom domain is
-  attached. Every `main` run plans with `-detailed-exitcode -out=tfplan`.
-  When the plan has changes (whether from `infra/` or from drift made in
-  the dashboard), it applies exactly that saved plan in the `production`
-  environment, which waits for the tech lead. When the plan has no changes,
-  nothing waits and the summary says so. `infra.yml` handles pull requests
-  only.
+  attached. A `plan` job in the `infra-plan` environment (ADR 0002 D9: `main`
+  only, no reviewer, read-only identity and token) runs on every `main`
+  push with `-lock=false -detailed-exitcode`, writes the human-readable
+  changes to the summary, and outputs whether there are changes. When there
+  are, an `apply` job in `production` waits for the tech lead, who has seen
+  that plan, then plans again with `-out=tfplan` and applies exactly that
+  saved plan. When there are none, no job waits and the summary says so.
+  `infra.yml` handles pull requests only.
+- The passphrase and Cloudflare token are set only on the steps that run
+  `tofu`, never for a whole job, as the deploy job does with its token
+  (T-0060 security review F1 and F2).
+- `.github/CODEOWNERS` owns `/infra/` (the tech lead), replacing the comment
+  that says to add it later.
 - A plan that destroys or replaces a resource stops before apply and says
   so in the summary.
 - Only one run touches the state at a time (a concurrency group), and runs
@@ -67,10 +75,10 @@ infra gate also runs on every pull request.
 - The first `main` run after this task merges finds the custom domain
   missing and plans to create it, so the first apply happens then, even
   though that push doesn't change `infra/`.
-- The plan and the apply need the same environment: plan in a job without
-  approval only if it uses the read-only identity; the saved plan that is
-  applied must be made by the `production` job itself, or passed to it
-  unchanged.
+- If the plan the apply job makes differs from the one in `infra-plan`
+  (something changed in between), the apply job stops before applying and
+  says so, rather than applying a plan nobody saw. Compare the resource
+  changes, not the plan file.
 
 ## Tests
 

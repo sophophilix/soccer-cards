@@ -13,13 +13,14 @@ Step 4 waits for the first deploy.
 ## 1. Cloudflare tokens
 
 In the Cloudflare dashboard, open **My Profile → API Tokens → Create Token →
-Custom token**. Create four tokens. Limit each to your account, and the zone
+Custom token**. Create five tokens. Limit each to your account, and the zone
 permissions to `dsantmaj.com` only.
 
 | Token name | Permissions | Goes in environment | Secret name |
 |---|---|---|---|
 | `soccercards-preview-upload` | Account: Workers Scripts, Edit | `preview` | `CLOUDFLARE_API_TOKEN` |
 | `soccercards-preview-plan` | Account: Workers Scripts, Read. Zone: Zone, Read. Zone: Workers Routes, Read. Zone: DNS, Read | `preview` | `CLOUDFLARE_INFRA_TOKEN` |
+| `soccercards-main-plan` | Account: Workers Scripts, Read. Zone: Zone, Read. Zone: Workers Routes, Read. Zone: DNS, Read | `infra-plan` | `CLOUDFLARE_INFRA_TOKEN` |
 | `soccercards-deploy` | Account: Workers Scripts, Edit | `production` | `CLOUDFLARE_API_TOKEN` |
 | `soccercards-infra` | Account: Workers Scripts, Edit. Zone: Zone, Read. Zone: Workers Routes, Edit. Zone: DNS, Edit | `production` | `CLOUDFLARE_INFRA_TOKEN` |
 
@@ -98,7 +99,7 @@ can use `preview`, so its identity can only read the state. Only
 
 | Identity | Federated for | Role on the storage account |
 |---|---|---|
-| `soccercards-github-plan` | `environment:preview` | Storage Blob Data Reader |
+| `soccercards-github-plan` | `environment:preview` and `environment:infra-plan` | Storage Blob Data Reader |
 | `soccercards-github-infra` | `environment:production` | Storage Blob Data Contributor |
 
 ```sh
@@ -118,6 +119,15 @@ make_identity() { # <app name> <environment> <role>
 
 make_identity soccercards-github-plan preview "Storage Blob Data Reader"
 make_identity soccercards-github-infra production "Storage Blob Data Contributor"
+
+# The read-only identity also serves infra-plan.
+PLAN_APP_ID=$(az ad app list --display-name soccercards-github-plan --query '[0].appId' -o tsv)
+az ad app federated-credential create --id "$PLAN_APP_ID" --parameters "{
+  \"name\": \"github-infra-plan\",
+  \"issuer\": \"https://token.actions.githubusercontent.com\",
+  \"subject\": \"repo:$REPO:environment:infra-plan\",
+  \"audiences\": [\"api://AzureADTokenExchange\"]
+}"
 echo "AZURE_TENANT_ID=$(az account show --query tenantId -o tsv)"
 echo "AZURE_SUBSCRIPTION_ID=$(az account show --query id -o tsv)"
 ```
@@ -135,11 +145,15 @@ In the repository, open **Settings → Environments**.
    allow all branches.
 2. Create `production`. Add yourself as a **required reviewer**. Under
    **Deployment branches and tags**, allow `main` only.
-3. In each environment, add the two Cloudflare secrets from step 1, and one
-   more secret, `TF_STATE_PASSPHRASE`. Use the same passphrase in both, at
+3. Create `infra-plan`. Add **no** reviewer. Under **Deployment branches
+   and tags**, allow `main` only. It holds only read-only credentials.
+4. In each environment, add its Cloudflare secrets from step 1 (`infra-plan`
+   has only `CLOUDFLARE_INFRA_TOKEN`), and one more secret,
+   `TF_STATE_PASSPHRASE`. Use the same passphrase in all three, at
    least 32 random characters, for example from `openssl rand -base64 32`.
    Keep a copy in your password manager. Without it the state can't be read.
-4. In each environment, add these **variables** (not secrets):
+5. In each environment, add these **variables** (not secrets). `infra-plan`
+   uses the `soccercards-github-plan` client ID:
 
 | Variable | Value |
 |---|---|
