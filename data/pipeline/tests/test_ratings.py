@@ -1,3 +1,4 @@
+from dataclasses import fields, replace
 from datetime import date
 
 import pytest
@@ -7,6 +8,7 @@ from hypothesis import strategies as st
 from soccer_cards_data.ratings import (
     EXPERIENCE_BOUND,
     FACT_BOUND,
+    FACT_INPUTS,
     FORMULA_VERSION,
     GOALKEEPER_RATINGS,
     OUTFIELD_RATINGS,
@@ -97,6 +99,38 @@ def test_facts_move_only_the_ratings_the_adr_names() -> None:
     keeper_bare = compute_card(GK, _grades(GK))
     assert keeper.ratings == keeper_bare.ratings
     assert keeper.overall == keeper_bare.overall + EXPERIENCE_BOUND
+
+
+# A full set of facts, and for each fact the same set with that one fact
+# changed enough to move every number FACT_INPUTS lists for it.
+SEASONED = Facts(200, 80, 50, 20, date(1990, 1, 1), AS_OF)
+CHANGED = {
+    "club_appearances": replace(SEASONED, club_appearances=1000),
+    "club_goals": replace(SEASONED, club_goals=0),
+    "caps": replace(SEASONED, caps=200),
+    "international_goals": replace(SEASONED, international_goals=100),
+    "birth_date": replace(SEASONED, birth_date=date(2000, 1, 1)),
+    "as_of": replace(SEASONED, as_of=date(2016, 11, 1)),
+}
+
+
+def test_fact_inputs_names_every_fact() -> None:
+    named = {fact for facts in FACT_INPUTS.values() for fact in facts}
+    assert named == {f.name for f in fields(Facts)} == set(CHANGED)
+
+
+@pytest.mark.parametrize("fact", CHANGED)
+def test_each_fact_moves_only_what_fact_inputs_lists(fact: str) -> None:
+    listed = {output for output, facts in FACT_INPUTS.items() if fact in facts}
+    changed = CHANGED[fact]
+    before, after = (compute_card(FW, _grades(FW), f) for f in (SEASONED, changed))
+    moved = {n for n in OUTFIELD_RATINGS if after.ratings[n] != before.ratings[n]}
+    assert moved == listed - {"overall"}
+    # No fact moves a goalkeeper rating, so `overall` moves only through the
+    # experience a fact feeds.
+    keeper = [compute_card(GK, _grades(GK), f) for f in (SEASONED, changed)]
+    assert keeper[0].ratings == keeper[1].ratings
+    assert (keeper[0].overall != keeper[1].overall) == ("overall" in listed)
 
 
 @pytest.mark.parametrize(
