@@ -69,6 +69,7 @@ class PlayerRecord:
     summary: dict[str, object]
     club_display_name: str | None
     problems: tuple[str, ...]
+    club_qid: str | None = None  # The current club, which the build keys clubs by.
 
 
 def build_player(
@@ -132,7 +133,8 @@ def build_player(
     }
     player = {k: v for k, v in player.items() if v is not None}
     summary = {k: v for k, v in player.items() if k not in FULL_ONLY}
-    return PlayerRecord(player, summary, club or None, tuple(problems))
+    club_qid = current[-1].team if club else None
+    return PlayerRecord(player, summary, club or None, tuple(problems), club_qid)
 
 
 def _require(ok: bool, qid: str, reason: str) -> None:
