@@ -1,6 +1,5 @@
-# Uploads each pull request as a Worker version and runs the end-to-end tests
-# against its preview address (ADR 0002 D4). It never deploys: production
-# traffic stays on the deployed version. Deploys run from `main` only (D3).
+# Uploads each pull request as a Worker version, without deploying it, and runs
+# the end-to-end tests against its preview address (ADR 0002 D3, D4).
 name: preview
 
 on:
@@ -52,9 +51,8 @@ jobs:
         run: |
           pnpm --dir apps/web exec wrangler versions upload
           url="$(node -e '
-            const lines = require("fs").readFileSync(process.argv[1], "utf8").split("\n");
-            const events = lines.filter(Boolean).map((line) => JSON.parse(line));
-            const upload = events.find((event) => event.type === "version-upload");
+            const lines = require("fs").readFileSync(process.argv[1], "utf8").split("\n").filter(Boolean);
+            const upload = lines.map(JSON.parse).find((event) => event.type === "version-upload");
             process.stdout.write(upload?.preview_url ?? "");
           ' "$WRANGLER_OUTPUT_FILE_PATH")"
           if ! printf '%s' "$url" | grep -Eq '^https://[a-z0-9-]+\.[a-z0-9-]+\.workers\.dev$'; then
@@ -62,7 +60,6 @@ jobs:
             exit 1
           fi
           echo "url=$url" >> "$GITHUB_OUTPUT"
-          echo "Preview: $url" >> "$GITHUB_STEP_SUMMARY"
 
   e2e:
     needs: upload
