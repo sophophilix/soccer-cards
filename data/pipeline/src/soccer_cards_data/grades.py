@@ -26,10 +26,12 @@ _QID = re.compile(r"Q[1-9][0-9]*")
 _PLAIN = re.compile(r"[\w ,.;:'()&/-]+")
 # A number of one or two digits could be read as a rating on the 1 to 99 scale.
 _SHORT_NUMBER = re.compile(r"(?<!\d)\d{1,2}(?!\d)")
-# Video games and card makers whose ratings must never be cited (ADR 0003 D1).
+# Games, card makers and rating sites that must never be cited (ADR 0003 D1).
+# FIFA passes only as the governing body, before an award or competition name.
 _THIRD_PARTY = re.compile(
-    r"\b(fifa|ea ?sports|ea fc|ultimate team|fut|efootball|pes|pro evolution"
-    r"|football manager|konami|panini|topps|upper deck|match attax)\b",
+    r"\b(fifa(?! (world cup|club world cup|men's|women's|puskas|ballon))|ea ?sports"
+    r"|ea fc|ultimate team|fut|efootball|pes|pro evolution|football manager|konami"
+    r"|panini|topps|upper deck|match attax|sofifa|futbin|whoscored|sofascore)\b",
     re.IGNORECASE,
 )
 
