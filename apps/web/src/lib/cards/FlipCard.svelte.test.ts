@@ -5,8 +5,8 @@ import FlipCard from './FlipCard.svelte';
 import type { CardBackProps } from './card-back.ts';
 import type { CardFrontProps } from './card-front.ts';
 
-const FRONT_NAME = 'Tomas Example card, showing the front. Press to see the back.';
-const BACK_NAME = 'Tomas Example card, showing the back. Press to see the front.';
+const FRONT_NAME = 'Tomas Example, Rare card, showing the front. Press to see the back.';
+const BACK_NAME = 'Tomas Example, Rare card, showing the back. Press to see the front.';
 
 function aFlipCard(): { front: CardFrontProps; back: CardBackProps } {
 	return {
@@ -47,9 +47,11 @@ afterEach(async () => {
 	await emulateReducedMotion('no-preference');
 });
 
-/** The computed style of the part of the card that turns. */
-function turningPart(container: HTMLElement): CSSStyleDeclaration {
-	return getComputedStyle(container.querySelector('.inner') ?? container);
+type Screen = Awaited<ReturnType<typeof render>>;
+
+/** A part of the card by its test id. `element()` throws when the part is missing. */
+function part(screen: Screen, testId: 'front' | 'back' | 'turning'): Element {
+	return screen.getByTestId(testId).element();
 }
 
 test('the card starts on its front, and the button says so', async () => {
@@ -85,16 +87,15 @@ test('after two quick taps the card is back on its front', async () => {
 	await button.dblClick();
 
 	await expect.element(button).toHaveAccessibleName(FRONT_NAME);
-	expect(screen.container.querySelector('.front')?.hasAttribute('inert')).toBe(false);
+	expect(part(screen, 'front').hasAttribute('inert')).toBe(false);
 });
 
 test('on the front a screen reader gets the front and nothing of the back', async () => {
 	const screen = await render(FlipCard, aFlipCard());
 
-	const back = screen.container.querySelector('.back');
-	expect(back?.getAttribute('aria-hidden')).toBe('true');
-	expect(back?.hasAttribute('inert')).toBe(true);
-	expect(screen.container.querySelector('.front')?.hasAttribute('aria-hidden')).toBe(false);
+	expect(part(screen, 'back').getAttribute('aria-hidden')).toBe('true');
+	expect(part(screen, 'back').hasAttribute('inert')).toBe(true);
+	expect(part(screen, 'front').hasAttribute('aria-hidden')).toBe(false);
 	// A role query skips what a screen reader can't reach, unlike a text query.
 	await expect.element(screen.getByRole('term').first()).not.toBeInTheDocument();
 });
@@ -104,10 +105,9 @@ test('on the back a screen reader gets the back and nothing of the front', async
 
 	await screen.getByRole('button').click();
 
-	const front = screen.container.querySelector('.front');
-	expect(front?.getAttribute('aria-hidden')).toBe('true');
-	expect(front?.hasAttribute('inert')).toBe(true);
-	expect(screen.container.querySelector('.back')?.hasAttribute('aria-hidden')).toBe(false);
+	expect(part(screen, 'front').getAttribute('aria-hidden')).toBe('true');
+	expect(part(screen, 'front').hasAttribute('inert')).toBe(true);
+	expect(part(screen, 'back').hasAttribute('aria-hidden')).toBe(false);
 	await expect.element(screen.getByRole('img')).not.toBeInTheDocument();
 	expect(
 		screen
@@ -134,7 +134,7 @@ test('the turn animates the transform only', async () => {
 
 	await screen.getByRole('button').click();
 
-	const turning = turningPart(screen.container);
+	const turning = getComputedStyle(part(screen, 'turning'));
 	expect(turning.transitionProperty).toBe('transform');
 	expect(turning.transitionDuration).not.toBe('0s');
 });
@@ -146,8 +146,8 @@ test('with reduced motion the sides swap with no movement', async () => {
 	await screen.getByRole('button').click();
 
 	await expect.element(screen.getByRole('button')).toHaveAccessibleName(BACK_NAME);
-	expect(turningPart(screen.container).transitionDuration).toBe('0s');
-	expect(turningPart(screen.container).transform).not.toBe('none');
+	expect(getComputedStyle(part(screen, 'turning')).transitionDuration).toBe('0s');
+	expect(getComputedStyle(part(screen, 'turning')).transform).not.toBe('none');
 });
 
 test('reduced motion turned on while the back shows keeps the back, still', async () => {
@@ -157,6 +157,6 @@ test('reduced motion turned on while the back shows keeps the back, still', asyn
 	await emulateReducedMotion('reduce');
 
 	await expect.element(screen.getByRole('button')).toHaveAccessibleName(BACK_NAME);
-	expect(turningPart(screen.container).transitionDuration).toBe('0s');
-	expect(turningPart(screen.container).transform).not.toBe('none');
+	expect(getComputedStyle(part(screen, 'turning')).transitionDuration).toBe('0s');
+	expect(getComputedStyle(part(screen, 'turning')).transform).not.toBe('none');
 });

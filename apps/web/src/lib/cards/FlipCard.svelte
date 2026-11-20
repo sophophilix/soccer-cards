@@ -2,7 +2,7 @@
 	import CardBack from './CardBack.svelte';
 	import CardFront from './CardFront.svelte';
 	import type { CardBackProps } from './card-back.ts';
-	import type { CardFrontProps } from './card-front.ts';
+	import { TIER_NAMES, type CardFrontProps } from './card-front.ts';
 
 	interface Props {
 		front: CardFrontProps;
@@ -12,10 +12,10 @@
 	const { front, back }: Props = $props();
 	let side = $state<'front' | 'back'>('front');
 	const isBackShowing = $derived(side === 'back');
+	// The tier is in the name, so a screen reader still hears it while the front is hidden.
 	const label = $derived(
-		isBackShowing
-			? `${front.displayName} card, showing the back. Press to see the front.`
-			: `${front.displayName} card, showing the front. Press to see the back.`
+		`${front.displayName}, ${TIER_NAMES[front.tier]} card, showing the ` +
+			(isBackShowing ? 'back. Press to see the front.' : 'front. Press to see the back.')
 	);
 
 	function turn(): void {
@@ -25,11 +25,21 @@
 
 <!-- The faces sit outside the button, so a screen reader reads the side that shows. -->
 <div class={['flip', isBackShowing && 'flipped']}>
-	<div class="inner">
-		<div class="side front" aria-hidden={isBackShowing || undefined} inert={isBackShowing}>
+	<div class="inner" data-testid="turning">
+		<div
+			class="side front"
+			data-testid="front"
+			aria-hidden={isBackShowing || undefined}
+			inert={isBackShowing}
+		>
 			<CardFront {...front} />
 		</div>
-		<div class="side back" aria-hidden={!isBackShowing || undefined} inert={!isBackShowing}>
+		<div
+			class="side back"
+			data-testid="back"
+			aria-hidden={!isBackShowing || undefined}
+			inert={!isBackShowing}
+		>
 			<CardBack {...back} />
 		</div>
 	</div>
