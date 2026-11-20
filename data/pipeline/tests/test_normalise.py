@@ -1,0 +1,202 @@
+import json
+import re
+from collections.abc import Mapping
+from dataclasses import replace
+from functools import cache
+from pathlib import Path
+from typing import Any
+
+import pytest
+
+from soccer_cards_data import normalise
+from soccer_cards_data.commons import Avatar, Publish
+from soccer_cards_data.grades import GROUPS, GradeEntry, Override
+from soccer_cards_data.normalise import NormaliseError, SizedPhoto
+from soccer_cards_data.photos import Photo
+from soccer_cards_data.wikidata import PlayerFacts, fetch_player
+
+FIXTURES = Path(__file__).parent / "fixtures" / "wikidata"
+SCHEMA = Path(__file__).resolve().parents[3] / "packages/schema/schemas/v1"
+PLAYER = json.loads((SCHEMA / "player.schema.json").read_text(encoding="utf-8"))
+SUMMARY_DEFS = PLAYER["$defs"]
+SUMMARY = SUMMARY_DEFS["playerSummary"]
+MESSI = "https://www.wikidata.org/w/index.php?title=Q615&oldid=2568260945"
+FILE = "https://commons.wikimedia.org/wiki/File:Invented.jpg"
+IMAGE = "https://upload.wikimedia.org/wikipedia/commons/a/ab/Invented.jpg"
+CREDIT = Publish(FILE, "Ina Vented", "CC-BY-SA-4.0", IMAGE)
+PHOTO = SizedPhoto(CREDIT, Photo("photos/invented-slug.webp", 600, 800))
+
+
+class SavedResponses:
+    """Serves the T-0078 replies: the player's item, then its teams."""
+
+    def __init__(self) -> None:
+        self.first = ""
+
+    def get_json(self, url: str, params: Mapping[str, str]) -> object:
+        self.first = self.first or params["ids"]
+        name = self.first if params["ids"] == self.first else f"{self.first}-teams"
+        return json.loads((FIXTURES / f"{name}.json").read_text(encoding="utf-8"))
+
+
+@cache
+def _facts(qid: str = "Q615") -> PlayerFacts:
+    return fetch_player(SavedResponses(), qid)
+
+
+def _grades(qid: str, group: str) -> GradeEntry:
+    names = GROUPS[group]
+    return GradeEntry(qid, group, dict.fromkeys(names, 4), dict.fromkeys(names, "x"))
+
+
+def _build(facts: PlayerFacts, **changes: Any) -> normalise.PlayerRecord:
+    group = "goalkeeper" if facts.qid == "Q107365" else "outfield"
+    args: dict[str, Any] = {
+        "entry": _grades(facts.qid, group),
+        "override": None,
+        "photo": PHOTO,
+        "slug": "invented-slug",
+        "national_team_code": "ARG",
+        "update_time": "2026-11-21T09:00:00Z",
+    }
+    return normalise.build_player(facts, **(args | changes))
+
+
+def _assert_structure(record: normalise.PlayerRecord) -> None:
+    """Check what the schema requires. Full JSON Schema validation is T-0083's."""
+    player, summary = record.player, record.summary
+    assert set(SUMMARY["required"]) <= set(summary) <= set(SUMMARY["properties"])
+    assert "updateTime" in player
+    assert set(player) - set(summary) <= set(PLAYER["properties"])
+    keeper = player["position"] == "GOALKEEPER"
+    groups = {"goalkeeperRatings", "outfieldRatings"} & set(player)
+    assert groups == {"goalkeeperRatings" if keeper else "outfieldRatings"}
+    ratings, stats = player[groups.pop()], player["playStats"]
+    assert isinstance(ratings, dict) and isinstance(stats, dict)
+    assert set(stats) == set(SUMMARY_DEFS["playStats"]["required"])
+    numbers = [*ratings.values(), *stats.values()]
+    assert all(type(n) is int and 1 <= n <= 99 for n in numbers)
+    assert re.fullmatch(SUMMARY["properties"]["name"]["pattern"], str(player["name"]))
+    assert "null" not in json.dumps(player)
+
+
+def test_outfield_player_from_saved_facts_is_schema_valid() -> None:
+    record = _build(_facts())
+    player: Any = record.player
+
+    _assert_structure(record)
+    assert player["name"] == "players/invented-slug"
+    assert (player["displayName"], player["position"]) == ("Lionel Messi", "FORWARD")
+    assert player["state"] == "ACTIVE"
+    assert player["club"] == "clubs/inter-miami-cf"
+    assert record.club_display_name == "Inter Miami CF"
+    assert player["clubGoalCount"] == {
+        "value": 5 + 6 + 474 + 22 + 68,
+        "sourceUri": MESSI,
+        "retrieveDate": "2026-08-30",
+    }
+    assert player["nationalTeamGoalCount"]["value"] == 126  # Not the youth teams.
+    assert player["photo"]["uri"] == "photos/invented-slug.webp"
+    assert player["photo"]["attribution"]["sourceUri"] == FILE
+    assert set(player["outfieldRatings"]) == set(GROUPS["outfield"])
+    assert "givenName" not in player
+    assert record.problems == ()
+
+
+def test_goalkeeper_without_photo_has_keeper_ratings_and_no_photo() -> None:
+    record = _build(_facts("Q107365"), photo=Avatar("licence is missing"))
+    player: Any = record.player
+
+    _assert_structure(record)
+    assert "photo" not in player
+    assert player["position"] == "GOALKEEPER"
+    assert set(player["goalkeeperRatings"]) == set(GROUPS["goalkeeper"])
+    assert player["clubGoalCount"]["value"] == 0  # Known, so present.
+    summary = SUMMARY["properties"]
+    assert set(record.summary) == set(player) - set(normalise.FULL_ONLY)
+    assert not set(normalise.FULL_ONLY) & set(summary)
+
+
+def test_same_input_gives_the_same_output() -> None:
+    first, second = _build(_facts()), _build(_facts())
+    assert json.dumps(first.player) == json.dumps(second.player)
+    assert first == second
+
+
+@pytest.mark.parametrize("tier", ["ICON", "BASE", "LEGEND"])
+def test_override_sets_the_tier(tier: str) -> None:
+    record = _build(_facts(), override=Override("Q615", tier, "A reason"))
+    assert record.player["tier"] == record.summary["tier"] == tier
+    _assert_structure(record)
+
+
+def test_player_with_no_spells_is_retired_with_no_counts() -> None:
+    record = _build(replace(_facts(), clubs=(), national_teams=()), photo=None)
+
+    _assert_structure(record)
+    assert record.player["state"] == "RETIRED"
+    for key in ("club", "clubGoalCount", "nationalTeamGoalCount", "photo"):
+        assert key not in record.player
+
+
+def test_one_unknown_count_makes_the_total_absent() -> None:
+    clubs = _facts().clubs
+    record = _build(
+        replace(_facts(), clubs=(replace(clubs[0], goals=None), *clubs[1:]))
+    )
+    assert "clubGoalCount" not in record.player
+    _assert_structure(record)
+
+
+def test_count_over_its_bound_is_reported_and_absent() -> None:
+    senior = replace(_facts().national_teams[-1], goals=201)
+    record = _build(replace(_facts(), national_teams=(senior,)))
+
+    assert "nationalTeamGoalCount" not in record.player
+    assert record.problems == ("Q615 Q79800: 201 goals is over 200, treated as absent",)
+
+
+@pytest.mark.parametrize(
+    "label",
+    [None, "", "<b>Leo</b>", "Leo‮Messi", " Leo", "Leo  Messi", "Leo\nM", "L" * 61],
+)
+def test_unsafe_label_is_refused_with_the_qid(label: str | None) -> None:
+    with pytest.raises(NormaliseError, match=r"^Q615: label"):
+        _build(replace(_facts(), label=label))
+
+
+def test_unsafe_club_label_drops_the_club_and_is_reported() -> None:
+    clubs = _facts().clubs
+    miami = replace(clubs[-1], team_label="<a href=x>Club</a>")
+    record = _build(replace(_facts(), clubs=(*clubs[:-1], miami)))
+
+    assert "club" not in record.player
+    assert record.player["state"] == "ACTIVE"
+    assert record.problems == ("Q615 Q16844931: club label is not plain text",)
+
+
+@pytest.mark.parametrize(
+    ("changes", "message"),
+    [
+        ({"national_team_code": "ar"}, "national team code"),
+        ({"update_time": "2026-11-21"}, "update time"),
+        ({"entry": _grades("Q1", "outfield")}, "another player"),
+        ({"override": Override("Q1", "ICON", "x")}, "another player"),
+        ({"entry": _grades("Q615", "goalkeeper")}, "no Wikidata position"),
+        ({"slug": "Not-A-Slug"}, "slug"),
+        ({"photo": replace(PHOTO, file=Photo("photos/x.webp", 0, 9))}, "photo size"),
+        ({"photo": replace(PHOTO, file=Photo("../x.webp", 9, 9))}, "photo path"),
+        ({"facts": replace(_facts(), birth_date="2027-01-01")}, "facts.birth_date"),
+    ],
+)
+def test_refused_inputs_name_the_player(changes: dict[str, Any], message: str) -> None:
+    facts = changes.pop("facts", _facts())
+    with pytest.raises(NormaliseError, match=f"^Q615: .*{re.escape(message)}"):
+        _build(facts, **changes)
+
+
+def test_one_word_name_has_no_given_or_family_name() -> None:
+    record = _build(replace(_facts(), label="Pelé"))
+    assert record.player["displayName"] == "Pelé"
+    assert not {"givenName", "familyName"} & set(record.player)
+    _assert_structure(record)
