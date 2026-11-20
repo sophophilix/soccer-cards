@@ -1,8 +1,14 @@
 import { DIVISIONS, createPlayerState, toCardId } from '@soccer-cards/game';
 import type { PlayerState } from '@soccer-cards/game';
 import fc from 'fast-check';
-import { describe, expect, test, vi } from 'vitest';
-import { BACKUP_KEY, STATE_KEY, browserStorage, createPlayerStore } from './player-store.ts';
+import { describe, expect, onTestFinished, test, vi } from 'vitest';
+import {
+	BACKUP_KEY,
+	STATE_KEY,
+	browserStorage,
+	clearPlayerStorage,
+	createPlayerStore
+} from './player-store.ts';
 import type { LoadOutcome, SaveResult, TabChange } from './player-store.ts';
 type Failure = 'none' | 'read' | 'write' | 'full';
 
@@ -162,6 +168,19 @@ describe('the player store', () => {
 		expect(browserStorage()).toBe(window.localStorage);
 	});
 
+	test('plays on without saving when reading localStorage itself throws, as with blocked data', () => {
+		vi.spyOn(window, 'localStorage', 'get').mockImplementation(() => {
+			throw new DOMException('blocked', 'SecurityError');
+		});
+		onTestFinished(() => {
+			vi.restoreAllMocks();
+		});
+		const store = createPlayerStore(browserStorage);
+
+		expect(store.load()).toEqual({ state: fresh, outcome: 'not-saving' });
+		expect(store.save(fresh)).toEqual({ ok: false, reason: 'not-saving' });
+	});
+
 	test('gives back any valid state it saved', () => {
 		const count = fc.nat(1000);
 		const cardId = fc.string({ minLength: 1 }).filter((text) => text.trim() !== '');
@@ -186,5 +205,43 @@ describe('the player store', () => {
 			}),
 			{ seed: 20261120 }
 		);
+	});
+});
+
+/** A stand-in for localStorage with the parts a clear needs. */
+function aClearableStorage(saved: Readonly<Record<string, string>>, failsToRemove = false) {
+	const items = new Map(Object.entries(saved));
+	const storage = {
+		get length() {
+			return items.size;
+		},
+		key: (index: number): string | null => [...items.keys()][index] ?? null,
+		removeItem: (key: string): void => {
+			if (failsToRemove) throw new DOMException('no', 'SecurityError');
+			items.delete(key);
+		}
+	};
+	return { storage, items };
+}
+
+describe('clearPlayerStorage', () => {
+	test('removes the state and all three numbered backups, and leaves other keys alone', () => {
+		const { storage, items } = aClearableStorage({
+			[STATE_KEY]: '{}',
+			[BACKUP_KEY]: 'first',
+			[`${BACKUP_KEY}:2`]: 'second',
+			[`${BACKUP_KEY}:3`]: 'third',
+			'another-game:player-state': 'theirs'
+		});
+
+		expect(clearPlayerStorage(() => storage)).toEqual({ ok: true });
+		expect(Object.fromEntries(items)).toEqual({ 'another-game:player-state': 'theirs' });
+	});
+
+	test.each([
+		['missing', undefined],
+		['throwing during the clear', aClearableStorage({ [STATE_KEY]: '{}' }, true).storage]
+	])('tells the caller when storage is %s', (_name, storage) => {
+		expect(clearPlayerStorage(() => storage)).toEqual({ ok: false, reason: 'not-cleared' });
 	});
 });

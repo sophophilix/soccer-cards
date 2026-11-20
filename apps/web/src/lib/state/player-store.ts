@@ -33,8 +33,14 @@ export interface PlayerStore {
 	readonly subscribe: (onChange: (change: TabChange) => void) => () => void;
 }
 
+/** The part of the browser's storage a clear uses, to find each key the store owns. */
+export type ClearableStorage = Pick<Storage, 'length' | 'key' | 'removeItem'>;
+/** Every key the store owns is gone, or the caller must tell the player it isn't. */
+export type ClearResult =
+	{ readonly ok: true } | { readonly ok: false; readonly reason: 'not-cleared' };
+
 /** Returns the browser's storage, or nothing while prerendering or when the browser refuses it. */
-export function browserStorage(): ItemStorage | undefined {
+export function browserStorage(): Storage | undefined {
 	if (typeof window === 'undefined') return undefined;
 	try {
 		return window.localStorage;
@@ -139,4 +145,20 @@ export function createPlayerStore(getStorage: () => ItemStorage | undefined): Pl
 	};
 
 	return { load, save, subscribe };
+}
+
+/** Removes the state and every backup, as "Start again" does. Other keys are left alone. */
+export function clearPlayerStorage(getStorage: () => ClearableStorage | undefined): ClearResult {
+	const storage = getStorage();
+	if (storage === undefined) return { ok: false, reason: 'not-cleared' };
+	try {
+		const keys = Array.from({ length: storage.length }, (_, index) => storage.key(index));
+		// The backups are STATE_KEY with a suffix, numbered without an upper bound.
+		const isOwned = (key: string | null): key is string =>
+			key === STATE_KEY || key?.startsWith(`${STATE_KEY}:`) === true;
+		for (const key of keys.filter(isOwned)) storage.removeItem(key);
+		return { ok: true };
+	} catch {
+		return { ok: false, reason: 'not-cleared' };
+	}
 }
