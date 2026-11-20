@@ -35,6 +35,18 @@ test('an outfield player shows six named ratings with their values', async () =>
 	);
 });
 
+// The CSP blocks a prerendered style attribute, so an SVG attribute sets each bar's length.
+test('each bar fills its track as far as its rating, with no style attribute', async () => {
+	const screen = await render(CardBack, aBack());
+
+	const share = [...screen.container.querySelectorAll('.track')].map((track) => {
+		const bar = track.querySelector('rect')?.getBoundingClientRect().width ?? 0;
+		return Math.round((bar / track.getBoundingClientRect().width) * 100);
+	});
+	expect(share).toEqual([97, 91, 81, 92, 36, 77]);
+	expect(screen.container.querySelector('[style]')).toBeNull();
+});
+
 test('a goalkeeper shows the six goalkeeper ratings instead', async () => {
 	const keeper = { kind: 'goalkeeper', diving: 86, handling: 85, kicking: 84 } as const;
 

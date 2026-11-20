@@ -20,7 +20,11 @@
 			{#each listRatings(card.ratings) as rating (rating.label)}
 				<div>
 					<dt>{rating.label}</dt>
-					<dd class="track"><i style:width="{rating.value}%"></i></dd>
+					<dd class="track">
+						<svg viewBox="0 0 100 1" preserveAspectRatio="none" aria-hidden="true">
+							<rect width={rating.value} height="1" />
+						</svg>
+					</dd>
 					<dd class="num">{rating.value}</dd>
 				</div>
 			{/each}
@@ -95,10 +99,11 @@
 		border-radius: 2cqw;
 		background: #ffffff29;
 	}
-	.track i {
+	.track svg {
 		display: block;
+		width: 100%;
 		height: 100%;
-		background: var(--booking);
+		fill: var(--booking);
 	}
 	.num {
 		text-align: right;
