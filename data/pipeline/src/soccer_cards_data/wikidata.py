@@ -13,6 +13,8 @@ from collections.abc import Mapping
 from dataclasses import dataclass
 from typing import Protocol
 
+from soccer_cards_data.http import ReplyCheck, mediawiki_error
+
 API_URL = "https://www.wikidata.org/w/api.php"
 FOOTBALLER = "Q937857"  # Occupation (P106): association football player.
 BATCH = 50  # The most ids one wbgetentities request takes.
@@ -32,8 +34,10 @@ type Json = dict[str, object]
 class JsonSource(Protocol):
     """Anything that answers a GET with parsed JSON, such as `PoliteClient`."""
 
-    def get_json(self, url: str, params: Mapping[str, str]) -> object:
-        """Return the parsed JSON reply."""
+    def get_json(
+        self, url: str, params: Mapping[str, str], *, check: ReplyCheck | None = None
+    ) -> object:
+        """Return the parsed JSON reply, refused and not cached if `check` says so."""
         ...
 
 
@@ -118,7 +122,7 @@ def fetch_player(source: JsonSource, qid: str) -> PlayerFacts:
     teams: Json = {}
     for i in range(0, len(team_ids), BATCH):
         reply = _get(source, "|".join(team_ids[i : i + BATCH]), "labels|claims")
-        teams.update(_dict(_dict(reply).get("entities")))
+        teams.update(_dict(_refuse_error(reply).get("entities")))
 
     clubs: list[Spell] = []
     national: list[Spell] = []
@@ -166,15 +170,20 @@ def fetch_player(source: JsonSource, qid: str) -> PlayerFacts:
 
 def _get(source: JsonSource, ids: str, props: str) -> object:
     params = _PARAMS | {"ids": ids, "props": props, "formatversion": "2"}
-    return source.get_json(API_URL, params)
+    return source.get_json(API_URL, params, check=mediawiki_error)
 
 
-def _only_entity(reply: object) -> Json:
+def _refuse_error(reply: object) -> Json:
+    """Return the reply, or raise on an error body, for any source."""
     body = _dict(reply)
     if "error" in body:
         code = _dict(body["error"]).get("code")
         raise WikidataError(f"Wikidata refused the request: {code!r}")
-    entities = body.get("entities")
+    return body
+
+
+def _only_entity(reply: object) -> Json:
+    entities = _refuse_error(reply).get("entities")
     if not isinstance(entities, dict) or len(entities) != 1:
         raise WikidataError("unexpected reply from Wikidata")
     return _dict(next(iter(entities.values())))

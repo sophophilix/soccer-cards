@@ -15,6 +15,12 @@ The 36 prototype photos were fetched on 2026-11-15 by
 CC BY-SA 3.0 AT, CC BY 4.0, CC BY 3.0 and public domain. No person has
 checked each Commons page by hand.
 
+## Player facts
+
+| Source   | Terms | Terms page                                     | Read on    |
+| -------- | ----- | ---------------------------------------------- | ---------- |
+| Wikidata | CC0   | https://www.wikidata.org/wiki/Wikidata:Licensing | 2026-11-21 |
+
 ## Prototype data
 
 Player ratings, goals, transfer fees and awards in the prototype were

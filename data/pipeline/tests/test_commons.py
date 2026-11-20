@@ -7,7 +7,7 @@ import pytest
 
 from soccer_cards_data import commons
 from soccer_cards_data.commons import Avatar, Publish, decide
-from soccer_cards_data.http import PoliteClient
+from soccer_cards_data.http import FetchError, PoliteClient
 
 FIXTURES = Path(__file__).parent / "fixtures" / "commons"
 ROOT = Path(__file__).resolve().parents[3]
@@ -195,3 +195,31 @@ def test_a_bad_file_name_is_refused(name: str, tmp_path: Path) -> None:
         pytest.raises(ValueError, match="file name"),
     ):
         commons.check_photo(client, name)
+
+
+def test_every_check_asks_commons_again(tmp_path: Path) -> None:
+    seen: list[httpx.Request] = []
+    replies = [_reply("cc-by-sa-3.0"), {"query": {"pages": [{"missing": True}]}}]
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        seen.append(request)
+        return httpx.Response(200, json=replies[len(seen) - 1])
+
+    net = httpx.MockTransport(handler)
+    with PoliteClient(tmp_path, transport=net, sleep=lambda _: None) as client:
+        first = commons.check_photo(client, "Lionel Messi 20180626.jpg")
+        second = commons.check_photo(client, "Lionel Messi 20180626.jpg")
+    assert isinstance(first, Publish)
+    assert second == Avatar("file is not on Commons")
+    assert len(seen) == 2
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_an_error_body_fails_the_run(tmp_path: Path) -> None:
+    error = {"error": {"code": "internal_api_error"}}
+    net = httpx.MockTransport(lambda _: httpx.Response(200, json=error))
+    with (
+        PoliteClient(tmp_path, transport=net, sleep=lambda _: None) as client,
+        pytest.raises(FetchError, match="'internal_api_error'"),
+    ):
+        commons.check_photo(client, "Lionel Messi 20180626.jpg")
