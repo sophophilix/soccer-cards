@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from html.parser import HTMLParser
 from urllib.parse import quote, unquote, urlsplit
 
-from soccer_cards_data.http import PoliteClient
+from soccer_cards_data.http import PoliteClient, mediawiki_error
 
 API_URL = "https://commons.wikimedia.org/w/api.php"
 FILE_PAGE_PREFIX = "https://commons.wikimedia.org/wiki/File:"
@@ -50,7 +50,8 @@ def check_photo(client: PoliteClient, file_name: str) -> Publish | Avatar:
 
     Raises:
         ValueError: The file name is empty, has `File:` or holds `|`.
-        FetchError: Commons could not be asked. That fails the run.
+        FetchError: Commons could not be asked, or answered with an error.
+            That fails the run.
     """
     if not file_name or "|" in file_name or file_name.lower().startswith("file:"):
         raise ValueError(f"{file_name!r} is not a Commons file name")
@@ -64,7 +65,9 @@ def check_photo(client: PoliteClient, file_name: str) -> Publish | Avatar:
         "iiextmetadatalanguage": "en",
         "titles": f"File:{file_name}",
     }
-    return decide(client.get_json(API_URL, params))
+    # Never cached: a file deleted or relicensed on Commons drops on the next run.
+    reply = client.get_json(API_URL, params, check=mediawiki_error, cache=False)
+    return decide(reply)
 
 
 def decide(reply: object) -> Publish | Avatar:
