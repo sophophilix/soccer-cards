@@ -9,7 +9,7 @@ paths:
   - data/pipeline/tests/test_wikidata.py
   - data/pipeline/tests/fixtures/wikidata/**
 dependencies: []
-max_changed_lines: 200
+max_changed_lines: 300
 status: ready
 ---
 
@@ -29,6 +29,10 @@ than typed by hand.
 
 - Each national team spell carries its FIFA code when Wikidata has one;
   absent otherwise, and reported.
+- The team reply is checked like the player's own: a reply whose
+  `entities` isn't a dict is refused, and a team id missing from it (or
+  marked missing) is reported in `skipped`, never filed as a club
+  (T-0088 review F1).
 - `make check COMPONENT=data` passes. No test reaches the network.
 
 ## Edge cases

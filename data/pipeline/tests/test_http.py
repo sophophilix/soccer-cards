@@ -11,6 +11,8 @@ from soccer_cards_data.http import (
     USER_AGENT,
     FetchError,
     PoliteClient,
+    Refusal,
+    mediawiki_error,
 )
 
 URL = "https://www.wikidata.org/w/api.php"
@@ -154,4 +156,88 @@ def test_a_url_off_the_allow_list_fails_unsent(tmp_path: Path, url: str) -> None
         pytest.raises(FetchError, match="is not an allowed source"),
     ):
         client.get_json(url, {})
+    assert seen == []
+
+
+MAXLAG = {"error": {"code": "maxlag", "info": "Waiting for a database server"}}
+IMAGE = "https://upload.wikimedia.org/wikipedia/commons/c/c1/Photo.jpg"
+
+
+def test_a_maxlag_body_is_retried_then_refused_and_not_cached(tmp_path: Path) -> None:
+    lagged = httpx.Response(200, json=MAXLAG, headers={"Retry-After": "5"})
+    handler, seen = _replies(*[lagged] * MAX_TRIES)
+    fake = FakeTime()
+    with (
+        _client(tmp_path, handler, fake) as client,
+        pytest.raises(FetchError, match=r"after 4 tries") as caught,
+    ):
+        client.get_json(URL, {"ids": "Q1"}, check=mediawiki_error)
+    assert len(seen) == MAX_TRIES
+    assert "'maxlag'" in str(caught.value.__cause__)
+    assert fake.sleeps[0] == 5.0
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_a_refused_reply_fails_at_once_and_writes_nothing(tmp_path: Path) -> None:
+    handler, seen = _replies(httpx.Response(200, json={"error": {"code": "bad"}}))
+    with (
+        _client(tmp_path, handler, FakeTime()) as client,
+        pytest.raises(FetchError, match=r"wikidata\.org/.* refused: 'bad'"),
+    ):
+        client.get_json(URL, {}, check=mediawiki_error)
+    assert len(seen) == 1
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_mediawiki_error_reads_the_error_format() -> None:
+    assert mediawiki_error([]) is mediawiki_error({"query": {}}) is None
+    assert mediawiki_error({"error": "odd"}) == Refusal("Wikimedia refused: None")
+    assert mediawiki_error(MAXLAG) == Refusal("Wikimedia refused: 'maxlag'", True)
+
+
+def test_without_the_cache_a_request_is_always_sent_and_not_kept(
+    tmp_path: Path,
+) -> None:
+    handler, seen = _replies(
+        httpx.Response(200, json={"n": 1}),
+        httpx.Response(200, json={"n": 2}),
+        httpx.Response(200, json={"n": 3}),
+    )
+    with _client(tmp_path, handler, FakeTime()) as client:
+        assert client.get_json(URL, {}) == {"n": 1}
+        cached = list(tmp_path.iterdir())
+        assert client.get_json(URL, {}, cache=False) == {"n": 2}
+        assert client.get_json(URL, {}, cache=False) == {"n": 3}
+    assert len(seen) == 3
+    assert list(tmp_path.iterdir()) == cached
+
+
+def test_bytes_are_downloaded_after_back_off_and_never_cached(tmp_path: Path) -> None:
+    handler, seen = _replies(httpx.Response(503), httpx.Response(200, content=b"img"))
+    fake = FakeTime()
+    with _client(tmp_path, handler, fake) as client:
+        assert client.get_bytes(IMAGE, max_bytes=3) == b"img"
+    assert len(seen) == 2
+    assert seen[0].headers["User-Agent"] == USER_AGENT
+    assert fake.sleeps
+    assert list(tmp_path.iterdir()) == []
+
+
+def test_a_download_over_the_size_limit_fails(tmp_path: Path) -> None:
+    handler, seen = _replies(httpx.Response(200, content=iter([b"fo", b"ur"])))
+    with (
+        _client(tmp_path, handler, FakeTime()) as client,
+        pytest.raises(FetchError, match=r"Photo\.jpg is larger than 3 bytes"),
+    ):
+        client.get_bytes(IMAGE, max_bytes=3)
+    assert len(seen) == 1
+
+
+def test_a_download_off_the_allow_list_fails_unsent(tmp_path: Path) -> None:
+    handler, seen = _replies(httpx.Response(200, content=b"img"))
+    with (
+        _client(tmp_path, handler, FakeTime()) as client,
+        pytest.raises(FetchError, match="is not an allowed source"),
+    ):
+        client.get_bytes("https://example.org/a.jpg", max_bytes=10)
     assert seen == []

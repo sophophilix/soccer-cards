@@ -2,8 +2,10 @@ import json
 from collections.abc import Mapping
 from pathlib import Path
 
+import httpx
 import pytest
 
+from soccer_cards_data.http import FetchError, PoliteClient, ReplyCheck, mediawiki_error
 from soccer_cards_data.wikidata import API_URL, Honour, WikidataError, fetch_player
 
 FIXTURES = Path(__file__).parent / "fixtures" / "wikidata"
@@ -17,13 +19,19 @@ class SavedResponses:
     def __init__(self, replies: Mapping[str, object] | None = None) -> None:
         self.replies = dict(replies or {})
         self.requests: list[dict[str, str]] = []
+        self.checks: list[ReplyCheck | None] = []
 
-    def get_json(self, url: str, params: Mapping[str, str]) -> object:
+    def get_json(
+        self, url: str, params: Mapping[str, str], *, check: ReplyCheck | None = None
+    ) -> object:
         assert url == API_URL
+        self.checks.append(check)
         self.requests.append(dict(params))
         ids = params["ids"]
         if ids in self.replies:
             return self.replies[ids]
+        if "|" in ids and "teams" in self.replies:
+            return self.replies["teams"]
         name = ids if "|" not in ids else f"{self.requests[0]['ids']}-teams"
         return json.loads((FIXTURES / f"{name}.json").read_text(encoding="utf-8"))
 
@@ -66,6 +74,7 @@ def test_outfield_player_facts_from_saved_responses() -> None:
     }
     assert source.requests[1]["props"] == "labels|claims"
     assert len(source.requests) == 2
+    assert source.checks == [mediawiki_error, mediawiki_error]
 
 
 def test_goalkeeper_facts_from_saved_responses() -> None:
@@ -139,3 +148,29 @@ def test_a_qualifier_of_an_unexpected_type_is_skipped_and_reported() -> None:
         "P54 Q9 P1350: expected quantity, got string",
         "P569: unusable time {'time': '+1900-00-00T00:00:00Z', 'precision': 7}",
     )
+
+
+def test_an_error_body_for_the_team_request_fails_the_player_read() -> None:
+    source = SavedResponses({"teams": {"error": {"code": "maxlag"}}})
+    with pytest.raises(WikidataError, match="refused the request: 'maxlag'"):
+        fetch_player(source, "Q615")
+
+
+def test_a_team_reply_in_maxlag_is_retried_then_fails_uncached(tmp_path: Path) -> None:
+    player = json.loads((FIXTURES / "Q615.json").read_text(encoding="utf-8"))
+    lagged = {"error": {"code": "maxlag", "info": "Waiting for a database"}}
+    seen: list[httpx.Request] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        seen.append(request)
+        reply = player if request.url.params["ids"] == "Q615" else lagged
+        return httpx.Response(200, json=reply)
+
+    net = httpx.MockTransport(handler)
+    with (
+        PoliteClient(tmp_path, transport=net, sleep=lambda _: None) as client,
+        pytest.raises(FetchError, match="after 4 tries"),
+    ):
+        fetch_player(client, "Q615")
+    assert len(seen) == 5
+    assert len(list(tmp_path.iterdir())) == 1  # The player's reply, not the teams'.
