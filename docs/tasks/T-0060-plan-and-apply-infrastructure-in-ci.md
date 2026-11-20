@@ -22,8 +22,9 @@ infra gate also runs on every pull request.
 
 ## Context
 
-- ADR 0002 D3, D6, D8 and D9. The `ci-supply-chain` and `cloudflare-infra`
-  skills.
+- ADR 0002 D3, D6, D8 and D9. The `opentofu` skill, section "Plan and
+  apply in CI", is the standard. The `ci-supply-chain` and
+  `cloudflare-infra` skills.
 - `infra/` from T-0059, and `make check COMPONENT=infra` in the `Makefile`.
 - `docs/how-to/set-up-hosting.md`: the environments, secrets and variables.
 - `.github/workflows/checks.yml`: the workflow rules to follow.
@@ -35,11 +36,18 @@ infra gate also runs on every pull request.
   are unchanged.
 - A new workflow runs `tofu plan` on a pull request that changes `infra/`,
   in the `preview` environment, signed in to Azure by OpenID Connect with
-  `id-token: write` on that job only. It uses `CLOUDFLARE_INFRA_TOKEN` and
-  `TF_STATE_PASSPHRASE`, and writes the plan summary to the job summary.
+  `id-token: write` on that job only. The `preview` identity can only read
+  the state, so the plan runs with `-lock=false`. It uses
+  `CLOUDFLARE_INFRA_TOKEN` and `TF_STATE_PASSPHRASE`, and writes the
+  human-readable resource changes to the job summary. No plan file or
+  `tofu show -json` output is uploaded or printed.
+- Every run passes `-var-file=production.tfvars`. The passphrase reaches
+  OpenTofu as `TF_VAR_state_passphrase` from `tofu init` on. Init uses
+  `-input=false -lockfile=readonly`, and the backend location comes from
+  `-backend-config` with the `TF_STATE_*` variables.
 - On `main`, when `infra/` changed and `checks` succeeded on that commit, it
-  plans and applies that plan in the `production` environment, which waits
-  for the tech lead.
+  plans with `-out=tfplan` and applies exactly that saved plan in the
+  `production` environment, which waits for the tech lead.
 - A plan that destroys or replaces a resource stops before apply and says
   so in the summary.
 - Only one run touches the state at a time (a concurrency group), and runs
