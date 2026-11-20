@@ -27,10 +27,20 @@ __pycache__/
 playwright-report/
 test-results/
 
-# Infrastructure state never goes in git
+# Infrastructure state, plans and variable files never go in git. The
+# provider lock file and the committed production values do.
 *.tfstate
 *.tfstate.*
 .terraform/
+*.tfplan
+*.tfplan.json
+tfplan
+*.tfvars
+*.tfvars.json
+*.auto.tfvars
+*.auto.tfvars.json
+!.terraform.lock.hcl
+!/infra/production.tfvars
 
 .DS_Store
 
