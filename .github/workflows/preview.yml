@@ -1,0 +1,95 @@
+# Uploads each pull request as a Worker version, without deploying it, and runs
+# the end-to-end tests against its preview address (ADR 0002 D3, D4).
+name: preview
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+# A newer push to the same pull request cancels the older run.
+concurrency:
+  group: preview-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  upload:
+    # A fork or Dependabot gets no secrets, so the job shows as skipped rather
+    # than failing. The repository takes changes from its own branches only.
+    if: >-
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.user.login != 'dependabot[bot]'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    # GitHub shows this address on the pull request, with no write permission.
+    environment:
+      name: preview
+      url: ${{ steps.upload.outputs.url }}
+    outputs:
+      url: ${{ steps.upload.outputs.url }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --dir apps/web run build
+      # The token is set on this step only. Earlier steps run the branch's code
+      # and can change what this step runs, so the guard is the tech lead's
+      # approval in the `preview` environment. Wrangler writes one JSON line per
+      # event to the output file, and the `version-upload` line holds the address.
+      - name: Upload a Worker version without deploying it
+        id: upload
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_SEND_METRICS: 'false'
+          WRANGLER_OUTPUT_FILE_PATH: ${{ runner.temp }}/wrangler-output.ndjson
+        run: |
+          pnpm --dir apps/web exec wrangler versions upload
+          url="$(node -e '
+            const lines = require("fs").readFileSync(process.argv[1], "utf8").split("\n").filter(Boolean);
+            const upload = lines.map(JSON.parse).find((event) => event.type === "version-upload");
+            process.stdout.write(upload?.preview_url ?? "");
+          ' "$WRANGLER_OUTPUT_FILE_PATH")"
+          # Matches the whole value, so a second line can't reach GITHUB_OUTPUT.
+          if [[ ! "$url" =~ ^https://[a-z0-9-]+\.[a-z0-9-]+\.workers\.dev$ ]]; then
+            echo "::error::Wrangler gave no preview address. Preview URLs are off for the Worker, or it has never been deployed."
+            exit 1
+          fi
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+  e2e:
+    needs: upload
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    # The same image as the web job in checks.yml. Change both together.
+    container:
+      image: mcr.microsoft.com/playwright:v1.65.0-noble@sha256:9beb546099e11f52d62e505537914870e01a67e0e6b00ae41da4775324e73dbe # v1.65.0
+      options: --init --ipc=host
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - run: pnpm install --frozen-lockfile
+      # With PREVIEW_URL set, Playwright starts no local server.
+      - run: pnpm --dir apps/web run test:e2e
+        env:
+          PREVIEW_URL: ${{ needs.upload.outputs.url }}
+      - if: ${{ failure() }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: preview-test-results
+          path: apps/web/test-results/
+          if-no-files-found: ignore
+          retention-days: 7
