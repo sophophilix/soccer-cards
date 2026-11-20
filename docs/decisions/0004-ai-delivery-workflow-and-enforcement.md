@@ -155,6 +155,15 @@ durable record. The comment never shows a shell command, because a command
 can hold a secret and the repository is public. A log that can't be written
 never changes a decision.
 
+**D13. Skills follow shared responsibility.** A tool's maintainer owns the
+skill for how to use that tool, and this project owns the skills for its own
+rules, game, data and process. The Svelte team's `svelte` plugin
+(`sveltejs/ai-tools`) and Astral's `astral` plugin (`astral-sh/agent-plugins`)
+are enabled in `.claude/settings.json`, and the implementers and the reviewer
+preload their skills. This project's skills keep only what is specific to
+Soccer Cards. The type-check gate stays mypy, and `ty` is not a gate. The
+lead starts only this team's agents (D1), never a plugin's agent.
+
 ## Consequences
 
 - An agent that breaks a rule a program covers is stopped and reads why.
@@ -196,6 +205,12 @@ never changes a decision.
   tamper-proof: an allowed program can edit it. It records the lead's own
   tool calls without a task id, so the evidence comment leaves them out.
   The local log holds the first 300 characters of each shell command.
+- **The maintainer plugins run unpinned code.** The Svelte MCP server
+  starts with `npx -y @sveltejs/mcp` and Astral's language server with
+  `uvx ty@latest`, so each session runs the newest release. The Svelte
+  plugin also ships an agent, `svelte-file-editor`, that accepts edits
+  without the kit's task paths. The tech lead accepted both risks on
+  2026-11-20 ("Install the plugins as-is").
 - **Agent transcripts are not part of the trace.** They stay in Claude
   Code's local files.
 
@@ -208,3 +223,4 @@ never changes a decision.
 | 2026-11-16T11:26:43Z | Amended | Added D12, the audit trail and the evidence comment, at the tech lead's request ("yes add all three before the next tasks start"). |
 | 2026-11-16T12:32:27Z | Amended | The lead session now changes kit files without a prompt, and each change is logged. The tech lead asked for this ("dont want you asking me for approvals for small changes as its slow"). Subagents are still refused. |
 | 2026-11-16T12:32:27Z | Amended | The lead session now merges a task pull request when `sdlc merge-check` passes, and plans and kit fixes inside decided scope. The tech lead asked for this ("can you change the rule of dont wait for my approval on everything"). Scope, product rules, decision records, risk acceptance, relaxed rules and deploys stay with the tech lead. |
+| 2026-11-20T23:02:34Z | Amended | Added D13: maintainers' plugins for Svelte and Python tooling, this project's skills for its own rules. The tech lead asked for this ("we sould use the ones the is published by the maintainers", then "yes go ahead") and chose "Install the plugins as-is" over pinning. |
