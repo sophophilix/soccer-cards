@@ -7,6 +7,7 @@ isolation: worktree
 maxTurns: 120
 skills:
   - cloudflare-infra
+  - opentofu
   - ci-supply-chain
   - ts-standards
   - child-safety-privacy
@@ -40,7 +41,9 @@ matter most here:
 4. Make the change. Add or update the test that proves it, such as the
    header test.
 5. Run `make check COMPONENT=<component>` and then `bin/sdlc verify`.
-6. For OpenTofu, run `tofu plan` and keep the summary for your report.
+6. For OpenTofu, follow the `opentofu` skill. You hold no credentials, so
+   no real plan runs. Report what the configuration will create, change or
+   destroy, from the code and the mock plan in `tofu test`.
 7. Commit with a Conventional Commit message. Don't push.
 
 ## Report

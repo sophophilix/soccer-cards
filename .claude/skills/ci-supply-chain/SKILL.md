@@ -51,7 +51,7 @@ Every pull request runs all of these. Each is required by the ruleset on
 | Kit | `make check COMPONENT=sdlc` and `docs` | Any failure |
 | TypeScript | `make check` for `schema`, `game`, `web` | Format, lint, types, tests, coverage, unused code |
 | Python | `make check COMPONENT=data` | The gates in `python-standards` |
-| Infrastructure | `make check COMPONENT=infra` | Format, validate, configuration scan |
+| Infrastructure | `make check COMPONENT=infra` | Format, validate, `tofu test` (the `opentofu` skill) |
 | End-to-end | Playwright on the preview | Any journey, accessibility, privacy or header test |
 | Secrets | gitleaks over the full history | Any finding |
 | Dependencies | OSV-Scanner on `pnpm-lock.yaml`, `pip-audit` per `python-standards`, GitHub dependency review | A known vulnerability in a runtime dependency |
