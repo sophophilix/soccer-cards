@@ -2,7 +2,7 @@
 
 > Status: Approved
 > Created: 2026-11-20
-> Last reviewed: 2026-11-20T13:09:36Z
+> Last reviewed: 2026-11-20T14:26:35Z
 > Next review: Not scheduled
 
 ## Review guide
@@ -88,8 +88,9 @@ version and shows the before and after for every player in the pull request
 
 **D4. Tiers.** By rule on `overall`: `LEGEND` from 88, `RARE` from 84, `BASE`
 below. Honours count only through overrides: a file lists a player, a tier
-and a reason, and the tech lead approves each line. A fourth tier (`ICON`,
-ADR 0005) needs its own decision.
+and a reason, and a reviewer agent checks each line. `ICON` is given only by
+override, to retired greats, so the pack rules always have at least one
+Icon card.
 
 **D5. Build.** `data/pipeline/` is one uv project with a `src` layout, under
 the team's `python-standards`, `python-style-guide` and `python-testing`
@@ -99,9 +100,10 @@ function of files. No test reaches the network. `make check
 COMPONENT=data` runs ruff, ruff format, mypy (strict), bandit and pytest
 through `uv run --frozen`.
 
-**D6. Running it.** The tech lead runs the pipeline on their machine and
-commits the output through a pull request. A scheduled CI run that opens the
-pull request itself comes later, with its own decision.
+**D6. Running it.** An agent or the tech lead runs the pipeline and commits
+the output through a reviewed pull request. A run makes few, sequential
+requests with the D1 User-Agent. A scheduled CI run that opens the pull
+request itself comes later, with its own decision.
 
 ## Consequences
 
@@ -136,3 +138,4 @@ pull request itself comes later, with its own decision.
 |---|---|---|
 | 2026-11-20 | Proposed | Drafted by Claude after the tech lead said "yes to the ratings approach, go ahead". |
 | 2026-11-20T13:09:36Z | Approved | The tech lead said "yes to the ratings approach, go ahead", then "i dont think i can review these ... 1-5 skill grades ..., just deploy them and my kids will feedback". D2 now has a reviewer agent check grades, and feedback corrects them after release. |
+| 2026-11-20T14:26:35Z | Amended | The tech lead chose "By listed override (Recommended)" for `ICON` (D4) and "Agent runs it (Recommended)" for the pipeline runs (D6). |
