@@ -213,3 +213,24 @@ def test_a_goalkeeper_with_outfield_ratings_fails(api: Path) -> None:
 
     with pytest.raises(ValidationError, match=r"^players/tavi-brightwell\.json"):
         validate(api)
+
+
+def test_a_summary_that_omits_a_field_the_full_record_has_fails(api: Path) -> None:
+    players = _summary_list(api)
+    del players[0]["club"]
+    _write(api / "players.json", {"players": players})
+    _write(api / "clubs.json", {"clubs": []})
+
+    with pytest.raises(ValidationError, match=r"players\.json players/tavi.*club"):
+        validate(api)
+
+
+def test_a_repeated_credit_photo_fails(api: Path) -> None:
+    credits = _example("credits.example.json")
+    credits["credits"] *= 2
+    _write(api / "credits.json", credits)
+
+    with pytest.raises(
+        ValidationError, match=r"credits\.json \$\.credits\[1\].*repeated"
+    ):
+        validate(api)

@@ -51,14 +51,28 @@ def validate(api_dir: Path, schema_dir: Path = SCHEMA_DIR) -> None:
             reason = ascii(errors[0].message[:200])
             raise ValidationError(f"{rel} {errors[0].json_path}: {reason}")
     credits = _load(api_dir / "credits.json", "credits.json")["credits"]
-    credited = {c["uri"] for c in credits}
+    credited: set[str] = set()
+    for index, credit in enumerate(credits):
+        if credit["uri"] in credited:
+            raise ValidationError(
+                f"credits.json $.credits[{index}]: photo {credit['uri']} is repeated"
+            )
+        credited.add(credit["uri"])
     for photo in sorted((api_dir / "photos").glob("*")):
         if f"photos/{photo.name}" not in credited:
             raise ValidationError(f"photos/{photo.name} has no credit")
-    _check_across_files(api_dir, credits)
+    summary_fields = set(
+        schemas["player.schema.json"]["$defs"]["playerSummary"]["properties"]
+    )
+    _check_across_files(api_dir, credits, credited, summary_fields)
 
 
-def _check_across_files(api_dir: Path, credits: list[dict[str, Any]]) -> None:
+def _check_across_files(
+    api_dir: Path,
+    credits: list[dict[str, Any]],
+    credited: set[str],
+    summary_fields: set[str],
+) -> None:
     """Check what one schema can't see: unique ids, references, matching copies.
 
     The schema already ties a player's rating group to its position inside each
@@ -78,17 +92,17 @@ def _check_across_files(api_dir: Path, credits: list[dict[str, Any]]) -> None:
         full = _load(api_dir / "players" / rel, f"players/{rel}")
         if full["name"] != name:
             raise ValidationError(f"players/{rel} name {full['name']!r} != {name!r}")
-        for field, value in summary.items():
-            if full.get(field) != value:
+        for field in sorted(summary_fields):
+            if full.get(field) != summary.get(field):
                 raise ValidationError(
                     f"players.json {name}: {field} differs from players/{rel}"
                 )
-        if "club" in summary and summary["club"] not in club_names:
+        if "club" in full and full["club"] not in club_names:
             raise ValidationError(
-                f"players.json {name}: club {summary['club']} is not in clubs.json"
+                f"players.json {name}: club {full['club']} is not in clubs.json"
             )
         photo = summary.get("photo")
-        if photo and photo["uri"] not in {c["uri"] for c in credits}:
+        if photo and photo["uri"] not in credited:
             raise ValidationError(
                 f"players.json {name}: photo {photo['uri']} has no credit"
             )
