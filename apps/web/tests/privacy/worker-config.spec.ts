@@ -4,14 +4,14 @@ import { readFile } from 'node:fs/promises';
 const CONFIG_URL = new URL('../../wrangler.jsonc', import.meta.url);
 
 // A string is kept whole, so a "//" inside one is not taken for a comment.
-const STRING_OR_COMMENT = /("(?:\\.|[^"\\])*")|\/\/[^\n]*|\/\*[\s\S]*?\*\/|,(?=\s*[}\]])/g;
+const STRING_OR_COMMENT = /("(?:\\.|[^"\\])*")|\/\/[^\n]*|\/\*[\s\S]*?\*\//g;
+// A second pass, so a comment after a trailing comma doesn't hide the comma.
+const STRING_OR_TRAILING_COMMA = /("(?:\\.|[^"\\])*")|,(?=\s*[}\]])/g;
+const keepString = (_match: string, quoted: string | undefined): string => quoted ?? '';
 
 /** Turns JSON with comments and trailing commas into plain JSON. */
 function stripComments(text: string): string {
-	return text.replace(
-		STRING_OR_COMMENT,
-		(_match: string, quoted: string | undefined) => quoted ?? ''
-	);
+	return text.replace(STRING_OR_COMMENT, keepString).replace(STRING_OR_TRAILING_COMMA, keepString);
 }
 
 /** Reads a nested value, or undefined when any key on the way is missing. */
@@ -29,7 +29,7 @@ async function readWorkerConfig(): Promise<unknown> {
 }
 
 test('a "//" inside a string is not stripped as a comment', () => {
-	expect(JSON.parse(stripComments('{ "a": "https://x" // note\n, }'))).toEqual({ a: 'https://x' });
+	expect(JSON.parse(stripComments('{ "a": "https://x", // note\n}'))).toEqual({ a: 'https://x' });
 });
 
 // A missing key means the platform default, and observability is on by default.
@@ -44,7 +44,8 @@ for (const keys of [
 }
 
 // OpenTofu owns the address (ADR 0002 D8). A custom domain is a kind of route.
-for (const key of ['route', 'routes']) {
+// Logpush and tail consumers would send request data off the Worker.
+for (const key of ['route', 'routes', 'logpush', 'tail_consumers', 'streaming_tail_consumers']) {
 	test(`the Worker declares no ${key}`, async () => {
 		expect(valueAt(await readWorkerConfig(), [key])).toBeUndefined();
 	});
