@@ -1,5 +1,7 @@
 import { choosePreviewPort } from './preview-port.ts';
 
+const PREVIEW_START_TIMEOUT_MS = 120_000;
+
 interface PreviewTargetInput {
 	readonly env: {
 		readonly CI?: string;
@@ -38,6 +40,11 @@ export function choosePreviewTarget({ env, folder }: PreviewTargetInput): Previe
 	const command = `pnpm run build && pnpm run preview --port ${port}`;
 	return {
 		baseURL,
-		webServer: { command, url: baseURL, reuseExistingServer: false, timeout: 120_000 }
+		webServer: {
+			command,
+			url: baseURL,
+			reuseExistingServer: false,
+			timeout: PREVIEW_START_TIMEOUT_MS
+		}
 	};
 }
