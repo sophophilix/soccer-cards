@@ -3,7 +3,17 @@
 name: preview
 
 on:
+  # Runs only when the pull request changes what the site serves, so other
+  # pull requests ask the tech lead for no preview approval (ADR 0002 D9).
+  # Patterns match the whole path from the repository root. These jobs are
+  # not required checks, so a run skipped by this filter blocks no merge.
   pull_request:
+    paths:
+      - 'apps/web/**'
+      - 'packages/**'
+      - 'pnpm-lock.yaml'
+      - 'package.json'
+      - '.github/workflows/preview.yml'
 
 permissions:
   contents: read
