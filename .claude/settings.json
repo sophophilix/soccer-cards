@@ -47,5 +47,23 @@
         ]
       }
     ]
+  },
+  "extraKnownMarketplaces": {
+    "svelte": {
+      "source": {
+        "source": "github",
+        "repo": "sveltejs/ai-tools"
+      }
+    },
+    "astral-sh": {
+      "source": {
+        "source": "github",
+        "repo": "astral-sh/agent-plugins"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "svelte@svelte": true,
+    "astral@astral-sh": true
   }
 }

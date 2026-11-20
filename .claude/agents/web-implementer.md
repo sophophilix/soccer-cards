@@ -10,6 +10,8 @@ skills:
   - ts-style-guide
   - ts-testing
   - sveltekit-web
+  - svelte:svelte-core-bestpractices
+  - svelte:svelte-code-writer
   - child-safety-privacy
 ---
 
