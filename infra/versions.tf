@@ -1,6 +1,4 @@
-# OpenTofu settings for the hosting of soccercards.dsantmaj.com (ADR 0002).
-# Plans and applies run only in CI. An agent never applies.
-
+# ADR 0002. Plans and applies run only in CI.
 terraform {
   required_version = "1.13.9"
 
@@ -11,19 +9,16 @@ terraform {
     }
   }
 
-  # State lives in Azure Blob Storage (ADR 0002 D9). The resource group,
-  # storage account and container come from -backend-config at init, and
-  # the sign-in comes from the ARM_* variables CI sets for OpenID Connect.
+  # ADR 0002 D9. The storage names come from -backend-config at init, and
+  # the OpenID Connect sign-in from the ARM_* variables CI sets.
   backend "azurerm" {
     key              = "soccer-cards.tfstate"
     use_oidc         = true
     use_azuread_auth = true
   }
 
-  # State and plans are encrypted before they leave the runner. The
-  # passphrase comes from the TF_STATE_PASSPHRASE secret through
-  # TF_VAR_state_passphrase. There is no fallback, so an unencrypted state
-  # or plan is refused.
+  # The passphrase comes from TF_VAR_state_passphrase, which must be set
+  # before init. No fallback, so an unencrypted state or plan is refused.
   encryption {
     key_provider "pbkdf2" "state_passphrase" {
       passphrase = var.state_passphrase
@@ -44,6 +39,3 @@ terraform {
     }
   }
 }
-
-# The provider reads CLOUDFLARE_API_TOKEN from the environment.
-provider "cloudflare" {}

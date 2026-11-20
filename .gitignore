@@ -28,7 +28,7 @@ playwright-report/
 test-results/
 
 # Infrastructure state, plans and variable files never go in git. The
-# provider lock file does.
+# provider lock file and the committed production values do.
 *.tfstate
 *.tfstate.*
 .terraform/
@@ -37,9 +37,10 @@ test-results/
 tfplan
 *.tfvars
 *.tfvars.json
-crash.log
-crash.*.log
+*.auto.tfvars
+*.auto.tfvars.json
 !.terraform.lock.hcl
+!/infra/production.tfvars
 
 .DS_Store
 
