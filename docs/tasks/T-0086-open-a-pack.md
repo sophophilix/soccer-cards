@@ -1,14 +1,11 @@
 ---
 id: T-0086
-title: Open a pack on the Packs screen and add the cards to the collection
+title: The logic for opening a pack and saving its cards
 component: web
 kind: feature
 agent: web-implementer
 paths:
-  - apps/web/src/routes/packs/**
-  - apps/web/src/routes/+page.svelte
   - apps/web/src/lib/packs/**
-  - apps/web/tests/packs.spec.ts
 dependencies: []
 max_changed_lines: 400
 status: ready
@@ -28,24 +25,22 @@ best last, and they join the collection saved on the device.
 
 ## Acceptance criteria
 
-- The Packs screen shows the pack kinds the player can open and opens one
-  with `drawPack`, using the game's random source.
-- Cards are revealed one by one with FlipCard, the best last; reduced
-  motion shows them without animation.
-- The new cards are saved through the player store; a reload keeps them.
-- A loading or data error shows a plain message and a retry, never a blank
-  screen.
-- `make check COMPONENT=web` passes, including axe on the screen.
+- `lib/packs/pack-session.ts` opens a pack with `drawPack` and the game's
+  random source (seeded from `crypto.getRandomValues`), saves it as pending,
+  gives the reveal order (best last), and adds the cards through the player
+  store. Split from the first T-0086 build (598 lines); T-0093 is the view.
+- Storage unavailable: the pack still opens and the result says it can't
+  be saved.
+- `make check COMPONENT=web` passes.
 
 ## Edge cases
 
-- Storage unavailable: the pack still opens and says progress can't be
-  saved on this device.
+- A pack the player can't pay for; a double open or add; a card no longer
+  in the set.
 
 ## Tests
 
-- Unit tests for the reveal order and save; an end-to-end test that opens
-  a pack and finds the cards after a reload.
+- `pack-session.test.ts` for each criterion and edge case.
 
 ## Out of scope
 
