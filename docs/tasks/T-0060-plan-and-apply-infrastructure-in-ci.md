@@ -48,9 +48,12 @@ infra gate also runs on every pull request.
   `-backend-config` with the `TF_STATE_*` variables.
 - On `main`, the pipeline in `deploy.yml` (T-0058) gains an apply job that
   `needs` the deploy job, so the Worker exists before the custom domain is
-  attached. When `infra/` changed in that push, it plans with `-out=tfplan`
-  and applies exactly that saved plan in the `production` environment, which
-  waits for the tech lead. `infra.yml` handles pull requests only.
+  attached. Every `main` run plans with `-detailed-exitcode -out=tfplan`.
+  When the plan has changes (whether from `infra/` or from drift made in
+  the dashboard), it applies exactly that saved plan in the `production`
+  environment, which waits for the tech lead. When the plan has no changes,
+  nothing waits and the summary says so. `infra.yml` handles pull requests
+  only.
 - A plan that destroys or replaces a resource stops before apply and says
   so in the summary.
 - Only one run touches the state at a time (a concurrency group), and runs
@@ -61,9 +64,13 @@ infra gate also runs on every pull request.
 
 - A pull request from a fork or Dependabot gets no secrets: the plan job is
   skipped and says why.
-- The first apply runs on the first `main` push that changes `infra/` after
-  this task. If `infra/` didn't change, nothing is applied, and the summary
-  says so.
+- The first `main` run after this task merges finds the custom domain
+  missing and plans to create it, so the first apply happens then, even
+  though that push doesn't change `infra/`.
+- The plan and the apply need the same environment: plan in a job without
+  approval only if it uses the read-only identity; the saved plan that is
+  applied must be made by the `production` job itself, or passed to it
+  unchanged.
 
 ## Tests
 
