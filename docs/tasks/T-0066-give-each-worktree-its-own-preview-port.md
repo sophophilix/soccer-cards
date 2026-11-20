@@ -7,8 +7,10 @@ agent: web-implementer
 paths:
   - apps/web/playwright.config.ts
   - apps/web/package.json
+  - apps/web/preview-port.ts
+  - apps/web/tests/preview-port.spec.ts
 dependencies: []
-max_changed_lines: 80
+max_changed_lines: 120
 status: ready
 ---
 
@@ -29,7 +31,9 @@ against another worktree's code without saying so. It happened on
   overrides it. Read the current Wrangler page before using a flag.
 - In CI (`process.env.CI` set) there is one checkout, so behaviour there
   may stay as it is.
-- Aim for about 40 changed lines.
+- Aim for about 80 changed lines. The port choice lives in
+  `apps/web/preview-port.ts`, imported by `playwright.config.ts`, so a test
+  can call it (rule 10: a fix comes with a test).
 
 ## Acceptance criteria
 
@@ -49,6 +53,10 @@ against another worktree's code without saying so. It happened on
 
 ## Tests
 
+- `apps/web/tests/preview-port.spec.ts`, a Playwright test with no page:
+  the same folder always gives the same port, two folders give different
+  ports, every port is in the chosen range, `PREVIEW_PORT` overrides it,
+  and a bad `PREVIEW_PORT` is refused.
 - The report shows two worktrees running `make check COMPONENT=web` at
   the same time, each on its own port, both passing.
 
