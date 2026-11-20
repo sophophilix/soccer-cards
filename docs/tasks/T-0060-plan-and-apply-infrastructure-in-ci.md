@@ -12,7 +12,7 @@ paths:
 dependencies:
   - opentofu/setup-opentofu
   - azure/login
-max_changed_lines: 340
+max_changed_lines: 400
 status: ready
 ---
 
