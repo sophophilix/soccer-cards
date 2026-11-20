@@ -1,0 +1,5 @@
+# Tier overrides (ADR 0006 D4): Q-id, tier, reason. ICON goes only to retired greats.
+Q12897 = { tier = "ICON", reason = "A retired great and the only player to win three World Cups" } # Pele
+Q1835 = { tier = "ICON", reason = "A retired great who won the 1998 World Cup and the Ballon d'Or" } # Zinedine Zidane
+Q483027 = { tier = "ICON", reason = "A retired great who won five European Cups with AC Milan" } # Paolo Maldini
+Q4457 = { tier = "ICON", reason = "A retired great who won the World Cup as a player in 1974 and as a coach in 1990" } # Franz Beckenbauer
