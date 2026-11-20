@@ -109,9 +109,9 @@ describe('computerSide', () => {
 	});
 
 	it.each([
-		[divisionFour, 0],
-		[championsLeague, 1]
-	] as const)('gives the side of $id a form bonus of %i', (division, formPercent) => {
+		{ division: divisionFour, formPercent: 0 },
+		{ division: championsLeague, formPercent: 1 }
+	])('gives the side of $division.id a form bonus of $formPercent', ({ division, formPercent }) => {
 		const result = computerSide(division, aCheckedCardSet(PLENTY), createRandom(SEED));
 
 		expect(result).toMatchObject({ ok: true, value: { formPercent } });
