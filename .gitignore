@@ -51,3 +51,6 @@ tfplan
 
 # Photos of commercial cards used as design inspiration. Not ours to publish.
 /images/
+
+# Hypothesis example database, written when the data tests run.
+data/pipeline/.hypothesis/
