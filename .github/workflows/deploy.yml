@@ -1,0 +1,77 @@
+# The pipeline for `main` (ADR 0002 D3): run every gate in `checks.yml` on
+# this commit, then deploy it after the tech lead approves the `production`
+# environment. Rollback stays with the tech lead (ADR 0002 D7).
+name: deploy
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# One run at a time, and a run in progress is never cancelled. A newer push
+# replaces only a run that is still pending, so the run that starts next is
+# always the newest commit.
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # The same jobs a pull request runs. A failed job stops the deploy, and can
+  # be re-run in this run; the deploy then continues after approval.
+  checks:
+    # actionlint 1.7.12 can't parse the `$/` form zizmor asks for. Remove the
+    # ignore and switch to `$/` when actionlint supports it. Expires 2027-02-20.
+    uses: ./.github/workflows/checks.yml # zizmor: ignore[self-repository]
+    permissions:
+      contents: read
+
+  deploy:
+    name: Deploy to production
+    needs: checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    # The job waits here for the tech lead's approval. An approval never given
+    # expires with the run, and nothing deploys.
+    environment:
+      name: production
+      url: https://soccercards.dsantmaj.com
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      # This job holds the deploy token, so it runs no build and no install
+      # script. It installs the root tools only, where wrangler lives.
+      - run: pnpm install --frozen-lockfile --ignore-scripts --filter soccer-cards
+      # The build the `web` gate tested in this run, checked against the
+      # digest the upload recorded.
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: site
+          path: apps/web/build
+          digest-mismatch: error
+      # Re-running an older run's failed job after a newer commit deployed
+      # would otherwise put the older commit back on the site.
+      - name: Stop unless this commit is still the head of main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          head="$(gh api "repos/${GITHUB_REPOSITORY}/commits/main" --jq .sha)"
+          if [ "$head" != "$GITHUB_SHA" ]; then
+            echo "::error::main moved to ${head}. That commit deploys in its own run. ${GITHUB_SHA} does not."
+            echo "Not deployed: \`main\` moved to \`${head}\`." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+      - name: Deploy the build
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_SEND_METRICS: 'false'
+        run: pnpm exec wrangler deploy --config apps/web/wrangler.jsonc --message "main ${GITHUB_SHA}"
