@@ -91,7 +91,6 @@ jobs:
       contents: read
       id-token: write # The azurerm backend signs in to Azure with OpenID Connect.
     outputs:
-      bootstrap: ${{ steps.plan.outputs.bootstrap }}
       changes: ${{ steps.plan.outputs.changes }}
       fingerprint: ${{ steps.plan.outputs.fingerprint }}
     defaults:
@@ -131,20 +130,28 @@ jobs:
           TF_IN_AUTOMATION: 'true'
         run: |
           set -o pipefail
-          if grep -rqE 'nonsensitive[[:space:]]*\(' --include='*.tf' --include='*.tf.json' .; then
-            echo "::error::infra/ calls nonsensitive(). Remove it."; exit 1
+          # An az failure stops the step. Only a clear answer is used.
+          exists="$(az storage blob exists --auth-mode login --account-name "$TF_STATE_STORAGE_ACCOUNT" --container-name tfstate --name soccer-cards.tfstate --query exists -o tsv)"
+          case "$exists" in
+            true) tofu init -input=false -lockfile=readonly \
+                    -backend-config="resource_group_name=${TF_STATE_RESOURCE_GROUP}" \
+                    -backend-config="storage_account_name=${TF_STATE_STORAGE_ACCOUNT}" \
+                    -backend-config=container_name=tfstate ;;
+            # The backend would create the missing blob, which this read-only
+            # identity can't (`azurerm` StateMgr). Plan against an empty local
+            # state instead. `apply` creates the remote state, plans against
+            # it, and applies only if that plan matches this one. This plan is
+            # still encrypted, and no state is written.
+            false) printf 'terraform {\n  backend "local" {}\n}\n' > bootstrap_override.tf
+                   tofu init -input=false -lockfile=readonly
+                   echo "No state exists yet. This plan is against an empty state." >> "$GITHUB_STEP_SUMMARY" ;;
+            *) echo "::error::Could not tell whether the state exists."; exit 1 ;;
+          esac
+          # nonsensitive() could put the passphrase in the summary. After init,
+          # so the modules it fetched are checked too.
+          if grep -rqE 'nonsensitive[[:space:]]*\(' --include='*.tf' --include='*.tf.json' --include='*.tofu' --include='*.tofu.json' .; then
+            echo "::error::infra/ or a module calls nonsensitive(). Remove it."; exit 1
           fi
-          # With no state blob, the backend would write one, which this
-          # read-only identity can't (`azurerm` backend StateMgr). `apply`
-          # creates it after approval and applies nothing.
-          if [ "$(az storage blob exists --auth-mode login --account-name "$TF_STATE_STORAGE_ACCOUNT" --container-name tfstate --name soccer-cards.tfstate --query exists -o tsv)" != true ]; then
-            echo "No state exists yet. After approval, \`Apply infrastructure\` creates it, shows the plan, and applies nothing." >> "$GITHUB_STEP_SUMMARY"
-            echo "bootstrap=true" >> "$GITHUB_OUTPUT"; exit 0
-          fi
-          tofu init -input=false -lockfile=readonly \
-            -backend-config="resource_group_name=${TF_STATE_RESOURCE_GROUP}" \
-            -backend-config="storage_account_name=${TF_STATE_STORAGE_ACCOUNT}" \
-            -backend-config=container_name=tfstate
           # Exit code 0 is no changes, 2 is changes, anything else is an error.
           set +e
           tofu plan -input=false -lock=false -no-color -detailed-exitcode -var-file=production.tfvars -out=tfplan > /dev/null
@@ -173,15 +180,14 @@ jobs:
           echo "changes=true" >> "$GITHUB_OUTPUT"
           echo "fingerprint=${fingerprint}" >> "$GITHUB_OUTPUT"
 
-  # Runs only when `plan` found changes, or found no state. A plan made with
-  # read-only credentials can't be applied, so this job plans again and
-  # applies its own saved plan only when it matches the one the tech lead
-  # read. The Worker exists by now, so the custom domain can attach to it
-  # (ADR 0002 D8).
+  # Runs only when `plan` found changes. A plan made with read-only
+  # credentials can't be applied, so this job plans again and applies its own
+  # saved plan only when it matches the one the tech lead read. The Worker
+  # exists by now, so the custom domain can attach to it (ADR 0002 D8).
   apply:
     name: Apply infrastructure
     needs: [deploy, plan]
-    if: ${{ needs.plan.outputs.changes == 'true' || needs.plan.outputs.bootstrap == 'true' }}
+    if: ${{ needs.plan.outputs.changes == 'true' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     # Waits for the tech lead. This identity is the only one that can write
@@ -221,10 +227,9 @@ jobs:
           fi
       # The credentials reach this step only. The fingerprint is computed as
       # in `plan`, so anything changed since then stops the run. On the first
-      # run, init creates the empty state and the plan is shown, not applied.
+      # run, init creates the empty encrypted state in Azure.
       - name: Plan again, and apply if it matches the plan the tech lead read
         env:
-          BOOTSTRAP: ${{ needs.plan.outputs.bootstrap }}
           SEEN: ${{ needs.plan.outputs.fingerprint }}
           ARM_USE_OIDC: 'true'
           ARM_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
@@ -245,14 +250,11 @@ jobs:
           json="$(tofu show -json tfplan)"
           gone="$(jq -r '.resource_changes[]? | select(.change.actions | index("delete")) | .address' <<< "$json")"
           fingerprint="$(jq -cS '[.resource_changes[]? | select(.change.actions != ["no-op"]) | {address, change: (.change | {actions, before, after, after_unknown})}]' <<< "$json" | sha256sum | cut -d' ' -f1)"
-          if [ "$BOOTSTRAP" = true ] || [ -n "$gone" ] || [ "$fingerprint" != "$SEEN" ]; then
+          if [ -n "$gone" ] || [ "$fingerprint" != "$SEEN" ]; then
             {
-              echo "### Not applied: a first run, a plan that differs from Plan infrastructure, or a destroy or replace"
+              echo "### Not applied: this plan differs from Plan infrastructure, or destroys or replaces resources"
               jq -r '.resource_changes[]? | select(.change.actions != ["no-op"]) | "- `\(.address)`: \(.change.actions | join(" then "))"' <<< "$json"
             } >> "$GITHUB_STEP_SUMMARY"
-            if [ "$BOOTSTRAP" = true ]; then
-              echo "The state now exists. The next run on \`main\` shows this plan and asks to apply it." >> "$GITHUB_STEP_SUMMARY"; exit 0
-            fi
             echo "::error::The plan changed since the tech lead read it, or destroys or replaces resources. Nothing was applied."
             exit 1
           fi

@@ -43,18 +43,20 @@ jobs:
           tofu_wrapper: false
           checksums: bc44eb6b06446ba83bd4072114891987f590f66cca712737a7f1147c50c539ce
       # A provider's code runs during plan, beside the credentials. Plan only
-      # with the providers and versions already on the base branch.
+      # with the base branch's lock file, and no provider shipped in the tree.
       - id: providers
         name: Check the providers against the base branch
         env:
           GH_TOKEN: ${{ github.token }}
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
-          base="$(gh api -H 'Accept: application/vnd.github.raw' "repos/${GITHUB_REPOSITORY}/contents/infra/.terraform.lock.hcl?ref=${BASE_SHA}" | grep -E '^provider |^  version ')"
-          if [ "$base" = "$(grep -E '^provider |^  version ' .terraform.lock.hcl)" ]; then
+          gh api -H 'Accept: application/vnd.github.raw' "repos/${GITHUB_REPOSITORY}/contents/infra/.terraform.lock.hcl?ref=${BASE_SHA}" > "${RUNNER_TEMP}/base.lock.hcl"
+          if [ -e terraform.d ] || [ -e .terraform ]; then
+            echo "No plan: this branch commits infra/terraform.d/ or infra/.terraform/." >> "$GITHUB_STEP_SUMMARY"
+          elif cmp -s "${RUNNER_TEMP}/base.lock.hcl" .terraform.lock.hcl; then
             echo "same=true" >> "$GITHUB_OUTPUT"
           else
-            echo "No plan: this branch changes the providers in infra/.terraform.lock.hcl. They are planned on \`main\` after review." >> "$GITHUB_STEP_SUMMARY"
+            echo "No plan: this branch changes infra/.terraform.lock.hcl. It is planned on \`main\` after review." >> "$GITHUB_STEP_SUMMARY"
           fi
       # Lets the az CLI below check that the state exists.
       - if: ${{ steps.providers.outputs.same == 'true' }}
@@ -80,19 +82,26 @@ jobs:
           TF_IN_AUTOMATION: 'true'
         run: |
           set -o pipefail
+          # An az failure stops the step. Only a clear answer is used.
+          exists="$(az storage blob exists --auth-mode login --account-name "$TF_STATE_STORAGE_ACCOUNT" --container-name tfstate --name soccer-cards.tfstate --query exists -o tsv)"
+          case "$exists" in
+            true) tofu init -input=false -lockfile=readonly \
+                    -backend-config="resource_group_name=${TF_STATE_RESOURCE_GROUP}" \
+                    -backend-config="storage_account_name=${TF_STATE_STORAGE_ACCOUNT}" \
+                    -backend-config=container_name=tfstate ;;
+            # The backend would create the missing blob, which this read-only
+            # identity can't (`azurerm` StateMgr). Plan against an empty local
+            # state instead. The plan is still encrypted, and no state is written.
+            false) printf 'terraform {\n  backend "local" {}\n}\n' > bootstrap_override.tf
+                   tofu init -input=false -lockfile=readonly
+                   echo "No state exists yet. This plan is against an empty state." >> "$GITHUB_STEP_SUMMARY" ;;
+            *) echo "::error::Could not tell whether the state exists."; exit 1 ;;
+          esac
           # nonsensitive() could put the passphrase in the public summary.
-          if grep -rqE 'nonsensitive[[:space:]]*\(' --include='*.tf' --include='*.tf.json' .; then
-            echo "::error::infra/ calls nonsensitive(). Remove it."; exit 1
+          # After init, so the modules it fetched are checked too.
+          if grep -rqE 'nonsensitive[[:space:]]*\(' --include='*.tf' --include='*.tf.json' --include='*.tofu' --include='*.tofu.json' .; then
+            echo "::error::infra/ or a module calls nonsensitive(). Remove it."; exit 1
           fi
-          # A missing state blob would make the backend write one, which this
-          # read-only identity can't (`azurerm` backend StateMgr).
-          if [ "$(az storage blob exists --auth-mode login --account-name "$TF_STATE_STORAGE_ACCOUNT" --container-name tfstate --name soccer-cards.tfstate --query exists -o tsv)" != true ]; then
-            echo "No plan: no state exists yet. The first approved run on \`main\` creates it." >> "$GITHUB_STEP_SUMMARY"; exit 0
-          fi
-          tofu init -input=false -lockfile=readonly \
-            -backend-config="resource_group_name=${TF_STATE_RESOURCE_GROUP}" \
-            -backend-config="storage_account_name=${TF_STATE_STORAGE_ACCOUNT}" \
-            -backend-config=container_name=tfstate
           tofu plan -input=false -lock=false -no-color -var-file=production.tfvars -out=tfplan > /dev/null
           json="$(tofu show -json tfplan)"
           if jq -e '[.output_changes[]? | select(.actions != ["no-op"])] | length > 0' <<< "$json" > /dev/null; then
