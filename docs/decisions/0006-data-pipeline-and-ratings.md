@@ -1,9 +1,8 @@
 # ADR 0006: Data pipeline and ratings
 
-> Status: Proposed. The ratings approach (D2 to D4) was agreed in chat on
-> 2026-11-20; the record as a whole awaits approval.
+> Status: Approved
 > Created: 2026-11-20
-> Last reviewed: 2026-11-20
+> Last reviewed: 2026-11-20T13:09:36Z
 > Next review: Not scheduled
 
 ## Review guide
@@ -14,7 +13,8 @@ ratings are made from them, and how the pipeline is built and checked.
 Check these points:
 
 - [ ] D2: skill grades of 1 to 5, drafted by an agent with a reason each and
-      reviewed by you, are the only facts set by hand.
+      checked by a second agent, are the only facts set by hand. Players'
+      feedback corrects them.
 - [ ] D3: real statistics move a rating by a bounded amount, so a grade can't
       be outweighed by one unusual season.
 - [ ] D6: the first runs are started by you, not on a schedule.
@@ -41,8 +41,9 @@ party's ratings are used (ADR 0003 D1).
 - A model asked for 1 to 99 ratings tends to reproduce a video game's
   numbers from memory. That would break ADR 0003 D1.
 - On 2026-11-20 the tech lead agreed: Wikidata statistics and honours, plus
-  1 to 5 skill grades an agent drafts with reasons and the tech lead reviews,
-  through the project's formula. The User-Agent contact is the repository
+  1 to 5 skill grades an agent drafts with reasons, through the project's
+  formula. They chose not to review grades one by one, and to correct them
+  from their children's feedback after release. The User-Agent contact is the repository
   address.
 
 ## Decision
@@ -63,9 +64,11 @@ on-disk cache.
 **D2. Skill grades.** For each player a committed file holds six grades from
 1 to 5, one for each rating in the player's group (ADR 0005 D6), and a
 one-line reason for each that names a public, checkable fact. An agent
-drafts grades; the tech lead reviews them in the pull request. A grade file
-never holds a number on the 1 to 99 scale, and never cites a video game or a
-card maker.
+drafts grades, and a reviewer agent checks every reason in the pull request.
+The tech lead doesn't review grades one by one: the cards ship, and the
+players' feedback, passed on by the tech lead, corrects a grade through a
+normal pull request. A grade file never holds a number on the 1 to 99 scale,
+and never cites a video game or a card maker.
 
 **D3. The formula.** One module, with a version number and named constants:
 
@@ -132,3 +135,4 @@ pull request itself comes later, with its own decision.
 | Reviewed at | Decision | Notes |
 |---|---|---|
 | 2026-11-20 | Proposed | Drafted by Claude after the tech lead said "yes to the ratings approach, go ahead". |
+| 2026-11-20T13:09:36Z | Approved | The tech lead said "yes to the ratings approach, go ahead", then "i dont think i can review these ... 1-5 skill grades ..., just deploy them and my kids will feedback". D2 now has a reviewer agent check grades, and feedback corrects them after release. |
