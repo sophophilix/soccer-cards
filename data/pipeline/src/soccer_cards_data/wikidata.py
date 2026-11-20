@@ -118,7 +118,7 @@ def fetch_player(source: JsonSource, qid: str) -> PlayerFacts:
     teams: Json = {}
     for i in range(0, len(team_ids), BATCH):
         reply = _get(source, "|".join(team_ids[i : i + BATCH]), "labels|claims")
-        teams.update(_entities(reply))
+        teams.update(_dict(_dict(reply).get("entities")))
 
     clubs: list[Spell] = []
     national: list[Spell] = []
@@ -169,21 +169,13 @@ def _get(source: JsonSource, ids: str, props: str) -> object:
     return source.get_json(API_URL, params)
 
 
-def _entities(reply: object) -> Json:
-    """Return a reply's entities, or raise on an error body such as `maxlag`."""
+def _only_entity(reply: object) -> Json:
     body = _dict(reply)
     if "error" in body:
         code = _dict(body["error"]).get("code")
         raise WikidataError(f"Wikidata refused the request: {code!r}")
     entities = body.get("entities")
-    if not isinstance(entities, dict):
-        raise WikidataError("unexpected reply from Wikidata")
-    return entities
-
-
-def _only_entity(reply: object) -> Json:
-    entities = _entities(reply)
-    if len(entities) != 1:
+    if not isinstance(entities, dict) or len(entities) != 1:
         raise WikidataError("unexpected reply from Wikidata")
     return _dict(next(iter(entities.values())))
 
