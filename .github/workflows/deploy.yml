@@ -1,6 +1,8 @@
 # The pipeline for `main` (ADR 0002 D3): run every gate in `checks.yml` on
 # this commit, then deploy it after the tech lead approves the `production`
-# environment. Rollback stays with the tech lead (ADR 0002 D7).
+# environment. infra/ is planned on every run, and applied after a second
+# approval only when the plan has changes.
+# Rollback stays with the tech lead (ADR 0002 D7).
 name: deploy
 
 on:
@@ -10,12 +12,11 @@ on:
 permissions:
   contents: read
 
-# One run at a time, and a run in progress is never cancelled. A newer push
-# replaces only a run that is still pending, so the run that starts next is
-# always the newest commit.
-concurrency:
-  group: deploy-${{ github.ref }}
-  cancel-in-progress: false
+# No workflow-level concurrency group: the checks and the read-only plan start
+# at once, even while an older run waits for approval. Only `deploy` and
+# `apply` queue, each in its own group. A job in progress, or waiting for
+# approval, is never cancelled. A newer run's pending job replaces an older
+# pending one, and the head-of-main guard stops an older commit that runs.
 
 jobs:
   # The same jobs a pull request runs. A failed job stops the deploy, and can
@@ -37,6 +38,10 @@ jobs:
     environment:
       name: production
       url: https://soccercards.dsantmaj.com
+    # One deploy at a time across runs. Never cancelled.
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -57,8 +62,8 @@ jobs:
           name: site
           path: apps/web/build
           digest-mismatch: error
-      # Re-running an older run's failed job after a newer commit deployed
-      # would otherwise put the older commit back on the site.
+      # An older run approved after a newer push, or re-run after a newer
+      # commit deployed, would otherwise put the older commit on the site.
       - name: Stop unless this commit is still the head of main
         env:
           GH_TOKEN: ${{ github.token }}
@@ -75,3 +80,205 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           WRANGLER_SEND_METRICS: 'false'
         run: pnpm exec wrangler deploy --config apps/web/wrangler.jsonc --message "main ${GITHUB_SHA}"
+
+  # Plans every run, so drift made in the dashboard shows up too. It needs no
+  # approval: `infra-plan` is `main` only and holds read-only credentials, so
+  # this job can't lock or change anything (ADR 0002 D9). The tech lead reads
+  # its summary before approving `apply`.
+  plan:
+    name: Plan infrastructure
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: infra-plan
+    permissions:
+      contents: read
+      id-token: write # The azurerm backend signs in to Azure with OpenID Connect.
+    outputs:
+      changes: ${{ steps.plan.outputs.changes }}
+      fingerprint: ${{ steps.plan.outputs.fingerprint }}
+    defaults:
+      run:
+        working-directory: infra
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      # Same version and checksum as the infra job in checks.yml.
+      - uses: opentofu/setup-opentofu@a1320f892987e89d278cc92dc5adc984fb93aca4 # v2.0.2
+        with:
+          tofu_version: 1.13.9
+          tofu_wrapper: false
+          checksums: bc44eb6b06446ba83bd4072114891987f590f66cca712737a7f1147c50c539ce
+      # Lets the az CLI below check that the state exists.
+      - uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          allow-no-subscriptions: true
+      # The credentials reach this step only. The summary is built from the
+      # plan JSON's resource_changes: addresses and actions, never values. The
+      # plan text and the JSON are never printed.
+      - id: plan
+        name: Plan
+        env:
+          ARM_USE_OIDC: 'true'
+          ARM_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          TF_STATE_RESOURCE_GROUP: ${{ vars.TF_STATE_RESOURCE_GROUP }}
+          TF_STATE_STORAGE_ACCOUNT: ${{ vars.TF_STATE_STORAGE_ACCOUNT }}
+          TF_VAR_state_passphrase: ${{ secrets.TF_STATE_PASSPHRASE }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_INFRA_TOKEN }}
+          TF_IN_AUTOMATION: 'true'
+        run: |
+          set -o pipefail
+          # A tripwire for the obvious forms, not the control: review of the
+          # change before it reached `main` is. nonsensitive() could put the
+          # passphrase in the summary, and an `external` key provider or method
+          # runs a program at init. Any file with either word is refused,
+          # before init and again after it over the modules it fetched.
+          refuse_unsafe() {
+            if grep -rqwE 'nonsensitive|external' \
+                 --include='*.tf' --include='*.tf.json' --include='*.tofu' --include='*.tofu.json' .; then
+              echo "::error::infra/ or a module contains the word nonsensitive or external."; exit 1
+            fi
+          }
+          refuse_unsafe
+          # An az failure stops the step. Only a clear answer is used.
+          exists="$(az storage blob exists --auth-mode login --account-name "$TF_STATE_STORAGE_ACCOUNT" --container-name tfstate --name soccer-cards.tfstate --query exists -o tsv)"
+          case "$exists" in
+            true) tofu init -input=false -lockfile=readonly \
+                    -backend-config="resource_group_name=${TF_STATE_RESOURCE_GROUP}" \
+                    -backend-config="storage_account_name=${TF_STATE_STORAGE_ACCOUNT}" \
+                    -backend-config=container_name=tfstate ;;
+            # The backend would create the missing blob, which this read-only
+            # identity can't (`azurerm` StateMgr). Plan against an empty local
+            # state instead. `apply` creates the remote state, plans against
+            # it, and applies only if that plan matches this one. This plan is
+            # still encrypted, and no state is written.
+            false) printf 'terraform {\n  backend "local" {}\n}\n' > bootstrap_override.tf
+                   tofu init -input=false -lockfile=readonly
+                   echo "No state exists yet. This plan is against an empty state." >> "$GITHUB_STEP_SUMMARY" ;;
+            *) echo "::error::Could not tell whether the state exists."; exit 1 ;;
+          esac
+          refuse_unsafe
+          # Exit code 0 is no changes, 2 is changes, anything else is an error.
+          set +e
+          tofu plan -input=false -lock=false -no-color -detailed-exitcode -var-file=production.tfvars -out=tfplan > /dev/null
+          code=$?
+          set -e
+          if [ "$code" = 0 ]; then
+            echo "No infrastructure changes. Nothing to apply, and nothing waits." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          [ "$code" = 2 ] || exit "$code"
+          json="$(tofu show -json tfplan)"
+          if jq -e '[.output_changes[]? | select(.actions != ["no-op"])] | length > 0' <<< "$json" > /dev/null; then
+            echo "::error::The plan changes an output. Outputs aren't allowed in infra/."; exit 1
+          fi
+          fingerprint="$(jq -cS '[.resource_changes[]? | select(.change.actions != ["no-op"]) | {address, change: (.change | {actions, before, after, after_unknown})}]' <<< "$json" | sha256sum | cut -d' ' -f1)"
+          {
+            echo '### Infrastructure plan'
+            # An update also names the attributes that change and aren't
+            # sensitive. Names only, never values.
+            jq -r 'def sens($s; $k): if ($s | type) == "object" then ($s[$k] // false) != false else $s == true end;
+              .resource_changes[]? | select(.change.actions != ["no-op"]) | .change as $c
+              | "- `\(.address)`: \($c.actions | join(" then "))" + if $c.actions == ["update"] then
+                  [($c.after // {}) + ($c.after_unknown // {}) | keys[]
+                   | select($c.before[.] != $c.after[.] or $c.after_unknown[.] == true)
+                   | select((sens($c.before_sensitive; .) or sens($c.after_sensitive; .)) | not)]
+                  | if length == 0 then "" else " (" + join(", ") + ")" end
+                else "" end' <<< "$json"
+            echo "Resource changes SHA-256: \`${fingerprint}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+          if jq -e '[.resource_changes[]? | select(.change.actions | index("delete"))] | length > 0' <<< "$json" > /dev/null; then
+            echo "### Not applied: the plan destroys or replaces resources" >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::The plan destroys or replaces resources. The tech lead decides how to proceed."
+            exit 1
+          fi
+          echo "changes=true" >> "$GITHUB_OUTPUT"
+          echo "fingerprint=${fingerprint}" >> "$GITHUB_OUTPUT"
+
+  # Runs only when `plan` found changes. A plan made with read-only
+  # credentials can't be applied, so this job plans again and applies its own
+  # saved plan only when it matches the one the tech lead read. The Worker
+  # exists by now, so the custom domain can attach to it (ADR 0002 D8).
+  apply:
+    name: Apply infrastructure
+    needs: [deploy, plan]
+    if: ${{ needs.plan.outputs.changes == 'true' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    # Waits for the tech lead. This identity is the only one that can write
+    # and lock the state (ADR 0002 D9).
+    environment: production
+    # One apply at a time across runs, so one run writes the state at a time
+    # beside the backend's lease lock. Never cancelled.
+    concurrency:
+      group: opentofu-production
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      id-token: write # The azurerm backend signs in to Azure with OpenID Connect.
+    defaults:
+      run:
+        working-directory: infra
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      # Same version and checksum as the infra job in checks.yml.
+      - uses: opentofu/setup-opentofu@a1320f892987e89d278cc92dc5adc984fb93aca4 # v2.0.2
+        with:
+          tofu_version: 1.13.9
+          tofu_wrapper: false
+          checksums: bc44eb6b06446ba83bd4072114891987f590f66cca712737a7f1147c50c539ce
+      # An older run approved or re-run after a newer push would apply older
+      # code.
+      - name: Stop unless this commit is still the head of main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          head="$(gh api "repos/${GITHUB_REPOSITORY}/commits/main" --jq .sha)"
+          if [ "$head" != "$GITHUB_SHA" ]; then
+            echo "::error::main moved to ${head}. That commit applies in its own run."
+            echo "Not applied: \`main\` moved to \`${head}\`." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+      # The credentials reach this step only. The fingerprint is computed as
+      # in `plan`, so anything changed since then stops the run. On the first
+      # run, init creates the empty encrypted state in Azure.
+      - name: Plan again, and apply if it matches the plan the tech lead read
+        env:
+          SEEN: ${{ needs.plan.outputs.fingerprint }}
+          ARM_USE_OIDC: 'true'
+          ARM_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          TF_STATE_RESOURCE_GROUP: ${{ vars.TF_STATE_RESOURCE_GROUP }}
+          TF_STATE_STORAGE_ACCOUNT: ${{ vars.TF_STATE_STORAGE_ACCOUNT }}
+          TF_VAR_state_passphrase: ${{ secrets.TF_STATE_PASSPHRASE }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_INFRA_TOKEN }}
+          TF_IN_AUTOMATION: 'true'
+        run: |
+          set -o pipefail
+          tofu init -input=false -lockfile=readonly \
+            -backend-config="resource_group_name=${TF_STATE_RESOURCE_GROUP}" \
+            -backend-config="storage_account_name=${TF_STATE_STORAGE_ACCOUNT}" \
+            -backend-config=container_name=tfstate
+          tofu plan -input=false -lock-timeout=5m -no-color -var-file=production.tfvars -out=tfplan > /dev/null
+          json="$(tofu show -json tfplan)"
+          gone="$(jq -r '.resource_changes[]? | select(.change.actions | index("delete")) | .address' <<< "$json")"
+          fingerprint="$(jq -cS '[.resource_changes[]? | select(.change.actions != ["no-op"]) | {address, change: (.change | {actions, before, after, after_unknown})}]' <<< "$json" | sha256sum | cut -d' ' -f1)"
+          if [ -n "$gone" ] || [ "$fingerprint" != "$SEEN" ]; then
+            {
+              echo "### Not applied: this plan differs from Plan infrastructure, or destroys or replaces resources"
+              jq -r '.resource_changes[]? | select(.change.actions != ["no-op"]) | "- `\(.address)`: \(.change.actions | join(" then "))"' <<< "$json"
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::The plan changed since the tech lead read it, or destroys or replaces resources. Nothing was applied."
+            exit 1
+          fi
+          tofu apply -input=false -no-color tfplan
+          echo "Applied the plan with resource changes SHA-256 \`${fingerprint}\`." >> "$GITHUB_STEP_SUMMARY"

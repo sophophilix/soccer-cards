@@ -12,5 +12,5 @@
 
 <main>
 	<h1>{heading}</h1>
-	<p><a href={resolve('/')}>Go back to the start</a></p>
+	<p><a href={resolve('/packs')}>Go to Packs</a></p>
 </main>

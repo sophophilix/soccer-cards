@@ -1,8 +1,5 @@
-<svelte:head>
-	<title>Soccer Cards</title>
-</svelte:head>
+<script lang="ts">
+	import PacksView from './packs/PacksView.svelte';
+</script>
 
-<main>
-	<h1>Soccer Cards</h1>
-	<p>Open packs, collect players and build your team.</p>
-</main>
+<PacksView />

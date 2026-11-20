@@ -1,0 +1,144 @@
+# Shows what a pull request's change to infra/ would do to production
+# (ADR 0002 D3, D9). It never applies: deploy.yml applies from `main`.
+name: infra
+
+on:
+  pull_request:
+    paths:
+      - 'infra/**'
+      - '.github/workflows/infra.yml'
+
+permissions:
+  contents: read
+
+# A plan only reads the state, so a newer push may cancel an older plan.
+concurrency:
+  group: infra-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  plan:
+    name: Plan infrastructure
+    # A fork's or Dependabot's pull request gets no environment secrets.
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.user.login != 'dependabot[bot]' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    # Waits for the tech lead, like every `preview` run (ADR 0002 D9). The
+    # identity there can read the state but never write or lock it.
+    environment: preview
+    permissions:
+      contents: read
+      id-token: write # The azurerm backend signs in to Azure with OpenID Connect.
+    defaults:
+      run:
+        working-directory: infra
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # Same version and checksum as the infra job in checks.yml.
+      - uses: opentofu/setup-opentofu@a1320f892987e89d278cc92dc5adc984fb93aca4 # v2.0.2
+        with:
+          tofu_version: 1.13.9
+          tofu_wrapper: false
+          checksums: bc44eb6b06446ba83bd4072114891987f590f66cca712737a7f1147c50c539ce
+      # Approving this run runs the branch's infra/ and workflow code with the
+      # `preview` secrets, so read those changes first. A provider's code runs
+      # during plan: plan only with the base branch's lock file, and no
+      # provider shipped in the tree.
+      - id: providers
+        name: Check the providers against the base branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          gh api -H 'Accept: application/vnd.github.raw' "repos/${GITHUB_REPOSITORY}/contents/infra/.terraform.lock.hcl?ref=${BASE_SHA}" > "${RUNNER_TEMP}/base.lock.hcl"
+          if [ -e terraform.d ] || [ -e .terraform ]; then
+            echo "No plan: this branch commits infra/terraform.d/ or infra/.terraform/." >> "$GITHUB_STEP_SUMMARY"
+          elif cmp -s "${RUNNER_TEMP}/base.lock.hcl" .terraform.lock.hcl; then
+            echo "same=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No plan: this branch changes infra/.terraform.lock.hcl. It is planned on \`main\` after review." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      # Lets the az CLI below check that the state exists.
+      - if: ${{ steps.providers.outputs.same == 'true' }}
+        uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          allow-no-subscriptions: true
+      # The credentials reach this step only. The summary is built from the
+      # plan JSON's resource_changes: addresses and actions, never values. The
+      # plan text and the JSON are never printed.
+      - name: Plan
+        if: ${{ steps.providers.outputs.same == 'true' }}
+        env:
+          ARM_USE_OIDC: 'true'
+          ARM_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          TF_STATE_RESOURCE_GROUP: ${{ vars.TF_STATE_RESOURCE_GROUP }}
+          TF_STATE_STORAGE_ACCOUNT: ${{ vars.TF_STATE_STORAGE_ACCOUNT }}
+          TF_VAR_state_passphrase: ${{ secrets.TF_STATE_PASSPHRASE }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_INFRA_TOKEN }}
+          TF_IN_AUTOMATION: 'true'
+        run: |
+          set -o pipefail
+          # A tripwire for the obvious forms, not the control: approving the
+          # `preview` run is. nonsensitive() could put the passphrase in the
+          # public summary, and an `external` key provider or method runs a
+          # program at init. Any file with either word is refused, before init
+          # and again after it over the modules it fetched.
+          refuse_unsafe() {
+            if grep -rqwE 'nonsensitive|external' \
+                 --include='*.tf' --include='*.tf.json' --include='*.tofu' --include='*.tofu.json' .; then
+              echo "::error::infra/ or a module contains the word nonsensitive or external."; exit 1
+            fi
+          }
+          refuse_unsafe
+          # An az failure stops the step. Only a clear answer is used.
+          exists="$(az storage blob exists --auth-mode login --account-name "$TF_STATE_STORAGE_ACCOUNT" --container-name tfstate --name soccer-cards.tfstate --query exists -o tsv)"
+          case "$exists" in
+            true) tofu init -input=false -lockfile=readonly \
+                    -backend-config="resource_group_name=${TF_STATE_RESOURCE_GROUP}" \
+                    -backend-config="storage_account_name=${TF_STATE_STORAGE_ACCOUNT}" \
+                    -backend-config=container_name=tfstate ;;
+            # The backend would create the missing blob, which this read-only
+            # identity can't (`azurerm` StateMgr). Plan against an empty local
+            # state instead. The plan is still encrypted, and no state is written.
+            false) printf 'terraform {\n  backend "local" {}\n}\n' > bootstrap_override.tf
+                   tofu init -input=false -lockfile=readonly
+                   echo "No state exists yet. This plan is against an empty state." >> "$GITHUB_STEP_SUMMARY" ;;
+            *) echo "::error::Could not tell whether the state exists."; exit 1 ;;
+          esac
+          refuse_unsafe
+          tofu plan -input=false -lock=false -no-color -var-file=production.tfvars -out=tfplan > /dev/null
+          json="$(tofu show -json tfplan)"
+          if jq -e '[.output_changes[]? | select(.actions != ["no-op"])] | length > 0' <<< "$json" > /dev/null; then
+            echo "::error::The plan changes an output. Outputs aren't allowed in infra/."; exit 1
+          fi
+          {
+            echo '### Infrastructure plan'
+            # An update also names the attributes that change and aren't
+            # sensitive. Names only, never values.
+            jq -r 'def sens($s; $k): if ($s | type) == "object" then ($s[$k] // false) != false else $s == true end;
+              [.resource_changes[]? | select(.change.actions != ["no-op"]) | .change as $c
+              | "- `\(.address)`: \($c.actions | join(" then "))" + if $c.actions == ["update"] then
+                  [($c.after // {}) + ($c.after_unknown // {}) | keys[]
+                   | select($c.before[.] != $c.after[.] or $c.after_unknown[.] == true)
+                   | select((sens($c.before_sensitive; .) or sens($c.after_sensitive; .)) | not)]
+                  | if length == 0 then "" else " (" + join(", ") + ")" end
+                else "" end] | if length == 0 then "No changes." else .[] end' <<< "$json"
+            if jq -e '[.resource_changes[]? | select(.change.actions | index("delete"))] | length > 0' <<< "$json" > /dev/null; then
+              echo "This plan destroys or replaces resources. Apply on \`main\` will stop before changing anything."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  no-plan:
+    name: Plan infrastructure (skipped)
+    if: ${{ github.event.pull_request.head.repo.full_name != github.repository || github.event.pull_request.user.login == 'dependabot[bot]' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - run: |
+          echo "No plan: a pull request from a fork or Dependabot gets no secrets. The tech lead can push the branch to this repository to plan it." >> "$GITHUB_STEP_SUMMARY"

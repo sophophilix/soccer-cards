@@ -17,7 +17,7 @@ async function findSmallTargets(page: Page): Promise<string[]> {
 
 test('every link and button on the home page is at least 44 pixels each way', async ({ page }) => {
 	await page.goto('/');
-	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Soccer Cards');
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Packs');
 
 	expect(await findSmallTargets(page)).toEqual([]);
 });
@@ -26,7 +26,7 @@ test('every link and button on the not-found page is at least 44 pixels each way
 	page
 }) => {
 	await page.goto('/no-such-page');
-	await expect(page.getByRole('link', { name: 'Go back to the start' })).toBeVisible();
+	await expect(page.getByRole('link', { name: 'Go to Packs' })).toBeVisible();
 
 	expect(await findSmallTargets(page)).toEqual([]);
 });
@@ -49,7 +49,7 @@ test('a short link inside a sentence is at least 44 pixels each way', async ({ p
 test('the not-found page has no sideways scroll at 320 pixels wide', async ({ page }) => {
 	await page.setViewportSize(NARROW_PHONE);
 	await page.goto('/no-such-page');
-	await expect(page.getByRole('link', { name: 'Go back to the start' })).toBeVisible();
+	await expect(page.getByRole('link', { name: 'Go to Packs' })).toBeVisible();
 
 	const overflowPx = await page.evaluate(
 		() => document.documentElement.scrollWidth - document.documentElement.clientWidth
