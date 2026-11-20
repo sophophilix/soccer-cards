@@ -84,14 +84,15 @@ def build_player(
     except LabelError as exc:
         raise NormaliseError(str(exc)) from exc
     problems: list[str] = []
-    # A team with no label can't be shown to be a senior team, so it counts as youth.
+    # Youth teams are left out. A national team with no label counts as youth.
+    clubs = [s for s in facts.clubs if not _YOUTH.search(s.team_label or "")]
     senior = [
         s for s in facts.national_teams if not _YOUTH.search(s.team_label or "U21")
     ]
     if len({s.team for s in senior}) > 1:
         problems.append(f"{qid}: plays for more than one senior national team")
         senior = []
-    club_counts = _totals(facts.clubs, CLUB_BOUNDS, qid, problems)
+    club_counts = _totals(clubs, CLUB_BOUNDS, qid, problems)
     caps, nation_goals = _totals(senior, NATIONAL_BOUNDS, qid, problems)
     position = _position(facts, entry)
     card_facts = ratings.Facts(
@@ -102,7 +103,7 @@ def build_player(
     except ratings.RatingInputError as exc:
         raise NormaliseError(f"{qid}: {exc}") from exc
     keeper = position == Position.GOALKEEPER
-    current = sorted((s for s in facts.clubs if s.end is None), key=_newest)
+    current = sorted((s for s in clubs if s.end is None), key=_newest)
     club, club_slug = _club(current, qid, problems)
     player: dict[str, object] = {
         "name": f"players/{slug}",
@@ -117,7 +118,7 @@ def build_player(
         "playStats": {k: getattr(card, k) for k in PLAY_STATS},
         "photo": _photo(photo, qid),
         "updateTime": update_time,
-        "clubGoalCount": _sourced(facts, facts.clubs, club_counts[1]),
+        "clubGoalCount": _sourced(facts, clubs, club_counts[1]),
         "nationalTeamGoalCount": _sourced(facts, senior, nation_goals),
     }
     player = {k: v for k, v in player.items() if v is not None}

@@ -31,8 +31,7 @@ PHOTO = SizedPhoto(CREDIT, Photo("photos/invented-slug.webp", 600, 800))
 class SavedResponses:
     """Serves the T-0078 replies: the player's item, then its teams."""
 
-    def __init__(self) -> None:
-        self.first = ""
+    first = ""  # The player's id, set by the first request.
 
     def get_json(
         self, url: str, params: Mapping[str, str], *, check: ReplyCheck | None = None
@@ -69,8 +68,7 @@ def _assert_structure(record: normalise.PlayerRecord) -> None:
     """Check what the schema requires. Full JSON Schema validation is T-0083's."""
     player, summary = record.player, record.summary
     assert set(SUMMARY["required"]) <= set(summary) <= set(SUMMARY["properties"])
-    assert "updateTime" in player
-    assert set(player) - set(summary) <= set(PLAYER["properties"])
+    assert "updateTime" in set(player) - set(summary) <= set(PLAYER["properties"])
     keeper = player["position"] == "GOALKEEPER"
     groups = {"goalkeeperRatings", "outfieldRatings"} & set(player)
     assert groups == {"goalkeeperRatings" if keeper else "outfieldRatings"}
@@ -139,11 +137,12 @@ def test_player_with_no_spells_is_retired_with_no_counts() -> None:
         assert key not in record.player
 
 
-def test_one_unknown_count_makes_the_total_absent() -> None:
-    clubs = _facts().clubs
-    facts = replace(_facts(), clubs=(replace(clubs[0], goals=None), *clubs[1:]))
-    record = _build(facts)
-    assert "clubGoalCount" not in record.player
+@pytest.mark.parametrize(("label", "total"), [(None, None), ("Barca U19", 570)])
+def test_unknown_count_voids_total_unless_youth(label: Any, total: Any) -> None:
+    first = _facts().clubs[0]  # FC Barcelona C: 5 of the 575 club goals.
+    first = replace(first, goals=None, team_label=label or first.team_label)
+    record: Any = _build(replace(_facts(), clubs=(first, *_facts().clubs[1:])))
+    assert record.player.get("clubGoalCount", {}).get("value") == total
     _assert_structure(record)
 
 
