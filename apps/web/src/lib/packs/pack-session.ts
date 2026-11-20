@@ -16,39 +16,39 @@ export type PackStepResult<Reason extends StateRefusal> =
 	| { readonly ok: true; readonly value: PlayerState; readonly saved: SaveResult }
 	| { readonly ok: false; readonly reason: Reason };
 
-type Store = Pick<PlayerStore, 'load' | 'save'>;
+type Saver = Pick<PlayerStore, 'save'>;
 
 const TIER_RANK: ReadonlyMap<Tier, number> = new Map(TIERS.map((tier, rank) => [tier, rank]));
 
-// A caller holding an older state must not replace a pending pack or add it twice, so the
-// store's saved state wins. Without saved state, the caller's state is the only one there is.
-function latestState(store: Store, state: PlayerState): PlayerState {
-	const loaded = store.load();
-	return loaded.outcome === 'loaded' ? loaded.state : state;
-}
-
 function saveStep<Reason extends StateRefusal>(
-	store: Store,
+	store: Saver,
 	result: StateResult<Reason>
 ): PackStepResult<Reason> {
 	return result.ok ? { ...result, saved: store.save(result.value) } : result;
 }
 
-/** Opens a pack by the game's rules and saves its cards as pending, so a reload keeps them. */
+/**
+ * Opens a pack by the game's rules and saves its cards as pending, so a reload keeps them.
+ * The caller passes its newest state, keeps the state returned, and starts no second step
+ * while one is running.
+ */
 export function openPackAndSave(
-	store: Store,
+	store: Saver,
 	state: PlayerState,
 	pack: PackToOpen
 ): PackStepResult<'pack-pending' | 'not-enough-coins' | 'not-enough-cards'> {
-	return saveStep(store, openPlayerPack(latestState(store, state), pack));
+	return saveStep(store, openPlayerPack(state, pack));
 }
 
-/** Adds the pending pack's cards to the collection and saves it. */
+/**
+ * Adds the pending pack's cards to the collection and saves it. The caller passes its newest
+ * state, keeps the state returned, and starts no second step while one is running.
+ */
 export function addPackAndSave(
-	store: Store,
+	store: Saver,
 	state: PlayerState
 ): PackStepResult<'no-pending-pack'> {
-	return saveStep(store, addPendingPack(latestState(store, state)));
+	return saveStep(store, addPendingPack(state));
 }
 
 /** Returns the pack's cards in the order they are shown, lowest tier first, so the best is last. */

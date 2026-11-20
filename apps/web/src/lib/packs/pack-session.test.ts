@@ -120,17 +120,6 @@ describe('openPackAndSave', () => {
 		expect(second).toEqual({ ok: false, reason: 'pack-pending' });
 		expect(store.saves).toHaveLength(1);
 	});
-
-	it('keeps the pending pack when a caller opens again with an older state', () => {
-		const store = aStore();
-		const before = store.load().state;
-		const first = openPackAndSave(store, before, aPack());
-
-		const second = openPackAndSave(store, before, aPack(8));
-
-		expect(second).toEqual({ ok: false, reason: 'pack-pending' });
-		expect(store.load().state.pendingPack).toEqual(first.ok && first.value.pendingPack);
-	});
 });
 
 describe('addPackAndSave', () => {
@@ -154,14 +143,21 @@ describe('addPackAndSave', () => {
 		expect(store.saves).toHaveLength(2);
 	});
 
-	it('adds the pack once when a caller adds again with an older state', () => {
-		const { store, opened } = anOpenedPack();
-		addPackAndSave(store, opened);
+	it('puts the cards in the collection for the session when saving fails', () => {
+		const failingSave: ItemStorage = {
+			getItem: () => null,
+			setItem: () => {
+				throw new DOMException('Blocked', 'SecurityError');
+			}
+		};
+		const store = aStore(failingSave);
+		const opened = openPackAndSave(store, store.load().state, aPack());
 
-		const second = addPackAndSave(store, opened);
+		const added = opened.ok ? addPackAndSave(store, opened.value) : opened;
 
-		expect(second).toEqual({ ok: false, reason: 'no-pending-pack' });
-		expect(totalCards(store.load().state)).toBe(10);
+		expect(added.ok && added.saved).toEqual({ ok: false, reason: 'not-saving' });
+		expect(added.ok && totalCards(added.value)).toBe(10);
+		expect(added.ok && added.value.pendingPack).toBeNull();
 	});
 
 	it('keeps the added cards for the next load, as a reload does', () => {
