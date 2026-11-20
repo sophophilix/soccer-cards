@@ -3,8 +3,7 @@ import type { PlayerState } from '@soccer-cards/game';
 import fc from 'fast-check';
 import { describe, expect, test, vi } from 'vitest';
 import { BACKUP_KEY, STATE_KEY, browserStorage, createPlayerStore } from './player-store.ts';
-import type { LoadOutcome, LoadResult, SaveResult } from './player-store.ts';
-
+import type { LoadOutcome, SaveResult, TabChange } from './player-store.ts';
 type Failure = 'none' | 'read' | 'write' | 'full';
 
 /** A stand-in for localStorage that can be made to throw as a browser does. */
@@ -24,11 +23,20 @@ function aStorage(saved: Readonly<Record<string, string>> = {}, failure: Failure
 	return { storage: { getItem, setItem }, items };
 }
 
-const aState = (overrides: Partial<PlayerState>): PlayerState => ({
+const aState = (changes: Partial<PlayerState>): PlayerState => ({
 	...createPlayerState(),
-	...overrides
+	...changes
 });
 const fresh = createPlayerState();
+
+/** A store that has loaded, as a view does, and now listens for another tab's change. */
+function aListeningStore(saved: Readonly<Record<string, string>> = {}) {
+	const { storage, items } = aStorage(saved);
+	const store = createPlayerStore(() => storage);
+	store.load();
+	const onChange = vi.fn<(change: TabChange) => void>();
+	return { store, items, onChange, stop: store.subscribe(onChange) };
+}
 
 describe('the player store', () => {
 	test('asks for no storage until the first load, so prerendering reads nothing', () => {
@@ -97,30 +105,57 @@ describe('the player store', () => {
 		other.load();
 		other.save(aState({ coins: 20 }));
 
-		expect(stale.save(aState({ coins: 1 }))).toEqual({
-			ok: false,
-			reason: 'changed-in-another-tab'
-		});
+		const refused = stale.save(aState({ coins: 1 }));
+
+		expect(refused).toEqual({ ok: false, reason: 'changed-in-another-tab' });
 		expect(stale.load().state.coins).toBe(20);
 	});
 
 	test('hears a save from another tab through the storage event, until it stops', () => {
-		const { storage, items } = aStorage();
-		const store = createPlayerStore(() => storage);
-		const onChange = vi.fn<(result: LoadResult) => void>();
-		const stop = store.subscribe(onChange);
-		items.set(STATE_KEY, JSON.stringify(aState({ wins: 5 })));
+		const { store, items, onChange, stop } = aListeningStore();
+		const state = aState({ wins: 5 });
+		items.set(STATE_KEY, JSON.stringify(state));
 
 		window.dispatchEvent(new StorageEvent('storage', { key: STATE_KEY }));
 		window.dispatchEvent(new StorageEvent('storage', { key: 'another-key' }));
 		stop();
 		window.dispatchEvent(new StorageEvent('storage', { key: null }));
 
-		expect(onChange).toHaveBeenCalledExactlyOnceWith({
-			state: aState({ wins: 5 }),
-			outcome: 'loaded'
-		});
+		expect(onChange).toHaveBeenCalledExactlyOnceWith({ state, outcome: 'loaded' });
 		expect(store.save(aState({ wins: 6 }))).toEqual({ ok: true });
+	});
+
+	test('writes nothing and stops saving when another tab saves a state it cannot read', () => {
+		const { store, items, onChange, stop } = aListeningStore();
+		const newer = JSON.stringify({ ...fresh, version: 3 });
+		items.set(STATE_KEY, newer);
+
+		window.dispatchEvent(new StorageEvent('storage', { key: STATE_KEY }));
+		stop();
+
+		expect(onChange).toHaveBeenCalledExactlyOnceWith({ outcome: 'not-saving' });
+		expect(store.save(fresh)).toEqual({ ok: false, reason: 'not-saving' });
+		expect(Object.fromEntries(items)).toEqual({ [STATE_KEY]: newer });
+	});
+
+	test('starts a new player and keeps saving when another tab clears storage', () => {
+		const saved = JSON.stringify(aState({ coins: 4 }));
+		const { store, items, onChange, stop } = aListeningStore({ [STATE_KEY]: saved });
+		items.clear();
+
+		window.dispatchEvent(new StorageEvent('storage', { key: null }));
+		stop();
+
+		expect(onChange).toHaveBeenCalledExactlyOnceWith({ state: fresh, outcome: 'new-player' });
+		expect(store.save(aState({ coins: 1 }))).toEqual({ ok: true });
+	});
+
+	test('keeps an earlier backup and puts a new one beside it', () => {
+		const { storage, items } = aStorage({ [STATE_KEY]: 'second', [BACKUP_KEY]: 'first' });
+
+		expect(createPlayerStore(() => storage).load().outcome).toBe('replaced-invalid');
+		expect(items.get(BACKUP_KEY)).toBe('first');
+		expect(items.get(`${BACKUP_KEY}:2`)).toBe('second');
 	});
 
 	test('finds the browser storage in a browser', () => {

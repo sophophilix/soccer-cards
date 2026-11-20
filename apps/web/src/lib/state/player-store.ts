@@ -4,7 +4,7 @@ import { checkPlayerState } from './check-player-state.ts';
 
 /** The one key that holds the player's progress, as JSON. */
 export const STATE_KEY = 'soccer-cards:player-state';
-/** Where a saved state the game couldn't use is kept, so nothing is destroyed silently. */
+/** Where the first saved state the game couldn't use is kept. Later ones get `:2`, `:3` and on. */
 export const BACKUP_KEY = 'soccer-cards:player-state:backup';
 
 /** The part of the browser's storage the store uses. */
@@ -13,20 +13,24 @@ export type ItemStorage = Pick<Storage, 'getItem' | 'setItem'>;
 export type LoadOutcome =
 	'loaded' | 'new-player' | 'replaced-invalid' | 'replaced-newer-version' | 'not-saving';
 /** The state to play with, and what loading found. */
-export interface LoadResult {
+interface LoadResult {
 	readonly state: PlayerState;
 	readonly outcome: LoadOutcome;
 }
+/** What another tab's change means here. On `not-saving`, play on with the state in hand. */
+export type TabChange =
+	| { readonly outcome: 'loaded' | 'new-player'; readonly state: PlayerState }
+	| { readonly outcome: 'not-saving' };
 type SaveRefusal = 'not-saving' | 'storage-full' | 'changed-in-another-tab';
 /** The state was saved, or why it wasn't. A refused save writes nothing. */
 export type SaveResult =
 	{ readonly ok: true } | { readonly ok: false; readonly reason: SaveRefusal };
 
-/** Loads, saves, and hears about a save in another tab until the returned function stops it. */
+/** Loads, saves, and hears about a change in another tab until the returned function stops it. */
 export interface PlayerStore {
 	readonly load: () => LoadResult;
 	readonly save: (state: PlayerState) => SaveResult;
-	readonly subscribe: (onChange: (result: LoadResult) => void) => () => void;
+	readonly subscribe: (onChange: (change: TabChange) => void) => () => void;
 }
 
 /** Returns the browser's storage, or nothing while prerendering or when the browser refuses it. */
@@ -48,6 +52,12 @@ function parse(text: string): unknown {
 	}
 }
 
+/** The first backup key with nothing in it, so no earlier backup is ever overwritten. */
+function freeBackupKey(storage: ItemStorage, number = 1): string {
+	const key = number === 1 ? BACKUP_KEY : `${BACKUP_KEY}:${String(number)}`;
+	return storage.getItem(key) === null ? key : freeBackupKey(storage, number + 1);
+}
+
 /** Creates the store for the player's progress. Storage is first asked for on the first load. */
 export function createPlayerStore(getStorage: () => ItemStorage | undefined): PlayerStore {
 	let storage: ItemStorage | undefined;
@@ -57,30 +67,47 @@ export function createPlayerStore(getStorage: () => ItemStorage | undefined): Pl
 		storage = undefined;
 		return { state: createPlayerState(), outcome: 'not-saving' };
 	};
+	// Undefined means storage is missing or throws.
+	const read = (from: ItemStorage | undefined): string | null | undefined => {
+		try {
+			return from?.getItem(STATE_KEY);
+		} catch {
+			return undefined;
+		}
+	};
 
 	const load = (): LoadResult => {
-		storage ??= getStorage();
-		if (storage === undefined) return notSaving();
-		let text: string | null;
-		try {
-			text = storage.getItem(STATE_KEY);
-		} catch {
-			return notSaving();
-		}
+		const from = (storage ??= getStorage());
+		const text = read(from);
+		if (from === undefined || text === undefined) return notSaving();
 		knownText = text;
 		if (text === null) return { state: createPlayerState(), outcome: 'new-player' };
 		const checked = checkPlayerState(parse(text));
 		if (checked.ok) return { state: checked.value, outcome: 'loaded' };
 		const state = createPlayerState();
 		try {
-			storage.setItem(BACKUP_KEY, text);
-			storage.setItem(STATE_KEY, JSON.stringify(state));
+			from.setItem(freeBackupKey(from), text);
+			from.setItem(STATE_KEY, JSON.stringify(state));
 		} catch {
 			// Without a backup the old progress must not be overwritten, so stop saving.
 			return notSaving();
 		}
 		knownText = JSON.stringify(state);
 		return { state, outcome: `replaced-${checked.reason}` };
+	};
+
+	// Another tab owns what it wrote, so this never writes. A state it can't use stops saving here.
+	const hear = (): TabChange => {
+		const text = read(storage);
+		const checked = typeof text === 'string' ? checkPlayerState(parse(text)) : undefined;
+		if (text === undefined || checked?.ok === false) {
+			storage = undefined;
+			return { outcome: 'not-saving' };
+		}
+		knownText = text;
+		return checked === undefined
+			? { state: createPlayerState(), outcome: 'new-player' }
+			: { state: checked.value, outcome: 'loaded' };
 	};
 
 	const save = (state: PlayerState): SaveResult => {
@@ -99,10 +126,11 @@ export function createPlayerStore(getStorage: () => ItemStorage | undefined): Pl
 		}
 	};
 
-	const subscribe = (onChange: (result: LoadResult) => void): (() => void) => {
+	const subscribe = (onChange: (change: TabChange) => void): (() => void) => {
+		if (typeof window === 'undefined') return () => undefined;
 		// A key of null means another tab cleared everything, as "Start again" does.
 		const listener = ({ key }: StorageEvent): void => {
-			if (key === STATE_KEY || key === null) onChange(load());
+			if (key === STATE_KEY || key === null) onChange(hear());
 		};
 		window.addEventListener('storage', listener);
 		return () => {
