@@ -27,8 +27,10 @@ the device after every change and nowhere else.
   no cookies, no account, nothing sent anywhere.
 - The `sveltekit-web` skill, "Player state". The `child-safety-privacy`
   skill.
-- `packages/game/src/state.ts`: `PlayerState`, `STATE_VERSION` and
-  `createPlayerState`. `@soccer-cards/game` becomes a workspace dependency
+- `packages/game/src/state.ts`: `PlayerState`, `STATE_VERSION` (2 since
+  T-0047) and `createPlayerState`. `packages/game/src/divisions.ts`:
+  `DIVISIONS`. `recordWin` throws for an unknown division, so loading must
+  refuse one (T-0047 reviews, both F1). `@soccer-cards/game` becomes a workspace dependency
   of the web app. It is this repository's own package, not a download.
 - `eslint.config.js` already has a rule about storage; this task makes
   `lib/state` the one place allowed to touch it, if it isn't yet. A change
@@ -44,8 +46,10 @@ the device after every change and nowhere else.
   writes storage, and a lint rule refuses it.
 - The state is stored in `localStorage` under one named key, as JSON, with
   its `version`.
-- Loading checks the shape before trusting it: a wrong type, a missing
-  field, a negative count, a card count that isn't a whole number.
+- Loading checks the version 2 shape from T-0047 before trusting it: a
+  wrong type, a missing field, a negative count, a card count that isn't a
+  whole number, and a `division` that isn't one of `DIVISIONS`. The
+  division wins, wins and losses are whole numbers of zero or more.
 - A saved state from an older version runs through the migrations in
   order. There is none yet; the list is empty and the mechanism is tested
   with an invented one.
@@ -79,5 +83,5 @@ the device after every change and nowhere else.
 ## Out of scope
 
 - Showing coins or cards. The views do that.
-- The new state fields of T-0047. When that task lands, the version goes
-  up and the first real migration is its own task.
+- A migration from version 1. No version 1 state was ever saved on a
+  device, because this task is the first to save one.
