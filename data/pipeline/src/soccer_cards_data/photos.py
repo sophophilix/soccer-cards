@@ -13,13 +13,16 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
-from PIL import Image, ImageOps
+from PIL import Image, ImageCms, ImageOps
 
 MAX_WIDTH = 480  # Pixels. A narrower photo keeps its own width.
 MAX_PIXELS = 64_000_000  # A larger source is refused before it is decoded.
+WEBP_MAX_SIDE = 16383  # Pixels. WebP can't hold a longer side.
 WEBP_QUALITY = 80
 WEBP_METHOD = 6  # The slowest, smallest encoding. Same input, same bytes.
 SOURCE_FORMATS = ("JPEG", "PNG", "WEBP")  # What Commons serves for photos.
+ICC_MODES = ("RGB", "RGBA", "CMYK", "L")  # Modes ImageCms converts directly.
+SRGB = ImageCms.createProfile("sRGB")
 # A player id (ADR 0005 D2). It names the file, so it never holds a path.
 SLUG_PATTERN = re.compile(r"^[a-z][a-z0-9-]{0,62}$")
 
@@ -57,7 +60,10 @@ def write_photo(image: bytes, slug: str, api_dir: Path) -> Photo:
     """
     if not SLUG_PATTERN.fullmatch(slug):
         raise ValueError(f"{slug!r} is not a player id")
-    data = _encode(_resize(_decode(image, slug)))
+    resized = _resize(_decode(image, slug))
+    if max(resized.size) > WEBP_MAX_SIDE:
+        raise PhotoError(f"the photo for {slug} is too long a strip for WebP")
+    data = _encode(resized)
     uri = f"photos/{slug}.webp"
     target = api_dir / uri
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -76,12 +82,33 @@ def _decode(image: bytes, slug: str) -> Image.Image:
             if source.width * source.height > MAX_PIXELS:
                 raise PhotoError(f"the photo for {slug} has too many pixels")
             upright = ImageOps.exif_transpose(source)
-    except (OSError, Image.DecompressionBombError) as exc:
+    # Pillow raises ValueError or SyntaxError for some malformed PNG chunks.
+    except (OSError, ValueError, SyntaxError, Image.DecompressionBombError) as exc:
         raise PhotoError(f"the photo for {slug} is not a readable image") from exc
     alpha = "A" in upright.getbands() or "transparency" in upright.info
-    pixels = upright.convert("RGBA" if alpha else "RGB")
+    pixels = _to_srgb(upright, "RGBA" if alpha else "RGB")
     # A fresh image carries only pixels: no EXIF, XMP or ICC from the source.
     return Image.frombytes(pixels.mode, pixels.size, pixels.tobytes())
+
+
+def _to_srgb(image: Image.Image, mode: str) -> Image.Image:
+    """Convert the pixels to sRGB in `mode`, using the photo's ICC profile.
+
+    The web reads a photo with no profile as sRGB, so dropping a wide-gamut
+    or CMYK profile without converting would change the colours. A profile
+    that can't be read or doesn't fit the pixels is ignored, as a browser
+    ignores it, and the pixels are taken as sRGB.
+    """
+    icc = image.info.get("icc_profile")
+    if not icc:
+        return image.convert(mode)
+    source = image if image.mode in ICC_MODES else image.convert(mode)
+    try:
+        profile = ImageCms.ImageCmsProfile(io.BytesIO(icc))
+        transform = ImageCms.buildTransform(profile, SRGB, source.mode, mode)
+    except (OSError, ImageCms.PyCMSError):
+        return image.convert(mode)
+    return transform.apply(source)
 
 
 def _resize(image: Image.Image) -> Image.Image:
