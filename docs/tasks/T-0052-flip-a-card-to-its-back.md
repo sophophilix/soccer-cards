@@ -8,7 +8,7 @@ paths:
   - apps/web/src/lib/cards/**
   - apps/web/tests/**
 dependencies: []
-max_changed_lines: 320
+max_changed_lines: 380
 status: ready
 ---
 
