@@ -323,3 +323,22 @@ def test_a_malformed_photo_is_skipped_and_reported(value: object, reason: str) -
     facts = fetch_player(SavedResponses({"Q1": _player(claims)}), "Q1")
 
     assert (facts.photo, facts.skipped) == ("Good.jpg", (reason,))
+
+
+# C1 control, bidi override, bidi isolate, line and paragraph separators.
+@pytest.mark.parametrize("code", [0x85, 0x9F, 0x202E, 0x2066, 0x2028, 0x2029])
+def test_a_photo_name_with_a_hidden_character_is_skipped(code: int) -> None:
+    name = f"A{chr(code)}B.jpg"
+    claims: Json = {"P18": [_photo(name, "preferred"), _photo("Good.jpg")]}
+    facts = fetch_player(SavedResponses({"Q1": _player(claims)}), "Q1")
+
+    assert facts.photo == "Good.jpg"
+    assert facts.skipped == (f"P18: unusable file name {name!r}",)
+
+
+def test_a_bad_photo_after_the_chosen_one_is_still_reported() -> None:
+    claims: Json = {"P18": [_photo("Good.jpg"), _photo("File:Bad.jpg")]}
+    facts = fetch_player(SavedResponses({"Q1": _player(claims)}), "Q1")
+
+    assert facts.photo == "Good.jpg"
+    assert facts.skipped == ("P18: unusable file name 'File:Bad.jpg'",)

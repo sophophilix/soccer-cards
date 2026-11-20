@@ -26,8 +26,12 @@ _TIME = re.compile(r"\+(\d{4})-(\d\d)-(\d\d)T")
 _AMOUNT = re.compile(r"\+?(\d+)")
 _FIFA = re.compile(r"[A-Z]{3}")  # The API schema's nationalTeamCode pattern.
 # A Commons file name without `File:`: no characters a title forbids, an extension.
+# Also refused: C0 and C1 controls and bidi overrides and isolates, as
+# `commons._BANNED` refuses them, and the line and paragraph separators.
 _FILE = re.compile(
-    r"(?!\s)(?![Ff][Ii][Ll][Ee]:)[^#<>\[\]|{}/\x00-\x1f\x7f]{1,236}\.\w+"
+    r"(?!\s)(?![Ff][Ii][Ll][Ee]:)"
+    r"[^#<>\[\]|{}/\x00-\x1f\x7f-\x9f\u202a-\u202e\u2066-\u2069\u2028\u2029]{1,236}"
+    r"\.\w+"
 )
 _SHOWN = 60  # The most characters of a fetched value written to `skipped`.
 _PARTS = {9: 1, 10: 2, 11: 3}  # Wikidata precision to ISO parts: year, month, day.
@@ -315,12 +319,12 @@ def _fifa_code(claims: Json, where: str, skipped: list[str]) -> str | None:
 
 
 def _photo(names: list[str], skipped: list[str]) -> str | None:
-    """Return the first usable file name, reporting each unusable one before it."""
+    """Return the first usable file name, reporting every unusable one."""
+    usable = [name for name in names if _FILE.fullmatch(name)]
     for name in names:
-        if _FILE.fullmatch(name):
-            return name
-        skipped.append(f"P18: unusable file name {_shown(name)}")
-    return None
+        if name not in usable:
+            skipped.append(f"P18: unusable file name {_shown(name)}")
+    return usable[0] if usable else None
 
 
 def _count(text: str | None) -> int | None:
