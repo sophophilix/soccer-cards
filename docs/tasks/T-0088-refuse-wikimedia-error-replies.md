@@ -13,7 +13,7 @@ paths:
   - data/pipeline/src/soccer_cards_data/commons.py
   - data/pipeline/tests/test_commons.py
 dependencies: []
-max_changed_lines: 220
+max_changed_lines: 320
 status: ready
 ---
 
@@ -38,6 +38,8 @@ player's own, so a national team can't become a club (T-0078 review F2).
   client not to use or write the cache for a request, and `commons.py`
   does so, so a photo deleted or relicensed on Commons drops on the next
   run (the `game-data-api` skill, ADR 0003 risks).
+- `http.py` can download bytes (for photos) with the same host allow
+  list, back-off and a size limit; byte downloads are not cached as JSON.
 - `THIRD_PARTY.md` gains a Wikidata row: CC0, the terms page and the date
   read (the `game-data-api` skill).
 - `make check COMPONENT=data` passes. No test reaches the network.
