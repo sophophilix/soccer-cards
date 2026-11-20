@@ -34,14 +34,15 @@ async function writeScriptHashesToHeaders(): Promise<void> {
 	await writeFile(HEADERS_FILE, headers);
 }
 
-/** Wraps an adapter so every build adds the API files and finishes the response header. */
+/** Wraps an adapter so every build finishes the response header and then adds the API files. */
 function withApiAndScriptHashes(inner: Adapter): Adapter {
 	return {
 		...inner,
 		adapt: async (builder) => {
 			await inner.adapt(builder);
-			builder.copy(API_SOURCE_FOLDER, API_BUILD_FOLDER);
 			await writeScriptHashesToHeaders();
+			// After the hashes are read, so no file in the API can widen script-src.
+			builder.copy(API_SOURCE_FOLDER, API_BUILD_FOLDER);
 		}
 	};
 }
