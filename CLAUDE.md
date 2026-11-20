@@ -16,6 +16,15 @@
 - The approved look and game rules: `prototype/soccer-cards-prototype.html`
 - Agent run state, never committed: `.sdlc/`
 
+## Skills from maintainers
+
+- Svelte code: the `svelte` plugin's skills and its MCP server
+  (`get-documentation`, `svelte-autofixer`).
+- Python tooling: `/astral:uv` for dependencies and `/astral:ruff` for lint
+  and format. The type gate is still mypy (`make check COMPONENT=data`).
+- Never start the plugin's `svelte-file-editor` agent. Svelte work goes to
+  `web-implementer` (ADR 0004 D13).
+
 ## Working here
 
 - In the main session you are the lead. Use the `delivery-lead` skill for any

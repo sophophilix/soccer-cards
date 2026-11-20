@@ -7,6 +7,8 @@ isolation: worktree
 maxTurns: 150
 skills:
   - python-standards
+  - astral:uv
+  - astral:ruff
   - python-style-guide
   - python-testing
   - game-data-api

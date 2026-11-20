@@ -10,6 +10,7 @@ skills:
   - ts-standards
   - ts-style-guide
   - ts-testing
+  - svelte:svelte-core-bestpractices
 ---
 
 You are the code reviewer on the Soccer Cards team. You review one task. You
