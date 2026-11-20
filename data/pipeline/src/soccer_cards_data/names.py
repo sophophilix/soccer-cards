@@ -1,20 +1,25 @@
 """Make safe display names and stable slugs from Wikidata labels (ADR 0005 D2).
 
 Wikidata labels are text anyone can edit. A label is used as a name only when
-it is plain text under the schema's pattern, single-spaced and short.
+it is plain text under the schema's pattern, with no invisible or unassigned
+characters, mostly not combining marks, single-spaced and short.
 """
 
 import re
 import unicodedata
+from collections import Counter
 from collections.abc import Mapping
 
 from soccer_cards_data.commons import AUTHOR_PATTERN
 from soccer_cards_data.wikidata import PlayerFacts
 
 MAX_NAME_LENGTH = 60  # The longest label used as a player's or club's name.
-MAX_SLUG_BASE = 56  # Leaves room for a numeric suffix inside 63 characters.
+MAX_SLUG_BASE = 50  # Leaves room for `-1976` and a `-2` counter inside 63.
+MAX_MARK_SHARE = 3  # A label is refused when over 1 in 3 characters are marks.
 
 _PLAIN = AUTHOR_PATTERN  # The schema's plain-text pattern, as `cardTitle` uses it.
+# Format (invisible), private-use and unassigned characters.
+_HIDDEN = frozenset({"Cf", "Co", "Cn"})
 # Letters NFKD doesn't split into an ASCII letter and an accent.
 _FOLD = str.maketrans(
     {"ø": "o", "ł": "l", "đ": "d", "ð": "d", chr(0x131): "i", "ß": "ss", "æ": "ae"}
@@ -28,15 +33,31 @@ class LabelError(ValueError):
 
 def is_plain(text: str) -> bool:
     """Return whether `text` is a plain, single-spaced name of at most 60 characters."""
-    single_spaced = text == " ".join(text.split())
-    return len(text) <= MAX_NAME_LENGTH and single_spaced and bool(_PLAIN.match(text))
+    kinds = [unicodedata.category(ch) for ch in text]
+    marks = sum(kind.startswith("M") for kind in kinds)
+    return (
+        len(text) <= MAX_NAME_LENGTH
+        and text == " ".join(text.split())
+        and bool(_PLAIN.fullmatch(text))
+        and not _HIDDEN.intersection(kinds)
+        and marks * MAX_MARK_SHARE <= len(text)
+    )
 
 
 def display_name(facts: PlayerFacts) -> str:
     """Return the player's label checked as a plain name, or raise LabelError."""
-    if facts.label is None or not is_plain(facts.label):
-        raise LabelError(f"{facts.qid}: label is missing or not plain text")
-    return facts.label
+    return _checked(facts.qid, facts.label)
+
+
+def club_name(qid: str, label: str | None) -> str:
+    """Return a club's label checked as a plain name, or raise LabelError."""
+    return _checked(qid, label)
+
+
+def birth_year(facts: PlayerFacts) -> int | None:
+    """Return the year of the player's birth date, or None when it isn't known."""
+    year = (facts.birth_date or "")[:4]
+    return int(year) if year.isdigit() else None
 
 
 def slugify(text: str) -> str:
@@ -49,22 +70,40 @@ def slugify(text: str) -> str:
     return re.sub(r"^[^a-z]+", "", words)[:MAX_SLUG_BASE].strip("-")
 
 
-def assign_slugs(names: Mapping[str, str]) -> dict[str, str]:
-    """Give each Q-id a slug from its name, in Q-id order.
+def assign_slugs(
+    names: Mapping[str, str], birth_years: Mapping[str, int] | None = None
+) -> dict[str, str]:
+    """Give each Q-id a slug from its name.
 
-    A repeated slug gets `-2`, `-3` and on, so the same names always give the
-    same slugs.
+    A name only one entry has gives its slug as it is. Entries that share a
+    name all add their birth year, as in `ronaldo-1976` (ADR 0005 D2). Only
+    when a year is missing or the same, and for clubs, which have no years,
+    does a counter (`-2`, `-3`) tell them apart, in Q-id order.
 
     Raises:
         LabelError: A name gives no slug. The message names the Q-id.
     """
+    years = birth_years or {}
+    bases: dict[str, str] = {}
+    for qid, name in names.items():
+        bases[qid] = slugify(name)
+        if not bases[qid]:
+            raise LabelError(f"{qid}: name {name!a} gives no slug")
+    shared = Counter(bases.values())
+    wanted = {
+        qid: f"{base}-{years[qid]}" if shared[base] > 1 and qid in years else base
+        for qid, base in bases.items()
+    }
     slugs: dict[str, str] = {}
-    for qid in sorted(names, key=lambda q: (len(q), q)):
-        base = slugify(names[qid])
-        if not base:
-            raise LabelError(f"{qid}: name {names[qid]!a} gives no slug")
-        slug, n = base, 2
+    for qid in sorted(names, key=lambda q: (wanted[q], len(q), q)):
+        slug, n = wanted[qid], 2
         while slug in slugs.values():
-            slug, n = f"{base}-{n}", n + 1
+            slug, n = f"{wanted[qid]}-{n}", n + 1
         slugs[qid] = slug
     return slugs
+
+
+def _checked(qid: str, label: str | None) -> str:
+    if label is None or not is_plain(label):
+        raise LabelError(f"{qid}: label is missing or not plain text")
+    return label
