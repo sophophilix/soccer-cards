@@ -1,28 +1,25 @@
 ---
 id: T-0072
-title: Fetch player facts from Wikidata politely, with a cache
+title: A polite, cached HTTP client for Wikimedia
 component: data
 kind: feature
 agent: data-implementer
 paths:
-  - data/pipeline/src/soccer_cards_data/wikidata.py
   - data/pipeline/src/soccer_cards_data/http.py
-  - data/pipeline/tests/test_wikidata.py
   - data/pipeline/tests/test_http.py
-  - data/pipeline/tests/fixtures/wikidata/**
   - data/pipeline/pyproject.toml
   - data/pipeline/uv.lock
 dependencies:
   - httpx
-max_changed_lines: 380
+max_changed_lines: 320
 status: ready
 ---
 
 ## Goal
 
-The pipeline can read one player's facts from Wikidata by their Q-id,
-identifying itself and respecting Wikimedia's limits, and later runs read
-from a cache.
+The pipeline has one HTTP client that identifies itself, respects
+Wikimedia's limits and caches replies on disk. T-0078 uses it to read player
+facts. (Split from the original T-0072, which came to about 700 lines.)
 
 ## Context
 
@@ -41,26 +38,20 @@ from a cache.
   fixed number of tries with an error that names the URL.
 - Responses are cached on disk under `data/pipeline/.cache/`, keyed by the
   request. A cached response is reused without a request.
-- `wikidata.py` returns, for one Q-id: label, birth date, position, club
-  spells with start and end, appearances and goals where Wikidata has them,
-  national team caps and goals, and honours, each with its source and
-  as-of date. A fact Wikidata lacks is absent, never zero.
 - `make check COMPONENT=data` passes. No test reaches the network.
 
 ## Edge cases
 
-- An unknown Q-id, a redirect, or an entity that isn't a footballer gives a
-  clear error.
-- A qualifier with an unexpected type is skipped and reported, not guessed.
+- A `Retry-After` longer than the client's maximum wait fails at once.
+- A non-JSON reply, or a 4xx other than 429, fails at once and caches
+  nothing.
 
 ## Tests
 
-- Contract tests on saved responses in `tests/fixtures/wikidata/` for one
-  outfield player and one goalkeeper (Wikidata is CC0). The fixture files
-  are trimmed to the fields used.
 - `test_http.py`: the User-Agent, the gap between requests, `Retry-After`,
-  back-off and the give-up, against a fake transport.
+  back-off, the give-up and the cache, against `httpx.MockTransport`.
 
 ## Out of scope
 
-- Commons photos, normalising to the API model, grades and writing output.
+- Reading Wikidata entities (T-0078), Commons photos, normalising, grades
+  and writing output.
