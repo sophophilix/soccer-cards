@@ -101,3 +101,95 @@ test.each([96, 180, 360])(
 		expect(text(club).getBoundingClientRect().right).toBeLessThanOrEqual(box.right);
 	}
 );
+
+test('in a flex row the card fills its slot and keeps its 5 by 7 size', async () => {
+	const screen = await render(CardFront, aCard());
+	screen.container.style.display = 'flex';
+	screen.container.style.width = '180px';
+
+	const box = screen.getByRole('img').element().getBoundingClientRect();
+	expect(box.width).toBe(180);
+	expect(box.height).toBeCloseTo(252, 0);
+});
+
+test('the avatar and the star burst take their colours from the card ink and booking tokens', async () => {
+	const screen = await render(CardFront, aCard());
+	screen.container.style.setProperty('--card-ink', 'rgb(1, 2, 3)');
+	screen.container.style.setProperty('--booking', 'rgb(4, 5, 6)');
+
+	const fill = (selector: string): string =>
+		getComputedStyle(screen.container.querySelector(selector) ?? screen.container).fill;
+	expect(fill('.avatar circle')).toBe('rgb(1, 2, 3)');
+	expect(fill('.burst')).toBe('rgb(4, 5, 6)');
+});
+
+test.each(['RARE', 'LEGEND', 'ICON'] as const)(
+	'a %s card has its own class, frame, second star burst and foil',
+	async (tier) => {
+		const base = await render(CardFront, aCard());
+		const lucky = await render(CardFront, aCard({ tier }));
+		const frame = (element: HTMLElement): string =>
+			getComputedStyle(element.querySelector('.frame') ?? element).backgroundImage;
+
+		expect(lucky.container.querySelector('.card')?.classList).toContain(tier.toLowerCase());
+		expect(frame(lucky.container)).not.toBe(frame(base.container));
+		expect(lucky.container.querySelectorAll('.burst')).toHaveLength(2);
+		expect(lucky.container.querySelector('.foil')).not.toBeNull();
+	}
+);
+
+test('a base card keeps its class, one star burst and no foil', async () => {
+	const screen = await render(CardFront, aCard());
+
+	const classes = [...(screen.container.querySelector('.card')?.classList ?? [])];
+	expect(classes.filter((name) => !name.startsWith('svelte-'))).toEqual(['card', 'base']);
+	expect(screen.container.querySelectorAll('.burst')).toHaveLength(1);
+	expect(screen.container.querySelector('.foil')).toBeNull();
+});
+
+// Nothing on the card moves, so it is still with or without reduced motion.
+test.each(['RARE', 'LEGEND', 'ICON'] as const)(
+	'the foil on a %s card stays still',
+	async (tier) => {
+		const screen = await render(CardFront, aCard({ tier }));
+
+		const foil = getComputedStyle(screen.container.querySelector('.foil') ?? screen.container);
+		expect(foil.animationName).toBe('none');
+		expect(foil.transitionDuration).toBe('0s');
+	}
+);
+
+/** The WCAG contrast ratio of two `rgb()` colours. */
+function contrast(first: string, second: string): number {
+	const luminance = (colour: string): number => {
+		const [red = 0, green = 0, blue = 0] = (colour.match(/[\d.]+/g) ?? []).map((part) => {
+			const channel = Number(part) / 255;
+			return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+		});
+		return 0.2126 * red + 0.7152 * green + 0.0722 * blue;
+	};
+	const [light = 0, dark = 0] = [luminance(first), luminance(second)].sort((a, b) => b - a);
+	return (light + 0.05) / (dark + 0.05);
+}
+
+test.each([
+	['BASE', 'Base'],
+	['RARE', 'Rare'],
+	['LEGEND', 'Legend'],
+	['ICON', 'Icon']
+] as const)(
+	'the %s tier word meets AA contrast on every colour of its ground',
+	async (tier, words) => {
+		const screen = await render(CardFront, aCard({ tier }));
+		screen.container.style.setProperty('--card-ink', '#0e1512');
+		screen.container.style.setProperty('--card-paper', '#ffffff');
+
+		const style = getComputedStyle(screen.getByText(words, { exact: true }).element());
+		const colours = `${style.backgroundColor} ${style.backgroundImage}`.match(/rgba?\([^)]*\)/g);
+		// A fully clear colour isn't part of the ground the word sits on.
+		const ground = (colours ?? []).filter((colour) => colour !== 'rgba(0, 0, 0, 0)');
+		const ratios = ground.map((colour) => contrast(style.color, colour));
+		expect(ratios.length).toBeGreaterThan(0);
+		expect(Math.min(...ratios)).toBeGreaterThanOrEqual(4.5);
+	}
+);

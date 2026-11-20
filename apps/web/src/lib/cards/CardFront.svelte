@@ -9,11 +9,16 @@
 		'100,50 82.5,55.7 97,67.1 76.8,65.5 88.3,82.1 72.5,76.8 75,93.3 61.3,81 58.7,99.2 50,81 41.3,99.2 38,82.9 25,93.3 28.8,75.3 11.7,82.1 23.2,65.5 3,67.1 15.5,56.1 0,50 17.5,44.3 3,32.9 23.2,34.5 11.7,17.9 27.5,23.2 25,6.7 38.7,19 41.3,0.8 50,19 58.7,0.8 62,17.1 75,6.7 71.2,24.7 88.3,17.9 76.8,34.5 97,32.9 84.5,43.9';
 </script>
 
-<!-- One name for a screen reader. Every tier draws the base look until T-0061. -->
+<!-- One name for a screen reader. A lucky card adds a foil and a second star burst. -->
 <div class={['card', card.tier.toLowerCase()]}>
 	<div class="face" role="img" aria-label={describeCard(card)}>
 		<div class="ground"></div>
+		{#if card.tier !== 'BASE'}<div class="foil"></div>{/if}
 		<svg class="burst" viewBox="0 0 100 100" aria-hidden="true"><polygon points={STAR} /></svg>
+		{#if card.tier !== 'BASE'}
+			<svg class="burst two" viewBox="0 0 100 100" aria-hidden="true"><polygon points={STAR} /></svg
+			>
+		{/if}
 		{#if card.photo}
 			<div class="photo">
 				<img
@@ -25,7 +30,7 @@
 				/>
 			</div>
 		{:else}
-			<svg class="avatar" viewBox="0 0 200 220" aria-hidden="true" fill="#0e1512">
+			<svg class="avatar" viewBox="0 0 200 220" aria-hidden="true">
 				<rect x="86" y="92" width="28" height="34" rx="8" />
 				<path class="shirt" d="M14 220C14 160 34 128 76 116h48c42 12 62 44 62 104" />
 				<path d="M76 116Q100 140 124 116Z" />
@@ -56,6 +61,7 @@
 <style>
 	/* .card is the size container, so cqw on .face and inside it measures the card. */
 	.card {
+		width: 100%;
 		aspect-ratio: 5 / 7;
 		container-type: inline-size;
 	}
@@ -87,7 +93,26 @@
 		left: 4%;
 		top: 9%;
 		width: 92%;
-		fill: #ffc93c;
+		fill: var(--booking);
+	}
+	.burst.two {
+		scale: 0.8;
+		rotate: 11deg;
+		fill: #ffffffe0;
+	}
+	/* Still on every card, so reduced motion needs nothing more. */
+	.foil {
+		inset: 0;
+		background: repeating-linear-gradient(
+				115deg,
+				#fff0 0%,
+				#ffffffb3 5%,
+				#96f0ff80 8%,
+				#ffaaeb80 11%,
+				#fff0 17%
+			)
+			50% 50% / 300% 300%;
+		opacity: 0.55;
 	}
 	.photo {
 		inset: 13cqw 12% 40cqw;
@@ -102,6 +127,7 @@
 		object-position: 50% 12%;
 	}
 	.avatar {
+		fill: var(--card-ink);
 		left: 13%;
 		width: 74%;
 		bottom: 41cqw;
@@ -236,5 +262,120 @@
 		mask:
 			linear-gradient(#000 0 0) content-box exclude,
 			linear-gradient(#000 0 0);
+	}
+	/* Tiers: rare is chrome, legend is gold, icon is black and prism. */
+	.rare .frame {
+		background: conic-gradient(
+			from 210deg,
+			#f6f8fb,
+			#8c99a8,
+			#fff,
+			#6e7a89,
+			#e8edf3,
+			#a3afbd,
+			#f6f8fb
+		);
+	}
+	.rare .overall {
+		background: linear-gradient(160deg, #fff, #b9c4d0);
+	}
+	.rare .tier {
+		color: #dce4ec;
+	}
+	.legend .face {
+		--g1: #f5c542;
+		--g2: #b8791a;
+	}
+	.legend .frame {
+		background: conic-gradient(
+			from 210deg,
+			#fff4b8,
+			#c8920f,
+			#fff9dc,
+			#94650a,
+			#ffe27a,
+			#b07a0c,
+			#fff4b8
+		);
+	}
+	.legend .overall {
+		background: linear-gradient(160deg, #fff3a6, #d9a11a);
+	}
+	.legend .tier {
+		color: #ffd86b;
+	}
+	.legend .foil {
+		background-image: repeating-linear-gradient(
+			115deg,
+			#fff0 0%,
+			#fff5bed9 5%,
+			#ffc85080 9%,
+			#fff0 15%
+		);
+		opacity: 0.75;
+	}
+	.icon .ground {
+		background:
+			radial-gradient(circle, #ffd86b8c 0.35cqw, transparent 0.5cqw) 0 0 / 5cqw 5cqw,
+			radial-gradient(circle, #ffffff59 0.25cqw, transparent 0.4cqw) 2.5cqw 2.5cqw / 7cqw 7cqw,
+			radial-gradient(circle at 50% 36%, #fff0becc, #fff0be00 30%),
+			repeating-conic-gradient(from 4deg at 50% 36%, #ffd86b33 0 6deg, #ffd86b00 6deg 12deg),
+			conic-gradient(
+				from 200deg at 50% 36%,
+				#ff7ad980,
+				#7ad7ff80,
+				#8dffa073,
+				#ffd86b80,
+				#c18cff80,
+				#ff7ad980
+			),
+			linear-gradient(160deg, #26222e, #08070b);
+	}
+	.icon .foil {
+		mix-blend-mode: color-dodge;
+		background-image: repeating-linear-gradient(
+			115deg,
+			#fff0 0%,
+			#ff78dc99 4%,
+			#78d7ff99 8%,
+			#8cffa08c 12%,
+			#ffd86b99 16%,
+			#fff0 22%
+		);
+		opacity: 0.45;
+	}
+	.icon .burst {
+		fill: #ffd86b;
+	}
+	.icon .burst.two {
+		fill: #ffffffe0;
+	}
+	.icon .frame {
+		background: conic-gradient(
+			from 210deg,
+			#ffd86b,
+			#ff7ad9,
+			#7ad7ff,
+			#8dffa0,
+			#ffe27a,
+			#c18cff,
+			#ffd86b
+		);
+	}
+	.icon .overall {
+		background: linear-gradient(160deg, #ffe7a0, #e0a82a);
+	}
+	.icon .tier {
+		background: linear-gradient(90deg, #ffd86b, #ff7ad9, #7ad7ff);
+		color: var(--card-ink);
+	}
+	.icon .title {
+		background: linear-gradient(90deg, #ffd86b, #ff9ae0);
+	}
+	.icon .plate {
+		background: linear-gradient(180deg, #17151c, #050407);
+	}
+	.icon .name {
+		color: #ffd86b;
 	}
 </style>
