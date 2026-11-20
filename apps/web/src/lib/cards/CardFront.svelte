@@ -35,15 +35,17 @@
 				<path class="shirt" d="M14 220C14 160 34 128 76 116h48c42 12 62 44 62 104" />
 				<path d="M76 116Q100 140 124 116Z" />
 				<circle cx="100" cy="62" r="40" />
-				<text x="100" y="196" fill="#1b1f3b">{card.shirtNumber}</text>
+				{#if card.shirtNumber !== undefined}
+					<text x="100" y="196" fill="#1b1f3b">{card.shirtNumber}</text>
+				{/if}
 			</svg>
 		{/if}
 		<div class="overall"><b>{card.overall}</b><span>{POSITIONS[card.position].code}</span></div>
 		<div class="tier">{TIER_NAMES[card.tier]}</div>
-		<div class="nation">{card.nationalTeamCode}</div>
+		{#if card.nationalTeamCode}<div class="nation">{card.nationalTeamCode}</div>{/if}
 		{#if card.cardTitle}<div class="title">{card.cardTitle}</div>{/if}
 		<div class="plate">
-			<div class="club">{card.clubName}</div>
+			{#if card.clubName}<div class="club">{card.clubName}</div>{/if}
 			<div class={['name', card.displayName.length > LONG_NAME_LENGTH && 'long']}>
 				{card.displayName}
 			</div>

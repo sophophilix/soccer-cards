@@ -2,13 +2,14 @@
 type Tier = 'BASE' | 'RARE' | 'LEGEND' | 'ICON';
 type Position = 'GOALKEEPER' | 'DEFENDER' | 'MIDFIELDER' | 'FORWARD';
 
-/** Everything the front of a card shows. A photo's `src` is on the site's own origin. */
+/** Everything the front of a card shows. A photo's `src` is on the site's own origin. An absent field shows nothing. */
 export interface CardFrontProps {
 	readonly displayName: string;
 	readonly position: Position;
-	readonly nationalTeamCode: string;
-	readonly clubName: string;
-	readonly shirtNumber: number;
+	readonly nationalTeamCode?: string | undefined;
+	// Absent for a retired player.
+	readonly clubName?: string | undefined;
+	readonly shirtNumber?: number | undefined;
 	readonly tier: Tier;
 	readonly cardTitle?: string | undefined;
 	readonly overall: number;

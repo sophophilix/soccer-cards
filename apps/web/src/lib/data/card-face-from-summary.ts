@@ -7,6 +7,8 @@ export interface CardFace {
 	readonly displayName: string;
 	readonly nationalTeamCode?: string;
 	readonly clubName?: string;
+	readonly cardTitle?: string;
+	readonly cardNumber?: number;
 	// On the site's own origin, with the credit its licence needs.
 	readonly photo?: {
 		readonly src: string;
@@ -25,6 +27,7 @@ const MIN_RATING = 1;
 const MAX_RATING = 99;
 const MAX_AUTHOR_LENGTH = 200;
 const MAX_CLUB_LENGTH = 60;
+const MAX_CARD_TITLE_LENGTH = 30;
 const MAX_URI_LENGTH = 2048;
 // The schema's patterns. A photo is a WebP inside the API, and its source is a Commons file page.
 const NATIONAL_TEAM_CODE = /^[A-Z]{3}$/;
@@ -89,7 +92,7 @@ export function cardFaceFromSummary(
 	clubNames: ReadonlyMap<string, string>
 ): CardFace | undefined {
 	if (!isFields(summary)) return undefined;
-	const { displayName, nationalTeamCode } = summary;
+	const { displayName, nationalTeamCode, cardTitle, cardNumber } = summary;
 	if (typeof displayName !== 'string' || displayName === '') return undefined;
 	const slug = slugOf(summary.club);
 	const clubName = slug === undefined ? undefined : clubNames.get(slug);
@@ -99,6 +102,8 @@ export function cardFaceFromSummary(
 		displayName,
 		...(matches(nationalTeamCode, NATIONAL_TEAM_CODE) && { nationalTeamCode }),
 		...(clubName !== undefined && { clubName }),
+		...(matches(cardTitle, PLAIN_TEXT, MAX_CARD_TITLE_LENGTH) && { cardTitle }),
+		...(isWholeAtLeastOne(cardNumber) && { cardNumber }),
 		...(photo !== undefined && { photo }),
 		...(ratings !== undefined && { ratings })
 	};
