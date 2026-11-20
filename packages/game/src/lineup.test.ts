@@ -26,6 +26,8 @@ const lineUpOf = (team: readonly Card[], formation: Formation): LineUp | undefin
 	const result = lineUp(idsOf(team), aCheckedCardSetOf(team), formation);
 	return result.ok ? result.value : undefined;
 };
+const bestOf = (owned: readonly Card[], formation: Formation): CardId[] =>
+	bestTeam(aCheckedCardSetOf(owned), idsOf(owned), formation);
 const reasonOf = (team: readonly CardId[], cardSet: CheckedCardSet): string | undefined => {
 	const result = lineUp(team, cardSet, '4-4-2');
 	return result.ok ? undefined : result.reason;
@@ -158,7 +160,7 @@ describe('bestTeam', () => {
 		];
 		const owned = [...cards('GK', 2), ...cards('DF', 4), ...cards('MF', 3), ...forwards];
 
-		expect(bestTeam(owned, '4-4-2')).toEqual([
+		expect(bestOf(owned, '4-4-2')).toEqual([
 			...['shooter', 'runner', 'MF-1', 'MF-2', 'MF-3'],
 			...['DF-1', 'DF-2', 'DF-3', 'DF-4', 'GK-1', 'star']
 		]);
@@ -167,12 +169,37 @@ describe('bestTeam', () => {
 	it('orders cards with equal worth by id, whatever order they came in', () => {
 		const forwards = [card('c', 'FW'), card('a', 'FW'), card('b', 'FW')];
 
-		expect(bestTeam([...forwards, ...cards('MF', 12)], '4-4-2').slice(0, 2)).toEqual(['a', 'b']);
+		expect(bestOf([...forwards, ...cards('MF', 12)], '4-4-2').slice(0, 2)).toEqual(['a', 'b']);
 	});
 
 	it('returns every card when it is given fewer than 11', () => {
 		const owned = [...cards('GK', 2), ...cards('FW', 3)];
 
-		expect(bestTeam(owned, '4-4-2')).toEqual(['FW-1', 'FW-2', 'GK-1', 'GK-2', 'FW-3']);
+		expect(bestOf(owned, '4-4-2')).toEqual(['FW-1', 'FW-2', 'GK-1', 'GK-2', 'FW-3']);
+	});
+
+	it('chooses only from the ids it is given', () => {
+		const owned = cards('FW', 3);
+
+		expect(bestTeam(aCheckedCardSetOf(owned), [toCardId('FW-2')], '4-4-2')).toEqual(['FW-2']);
+	});
+
+	it('ignores an id that is not in the set', () => {
+		const ids = [toCardId('FW-1'), toCardId('missing')];
+
+		expect(bestTeam(aCheckedCardSetOf(cards('FW', 2)), ids, '4-4-2')).toEqual(['FW-1']);
+	});
+
+	it('counts an id given twice once', () => {
+		const ids = [toCardId('FW-2'), toCardId('FW-2')];
+
+		expect(bestTeam(aCheckedCardSetOf(cards('FW', 2)), ids, '4-4-2')).toEqual(['FW-2']);
+	});
+
+	it('takes only a checked card set', () => {
+		const owned = cards('FW', 2);
+
+		// @ts-expect-error -- a plain list of cards is not a checked card set
+		expect(bestTeam(owned, idsOf(owned), '4-4-2')).toEqual(['FW-1', 'FW-2']);
 	});
 });

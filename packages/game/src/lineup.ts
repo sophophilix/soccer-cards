@@ -78,10 +78,15 @@ export function lineUp(
 	return { ok: true, value: { lines, outOfPosition } };
 }
 
-/** Picks the strongest cards for a formation, 11 at most, each card once. */
-export function bestTeam(cards: readonly Card[], formation: Formation): CardId[] {
-	// A map, so a card given twice is picked once.
-	const different = [...new Map(cards.map((card) => [card.id, card])).values()];
+/** Picks the strongest of the given cards in the set for a formation, 11 at most, each once. */
+export function bestTeam(
+	cardSet: CheckedCardSet,
+	ids: readonly CardId[],
+	formation: Formation
+): CardId[] {
+	// The set holds each id once, so an id given twice is picked once and one not in it never.
+	const chosen = new Set(ids);
+	const different = cardSet.filter((card) => chosen.has(card.id));
 	const picked = POSITIONS.flatMap((line) =>
 		different
 			.filter((card) => card.position === line)

@@ -71,14 +71,13 @@ export function computerSide(
 	}
 	const formation = pickOne(FORMATION_NAMES, '4-4-2', random);
 	const tactic = pickOne(TACTIC_IDS, 'possession', random);
-	const cards = cardSet.filter((card) => opened.has(card.id));
 	return {
 		ok: true,
 		value: {
 			formation,
 			tactic,
 			formPercent: division.formPercent,
-			team: bestTeam(cards, formation)
+			team: bestTeam(cardSet, [...opened], formation)
 		}
 	};
 }
