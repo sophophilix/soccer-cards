@@ -141,11 +141,10 @@ export default defineConfig(
 				'error',
 				...STORAGE_NAMES.map((name) => ({ name, message: STORAGE_MESSAGE }))
 			],
+			// With no object named, the name is refused on any object, such as document.defaultView.
 			'no-restricted-properties': [
 				'error',
-				...['window', 'globalThis', 'self'].flatMap((object) =>
-					STORAGE_NAMES.map((property) => ({ object, property, message: STORAGE_MESSAGE }))
-				)
+				...STORAGE_NAMES.map((property) => ({ property, message: STORAGE_MESSAGE }))
 			]
 		}
 	},
