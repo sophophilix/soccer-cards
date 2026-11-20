@@ -10,10 +10,14 @@ export {
 	STARTING_COINS,
 	STARTING_FREE_PACKS,
 	STATE_VERSION,
+	WINS_TO_GO_UP,
 	addPendingPack,
+	canPlayMatch,
 	createPlayerState,
 	openPlayerPack,
-	packCostCoins
+	packCostCoins,
+	recordLoss,
+	recordWin
 } from './state.ts';
 export type { PackToOpen, PendingPack, PlayerState, StateRefusal, StateResult } from './state.ts';
 export { addFavourite, isFavourite, removeFavourite } from './favourites.ts';

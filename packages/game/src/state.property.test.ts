@@ -1,6 +1,13 @@
 import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
-import { addPendingPack, createRandom, openPlayerPack } from './index.ts';
+import {
+	DIVISIONS,
+	addPendingPack,
+	createRandom,
+	openPlayerPack,
+	recordLoss,
+	recordWin
+} from './index.ts';
 import type { PackKind, PlayerState } from './index.ts';
 import { aCheckedCardSet } from './testing/cards.ts';
 import { aPlayerState } from './testing/state.ts';
@@ -23,8 +30,16 @@ const pendingPack = fc.option(
 const collection = fc
 	.array(fc.tuple(fc.constantFrom(...CARD_IDS), fc.integer({ min: 1, max: 9 })))
 	.map((entries) => Object.fromEntries(entries));
+const division = fc.constantFrom(...DIVISIONS.map((each) => each.id));
 const anyState = fc
-	.record({ freePacks: fc.nat(3), coins: fc.nat(25), collection, pendingPack })
+	.record({
+		freePacks: fc.nat(3),
+		coins: fc.nat(25),
+		collection,
+		pendingPack,
+		division,
+		divisionWins: fc.nat(2)
+	})
 	.map(aPlayerState);
 
 const act = (state: PlayerState, step: Action, packSeed: number): PlayerState => {
@@ -38,6 +53,8 @@ const act = (state: PlayerState, step: Action, packSeed: number): PlayerState =>
 				});
 	return result.ok ? result.value : state;
 };
+const rankOf = (state: PlayerState): number =>
+	DIVISIONS.findIndex((division) => division.id === state.division);
 const sizeOf = (state: PlayerState): number =>
 	Object.values(state.collection).reduce((total, copies) => total + copies, 0);
 
@@ -95,6 +112,25 @@ describe('player state properties', () => {
 
 				expect(sizeOf(added) - sizeOf(ready)).toBe(PACK_SIZE[packKind]);
 				expect(added.pendingPack).toBeNull();
+			})
+		);
+	});
+
+	it('never lowers the coins or the division, for any sequence of wins and losses', () => {
+		fc.assert(
+			fc.property(anyState, fc.array(fc.boolean(), { maxLength: 40 }), (start, results) => {
+				const states = results.reduce(
+					(seen, isWin) => {
+						const last = seen.at(-1) ?? start;
+						return [...seen, isWin ? recordWin(last) : recordLoss(last)];
+					},
+					[start]
+				);
+				const coins = states.map((state) => state.coins);
+				const ranks = states.map(rankOf);
+
+				expect(coins).toEqual([...coins].sort((a, b) => a - b));
+				expect(ranks).toEqual([...ranks].sort((a, b) => a - b));
 			})
 		);
 	});
