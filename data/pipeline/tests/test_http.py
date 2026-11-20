@@ -7,6 +7,7 @@ import pytest
 from soccer_cards_data.http import (
     MAX_TRIES,
     MIN_GAP_SECONDS,
+    TIMEOUT_SECONDS,
     USER_AGENT,
     FetchError,
     PoliteClient,
@@ -60,6 +61,7 @@ def test_sends_the_project_user_agent(tmp_path: Path) -> None:
     assert seen[0].headers["User-Agent"] == USER_AGENT
     assert USER_AGENT.startswith("SoccerCardsDataPipeline/0.1.0 (https://github.com/")
     assert seen[0].url.params["ids"] == "Q1"
+    assert set(seen[0].extensions["timeout"].values()) == {TIMEOUT_SECONDS}
 
 
 def test_waits_the_minimum_gap_between_requests_to_a_host(tmp_path: Path) -> None:
