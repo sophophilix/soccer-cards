@@ -2,10 +2,10 @@ import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
 import { createRandom, tradeCard } from './index.ts';
 import type { PlayerState } from './index.ts';
-import { aCardSet } from './testing/cards.ts';
+import { aCheckedCardSet } from './testing/cards.ts';
 import { aPlayerState } from './testing/state.ts';
 
-const CARD_SET = aCardSet({ base: 8, rare: 4, legend: 2 });
+const CARD_SET = aCheckedCardSet({ base: 8, rare: 4, legend: 2 });
 const CARD_IDS = CARD_SET.map((card) => card.id);
 
 const seed = fc.integer();

@@ -2,7 +2,7 @@ import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
 import { FORMATIONS, POSITIONS, bestTeam, lineUp, toCardId } from './index.ts';
 import type { Card, CardId, Formation, LineUp } from './index.ts';
-import { aCard } from './testing/cards.ts';
+import { aCard, aCheckedCardSetOf } from './testing/cards.ts';
 
 const stat = fc.integer({ min: 1, max: 99 });
 const anyCard = fc
@@ -21,7 +21,7 @@ const formation = fc.constantFrom<Formation>('4-4-2', '4-3-3', '3-5-2', '5-3-2')
 const lineUpOf = (cards: readonly Card[], chosen: Formation): LineUp | undefined => {
 	const result = lineUp(
 		cards.map((card) => card.id),
-		cards,
+		aCheckedCardSetOf(cards),
 		chosen
 	);
 	return result.ok ? result.value : undefined;

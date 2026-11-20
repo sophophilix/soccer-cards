@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from 'vitest';
-import { createRandom, toCardId, tradeCard } from './index.ts';
-import type { CardId, PlayerState, Random, TradeResult } from './index.ts';
-import { aCard, aCardSet } from './testing/cards.ts';
+import { checkCardSet, createRandom, toCardId, tradeCard } from './index.ts';
+import type { CardId, CheckedCardSet, PlayerState, Random, TradeResult } from './index.ts';
+import { aCard, aCheckedCardSet, aCheckedCardSetOf } from './testing/cards.ts';
 import { aPlayerState } from './testing/state.ts';
 
 const SEED = 20261116;
-const CARD_SET = aCardSet({ base: 6, rare: 4, legend: 1 });
+const CARD_SET = aCheckedCardSet({ base: 6, rare: 4, legend: 1 });
 const BASE_1 = toCardId('base-1');
 const RARE_1 = toCardId('rare-1');
 const RARE_IDS = CARD_SET.filter((card) => card.tier === 'rare').map((card) => card.id);
@@ -14,8 +14,11 @@ const stateOf = (result: TradeResult): PlayerState | undefined =>
 	result.ok ? result.value : undefined;
 const receivedOf = (result: TradeResult): CardId | undefined =>
 	result.ok ? result.receivedCardId : undefined;
-const trade = (state: PlayerState, cardId: CardId, cardSet = CARD_SET): TradeResult =>
-	tradeCard(state, cardSet, cardId, createRandom(SEED));
+const trade = (
+	state: PlayerState,
+	cardId: CardId,
+	cardSet: CheckedCardSet = CARD_SET
+): TradeResult => tradeCard(state, cardSet, cardId, createRandom(SEED));
 
 describe('tradeCard', () => {
 	it('names a different card of the same tier as the card received', () => {
@@ -38,7 +41,10 @@ describe('tradeCard', () => {
 	});
 
 	it('adds a copy to a card the player already owns', () => {
-		const twoRares = [aCard({ id: RARE_1, tier: 'rare' }), aCard({ id: BASE_1, tier: 'rare' })];
+		const twoRares = aCheckedCardSetOf([
+			aCard({ id: RARE_1, tier: 'rare' }),
+			aCard({ id: BASE_1, tier: 'rare' })
+		]);
 		const state = aPlayerState({ collection: { [RARE_1]: 2, [BASE_1]: 4 } });
 
 		const result = trade(state, RARE_1, twoRares);
@@ -99,7 +105,7 @@ describe('tradeCard', () => {
 
 	it('refuses a card whose name is a built-in property of an object', () => {
 		const builtIn = toCardId('constructor');
-		const cardSet = [...CARD_SET, aCard({ id: builtIn, tier: 'rare' })];
+		const cardSet = aCheckedCardSetOf([...CARD_SET, aCard({ id: builtIn, tier: 'rare' })]);
 		const state = aPlayerState({ collection: { [RARE_1]: 1 } });
 
 		expect(trade(state, builtIn, cardSet)).toEqual({ ok: false, reason: 'card-not-owned' });
@@ -133,6 +139,23 @@ describe('tradeCard', () => {
 		};
 
 		expect(() => tradeCard(state, CARD_SET, RARE_1, pickPastEnd)).toThrow(RangeError);
+	});
+
+	it('is never given a set that repeats a card: the check refuses it', () => {
+		const cardSet = [...CARD_SET, aCard({ id: RARE_1, tier: 'legend' })];
+
+		expect(checkCardSet(cardSet)).toEqual({
+			ok: false,
+			reason: 'repeated-card-id',
+			cardId: RARE_1
+		});
+	});
+
+	it('takes only a checked card set', () => {
+		const state = aPlayerState({ collection: { [RARE_1]: 2 } });
+
+		// @ts-expect-error -- a plain list of cards is not a checked card set
+		expect(tradeCard(state, [...CARD_SET], RARE_1, createRandom(SEED)).ok).toBe(true);
 	});
 
 	it('gives the same card received for the same seed', () => {
