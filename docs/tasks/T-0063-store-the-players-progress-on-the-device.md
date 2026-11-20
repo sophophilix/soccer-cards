@@ -9,7 +9,7 @@ paths:
   - apps/web/tests/**
   - eslint.config.js
 dependencies: []
-max_changed_lines: 320
+max_changed_lines: 380
 status: ready
 ---
 
@@ -34,7 +34,10 @@ the device after every change and nowhere else.
   there is a change to a guarded file: say exactly what changed in the
   report.
 - No view uses the state yet. This task is the module and its tests.
-- Aim for about 280 changed lines.
+- Aim for about 280 changed lines. The tech lead raised the limit to 380
+  on 2026-11-20 for the review fixes: another tab's save never writes
+  (F1), a backup is never overwritten (F2), and a test for another tab
+  clearing storage (F4).
 
 ## Acceptance criteria
 
@@ -63,6 +66,10 @@ the device after every change and nowhere else.
   being told.
 - Private browsing, where `localStorage` exists and throws.
 - The backup can't be written: the old progress is kept.
+- Another tab writes a state this tab can't read: this tab writes
+  nothing, stops saving and tells the caller.
+- A backup already exists: it is kept, not overwritten.
+- Another tab clears storage.
 
 ## Tests
 
@@ -70,8 +77,9 @@ the device after every change and nowhere else.
   case, with a stand-in storage that can be made to throw.
 - A property test: saving then loading any valid state gives the same
   state back.
-- An end-to-end test that a value written through the module survives a
-  reload, and that no cookie exists.
+- An end-to-end test that no cookie exists after a save. A test that runs
+  the store inside a real page (review F3) belongs to the first screen
+  that uses it.
 
 ## Out of scope
 
