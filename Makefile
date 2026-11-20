@@ -82,7 +82,7 @@ PIPELINE := data/pipeline
 check-data: ## Gates for the Python data pipeline
 	@[ -f $(PIPELINE)/pyproject.toml ] || { echo "$@: $(PIPELINE) is not scaffolded yet (see docs/decisions/0006)"; exit 1; }
 	@command -v uv >/dev/null || { echo "$@: uv is not installed"; exit 1; }
-	@cd $(PIPELINE) && uv sync --frozen --quiet
+	@cd $(PIPELINE) && uv sync --locked --quiet
 	@cd $(PIPELINE) && uv run --frozen ruff check .
 	@cd $(PIPELINE) && uv run --frozen ruff format --check .
 	@cd $(PIPELINE) && uv run --frozen mypy src tests
