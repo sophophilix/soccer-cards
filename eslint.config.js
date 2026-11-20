@@ -12,6 +12,8 @@ const GAME_ROOT = path.join(import.meta.dirname, 'packages/game');
 const SEED_MESSAGE = 'Only src/testing/property-seed.ts sets the shared seed.';
 // ADR 0001 D1 and D4: each name, and every path below it, is refused in packages/game.
 const GAME_RESTRICTED_PACKAGES = ['svelte', '@sveltejs', '@soccer-cards/web'];
+const STORAGE_NAMES = ['localStorage', 'sessionStorage', 'indexedDB'];
+const STORAGE_MESSAGE = 'Only apps/web/src/lib/state reads or writes storage.';
 
 /**
  * Reports a relative import that resolves outside `packages/game`. The built-in
@@ -127,6 +129,23 @@ export default defineConfig(
 			'no-restricted-properties': [
 				'error',
 				{ object: 'Math', property: 'random', message: 'Use the injected generator.' }
+			]
+		}
+	},
+	{
+		// ADR 0001 D6 and the security floor: only lib/state reads or writes the browser's storage.
+		files: ['apps/web/src/**/*.{ts,js,svelte}'],
+		ignores: ['apps/web/src/lib/state/**'],
+		rules: {
+			'no-restricted-globals': [
+				'error',
+				...STORAGE_NAMES.map((name) => ({ name, message: STORAGE_MESSAGE }))
+			],
+			'no-restricted-properties': [
+				'error',
+				...['window', 'globalThis', 'self'].flatMap((object) =>
+					STORAGE_NAMES.map((property) => ({ object, property, message: STORAGE_MESSAGE }))
+				)
 			]
 		}
 	},
