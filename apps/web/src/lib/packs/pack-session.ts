@@ -1,0 +1,66 @@
+import { TIERS, addPendingPack, openPlayerPack } from '@soccer-cards/game';
+import type {
+	Card,
+	CardId,
+	CheckedCardSet,
+	PackToOpen,
+	PlayerState,
+	StateRefusal,
+	StateResult,
+	Tier
+} from '@soccer-cards/game';
+import type { PlayerStore, SaveResult } from '../state/player-store.ts';
+
+/** The new state and whether the store saved it, or why the game refused the step. */
+export type PackStepResult<Reason extends StateRefusal> =
+	| { readonly ok: true; readonly value: PlayerState; readonly saved: SaveResult }
+	| { readonly ok: false; readonly reason: Reason };
+
+type Saver = Pick<PlayerStore, 'save'>;
+
+const TIER_RANK: ReadonlyMap<Tier, number> = new Map(TIERS.map((tier, rank) => [tier, rank]));
+
+function saveStep<Reason extends StateRefusal>(
+	store: Saver,
+	result: StateResult<Reason>
+): PackStepResult<Reason> {
+	return result.ok ? { ...result, saved: store.save(result.value) } : result;
+}
+
+/**
+ * Opens a pack by the game's rules and saves its cards as pending, so a reload keeps them.
+ * The caller passes its newest state, keeps the state returned, and starts no second step
+ * while one is running.
+ */
+export function openPackAndSave(
+	store: Saver,
+	state: PlayerState,
+	pack: PackToOpen
+): PackStepResult<'pack-pending' | 'not-enough-coins' | 'not-enough-cards'> {
+	return saveStep(store, openPlayerPack(state, pack));
+}
+
+/**
+ * Adds the pending pack's cards to the collection and saves it. The caller passes its newest
+ * state, keeps the state returned, and starts no second step while one is running.
+ */
+export function addPackAndSave(
+	store: Saver,
+	state: PlayerState
+): PackStepResult<'no-pending-pack'> {
+	return saveStep(store, addPendingPack(state));
+}
+
+/** Returns the pack's cards in the order they are shown, lowest tier first, so the best is last. */
+export function revealOrder(cardIds: readonly CardId[], cardSet: CheckedCardSet): readonly Card[] {
+	const byId = new Map(cardSet.map((card) => [card.id, card]));
+	const rank = (card: Card): number => TIER_RANK.get(card.tier) ?? 0;
+	// A card the set no longer has can't be drawn on a card, so it is left out of the reveal.
+	const cards = cardIds.map((id) => byId.get(id)).filter((card) => card !== undefined);
+	return cards.toSorted((first, second) => rank(first) - rank(second));
+}
+
+/** Returns a seed for the game's random source from the browser's crypto generator. */
+export function randomSeed(): number {
+	return crypto.getRandomValues(new Uint32Array(1))[0] ?? 0;
+}
