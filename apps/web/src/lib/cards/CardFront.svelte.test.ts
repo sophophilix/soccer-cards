@@ -3,13 +3,11 @@ import { render } from 'vitest-browser-svelte';
 import CardFront from './CardFront.svelte';
 import type { CardFrontProps } from './card-front.ts';
 
-function aCard(overrides: Partial<CardFrontProps> = {}): CardFrontProps {
+/** An invented card with only the fields every card has: no nation, club, number or title. */
+function aBareCard(overrides: Partial<CardFrontProps> = {}): CardFrontProps {
 	return {
 		displayName: 'Tomas Example',
 		position: 'FORWARD',
-		nationalTeamCode: 'ESP',
-		clubName: 'Riverside Rovers',
-		shirtNumber: 9,
 		tier: 'BASE',
 		overall: 84,
 		attack: 88,
@@ -17,6 +15,15 @@ function aCard(overrides: Partial<CardFrontProps> = {}): CardFrontProps {
 		control: 79,
 		...overrides
 	};
+}
+
+function aCard(overrides: Partial<CardFrontProps> = {}): CardFrontProps {
+	return aBareCard({
+		nationalTeamCode: 'ESP',
+		clubName: 'Riverside Rovers',
+		shirtNumber: 9,
+		...overrides
+	});
 }
 
 test('the card has one name with the player, position, tier, overall and play stats', async () => {
@@ -45,6 +52,46 @@ test('a card with no photo shows the kit avatar with the shirt number', async ()
 
 	expect(screen.container.querySelector('img')).toBeNull();
 	expect(screen.container.querySelector('svg.avatar')?.textContent.trim()).toBe('10');
+});
+
+test('a retired player with no club has no club line and keeps the rest', async () => {
+	const screen = await render(CardFront, aBareCard({ nationalTeamCode: 'ESP', shirtNumber: 9 }));
+
+	expect(screen.container.querySelector('.club')).toBeNull();
+	await expect.element(screen.getByText('ESP', { exact: true })).toBeVisible();
+	await expect.element(screen.getByText('Tomas Example', { exact: true })).toBeVisible();
+});
+
+test('a card with no nation shows no nation box', async () => {
+	const screen = await render(CardFront, aBareCard({ clubName: 'Riverside Rovers' }));
+
+	expect(screen.container.querySelector('.nation')).toBeNull();
+	await expect.element(screen.getByText('Riverside Rovers', { exact: true })).toBeVisible();
+});
+
+test('a card with no number shows the kit avatar with a blank shirt', async () => {
+	const screen = await render(CardFront, aBareCard({ clubName: 'Riverside Rovers' }));
+
+	expect(screen.container.querySelector('svg.avatar')).not.toBeNull();
+	expect(screen.container.querySelector('svg.avatar text')).toBeNull();
+});
+
+test('a card with none of the optional fields invents no value', async () => {
+	const screen = await render(CardFront, aBareCard());
+
+	expect(screen.container.querySelector('.nation, .club, .title, svg.avatar text')).toBeNull();
+	expect(screen.container.textContent).not.toMatch(/undefined|null|NaN/);
+});
+
+test('a card title of 30 letters stays inside the card', async () => {
+	const cardTitle = 'W'.repeat(30);
+	const screen = await render(CardFront, aCard({ cardTitle }));
+	screen.container.style.width = '180px';
+
+	const box = screen.getByRole('img').element().getBoundingClientRect();
+	const title = screen.getByText(cardTitle).element().getBoundingClientRect();
+	expect(title.left).toBeGreaterThanOrEqual(box.left);
+	expect(title.right).toBeLessThanOrEqual(box.right);
 });
 
 test('a photo has its size, loads lazily and has an empty alt', async () => {
