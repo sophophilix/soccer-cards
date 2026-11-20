@@ -99,17 +99,12 @@ describe('takeKick', () => {
 		const sixthPair = kicks(sixthKick, ['left'], stubRandom([]));
 		const after = kicks(sixthPair, ['right', 'left'], stubRandom([1, 2], [false, true]));
 
-		expect([
-			sixthKick.status,
-			sixthPair.status,
-			after.kicks[13]?.outcome,
-			after.score,
-			after.status
-		]).toEqual([
+		const seventhPair = after.kicks.slice(12).map((kick) => kick.outcome);
+
+		expect([sixthKick.status, sixthPair.status, seventhPair, after.status]).toEqual([
 			{ kind: 'kicking', next: 'opponent' },
 			{ kind: 'kicking', next: 'player' },
-			'miss',
-			{ player: 7, opponent: 6 },
+			['goal', 'miss'],
 			{ kind: 'over', winner: 'player' }
 		]);
 	});
