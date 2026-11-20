@@ -109,3 +109,107 @@ def test_a_file_that_is_not_utf8_names_the_file(api: Path) -> None:
 
     with pytest.raises(ValidationError, match=r"^clubs\.json is not UTF-8 JSON"):
         validate(api)
+
+
+def _summary_list(api: Path) -> list[dict[str, Any]]:
+    players = json.loads((api / "players.json").read_text("utf-8"))["players"]
+    assert isinstance(players, list)
+    return players
+
+
+def test_a_repeated_player_name_fails(api: Path) -> None:
+    players = _summary_list(api)
+    _write(api / "players.json", {"players": players * 2})
+
+    with pytest.raises(ValidationError, match=r"players\.json players/tavi.*unique"):
+        validate(api)
+
+
+def test_a_repeated_club_name_fails(api: Path) -> None:
+    club = _example("club.example.json")
+    _write(api / "clubs.json", {"clubs": [club, club]})
+
+    with pytest.raises(ValidationError, match=r"clubs\.json clubs/harbour.*unique"):
+        validate(api)
+
+
+def test_a_file_name_that_differs_from_its_id_fails(api: Path) -> None:
+    (api / "players/tavi-brightwell.json").rename(api / "players/other.json")
+
+    with pytest.raises(
+        ValidationError, match=r"players/tavi-brightwell\.json is missing"
+    ):
+        validate(api)
+
+
+def test_a_full_record_with_another_id_fails(api: Path) -> None:
+    player = _example("player.outfield.json")
+    player["name"] = "players/someone-else"
+    _write(api / "players/tavi-brightwell.json", player)
+
+    with pytest.raises(ValidationError, match=r"^players/tavi-brightwell\.json name"):
+        validate(api)
+
+
+def test_a_full_record_without_a_summary_fails(api: Path) -> None:
+    _write(api / "players.json", {"players": []})
+
+    with pytest.raises(ValidationError, match=r"players/tavi-brightwell\.json is not"):
+        validate(api)
+
+
+def test_a_club_that_does_not_exist_fails(api: Path) -> None:
+    _write(api / "clubs.json", {"clubs": []})
+
+    with pytest.raises(
+        ValidationError, match=r"players\.json players/tavi.*clubs/harb"
+    ):
+        validate(api)
+
+
+def test_a_summary_photo_without_a_credit_fails(api: Path) -> None:
+    _write(api / "credits.json", {"credits": []})
+    (api / "photos/tavi-brightwell.webp").unlink()
+
+    with pytest.raises(ValidationError, match=r"players\.json players/tavi.*no credit"):
+        validate(api)
+
+
+def test_a_credit_for_an_unknown_player_fails(api: Path) -> None:
+    credits = _example("credits.example.json")
+    credits["credits"][0]["player"] = "players/nobody"
+    _write(api / "credits.json", credits)
+
+    with pytest.raises(
+        ValidationError, match=r"credits\.json \$\.credits\[0\].*nobody"
+    ):
+        validate(api)
+
+
+def test_a_credit_for_a_missing_photo_fails(api: Path) -> None:
+    (api / "photos/tavi-brightwell.webp").unlink()
+
+    with pytest.raises(
+        ValidationError, match=r"credits\.json \$\.credits\[0\].*missing"
+    ):
+        validate(api)
+
+
+def test_a_summary_that_differs_from_its_full_record_fails(api: Path) -> None:
+    players = _summary_list(api)
+    players[0]["displayName"] = "Someone Else"
+    _write(api / "players.json", {"players": players})
+
+    with pytest.raises(
+        ValidationError, match=r"players\.json players/tavi.*displayName"
+    ):
+        validate(api)
+
+
+def test_a_goalkeeper_with_outfield_ratings_fails(api: Path) -> None:
+    player = _example("player.outfield.json")
+    player["position"] = "GOALKEEPER"
+    _write(api / "players/tavi-brightwell.json", player)
+
+    with pytest.raises(ValidationError, match=r"^players/tavi-brightwell\.json"):
+        validate(api)

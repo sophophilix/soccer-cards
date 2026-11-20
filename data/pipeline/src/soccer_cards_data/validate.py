@@ -50,12 +50,67 @@ def validate(api_dir: Path, schema_dir: Path = SCHEMA_DIR) -> None:
             # ascii() escapes fetched text, so a message can't rewrite the terminal.
             reason = ascii(errors[0].message[:200])
             raise ValidationError(f"{rel} {errors[0].json_path}: {reason}")
-    credited = {
-        c["uri"] for c in _load(api_dir / "credits.json", "credits.json")["credits"]
-    }
+    credits = _load(api_dir / "credits.json", "credits.json")["credits"]
+    credited = {c["uri"] for c in credits}
     for photo in sorted((api_dir / "photos").glob("*")):
         if f"photos/{photo.name}" not in credited:
             raise ValidationError(f"photos/{photo.name} has no credit")
+    _check_across_files(api_dir, credits)
+
+
+def _check_across_files(api_dir: Path, credits: list[dict[str, Any]]) -> None:
+    """Check what one schema can't see: unique ids, references, matching copies.
+
+    The schema already ties a player's rating group to its position inside each
+    file. Here the list's summary must also equal the full record, so the two
+    can't disagree on position or ratings.
+    """
+    players = _load(api_dir / "players.json", "players.json")["players"]
+    clubs = _load(api_dir / "clubs.json", "clubs.json")["clubs"]
+    club_names = _unique_names(clubs, "clubs.json")
+    player_names = _unique_names(players, "players.json")
+    files = {p.name for p in (api_dir / "players").glob("*.json")}
+    for summary in players:
+        name = summary["name"]
+        rel = f"{name.removeprefix('players/')}.json"
+        if rel not in files:
+            raise ValidationError(f"players.json {name}: players/{rel} is missing")
+        full = _load(api_dir / "players" / rel, f"players/{rel}")
+        if full["name"] != name:
+            raise ValidationError(f"players/{rel} name {full['name']!r} != {name!r}")
+        for field, value in summary.items():
+            if full.get(field) != value:
+                raise ValidationError(
+                    f"players.json {name}: {field} differs from players/{rel}"
+                )
+        if "club" in summary and summary["club"] not in club_names:
+            raise ValidationError(
+                f"players.json {name}: club {summary['club']} is not in clubs.json"
+            )
+        photo = summary.get("photo")
+        if photo and photo["uri"] not in {c["uri"] for c in credits}:
+            raise ValidationError(
+                f"players.json {name}: photo {photo['uri']} has no credit"
+            )
+    for rel in sorted(files):
+        if f"players/{rel.removesuffix('.json')}" not in player_names:
+            raise ValidationError(f"players/{rel} is not in players.json")
+    for index, credit in enumerate(credits):
+        where = f"credits.json $.credits[{index}]"
+        if credit["player"] not in player_names:
+            raise ValidationError(f"{where}: player {credit['player']} is unknown")
+        if not (api_dir / credit["uri"]).is_file():
+            raise ValidationError(f"{where}: photo {credit['uri']} is missing")
+
+
+def _unique_names(items: list[dict[str, Any]], label: str) -> set[str]:
+    """Return the resource names in a list, failing on a repeat."""
+    names: set[str] = set()
+    for item in items:
+        if item["name"] in names:
+            raise ValidationError(f"{label} {item['name']}: name is not unique")
+        names.add(item["name"])
+    return names
 
 
 def _refuse_unknown_files(api_dir: Path) -> None:
