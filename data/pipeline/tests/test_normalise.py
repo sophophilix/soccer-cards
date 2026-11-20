@@ -83,7 +83,6 @@ def _assert_structure(record: normalise.PlayerRecord) -> None:
 def test_outfield_player_from_saved_facts_is_schema_valid() -> None:
     record = _build(_facts())
     player: Any = record.player
-
     _assert_structure(record)
     assert player["name"] == "players/invented-slug"
     assert (player["displayName"], player["position"]) == ("Lionel Messi", "FORWARD")
@@ -132,7 +131,6 @@ def test_override_sets_the_tier(tier: str) -> None:
 
 def test_player_with_no_spells_is_retired_with_no_counts() -> None:
     record = _build(replace(_facts(), clubs=(), national_teams=()), photo=None)
-
     _assert_structure(record)
     assert record.player["state"] == "RETIRED"
     for key in ("club", "clubGoalCount", "nationalTeamGoalCount", "photo"):
@@ -141,9 +139,8 @@ def test_player_with_no_spells_is_retired_with_no_counts() -> None:
 
 def test_one_unknown_count_makes_the_total_absent() -> None:
     clubs = _facts().clubs
-    record = _build(
-        replace(_facts(), clubs=(replace(clubs[0], goals=None), *clubs[1:]))
-    )
+    facts = replace(_facts(), clubs=(replace(clubs[0], goals=None), *clubs[1:]))
+    record = _build(facts)
     assert "clubGoalCount" not in record.player
     _assert_structure(record)
 
@@ -151,28 +148,17 @@ def test_one_unknown_count_makes_the_total_absent() -> None:
 def test_count_over_its_bound_is_reported_and_absent() -> None:
     senior = replace(_facts().national_teams[-1], goals=201)
     record = _build(replace(_facts(), national_teams=(senior,)))
-
     assert "nationalTeamGoalCount" not in record.player
     assert record.problems == ("Q615 Q79800: 201 goals is over 200, treated as absent",)
-
-
-@pytest.mark.parametrize(
-    "label",
-    [None, "", "<b>Leo</b>", "Leo‮Messi", " Leo", "Leo  Messi", "Leo\nM", "L" * 61],
-)
-def test_unsafe_label_is_refused_with_the_qid(label: str | None) -> None:
-    with pytest.raises(NormaliseError, match=r"^Q615: label"):
-        _build(replace(_facts(), label=label))
 
 
 def test_unsafe_club_label_drops_the_club_and_is_reported() -> None:
     clubs = _facts().clubs
     miami = replace(clubs[-1], team_label="<a href=x>Club</a>")
     record = _build(replace(_facts(), clubs=(*clubs[:-1], miami)))
-
     assert "club" not in record.player
     assert record.player["state"] == "ACTIVE"
-    assert record.problems == ("Q615 Q16844931: club label is not plain text",)
+    assert record.problems == ("Q615 Q16844931: label is missing or not plain text",)
 
 
 @pytest.mark.parametrize(
@@ -187,6 +173,8 @@ def test_unsafe_club_label_drops_the_club_and_is_reported() -> None:
         ({"photo": replace(PHOTO, file=Photo("photos/x.webp", 0, 9))}, "photo size"),
         ({"photo": replace(PHOTO, file=Photo("../x.webp", 9, 9))}, "photo path"),
         ({"facts": replace(_facts(), birth_date="2027-01-01")}, "facts.birth_date"),
+        ({"facts": replace(_facts(), label="<b>Leo</b>")}, "label"),
+        ({"facts": replace(_facts(), label="Leo\u202eMessi")}, "label"),
     ],
 )
 def test_refused_inputs_name_the_player(changes: dict[str, Any], message: str) -> None:

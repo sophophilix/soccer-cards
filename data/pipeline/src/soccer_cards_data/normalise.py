@@ -14,7 +14,7 @@ from datetime import date
 from soccer_cards_data import ratings
 from soccer_cards_data.commons import Avatar, Publish
 from soccer_cards_data.grades import GradeEntry, Override
-from soccer_cards_data.names import LabelError, display_name, is_plain, slugify
+from soccer_cards_data.names import LabelError, assign_slugs, club_name, display_name
 from soccer_cards_data.photos import Photo
 from soccer_cards_data.wikidata import PlayerFacts, Spell
 
@@ -103,15 +103,12 @@ def build_player(
         raise NormaliseError(f"{qid}: {exc}") from exc
     keeper = position == Position.GOALKEEPER
     current = sorted((s for s in facts.clubs if s.end is None), key=_newest)
-    club = current[-1].team_label if current else None
-    if current and not (club and is_plain(club) and slugify(club)):
-        problems.append(f"{qid} {current[-1].team}: club label is not plain text")
-        club = None
+    club, club_slug = _club(current, qid, problems)
     player: dict[str, object] = {
         "name": f"players/{slug}",
         "displayName": name,
         "state": "ACTIVE" if current else "RETIRED",
-        "club": f"clubs/{slugify(club)}" if club else None,
+        "club": f"clubs/{club_slug}" if club_slug else None,
         "nationalTeamCode": national_team_code,
         "position": position.value,
         # The override is applied after the formula, so ICON needs no tier rule.
@@ -125,7 +122,7 @@ def build_player(
     }
     player = {k: v for k, v in player.items() if v is not None}
     summary = {k: v for k, v in player.items() if k not in FULL_ONLY}
-    return PlayerRecord(player, summary, club, tuple(problems))
+    return PlayerRecord(player, summary, club or None, tuple(problems))
 
 
 def _require(ok: bool, qid: str, reason: str) -> None:
@@ -159,6 +156,19 @@ def _totals(
         known = [v for v in values if v is not None and v <= bound]
         sums.append(sum(known) if spells and len(known) == len(values) else None)
     return sums[0], sums[1]
+
+
+def _club(current: Sequence[Spell], qid: str, problems: list[str]) -> tuple[str, str]:
+    """Return the current club's checked name and slug, or report why it has none."""
+    if not current:
+        return "", ""
+    team = current[-1].team
+    try:
+        name = club_name(team, current[-1].team_label)
+        return name, assign_slugs({team: name})[team]
+    except LabelError as exc:
+        problems.append(f"{qid} {exc}")
+        return "", ""
 
 
 def _newest(spell: Spell) -> tuple[str, str]:
