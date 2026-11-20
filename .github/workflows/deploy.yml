@@ -130,6 +130,16 @@ jobs:
           TF_IN_AUTOMATION: 'true'
         run: |
           set -o pipefail
+          # nonsensitive() could put the passphrase in the summary. An
+          # `external` key provider or method runs a program at init. Checked
+          # before init, and after it over the modules it fetched.
+          refuse_unsafe() {
+            if grep -rqE 'nonsensitive[[:space:]]*\(|(key_provider|method)["[:space:]:{]*external' \
+                 --include='*.tf' --include='*.tf.json' --include='*.tofu' --include='*.tofu.json' .; then
+              echo "::error::infra/ or a module calls nonsensitive(), or uses an external key provider or method."; exit 1
+            fi
+          }
+          refuse_unsafe
           # An az failure stops the step. Only a clear answer is used.
           exists="$(az storage blob exists --auth-mode login --account-name "$TF_STATE_STORAGE_ACCOUNT" --container-name tfstate --name soccer-cards.tfstate --query exists -o tsv)"
           case "$exists" in
@@ -147,11 +157,7 @@ jobs:
                    echo "No state exists yet. This plan is against an empty state." >> "$GITHUB_STEP_SUMMARY" ;;
             *) echo "::error::Could not tell whether the state exists."; exit 1 ;;
           esac
-          # nonsensitive() could put the passphrase in the summary. After init,
-          # so the modules it fetched are checked too.
-          if grep -rqE 'nonsensitive[[:space:]]*\(' --include='*.tf' --include='*.tf.json' --include='*.tofu' --include='*.tofu.json' .; then
-            echo "::error::infra/ or a module calls nonsensitive(). Remove it."; exit 1
-          fi
+          refuse_unsafe
           # Exit code 0 is no changes, 2 is changes, anything else is an error.
           set +e
           tofu plan -input=false -lock=false -no-color -detailed-exitcode -var-file=production.tfvars -out=tfplan > /dev/null
@@ -169,7 +175,16 @@ jobs:
           fingerprint="$(jq -cS '[.resource_changes[]? | select(.change.actions != ["no-op"]) | {address, change: (.change | {actions, before, after, after_unknown})}]' <<< "$json" | sha256sum | cut -d' ' -f1)"
           {
             echo '### Infrastructure plan'
-            jq -r '.resource_changes[]? | select(.change.actions != ["no-op"]) | "- `\(.address)`: \(.change.actions | join(" then "))"' <<< "$json"
+            # An update also names the attributes that change and aren't
+            # sensitive. Names only, never values.
+            jq -r 'def sens($s; $k): if ($s | type) == "object" then ($s[$k] // false) != false else $s == true end;
+              .resource_changes[]? | select(.change.actions != ["no-op"]) | .change as $c
+              | "- `\(.address)`: \($c.actions | join(" then "))" + if $c.actions == ["update"] then
+                  [($c.after // {}) + ($c.after_unknown // {}) | keys[]
+                   | select($c.before[.] != $c.after[.] or $c.after_unknown[.] == true)
+                   | select((sens($c.before_sensitive; .) or sens($c.after_sensitive; .)) | not)]
+                  | if length == 0 then "" else " (" + join(", ") + ")" end
+                else "" end' <<< "$json"
             echo "Resource changes SHA-256: \`${fingerprint}\`"
           } >> "$GITHUB_STEP_SUMMARY"
           if jq -e '[.resource_changes[]? | select(.change.actions | index("delete"))] | length > 0' <<< "$json" > /dev/null; then

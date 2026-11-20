@@ -42,8 +42,10 @@ jobs:
           tofu_version: 1.13.9
           tofu_wrapper: false
           checksums: bc44eb6b06446ba83bd4072114891987f590f66cca712737a7f1147c50c539ce
-      # A provider's code runs during plan, beside the credentials. Plan only
-      # with the base branch's lock file, and no provider shipped in the tree.
+      # Approving this run runs the branch's infra/ and workflow code with the
+      # `preview` secrets, so read those changes first. A provider's code runs
+      # during plan: plan only with the base branch's lock file, and no
+      # provider shipped in the tree.
       - id: providers
         name: Check the providers against the base branch
         env:
@@ -82,6 +84,16 @@ jobs:
           TF_IN_AUTOMATION: 'true'
         run: |
           set -o pipefail
+          # nonsensitive() could put the passphrase in the public summary. An
+          # `external` key provider or method runs a program at init. Checked
+          # before init, and after it over the modules it fetched.
+          refuse_unsafe() {
+            if grep -rqE 'nonsensitive[[:space:]]*\(|(key_provider|method)["[:space:]:{]*external' \
+                 --include='*.tf' --include='*.tf.json' --include='*.tofu' --include='*.tofu.json' .; then
+              echo "::error::infra/ or a module calls nonsensitive(), or uses an external key provider or method."; exit 1
+            fi
+          }
+          refuse_unsafe
           # An az failure stops the step. Only a clear answer is used.
           exists="$(az storage blob exists --auth-mode login --account-name "$TF_STATE_STORAGE_ACCOUNT" --container-name tfstate --name soccer-cards.tfstate --query exists -o tsv)"
           case "$exists" in
@@ -97,11 +109,7 @@ jobs:
                    echo "No state exists yet. This plan is against an empty state." >> "$GITHUB_STEP_SUMMARY" ;;
             *) echo "::error::Could not tell whether the state exists."; exit 1 ;;
           esac
-          # nonsensitive() could put the passphrase in the public summary.
-          # After init, so the modules it fetched are checked too.
-          if grep -rqE 'nonsensitive[[:space:]]*\(' --include='*.tf' --include='*.tf.json' --include='*.tofu' --include='*.tofu.json' .; then
-            echo "::error::infra/ or a module calls nonsensitive(). Remove it."; exit 1
-          fi
+          refuse_unsafe
           tofu plan -input=false -lock=false -no-color -var-file=production.tfvars -out=tfplan > /dev/null
           json="$(tofu show -json tfplan)"
           if jq -e '[.output_changes[]? | select(.actions != ["no-op"])] | length > 0' <<< "$json" > /dev/null; then
@@ -109,7 +117,16 @@ jobs:
           fi
           {
             echo '### Infrastructure plan'
-            jq -r '[.resource_changes[]? | select(.change.actions != ["no-op"]) | "- `\(.address)`: \(.change.actions | join(" then "))"] | if length == 0 then "No changes." else .[] end' <<< "$json"
+            # An update also names the attributes that change and aren't
+            # sensitive. Names only, never values.
+            jq -r 'def sens($s; $k): if ($s | type) == "object" then ($s[$k] // false) != false else $s == true end;
+              [.resource_changes[]? | select(.change.actions != ["no-op"]) | .change as $c
+              | "- `\(.address)`: \($c.actions | join(" then "))" + if $c.actions == ["update"] then
+                  [($c.after // {}) + ($c.after_unknown // {}) | keys[]
+                   | select($c.before[.] != $c.after[.] or $c.after_unknown[.] == true)
+                   | select((sens($c.before_sensitive; .) or sens($c.after_sensitive; .)) | not)]
+                  | if length == 0 then "" else " (" + join(", ") + ")" end
+                else "" end] | if length == 0 then "No changes." else .[] end' <<< "$json"
             if jq -e '[.resource_changes[]? | select(.change.actions | index("delete"))] | length > 0' <<< "$json" > /dev/null; then
               echo "This plan destroys or replaces resources. Apply on \`main\` will stop before changing anything."
             fi
