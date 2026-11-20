@@ -18,6 +18,8 @@ describe('cardFaceFromSummary', () => {
 			displayName: 'Tavi Brightwell',
 			nationalTeamCode: 'ENG',
 			clubName: 'Harbour Rovers',
+			cardTitle: 'Speedster',
+			cardNumber: 9,
 			photo: {
 				src: '/api/v1/photos/tavi-brightwell.webp',
 				widthPx: 600,
@@ -54,6 +56,29 @@ describe('cardFaceFromSummary', () => {
 
 		expect(face && 'nationalTeamCode' in face).toBe(false);
 		expect(face?.clubName).toBe('Harbour Rovers');
+	});
+
+	it('keeps a card title at the schema maximum of 30 letters', () => {
+		const cardTitle = 'É'.repeat(30);
+
+		expect(cardFaceFromSummary(aSummary({ cardTitle }), CLUB_NAMES)?.cardTitle).toBe(cardTitle);
+	});
+
+	it.each(['', ' Speedster', '<b>Speedster</b>', 'Speed\u202ester', 'S'.repeat(31), 7])(
+		'leaves out only the card title for %j',
+		(cardTitle) => {
+			const face = cardFaceFromSummary(aSummary({ cardTitle }), CLUB_NAMES);
+
+			expect(face && 'cardTitle' in face).toBe(false);
+			expect(face?.cardNumber).toBe(9);
+		}
+	);
+
+	it.each([0, -9, 9.5, '9', undefined])('leaves out only the card number for %j', (cardNumber) => {
+		const face = cardFaceFromSummary(aSummary({ cardNumber }), CLUB_NAMES);
+
+		expect(face && 'cardNumber' in face).toBe(false);
+		expect(face?.cardTitle).toBe('Speedster');
 	});
 
 	it.each([
