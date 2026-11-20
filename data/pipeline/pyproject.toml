@@ -25,6 +25,7 @@ no-build-package = [
     "bandit",
     "colorama",
     "coverage",
+    "hypothesis",
     "iniconfig",
     "librt",
     "markdown-it-py",
@@ -40,6 +41,7 @@ no-build-package = [
     "pyyaml",
     "rich",
     "ruff",
+    "sortedcontainers",
     "stevedore",
     "typing-extensions",
     "uv_build",
@@ -89,6 +91,7 @@ show_missing = true
 [dependency-groups]
 dev = [
     "bandit>=1.9.4",
+    "hypothesis>=6.170.15",
     "mypy>=2.4.1",
     "pytest>=9.2.0",
     "pytest-cov>=7.1.0",
