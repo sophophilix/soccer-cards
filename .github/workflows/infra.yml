@@ -84,13 +84,15 @@ jobs:
           TF_IN_AUTOMATION: 'true'
         run: |
           set -o pipefail
-          # nonsensitive() could put the passphrase in the public summary. An
-          # `external` key provider or method runs a program at init. Checked
-          # before init, and after it over the modules it fetched.
+          # A tripwire for the obvious forms, not the control: approving the
+          # `preview` run is. nonsensitive() could put the passphrase in the
+          # public summary, and an `external` key provider or method runs a
+          # program at init. Any file with either word is refused, before init
+          # and again after it over the modules it fetched.
           refuse_unsafe() {
-            if grep -rqE 'nonsensitive[[:space:]]*\(|(key_provider|method)["[:space:]:{]*external' \
+            if grep -rqwE 'nonsensitive|external' \
                  --include='*.tf' --include='*.tf.json' --include='*.tofu' --include='*.tofu.json' .; then
-              echo "::error::infra/ or a module calls nonsensitive(), or uses an external key provider or method."; exit 1
+              echo "::error::infra/ or a module contains the word nonsensitive or external."; exit 1
             fi
           }
           refuse_unsafe
