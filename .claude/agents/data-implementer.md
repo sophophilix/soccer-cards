@@ -2,7 +2,7 @@
 name: data-implementer
 description: Builds one task in the Python data pipeline or the generated API data (component data) from its brief in docs/tasks. Started only by the lead.
 disallowedTools: Agent
-model: inherit
+model: sonnet
 isolation: worktree
 maxTurns: 150
 skills:

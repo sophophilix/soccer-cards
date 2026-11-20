@@ -80,12 +80,15 @@ When an agent reports that it has finished:
 
 ## 4. Review
 
-1. Start `reviewer` with the brief's path, the worktree path and the base
-   branch. Nothing else.
-2. Also start `security-reviewer` when the change touches any of: saved
-   state or storage, network calls, headers, `package.json` or
-   `pyproject.toml`, `.github/`, `infra/`, the pipeline's fetch or licence
-   stages, or text rendered from data.
+1. Start one `reviewer` with the brief's path, the worktree path and the
+   base branch. Nothing else. When the change touches saved state, network
+   calls or text rendered from data, add one line asking it to cover the
+   security floor too.
+2. Start `security-reviewer` as well only when the change touches
+   `package.json`, `pyproject.toml` or a lockfile, `.github/`, `infra/`,
+   response headers, or the storage format of saved progress. It runs on
+   the lead's model; implementers and the reviewer run on Sonnet (tech
+   lead, 2026-11-21: "yes switch to sonnet and one reviewer").
 3. Each reviewer writes `.sdlc/reviews/<task-id>.<reviewer>.json`. Run
    `bin/sdlc review-check` on each file.
 4. Send every `must_fix` finding to the implementer, quoted exactly. Run the

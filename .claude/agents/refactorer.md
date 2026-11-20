@@ -2,7 +2,7 @@
 name: refactorer
 description: Carries out one behaviour-preserving refactor task (kind refactor) from its brief in docs/tasks, without changing tests, contracts or dependencies. Started only by the lead, usually after the scheduled refactor scan.
 disallowedTools: Agent
-model: inherit
+model: sonnet
 isolation: worktree
 maxTurns: 120
 skills:
