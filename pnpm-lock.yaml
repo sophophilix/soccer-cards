@@ -241,6 +241,9 @@ importers:
       '@fontsource/saira-condensed':
         specifier: ^5.3.0
         version: 5.3.0
+      '@soccer-cards/game':
+        specifier: workspace:*
+        version: link:../../packages/game
       '@sveltejs/kit':
         specifier: ^3.1.1
         version: 3.1.1(@sveltejs/vite-plugin-svelte@7.3.1(svelte@5.57.3(@typescript-eslint/types@8.72.1))(vite@8.3.7(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1)))(svelte@5.57.3(@typescript-eslint/types@8.72.1))(typescript@6.0.3)(vite@8.3.7(@types/node@26.6.6)(esbuild@0.28.2)(jiti@2.7.0)(yaml@2.9.1))
