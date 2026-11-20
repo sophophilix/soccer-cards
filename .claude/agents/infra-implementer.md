@@ -2,7 +2,7 @@
 name: infra-implementer
 description: Builds one task in infrastructure or CI (components infra, ci) from its brief in docs/tasks: OpenTofu, Wrangler configuration, response headers, GitHub Actions workflows and scanner configuration. Started only by the lead.
 disallowedTools: Agent
-model: inherit
+model: sonnet
 isolation: worktree
 maxTurns: 120
 skills:

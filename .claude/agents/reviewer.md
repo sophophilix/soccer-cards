@@ -2,7 +2,7 @@
 name: reviewer
 description: Reviews one task's change against its brief and the team's rules, and writes a JSON review file. Read-only on the change. Started only by the lead, with the brief path, the worktree path and the base branch.
 tools: Read, Grep, Glob, Bash, Write
-model: inherit
+model: sonnet
 effort: high
 maxTurns: 80
 skills:
