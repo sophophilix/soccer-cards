@@ -41,6 +41,8 @@
 		--line: #29443a;
 		--accent: #ff5a3c;
 		--accent-ink: #1a0703;
+		/* The prototype's blue already passes on the dark background. */
+		--focus: #3d8bff;
 		--card-shadow: rgba(0, 0, 0, 0.6);
 		color-scheme: dark;
 	}

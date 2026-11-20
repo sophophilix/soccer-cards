@@ -77,6 +77,23 @@ test('the keyboard alone reaches every tab and moves to its view', async ({
 	await expectView(page, 'Cards');
 });
 
+for (const { colorScheme, focus } of [
+	{ colorScheme: 'light', focus: 'rgb(53, 134, 255)' },
+	{ colorScheme: 'dark', focus: 'rgb(61, 139, 255)' }
+] as const) {
+	test.describe(`with the system in ${colorScheme} mode`, () => {
+		test.use({ colorScheme });
+
+		test('a focused tab has that theme’s focus ring colour', async ({ page }) => {
+			await page.goto('/packs');
+
+			await tab(page, 'Match').focus();
+
+			await expect(tab(page, 'Match')).toHaveCSS('outline-color', focus);
+		});
+	});
+}
+
 test('back after Packs, Cards and Guide returns to Cards', async ({ page }) => {
 	await page.goto('/packs');
 	await tab(page, 'Cards').press('Enter');
