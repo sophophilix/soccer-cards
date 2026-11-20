@@ -45,7 +45,7 @@ test('the response header allows scripts by hash, never every inline script', as
 });
 
 for (const { path, heading } of [
-	{ path: '/', heading: 'Soccer Cards' },
+	{ path: '/', heading: 'Packs' },
 	{ path: '/no-such-page', heading: 'Page not found' }
 ]) {
 	// The <meta> tag is taken out, so only the response header is left to decide.
