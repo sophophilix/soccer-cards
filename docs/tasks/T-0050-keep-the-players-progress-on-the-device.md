@@ -1,87 +1,71 @@
 ---
 id: T-0050
-title: Keep the player's progress on the device
+title: Check a saved player state and migrate it to the current version
 component: web
 kind: feature
 agent: web-implementer
 paths:
   - apps/web/src/lib/state/**
   - apps/web/package.json
-  - apps/web/tests/**
-  - eslint.config.js
   - pnpm-lock.yaml
 dependencies:
   - '@soccer-cards/game'
-max_changed_lines: 380
+max_changed_lines: 300
 status: ready
 ---
 
 ## Goal
 
-A child's cards and coins are still there tomorrow. Progress is saved on
-the device after every change and nowhere else.
+A saved state is trusted only after it is checked and brought up to the
+current version. This is the first half of keeping progress on the device;
+T-0063 stores it. The first build of the whole came to 483 lines against
+380, so it was split.
 
 ## Context
 
-- `docs/decisions/0001-stack-and-repository-layout.md`, D6. ADR 0003 D5:
-  no cookies, no account, nothing sent anywhere.
-- The `sveltekit-web` skill, "Player state". The `child-safety-privacy`
-  skill.
+- `docs/decisions/0001-stack-and-repository-layout.md`, D6. The
+  `sveltekit-web` skill, "Player state".
 - `packages/game/src/state.ts`: `PlayerState`, `STATE_VERSION` (2 since
   T-0047) and `createPlayerState`. `packages/game/src/divisions.ts`:
-  `DIVISIONS`. `recordWin` throws for an unknown division, so loading must
-  refuse one (T-0047 reviews, both F1). `@soccer-cards/game` becomes a workspace dependency
-  of the web app. It is this repository's own package, not a download.
-- `eslint.config.js` already has a rule about storage; this task makes
-  `lib/state` the one place allowed to touch it, if it isn't yet. A change
-  there is a change to a guarded file: say exactly what changed in the
-  report.
-- No view uses the state yet. This task is the module and its tests.
-- Aim for about 260 changed lines without the lockfile. The limit is 380.
+  `DIVISIONS`. `recordWin` throws for an unknown division, so the check
+  must refuse one (T-0047 reviews, both F1).
+- `@soccer-cards/game` becomes a workspace dependency of the web app. It is
+  this repository's own package, not a download.
+- The first build is on `feat/T-0050-keep-the-players-progress-on-the-device`
+  at 5343959. Keep its check and migrations; the store moves to T-0063.
+- Aim for about 240 changed lines without the lockfile.
 
 ## Acceptance criteria
 
-- `lib/state` exposes: load the saved state, save a state, and subscribe
-  to a change made in another tab. Nothing else in `apps/web` reads or
-  writes storage, and a lint rule refuses it.
-- The state is stored in `localStorage` under one named key, as JSON, with
-  its `version`.
-- Loading checks the version 2 shape from T-0047 before trusting it: a
-  wrong type, a missing field, a negative count, a card count that isn't a
-  whole number, and a `division` that isn't one of `DIVISIONS`. The
+- A function takes unknown parsed JSON and returns either a version 2
+  `PlayerState` or a reason it was refused. It refuses a wrong type, a
+  missing field, a negative count, a card count that isn't a whole number,
+  an empty card id, and a `division` that isn't one of `DIVISIONS`. The
   division wins, wins and losses are whole numbers of zero or more.
-- A saved state from an older version runs through the migrations in
-  order. There is none yet; the list is empty and the mechanism is tested
-  with an invented one.
-- A state that fails the check, or has a version newer than the app
-  knows, is copied to a backup key, replaced by a fresh start, and
-  reported to the caller so a view can tell the player in plain words.
-- When storage is missing or throws, on read or on write, the game runs
-  for the session and the caller is told that progress isn't being saved.
-- Nothing is read during prerendering.
-- No cookie is set, and the existing privacy tests still pass.
+- A state from an older version runs through the migrations in order
+  before the check. The list is empty; the mechanism is tested with an
+  invented one. A migration that doesn't move up exactly one version is
+  refused.
+- A version newer than the app knows is refused with its own reason.
+- Nothing here touches storage.
 - `make check COMPONENT=web` passes.
 
 ## Edge cases
 
-- Storage is full on save.
-- The stored text isn't JSON.
-- Two tabs: a save in one reaches the other through the storage event,
-  and a stale tab does not overwrite newer progress without the caller
-  being told.
-- Private browsing, where `localStorage` exists and throws.
+- `null`, a list, a number or a string where the state should be.
+- A collection that is a list instead of an object.
+- An older version with no migration to it.
 
 ## Tests
 
-- Unit tests in `apps/web/src/lib/state/` for each criterion and edge
-  case, with a stand-in storage that can be made to throw.
-- A property test: saving then loading any valid state gives the same
-  state back.
-- An end-to-end test that a value written through the module survives a
-  reload, and that no cookie exists.
+- Unit tests in `apps/web/src/lib/state/` for each refusal and each edge
+  case, as a table.
+- Migration tests with an invented 0 to 1 to 2.
+- A property test: any valid state passes the check unchanged.
 
 ## Out of scope
 
-- Showing coins or cards. The views do that.
+- Storage, the store, two tabs, the lint rule and the end-to-end test:
+  T-0063.
 - A migration from version 1. No version 1 state was ever saved on a
-  device, because this task is the first to save one.
+  device.
