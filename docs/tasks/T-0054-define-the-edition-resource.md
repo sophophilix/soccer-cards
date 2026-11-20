@@ -15,7 +15,7 @@ paths:
   - packages/schema/src/index.ts
 dependencies: []
 max_changed_lines: 260
-status: ready
+status: done
 ---
 
 ## Goal
