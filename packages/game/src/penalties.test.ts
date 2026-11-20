@@ -88,14 +88,27 @@ describe('takeKick', () => {
 		]);
 	});
 
+	it('lets the other side win at 0-3 after three kicks each', () => {
+		const nilThree = kicks(level, left(6), stubRandom([], [true, false, true, false, true, false]));
+
+		expect(nilThree.status).toEqual({ kind: 'over', winner: 'opponent' });
+	});
+
 	it('goes on past five each one pair at a time until a pair leaves one side ahead', () => {
 		const sixthKick = kicks(level, left(11), stubRandom([]));
 		const sixthPair = kicks(sixthKick, ['left'], stubRandom([]));
-		const after = kicks(sixthPair, ['right', 'left'], stubRandom([1, 0], [false, true]));
+		const after = kicks(sixthPair, ['right', 'left'], stubRandom([1, 2], [false, true]));
 
-		expect([sixthKick.status, sixthPair.status, after.score, after.status]).toEqual([
+		expect([
+			sixthKick.status,
+			sixthPair.status,
+			after.kicks[13]?.outcome,
+			after.score,
+			after.status
+		]).toEqual([
 			{ kind: 'kicking', next: 'opponent' },
 			{ kind: 'kicking', next: 'player' },
+			'miss',
 			{ player: 7, opponent: 6 },
 			{ kind: 'over', winner: 'player' }
 		]);
