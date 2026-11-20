@@ -10,7 +10,7 @@ paths:
 dependencies:
   - opentofu
   - cloudflare/cloudflare
-max_changed_lines: 300
+max_changed_lines: 340
 status: ready
 ---
 
