@@ -111,6 +111,15 @@ jobs:
             exit 1
           fi
       - run: make check COMPONENT=web
+      # On `main`, deploy.yml deploys this build, the one the gate tested
+      # (ADR 0002 D3). Seven days covers a wait for the tech lead's approval.
+      - if: ${{ github.event_name == 'push' }}
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: site
+          path: apps/web/build/
+          if-no-files-found: error
+          retention-days: 7
       # Keeps the traces, screenshots and videos of failed Playwright tests.
       # The folder is absent when the gate failed before those tests ran.
       - if: ${{ failure() }}
