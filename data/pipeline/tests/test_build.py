@@ -34,6 +34,12 @@ class FakeWikimedia:
         teams = [FIXTURES / f"wikidata/{q}-teams.json" for q in ("Q615", "Q107365")]
         self.teams = [_json(path) for path in teams]
 
+    def without_codes(self) -> "FakeWikimedia":
+        """Drop every national team's FIFA code (P3441), and return self."""
+        for entity in (e for t in self.teams for e in t["entities"].values()):
+            entity.get("claims", {}).pop("P3441", None)
+        return self
+
     def __call__(self, request: httpx.Request) -> httpx.Response:
         params = request.url.params
         self.asked.append(params.get("titles") or params.get("ids") or str(request.url))
@@ -81,6 +87,7 @@ def _run(
             api_dir=tmp / "api/v1",
             grades_file=tmp / "players.toml",
             overrides_file=tmp / "overrides.toml",
+            ids_file=tmp / "ids.toml",
         )
 
 
@@ -197,3 +204,47 @@ def test_an_empty_grades_file_fails_before_anything_is_written(tmp_path: Path) -
 
     assert not (tmp_path / "api").exists()
     assert net.asked == []
+
+
+def test_a_missing_team_code_fails_before_any_photo_is_fetched(tmp_path: Path) -> None:
+    net = FakeWikimedia().without_codes()
+
+    with pytest.raises(BuildError, match="needs one national team code"):
+        _run(tmp_path, net=net)
+
+    assert not any("File:" in a or "upload" in a for a in net.asked)
+    assert not (tmp_path / "api").exists()
+    assert not (tmp_path / "ids.toml").exists()
+
+
+def test_registered_slugs_are_kept_and_a_retired_one_is_never_reused(
+    tmp_path: Path,
+) -> None:
+    # Messi keeps a slug his name no longer gives, and Q1 left the set but
+    # still holds the one Neuer's name would take.
+    (tmp_path / "ids.toml").write_text(
+        '[players]\nQ1 = "manuel-neuer"\nQ615 = "leo-messi"\n'
+        '[clubs]\nQ16844931 = "miami"\n',
+        encoding="utf-8",
+    )
+
+    _run(tmp_path)
+
+    api = tmp_path / "api/v1"
+    assert _json(api / "players/leo-messi.json")["club"] == "clubs/miami"
+    assert (api / "players/manuel-neuer-2.json").is_file()
+    ids = (tmp_path / "ids.toml").read_text(encoding="utf-8")
+    assert 'Q1 = "manuel-neuer"\nQ107365 = "manuel-neuer-2"\nQ615 = "leo-messi"' in ids
+
+
+def test_the_new_folder_is_world_readable_and_stale_ones_are_removed(
+    tmp_path: Path,
+) -> None:
+    stale = tmp_path / "api/.v1-abandoned"
+    stale.mkdir(parents=True)
+    (stale / "half.json").write_text("{", encoding="utf-8")
+
+    _run(tmp_path)
+
+    assert not stale.exists()
+    assert (tmp_path / "api/v1").stat().st_mode & 0o777 == 0o755
