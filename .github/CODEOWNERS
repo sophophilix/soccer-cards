@@ -4,11 +4,9 @@
 #
 # A leading slash anchors a path at the repository root. The last matching
 # line wins.
-#
-# infra/ is left out until the directory exists. Add it in the task that
-# scaffolds it.
 
 /.github/ @sophophilix
+/infra/ @sophophilix
 /.claude/ @sophophilix
 /tools/sdlc/ @sophophilix
 /bin/sdlc @sophophilix
