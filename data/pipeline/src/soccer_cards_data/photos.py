@@ -21,14 +21,17 @@ WEBP_MAX_SIDE = 16383  # Pixels. WebP can't hold a longer side.
 WEBP_QUALITY = 80
 WEBP_METHOD = 6  # The slowest, smallest encoding. Same input, same bytes.
 SOURCE_FORMATS = ("JPEG", "PNG", "WEBP")  # What Commons serves for photos.
-ICC_MODES = ("RGB", "RGBA", "CMYK", "L")  # Modes ImageCms converts directly.
+ICC_MODES = ("RGB", "CMYK", "L")  # Colour modes ImageCms converts directly.
 SRGB = ImageCms.createProfile("sRGB")
 # A player id (ADR 0005 D2). It names the file, so it never holds a path.
 SLUG_PATTERN = re.compile(r"^[a-z][a-z0-9-]{0,62}$")
 
 
 class PhotoError(Exception):
-    """A photo could not be read as an image. The message names the slug."""
+    """A photo is unreadable, over `MAX_PIXELS` or, resized, over `WEBP_MAX_SIDE`.
+
+    The message names the slug.
+    """
 
 
 @dataclass(frozen=True)
@@ -56,7 +59,8 @@ def write_photo(image: bytes, slug: str, api_dir: Path) -> Photo:
     Raises:
         ValueError: The slug isn't a player id.
         PhotoError: The bytes aren't a JPEG, PNG or WebP image, are cut
-            short, or hold more than `MAX_PIXELS` pixels.
+            short, or hold more than `MAX_PIXELS` pixels, or the resized
+            photo has a side longer than `WEBP_MAX_SIDE`.
     """
     if not SLUG_PATTERN.fullmatch(slug):
         raise ValueError(f"{slug!r} is not a player id")
@@ -94,21 +98,23 @@ def _decode(image: bytes, slug: str) -> Image.Image:
 def _to_srgb(image: Image.Image, mode: str) -> Image.Image:
     """Convert the pixels to sRGB in `mode`, using the photo's ICC profile.
 
-    The web reads a photo with no profile as sRGB, so dropping a wide-gamut
-    or CMYK profile without converting would change the colours. A profile
-    that can't be read or doesn't fit the pixels is ignored, as a browser
-    ignores it, and the pixels are taken as sRGB.
+    The web reads a photo with no profile as sRGB. A profile that can't be
+    read or doesn't fit the pixels is ignored, as a browser ignores it. Only
+    the colour is transformed: alpha, including a `tRNS` key, is put back.
     """
     icc = image.info.get("icc_profile")
     if not icc:
         return image.convert(mode)
-    source = image if image.mode in ICC_MODES else image.convert(mode)
+    colour = image if image.mode in ICC_MODES else image.convert("RGB")
     try:
         profile = ImageCms.ImageCmsProfile(io.BytesIO(icc))
-        transform = ImageCms.buildTransform(profile, SRGB, source.mode, mode)
+        transform = ImageCms.buildTransform(profile, SRGB, colour.mode, "RGB")
     except (OSError, ImageCms.PyCMSError):
         return image.convert(mode)
-    return transform.apply(source)
+    converted = transform.apply(colour)
+    if mode == "RGBA":
+        converted.putalpha(image.convert("RGBA").getchannel("A"))
+    return converted
 
 
 def _resize(image: Image.Image) -> Image.Image:

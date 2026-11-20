@@ -40,30 +40,40 @@ def _png_with_chunk(kind: bytes, body: bytes) -> bytes:
     return png[:-12] + chunk + png[-12:]  # The last 12 bytes are IEND.
 
 
-def _adobe_rgb_profile() -> bytes:
-    """Build an ICC v2 RGB profile with Adobe RGB (1998) primaries."""
-    tags = {  # D50-adapted primaries, a D50 white and a 2.2 gamma.
-        b"rXYZ": (0.6097, 0.3111, 0.0195),
-        b"gXYZ": (0.2053, 0.6257, 0.0609),
-        b"bXYZ": (0.1492, 0.0632, 0.7446),
-        b"wtpt": (0.9642, 1.0, 0.8249),
-    }
-    bodies = {
-        kind: b"XYZ \0\0\0\0"
-        + b"".join(struct.pack(">i", round(v * 65536)) for v in xyz)
-        for kind, xyz in tags.items()
-    }
-    curve = b"curv\0\0\0\0" + struct.pack(">IH", 1, round(2.2 * 256)) + b"\0\0"
-    bodies |= {b"rTRC": curve, b"gTRC": curve, b"bTRC": curve}
-    bodies[b"desc"] = b"desc\0\0\0\0" + struct.pack(">I", 5) + b"Test\0" + bytes(79)
+GAMMA_22 = b"curv\0\0\0\0" + struct.pack(">IH", 1, round(2.2 * 256)) + b"\0\0"
+
+
+def _xyz(*xyz: float) -> bytes:
+    return b"XYZ \0\0\0\0" + b"".join(struct.pack(">i", round(v * 65536)) for v in xyz)
+
+
+def _icc(device: bytes, space: bytes, pcs: bytes, tags: dict[bytes, bytes]) -> bytes:
+    """Assemble an ICC v2 profile: a 128-byte header, a tag table and tags."""
+    desc = b"desc\0\0\0\0" + struct.pack(">I", 5) + b"Test\0" + bytes(79)
+    bodies = {b"wtpt": _xyz(0.9642, 1.0, 0.8249), b"desc": desc, **tags}  # D50.
     table, data, offset = b"", b"", 132 + 12 * len(bodies)
     for kind, body in bodies.items():
         table += kind + struct.pack(">II", offset + len(data), len(body))
         data += body + bytes(-len(body) % 4)
     header = struct.pack(">I4sI", 132 + len(table) + len(data), b"lcms", 0x02100000)
-    header += b"mntrRGB XYZ " + bytes(12) + b"acsp" + bytes(28)
+    header += device + space + pcs + bytes(12) + b"acsp" + bytes(28)
     header += struct.pack(">iii", 63190, 65536, 54061) + bytes(48)  # D50 white.
     return header + struct.pack(">I", len(bodies)) + table + data
+
+
+def _adobe_rgb_profile() -> bytes:
+    """Build an RGB profile with Adobe RGB (1998) primaries and a 2.2 gamma."""
+    primaries = {  # Adapted to D50, as ICC v2 requires.
+        b"rXYZ": _xyz(0.6097, 0.3111, 0.0195),
+        b"gXYZ": _xyz(0.2053, 0.6257, 0.0609),
+        b"bXYZ": _xyz(0.1492, 0.0632, 0.7446),
+    }
+    curves = {b"rTRC": GAMMA_22, b"gTRC": GAMMA_22, b"bTRC": GAMMA_22}
+    return _icc(b"mntr", b"RGB ", b"XYZ ", primaries | curves)
+
+
+def _grey_profile() -> bytes:
+    return _icc(b"mntr", b"GRAY", b"XYZ ", {b"kTRC": GAMMA_22})
 
 
 def _exif(**tags: object) -> Image.Exif:
@@ -195,12 +205,13 @@ def test_slug_that_is_not_an_id_is_refused(tmp_path: Path, slug: str) -> None:
     assert not (tmp_path / "photos").exists()
 
 
-def test_photo_too_tall_for_webp_is_refused(tmp_path: Path) -> None:
-    source = _image(1, WEBP_MAX_SIDE + 1, "PNG")  # Too narrow to be resized.
+def test_webp_side_limit_keeps_16383_px_and_refuses_more(tmp_path: Path) -> None:
+    kept = write_photo(_image(1, WEBP_MAX_SIDE, "PNG"), "a-player", tmp_path)
 
-    with pytest.raises(PhotoError, match="a-player"):
-        write_photo(source, "a-player", tmp_path)
-    assert not (tmp_path / "photos").exists()
+    assert (kept.width_px, kept.height_px) == (1, WEBP_MAX_SIDE)
+    with pytest.raises(PhotoError, match="lionel-messi"):  # Too narrow to resize.
+        write_photo(_image(1, WEBP_MAX_SIDE + 1, "PNG"), "lionel-messi", tmp_path)
+    assert not (tmp_path / "photos/lionel-messi.webp").exists()
 
 
 def test_wide_gamut_colours_are_converted_to_srgb(tmp_path: Path) -> None:
@@ -211,9 +222,30 @@ def test_wide_gamut_colours_are_converted_to_srgb(tmp_path: Path) -> None:
     result = write_photo(out.getvalue(), "a-player", tmp_path)
 
     with Image.open(tmp_path / result.uri) as written:
-        red, green, blue = written.convert("RGB").getpixel((8, 8))  # type: ignore[misc]
+        pixel = written.convert("RGB").getpixel((8, 8))
     # Adobe RGB (40, 160, 60) is (0, 161, 47) in sRGB: a greener green than
     # the same numbers mean in sRGB. WebP may move each channel a little.
-    assert abs(red - 0) <= 3
-    assert abs(green - 161) <= 3
-    assert abs(blue - 47) <= 3
+    assert isinstance(pixel, tuple)
+    want = (0, 161, 47)
+    assert all(abs(got - w) <= 3 for got, w in zip(pixel, want, strict=True))
+
+
+@pytest.mark.parametrize(
+    ("mode", "key", "profile"),
+    [("RGB", (40, 160, 60), _adobe_rgb_profile()), ("L", 0, _grey_profile())],
+    ids=["rgb", "grey"],
+)
+def test_colour_key_transparency_survives_colour_conversion(
+    tmp_path: Path, mode: str, key: int | tuple[int, int, int], profile: bytes
+) -> None:
+    image = Image.new(mode, (16, 16), key)
+    image.paste("white", (0, 0, 16, 8))
+    out = io.BytesIO()
+    image.save(out, "PNG", transparency=key, icc_profile=profile)
+
+    result = write_photo(out.getvalue(), "a-player", tmp_path)
+
+    with Image.open(tmp_path / result.uri) as written:
+        alpha = written.getchannel("A")
+        assert alpha.getpixel((8, 4)) == 255
+        assert alpha.getpixel((8, 12)) == 0
