@@ -65,17 +65,16 @@ check-ci: ## Lint and audit the GitHub Actions workflows
 	@actionlint
 	@zizmor --offline .github
 
-# OpenTofu is formatted, validated, tested against mock providers and linted
-# without a backend or credentials (the cloudflare-infra skill). Plans and
+# OpenTofu is formatted, validated and tested against mock providers without
+# a backend or credentials (the cloudflare-infra skill). Plans and
 # applies run only in CI (ADR 0002 D3). A missing tool fails the gate.
-check-infra: ## Format, validate, test and lint the OpenTofu configuration
+check-infra: ## Format, validate and test the OpenTofu configuration
 	@[ -d infra ] || { echo "$@: infra/ is not scaffolded yet (see docs/decisions/0002)"; exit 1; }
-	@for tool in tofu tflint; do command -v $$tool >/dev/null || { echo "$@: $$tool is not installed"; exit 1; }; done
+	@command -v tofu >/dev/null || { echo "$@: tofu is not installed"; exit 1; }
 	@tofu -chdir=infra fmt -check -recursive
 	@tofu -chdir=infra init -backend=false -input=false -lockfile=readonly
 	@tofu -chdir=infra validate
 	@tofu -chdir=infra test
-	@tflint --chdir=infra
 
 # Each remaining gate is wired to the commands in the component's skill when
 # that component is scaffolded. The Makefile is a kit file, so the tech lead makes

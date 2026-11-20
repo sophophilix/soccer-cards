@@ -10,7 +10,6 @@ paths:
 dependencies:
   - opentofu/setup-opentofu
   - azure/login
-  - terraform-linters/setup-tflint
 max_changed_lines: 200
 status: ready
 ---
@@ -31,7 +30,7 @@ infra gate also runs on every pull request.
 
 ## Acceptance criteria
 
-- `checks.yml` gains a job `infra` that installs pinned `tofu` and `tflint`
+- `checks.yml` gains a job `infra` that installs a pinned `tofu`
   and runs `make check COMPONENT=infra`, with no credentials. The other jobs
   are unchanged.
 - A new workflow runs `tofu plan` on a pull request that changes `infra/`,

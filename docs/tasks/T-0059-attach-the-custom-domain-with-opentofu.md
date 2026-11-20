@@ -34,7 +34,8 @@ T-0060 runs it.
 - Use the newest OpenTofu and Cloudflare provider releases that are at
   least two weeks old today. Pin both exactly.
 - `make check COMPONENT=infra` runs `fmt`, `init -backend=false`,
-  `validate`, `test` and `tflint`. It needs `tofu` and `tflint` on the PATH.
+  `validate` and `test`. It needs `tofu` on the PATH. TFLint is not used:
+  its release binaries include BUSL 1.1 code, and Homebrew doesn't offer it here.
 
 ## Acceptance criteria
 
