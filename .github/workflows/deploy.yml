@@ -1,6 +1,7 @@
 # The pipeline for `main` (ADR 0002 D3): run every gate in `checks.yml` on
 # this commit, then deploy it after the tech lead approves the `production`
-# environment. Rollback stays with the tech lead (ADR 0002 D7).
+# environment, then plan infra/ and apply it after a second approval.
+# Rollback stays with the tech lead (ADR 0002 D7).
 name: deploy
 
 on:
@@ -75,3 +76,95 @@ jobs:
           CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           WRANGLER_SEND_METRICS: 'false'
         run: pnpm exec wrangler deploy --config apps/web/wrangler.jsonc --message "main ${GITHUB_SHA}"
+
+  # Plans every run, so drift made in the dashboard shows up, and applies the
+  # saved plan this job made. The Worker exists by now, so the custom domain
+  # can attach to it (ADR 0002 D8).
+  apply:
+    name: Apply infrastructure
+    needs: deploy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    # Waits for the tech lead. This identity is the only one that can write
+    # and lock the state (ADR 0002 D9).
+    environment: production
+    # A second guard on the state beside the workflow's group. Never cancelled.
+    concurrency:
+      group: opentofu-production
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      id-token: write # The azurerm backend signs in to Azure with OpenID Connect.
+    defaults:
+      run:
+        working-directory: infra
+    env:
+      ARM_USE_OIDC: 'true'
+      ARM_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+      ARM_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      TF_STATE_RESOURCE_GROUP: ${{ vars.TF_STATE_RESOURCE_GROUP }}
+      TF_STATE_STORAGE_ACCOUNT: ${{ vars.TF_STATE_STORAGE_ACCOUNT }}
+      TF_VAR_state_passphrase: ${{ secrets.TF_STATE_PASSPHRASE }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_INFRA_TOKEN }}
+      TF_IN_AUTOMATION: 'true'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      # Same version and checksum as the infra job in checks.yml.
+      - uses: opentofu/setup-opentofu@a1320f892987e89d278cc92dc5adc984fb93aca4 # v2.0.2
+        with:
+          tofu_version: 1.13.9
+          tofu_wrapper: false
+          checksums: bc44eb6b06446ba83bd4072114891987f590f66cca712737a7f1147c50c539ce
+      # An older run re-run after a newer commit would apply older code.
+      - name: Stop unless this commit is still the head of main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          head="$(gh api "repos/${GITHUB_REPOSITORY}/commits/main" --jq .sha)"
+          if [ "$head" != "$GITHUB_SHA" ]; then
+            echo "::error::main moved to ${head}. That commit applies in its own run."
+            echo "Not applied: \`main\` moved to \`${head}\`." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+      - run: >-
+          tofu init -input=false -lockfile=readonly
+          -backend-config="resource_group_name=${TF_STATE_RESOURCE_GROUP}"
+          -backend-config="storage_account_name=${TF_STATE_STORAGE_ACCOUNT}"
+          -backend-config=container_name=tfstate
+      # Exit code 0 is no changes, 2 is changes, anything else is an error.
+      - id: plan
+        name: Plan
+        run: |
+          set +e
+          tofu plan -input=false -lock-timeout=5m -no-color -detailed-exitcode -var-file=production.tfvars -out=tfplan
+          code=$?
+          set -e
+          case "$code" in
+            0) echo "No changes. Nothing to apply." >> "$GITHUB_STEP_SUMMARY"
+               echo "changes=false" >> "$GITHUB_OUTPUT" ;;
+            2) echo "changes=true" >> "$GITHUB_OUTPUT" ;;
+            *) exit "$code" ;;
+          esac
+      # The JSON stays inside the pipe. Only addresses and actions come out.
+      - name: Stop if the plan destroys or replaces anything
+        if: ${{ steps.plan.outputs.changes == 'true' }}
+        run: |
+          set -o pipefail
+          gone="$(tofu show -json tfplan | jq -r '.resource_changes[]? | select(.change.actions | index("delete")) | "- `\(.address)`: \(.change.actions | join(" then "))"')"
+          {
+            echo '### Plan'
+            echo '```'
+            tofu show -no-color tfplan
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$gone" ]; then
+            printf '### Not applied: the plan destroys or replaces resources\n%s\n' "$gone" >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::The plan destroys or replaces resources. The tech lead decides how to proceed."
+            exit 1
+          fi
+      - if: ${{ steps.plan.outputs.changes == 'true' }}
+        run: tofu apply -input=false -no-color tfplan

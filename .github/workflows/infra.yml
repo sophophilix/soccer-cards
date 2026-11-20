@@ -1,0 +1,85 @@
+# Shows what a pull request's change to infra/ would do to production
+# (ADR 0002 D3, D9). It never applies: deploy.yml applies from `main`.
+name: infra
+
+on:
+  pull_request:
+    paths:
+      - 'infra/**'
+      - '.github/workflows/infra.yml'
+
+permissions:
+  contents: read
+
+# A plan only reads the state, so a newer push may cancel an older plan.
+concurrency:
+  group: infra-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  plan:
+    name: Plan infrastructure
+    # A fork's or Dependabot's pull request gets no environment secrets.
+    if: ${{ github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.user.login != 'dependabot[bot]' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    # Waits for the tech lead, like every `preview` run (ADR 0002 D9). The
+    # identity there can read the state but never write or lock it.
+    environment: preview
+    permissions:
+      contents: read
+      id-token: write # The azurerm backend signs in to Azure with OpenID Connect.
+    defaults:
+      run:
+        working-directory: infra
+    env:
+      ARM_USE_OIDC: 'true'
+      ARM_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+      ARM_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+      ARM_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+      TF_STATE_RESOURCE_GROUP: ${{ vars.TF_STATE_RESOURCE_GROUP }}
+      TF_STATE_STORAGE_ACCOUNT: ${{ vars.TF_STATE_STORAGE_ACCOUNT }}
+      TF_VAR_state_passphrase: ${{ secrets.TF_STATE_PASSPHRASE }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_INFRA_TOKEN }}
+      TF_IN_AUTOMATION: 'true'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # Same version and checksum as the infra job in checks.yml.
+      - uses: opentofu/setup-opentofu@a1320f892987e89d278cc92dc5adc984fb93aca4 # v2.0.2
+        with:
+          tofu_version: 1.13.9
+          tofu_wrapper: false
+          checksums: bc44eb6b06446ba83bd4072114891987f590f66cca712737a7f1147c50c539ce
+      - run: >-
+          tofu init -input=false -lockfile=readonly
+          -backend-config="resource_group_name=${TF_STATE_RESOURCE_GROUP}"
+          -backend-config="storage_account_name=${TF_STATE_STORAGE_ACCOUNT}"
+          -backend-config=container_name=tfstate
+      - run: tofu plan -input=false -lock=false -no-color -var-file=production.tfvars -out=tfplan
+      # The JSON stays inside the pipe. Only addresses and actions come out.
+      - name: Summarise the plan
+        run: |
+          set -o pipefail
+          gone="$(tofu show -json tfplan | jq -r '.resource_changes[]? | select(.change.actions | index("delete")) | "- `\(.address)`: \(.change.actions | join(" then "))"')"
+          {
+            if [ -n "$gone" ]; then
+              echo "### This plan destroys or replaces resources"
+              echo "$gone"
+              echo "Apply on \`main\` will stop before changing anything."
+            fi
+            echo '### Plan'
+            echo '```'
+            tofu show -no-color tfplan
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  no-plan:
+    name: Plan infrastructure (skipped)
+    if: ${{ github.event.pull_request.head.repo.full_name != github.repository || github.event.pull_request.user.login == 'dependabot[bot]' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - run: |
+          echo "No plan: a pull request from a fork or Dependabot gets no secrets. The tech lead can push the branch to this repository to plan it." >> "$GITHUB_STEP_SUMMARY"

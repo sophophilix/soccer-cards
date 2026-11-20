@@ -38,6 +38,23 @@ jobs:
           persist-credentials: false
       - run: make check COMPONENT=docs
 
+  # Mock providers only: no backend, no credentials (the opentofu skill).
+  infra:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # The version in infra/versions.tf. The checksum is the published one
+      # for tofu_1.13.9_linux_amd64.zip. Change all three together.
+      - uses: opentofu/setup-opentofu@a1320f892987e89d278cc92dc5adc984fb93aca4 # v2.0.2
+        with:
+          tofu_version: 1.13.9
+          tofu_wrapper: false
+          checksums: bc44eb6b06446ba83bd4072114891987f590f66cca712737a7f1147c50c539ce
+      - run: make check COMPONENT=infra
+
   schema:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
