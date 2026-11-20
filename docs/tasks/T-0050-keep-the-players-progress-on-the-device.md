@@ -11,7 +11,7 @@ paths:
 dependencies:
   - '@soccer-cards/game'
 max_changed_lines: 300
-status: ready
+status: done
 ---
 
 ## Goal

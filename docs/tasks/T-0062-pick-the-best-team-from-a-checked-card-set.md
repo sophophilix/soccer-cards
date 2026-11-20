@@ -13,7 +13,7 @@ paths:
   - packages/game/src/testing/**
 dependencies: []
 max_changed_lines: 120
-status: ready
+status: done
 ---
 
 ## Goal
