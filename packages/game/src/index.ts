@@ -51,3 +51,5 @@ export {
 	sideStrength
 } from './match.ts';
 export type { MatchResult, MatchSide, Moment, SideName, Strength, Tactic } from './match.ts';
+export { CORNERS, saveChance, startShootOut, takeKick } from './penalties.ts';
+export type { Corner, Kick, KickResult, Kicker, ShootOut } from './penalties.ts';
