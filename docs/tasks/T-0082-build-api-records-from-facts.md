@@ -1,12 +1,12 @@
 ---
 id: T-0082
-title: Build each player's API record from facts, grades and the formula
+title: Make safe names and stable slugs for players and clubs
 component: data
 kind: feature
 agent: data-implementer
 paths:
-  - data/pipeline/src/soccer_cards_data/normalise.py
-  - data/pipeline/tests/test_normalise.py
+  - data/pipeline/src/soccer_cards_data/names.py
+  - data/pipeline/tests/test_names.py
 dependencies: []
 max_changed_lines: 400
 status: ready
@@ -14,39 +14,31 @@ status: ready
 
 ## Goal
 
-One pure function turns a player's Wikidata facts, grades, override and
-photo decision into the `players/{id}.json` and summary objects that
-`packages/schema` defines.
+Player and club names from Wikidata become safe display names and stable
+slugs (ADR 0005 D2). Split from the first T-0082 build (506 lines);
+T-0092 builds the records with these.
 
 ## Context
 
-- ADR 0005 (field names, absent not null, slugs, `source` and `asOf`),
-  ADR 0006 D3 and D4, `packages/schema/schemas/v1/player.schema.json` and
-  its examples. T-0071 `ratings.py`, T-0078 `wikidata.py`, T-0079
-  `commons.py`, T-0081 `grades.py`.
+- ADR 0005 D2 (ids never change), the `player.schema.json` patterns. The
+  T-0078 security review: labels are text anyone can edit.
 
 ## Acceptance criteria
 
-- Slugs come from the display name, lower-case ASCII with hyphens, stable
-  for the same input, and collide only with a numeric suffix.
-- Position, tier, ratings and play stats come from the formula; the
-  override sets the tier when present.
-- Club appearances and goals, national team caps and goals carry `source`
-  and `asOf`. A missing fact is absent.
-- The photo is present only for a publish decision, with its attribution.
-- The output validates against the schema in the tests (use the JSON
-  Schema files directly).
+- `names.py`: `slugify`, `assign_slugs` (Q-id order, collisions get a
+  numeric suffix), `display_name`, and a label check: plain text under the
+  schema's pattern, single-spaced, at most 60 characters. A bad label
+  raises an error naming the Q-id.
 - `make check COMPONENT=data` passes.
 
 ## Edge cases
 
-- A player with no club spells, no photo, or one name only.
+- One-word names, accented names, a name with no letters, long names.
 
 ## Tests
 
-- Built from the T-0078 fixtures and invented grades; schema-valid; same
-  input gives the same output.
+- `test_names.py` for each function and each refused label.
 
 ## Out of scope
 
-- Writing files and the command (T-0083).
+- Building records (T-0092), the slug registry (T-0083).

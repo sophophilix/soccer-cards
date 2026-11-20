@@ -11,6 +11,7 @@ paths:
   - data/pipeline/tests/test_cli.py
   - data/pipeline/pyproject.toml
   - data/pipeline/uv.lock
+  - data/pipeline/ids.toml
 dependencies:
   - jsonschema
 max_changed_lines: 380
@@ -36,6 +37,8 @@ replaces `data/api/v1/` in one step (the `game-data-api` skill).
   A failed stage leaves the last good output untouched (write to a temp
   folder, then swap).
 - A photo file without a complete credit fails the run.
+- Slugs are kept in a committed registry (`data/pipeline/ids.toml`) so an
+  id never changes or is reused when players are added (ADR 0005 D2).
 - `jsonschema` is added with `uv add` and named in `no-build-package` with
   new transitive packages.
 - `make check COMPONENT=data` passes. No test reaches the network.
