@@ -18,7 +18,8 @@ build-backend = "uv_build"
 exclude-newer = "2026-11-07T00:00:00Z"
 # A dependency without a wheel fails the sync instead of building from source.
 # uv's `no-build = true` also refuses to build this project, so every locked
-# package is named here instead. tests/test_project.py fails if one is missing.
+# package and the build backend are named here instead.
+# tests/test_project.py fails if one is missing.
 no-build-package = [
     "ast-serialize",
     "bandit",
@@ -41,6 +42,7 @@ no-build-package = [
     "ruff",
     "stevedore",
     "typing-extensions",
+    "uv_build",
 ]
 
 [tool.uv.build-backend]
