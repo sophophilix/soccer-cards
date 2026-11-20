@@ -57,10 +57,10 @@ class Spell:
 
 @dataclass(frozen=True)
 class Honour:
-    """An award received (`P166`), with its date when Wikidata has one."""
+    """An award received (`P166`), with every date it was won, oldest first."""
 
     award: str
-    date: str | None
+    dates: tuple[str, ...]
     source: str
     as_of: str
 
@@ -118,7 +118,7 @@ def fetch_player(source: JsonSource, qid: str) -> PlayerFacts:
     teams: Json = {}
     for i in range(0, len(team_ids), BATCH):
         reply = _get(source, "|".join(team_ids[i : i + BATCH]), "labels|claims")
-        teams.update(_dict(_dict(reply).get("entities")))
+        teams.update(_entities(reply))
 
     clubs: list[Spell] = []
     national: list[Spell] = []
@@ -137,6 +137,7 @@ def fetch_player(source: JsonSource, qid: str) -> PlayerFacts:
             source=url,
             as_of=found["P585"] or as_of,
         )
+        # Checked only on the 16 teams in the fixtures: all national ones have it.
         is_national = "P1532" in _dict(info.get("claims"))
         (national if is_national else clubs).append(spell)
 
@@ -145,8 +146,8 @@ def fetch_player(source: JsonSource, qid: str) -> PlayerFacts:
         award = _snak(statement.get("mainsnak"), _ITEM, "P166", skipped)
         if award is not None:
             quals = _dict(statement.get("qualifiers"))
-            date = _qualifier(quals, "P585", f"P166 {award}", skipped)
-            honours.append(Honour(award, date, url, as_of))
+            dates = _qualifiers(quals, "P585", f"P166 {award}", skipped)
+            honours.append(Honour(award, tuple(sorted(dates)), url, as_of))
 
     births = _values(claims, "P569", "time", skipped)
     return PlayerFacts(
@@ -168,13 +169,21 @@ def _get(source: JsonSource, ids: str, props: str) -> object:
     return source.get_json(API_URL, params)
 
 
-def _only_entity(reply: object) -> Json:
+def _entities(reply: object) -> Json:
+    """Return a reply's entities, or raise on an error body such as `maxlag`."""
     body = _dict(reply)
     if "error" in body:
         code = _dict(body["error"]).get("code")
         raise WikidataError(f"Wikidata refused the request: {code!r}")
     entities = body.get("entities")
-    if not isinstance(entities, dict) or len(entities) != 1:
+    if not isinstance(entities, dict):
+        raise WikidataError("unexpected reply from Wikidata")
+    return entities
+
+
+def _only_entity(reply: object) -> Json:
+    entities = _entities(reply)
+    if len(entities) != 1:
         raise WikidataError("unexpected reply from Wikidata")
     return _dict(next(iter(entities.values())))
 
@@ -203,10 +212,22 @@ def _values(claims: Json, prop: str, kind: str, skipped: list[str]) -> list[str]
 
 
 def _qualifier(quals: Json, prop: str, where: str, skipped: list[str]) -> str | None:
+    """Return a qualifier's one value. Several values conflict, so none is kept."""
+    values = _qualifiers(quals, prop, where, skipped)
+    if len(values) > 1:
+        skipped.append(f"{where} {prop}: {len(values)} values, kept none")
+    return values[0] if len(values) == 1 else None
+
+
+def _qualifiers(quals: Json, prop: str, where: str, skipped: list[str]) -> list[str]:
     snaks = quals.get(prop)
-    first = snaks[0] if isinstance(snaks, list) and snaks else None
     kind = "quantity" if prop in _COUNTS else "time"
-    return _snak(first, kind, f"{where} {prop}", skipped)
+    found = [_snak(s, kind, f"{where} {prop}", skipped) for s in _list(snaks)]
+    return [value for value in found if value is not None]
+
+
+def _list(value: object) -> list[object]:
+    return value if isinstance(value, list) else []
 
 
 def _snak(snak: object, kind: str, where: str, skipped: list[str]) -> str | None:
