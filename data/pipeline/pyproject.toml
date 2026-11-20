@@ -3,7 +3,9 @@ name = "soccer-cards-data"
 version = "0.1.0"
 description = "Builds the Soccer Cards static API from public facts and licensed photos."
 requires-python = ">=3.13"
-dependencies = []
+dependencies = [
+    "httpx>=0.28.1",
+]
 
 [project.scripts]
 scdata = "soccer_cards_data.cli:main"
@@ -21,11 +23,17 @@ exclude-newer = "2026-11-07T00:00:00Z"
 # package and the build backend are named here instead.
 # tests/test_project.py fails if one is missing.
 no-build-package = [
+    "anyio",
     "ast-serialize",
     "bandit",
+    "certifi",
     "colorama",
     "coverage",
+    "h11",
+    "httpcore",
+    "httpx",
     "hypothesis",
+    "idna",
     "iniconfig",
     "librt",
     "markdown-it-py",
