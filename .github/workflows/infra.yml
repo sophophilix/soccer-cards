@@ -42,9 +42,32 @@ jobs:
           tofu_version: 1.13.9
           tofu_wrapper: false
           checksums: bc44eb6b06446ba83bd4072114891987f590f66cca712737a7f1147c50c539ce
-      # The credentials reach this step only. The plan file stays on the
-      # runner and its JSON inside the pipe: only addresses and actions come out.
+      # A provider's code runs during plan, beside the credentials. Plan only
+      # with the providers and versions already on the base branch.
+      - id: providers
+        name: Check the providers against the base branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          base="$(gh api -H 'Accept: application/vnd.github.raw' "repos/${GITHUB_REPOSITORY}/contents/infra/.terraform.lock.hcl?ref=${BASE_SHA}" | grep -E '^provider |^  version ')"
+          if [ "$base" = "$(grep -E '^provider |^  version ' .terraform.lock.hcl)" ]; then
+            echo "same=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "No plan: this branch changes the providers in infra/.terraform.lock.hcl. They are planned on \`main\` after review." >> "$GITHUB_STEP_SUMMARY"
+          fi
+      # Lets the az CLI below check that the state exists.
+      - if: ${{ steps.providers.outputs.same == 'true' }}
+        uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          allow-no-subscriptions: true
+      # The credentials reach this step only. The summary is built from the
+      # plan JSON's resource_changes: addresses and actions, never values. The
+      # plan text and the JSON are never printed.
       - name: Plan
+        if: ${{ steps.providers.outputs.same == 'true' }}
         env:
           ARM_USE_OIDC: 'true'
           ARM_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
@@ -57,22 +80,30 @@ jobs:
           TF_IN_AUTOMATION: 'true'
         run: |
           set -o pipefail
+          # nonsensitive() could put the passphrase in the public summary.
+          if grep -rqE 'nonsensitive[[:space:]]*\(' --include='*.tf' --include='*.tf.json' .; then
+            echo "::error::infra/ calls nonsensitive(). Remove it."; exit 1
+          fi
+          # A missing state blob would make the backend write one, which this
+          # read-only identity can't (`azurerm` backend StateMgr).
+          if [ "$(az storage blob exists --auth-mode login --account-name "$TF_STATE_STORAGE_ACCOUNT" --container-name tfstate --name soccer-cards.tfstate --query exists -o tsv)" != true ]; then
+            echo "No plan: no state exists yet. The first approved run on \`main\` creates it." >> "$GITHUB_STEP_SUMMARY"; exit 0
+          fi
           tofu init -input=false -lockfile=readonly \
             -backend-config="resource_group_name=${TF_STATE_RESOURCE_GROUP}" \
             -backend-config="storage_account_name=${TF_STATE_STORAGE_ACCOUNT}" \
             -backend-config=container_name=tfstate
-          tofu plan -input=false -lock=false -no-color -var-file=production.tfvars -out=tfplan
-          gone="$(tofu show -json tfplan | jq -r '.resource_changes[]? | select(.change.actions | index("delete")) | "- `\(.address)`: \(.change.actions | join(" then "))"')"
+          tofu plan -input=false -lock=false -no-color -var-file=production.tfvars -out=tfplan > /dev/null
+          json="$(tofu show -json tfplan)"
+          if jq -e '[.output_changes[]? | select(.actions != ["no-op"])] | length > 0' <<< "$json" > /dev/null; then
+            echo "::error::The plan changes an output. Outputs aren't allowed in infra/."; exit 1
+          fi
           {
-            if [ -n "$gone" ]; then
-              echo "### This plan destroys or replaces resources"
-              echo "$gone"
-              echo "Apply on \`main\` will stop before changing anything."
+            echo '### Infrastructure plan'
+            jq -r '[.resource_changes[]? | select(.change.actions != ["no-op"]) | "- `\(.address)`: \(.change.actions | join(" then "))"] | if length == 0 then "No changes." else .[] end' <<< "$json"
+            if jq -e '[.resource_changes[]? | select(.change.actions | index("delete"))] | length > 0' <<< "$json" > /dev/null; then
+              echo "This plan destroys or replaces resources. Apply on \`main\` will stop before changing anything."
             fi
-            echo '### Plan'
-            echo '```'
-            tofu show -no-color tfplan
-            echo '```'
           } >> "$GITHUB_STEP_SUMMARY"
 
   no-plan:

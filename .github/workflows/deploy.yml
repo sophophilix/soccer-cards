@@ -91,6 +91,7 @@ jobs:
       contents: read
       id-token: write # The azurerm backend signs in to Azure with OpenID Connect.
     outputs:
+      bootstrap: ${{ steps.plan.outputs.bootstrap }}
       changes: ${{ steps.plan.outputs.changes }}
       fingerprint: ${{ steps.plan.outputs.fingerprint }}
     defaults:
@@ -107,9 +108,15 @@ jobs:
           tofu_version: 1.13.9
           tofu_wrapper: false
           checksums: bc44eb6b06446ba83bd4072114891987f590f66cca712737a7f1147c50c539ce
-      # The credentials reach this step only. The plan file stays on the
-      # runner and its JSON in a variable: only addresses, actions and a
-      # SHA-256 of the resource changes come out.
+      # Lets the az CLI below check that the state exists.
+      - uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          allow-no-subscriptions: true
+      # The credentials reach this step only. The summary is built from the
+      # plan JSON's resource_changes: addresses and actions, never values. The
+      # plan text and the JSON are never printed.
       - id: plan
         name: Plan
         env:
@@ -124,47 +131,57 @@ jobs:
           TF_IN_AUTOMATION: 'true'
         run: |
           set -o pipefail
+          if grep -rqE 'nonsensitive[[:space:]]*\(' --include='*.tf' --include='*.tf.json' .; then
+            echo "::error::infra/ calls nonsensitive(). Remove it."; exit 1
+          fi
+          # With no state blob, the backend would write one, which this
+          # read-only identity can't (`azurerm` backend StateMgr). `apply`
+          # creates it after approval and applies nothing.
+          if [ "$(az storage blob exists --auth-mode login --account-name "$TF_STATE_STORAGE_ACCOUNT" --container-name tfstate --name soccer-cards.tfstate --query exists -o tsv)" != true ]; then
+            echo "No state exists yet. After approval, \`Apply infrastructure\` creates it, shows the plan, and applies nothing." >> "$GITHUB_STEP_SUMMARY"
+            echo "bootstrap=true" >> "$GITHUB_OUTPUT"; exit 0
+          fi
           tofu init -input=false -lockfile=readonly \
             -backend-config="resource_group_name=${TF_STATE_RESOURCE_GROUP}" \
             -backend-config="storage_account_name=${TF_STATE_STORAGE_ACCOUNT}" \
             -backend-config=container_name=tfstate
           # Exit code 0 is no changes, 2 is changes, anything else is an error.
           set +e
-          tofu plan -input=false -lock=false -no-color -detailed-exitcode -var-file=production.tfvars -out=tfplan
+          tofu plan -input=false -lock=false -no-color -detailed-exitcode -var-file=production.tfvars -out=tfplan > /dev/null
           code=$?
           set -e
           if [ "$code" = 0 ]; then
             echo "No infrastructure changes. Nothing to apply, and nothing waits." >> "$GITHUB_STEP_SUMMARY"
-            echo "changes=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           [ "$code" = 2 ] || exit "$code"
           json="$(tofu show -json tfplan)"
-          gone="$(jq -r '.resource_changes[]? | select(.change.actions | index("delete")) | "- `\(.address)`: \(.change.actions | join(" then "))"' <<< "$json")"
+          if jq -e '[.output_changes[]? | select(.actions != ["no-op"])] | length > 0' <<< "$json" > /dev/null; then
+            echo "::error::The plan changes an output. Outputs aren't allowed in infra/."; exit 1
+          fi
           fingerprint="$(jq -cS '[.resource_changes[]? | select(.change.actions != ["no-op"]) | {address, change: (.change | {actions, before, after, after_unknown})}]' <<< "$json" | sha256sum | cut -d' ' -f1)"
           {
             echo '### Infrastructure plan'
-            echo '```'
-            tofu show -no-color tfplan
-            echo '```'
+            jq -r '.resource_changes[]? | select(.change.actions != ["no-op"]) | "- `\(.address)`: \(.change.actions | join(" then "))"' <<< "$json"
             echo "Resource changes SHA-256: \`${fingerprint}\`"
           } >> "$GITHUB_STEP_SUMMARY"
-          if [ -n "$gone" ]; then
-            printf '### Not applied: the plan destroys or replaces resources\n%s\n' "$gone" >> "$GITHUB_STEP_SUMMARY"
+          if jq -e '[.resource_changes[]? | select(.change.actions | index("delete"))] | length > 0' <<< "$json" > /dev/null; then
+            echo "### Not applied: the plan destroys or replaces resources" >> "$GITHUB_STEP_SUMMARY"
             echo "::error::The plan destroys or replaces resources. The tech lead decides how to proceed."
             exit 1
           fi
           echo "changes=true" >> "$GITHUB_OUTPUT"
           echo "fingerprint=${fingerprint}" >> "$GITHUB_OUTPUT"
 
-  # Runs only when `plan` found changes. A plan made with read-only
-  # credentials can't be applied, so this job plans again and applies its own
-  # saved plan only when it matches the one the tech lead read. The Worker
-  # exists by now, so the custom domain can attach to it (ADR 0002 D8).
+  # Runs only when `plan` found changes, or found no state. A plan made with
+  # read-only credentials can't be applied, so this job plans again and
+  # applies its own saved plan only when it matches the one the tech lead
+  # read. The Worker exists by now, so the custom domain can attach to it
+  # (ADR 0002 D8).
   apply:
     name: Apply infrastructure
     needs: [deploy, plan]
-    if: ${{ needs.plan.outputs.changes == 'true' }}
+    if: ${{ needs.plan.outputs.changes == 'true' || needs.plan.outputs.bootstrap == 'true' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     # Waits for the tech lead. This identity is the only one that can write
@@ -203,9 +220,11 @@ jobs:
             exit 1
           fi
       # The credentials reach this step only. The fingerprint is computed as
-      # in `plan`, so anything changed since then stops the run.
+      # in `plan`, so anything changed since then stops the run. On the first
+      # run, init creates the empty state and the plan is shown, not applied.
       - name: Plan again, and apply if it matches the plan the tech lead read
         env:
+          BOOTSTRAP: ${{ needs.plan.outputs.bootstrap }}
           SEEN: ${{ needs.plan.outputs.fingerprint }}
           ARM_USE_OIDC: 'true'
           ARM_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
@@ -222,17 +241,18 @@ jobs:
             -backend-config="resource_group_name=${TF_STATE_RESOURCE_GROUP}" \
             -backend-config="storage_account_name=${TF_STATE_STORAGE_ACCOUNT}" \
             -backend-config=container_name=tfstate
-          tofu plan -input=false -lock-timeout=5m -no-color -var-file=production.tfvars -out=tfplan
+          tofu plan -input=false -lock-timeout=5m -no-color -var-file=production.tfvars -out=tfplan > /dev/null
           json="$(tofu show -json tfplan)"
           gone="$(jq -r '.resource_changes[]? | select(.change.actions | index("delete")) | .address' <<< "$json")"
           fingerprint="$(jq -cS '[.resource_changes[]? | select(.change.actions != ["no-op"]) | {address, change: (.change | {actions, before, after, after_unknown})}]' <<< "$json" | sha256sum | cut -d' ' -f1)"
-          if [ -n "$gone" ] || [ "$fingerprint" != "$SEEN" ]; then
+          if [ "$BOOTSTRAP" = true ] || [ -n "$gone" ] || [ "$fingerprint" != "$SEEN" ]; then
             {
-              echo "### Not applied: this plan differs from the one in Plan infrastructure, or destroys or replaces resources"
-              echo '```'
-              tofu show -no-color tfplan
-              echo '```'
+              echo "### Not applied: a first run, a plan that differs from Plan infrastructure, or a destroy or replace"
+              jq -r '.resource_changes[]? | select(.change.actions != ["no-op"]) | "- `\(.address)`: \(.change.actions | join(" then "))"' <<< "$json"
             } >> "$GITHUB_STEP_SUMMARY"
+            if [ "$BOOTSTRAP" = true ]; then
+              echo "The state now exists. The next run on \`main\` shows this plan and asks to apply it." >> "$GITHUB_STEP_SUMMARY"; exit 0
+            fi
             echo "::error::The plan changed since the tech lead read it, or destroys or replaces resources. Nothing was applied."
             exit 1
           fi
