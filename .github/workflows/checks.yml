@@ -31,6 +31,7 @@ jobs:
       schema: ${{ steps.diff.outputs.schema }}
       game: ${{ steps.diff.outputs.game }}
       web: ${{ steps.diff.outputs.web }}
+      data: ${{ steps.diff.outputs.data }}
     steps:
       # A pull request's merge commit and its first parent, the base.
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -45,25 +46,26 @@ jobs:
         env:
           EVENT: ${{ github.event_name }}
         run: |
-          infra=false schema=false game=false web=false
+          infra=false schema=false game=false web=false data=false
           if [ "$EVENT" != pull_request ] || ! git rev-parse --verify --quiet 'HEAD^2' > /dev/null; then
-            infra=true schema=true game=true web=true
+            infra=true schema=true game=true web=true data=true
           else
             git -c core.quotePath=false diff --no-renames --name-only -z 'HEAD^1' HEAD > "${RUNNER_TEMP}/changed"
             while IFS= read -r -d '' f; do
               case "$f" in
-                .github/workflows/checks.yml) infra=true schema=true game=true web=true ;;
+                .github/workflows/checks.yml) infra=true schema=true game=true web=true data=true ;;
                 infra/*) infra=true ;;
                 packages/schema/*) schema=true game=true web=true ;;
                 packages/game/*) game=true web=true ;;
                 apps/web/*) web=true ;;
+                data/*) data=true ;;
                 # Knip reads the workflows' `pnpm exec` binaries, and every
                 # TypeScript gate runs Knip.
                 .github/workflows/*) schema=true ;;
                 docs/* | tools/sdlc/* | bin/* | .claude/* | .github/* | evals/* | prototype/* | *.md | LICENSE) ;;
                 # The Makefile, the pnpm lockfile, the workspace, the shared
                 # tool configs and any name no rule places.
-                *) infra=true schema=true game=true web=true ;;
+                *) infra=true schema=true game=true web=true data=true ;;
               esac
             done < "${RUNNER_TEMP}/changed"
           fi
@@ -72,6 +74,7 @@ jobs:
             echo "schema=$schema"
             echo "game=$game"
             echo "web=$web"
+            echo "data=$data"
           } | tee -a "$GITHUB_OUTPUT" >> "$GITHUB_STEP_SUMMARY"
 
   # The kit gates use the runner image's Python 3 and need no packages.
@@ -111,6 +114,28 @@ jobs:
           tofu_wrapper: false
           checksums: bc44eb6b06446ba83bd4072114891987f590f66cca712737a7f1147c50c539ce
       - run: make check COMPONENT=infra
+
+  # uv installs the Python that data/pipeline/pyproject.toml asks for, and
+  # every package from uv.lock (ADR 0006 D5). The job holds no credentials.
+  data:
+    needs: changes
+    if: ${{ !cancelled() && (needs.changes.result != 'success' || needs.changes.outputs.data != 'false') }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      # The checksum is the published one for uv 0.13.7's
+      # uv-x86_64-unknown-linux-gnu.tar.gz. Change the version and the
+      # checksum together.
+      - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version: 0.13.7
+          checksum: c5221ff41b7892bfc223543883600125f6a47fe845093e0f5bdff4f359196d83
+          # As in the schema job: the uv cache on pull requests only.
+          enable-cache: ${{ github.event_name == 'pull_request' }}
+      - run: make check COMPONENT=data
 
   schema:
     needs: changes
