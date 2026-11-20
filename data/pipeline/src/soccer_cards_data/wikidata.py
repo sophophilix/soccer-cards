@@ -24,6 +24,7 @@ _QID = re.compile(r"Q[1-9]\d*")
 _TIME = re.compile(r"\+(\d{4})-(\d\d)-(\d\d)T")
 _AMOUNT = re.compile(r"\+?(\d+)")
 _FIFA = re.compile(r"[A-Z]{3}")  # The API schema's nationalTeamCode pattern.
+_SHOWN = 60  # The most characters of a fetched value written to `skipped`.
 _PARTS = {9: 1, 10: 2, 11: 3}  # Wikidata precision to ISO parts: year, month, day.
 _ITEM = "wikibase-entityid"
 # A spell's qualifiers: start, end, matches played, goals and as-of date.
@@ -264,7 +265,7 @@ def _snak(snak: object, kind: str, where: str, skipped: list[str]) -> str | None
         skipped.append(f"{where}: expected {kind}, got {datavalue.get('type')}")
         return None
     if kind == "string":
-        text = raw if isinstance(raw, str) and _FIFA.fullmatch(raw) else None
+        text = raw if isinstance(raw, str) else None
     elif kind == _ITEM:
         found = value.get("id")
         text = found if isinstance(found, str) and _QID.fullmatch(found) else None
@@ -277,16 +278,26 @@ def _snak(snak: object, kind: str, where: str, skipped: list[str]) -> str | None
         parts = _PARTS.get(precision) if isinstance(precision, int) else None
         text = "-".join(time.groups()[:parts]) if time and parts else None
     if text is None:
-        skipped.append(f"{where}: unusable {kind} {raw}")
+        skipped.append(f"{where}: unusable {kind} {_shown(raw)}")
     return text
+
+
+def _shown(raw: object) -> str:
+    """Return a fetched value for a report: quoted, so it can't pose as our text."""
+    text = repr(raw)
+    return text if len(text) <= _SHOWN else text[: _SHOWN - 3] + "..."
 
 
 def _fifa_code(claims: Json, where: str, skipped: list[str]) -> str | None:
     """Return the team's one FIFA code, preferred rank first, or None, reported."""
     statements = _statements(claims, "P3441")
     best = [s for s in statements if s["rank"] == "preferred"] or statements
-    found = (_snak(s.get("mainsnak"), "string", where, skipped) for s in best)
-    codes = sorted({code for code in found if code is not None})
+    found = [_snak(s.get("mainsnak"), "string", where, skipped) for s in best]
+    texts = [text for text in found if text is not None]
+    for text in texts:
+        if not _FIFA.fullmatch(text):
+            skipped.append(f"{where}: unusable FIFA code {_shown(text)}")
+    codes = sorted({text for text in texts if _FIFA.fullmatch(text)})
     if len(codes) > 1:
         skipped.append(f"{where}: {len(codes)} values, kept none")
     elif not codes:

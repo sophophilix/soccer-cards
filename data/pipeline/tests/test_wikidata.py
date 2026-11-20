@@ -89,7 +89,7 @@ def test_goalkeeper_facts_from_saved_responses() -> None:
     assert (germany.appearances, germany.start, germany.end) == (128, "2009", "2026")
     assert germany.code == "GER"
     assert len(facts.national_teams) == 5
-    # Wikidata gives the under-18 team no FIFA code: it stays national, codeless.
+    # The fixture has no FIFA code for the under-18 team: it stays national, codeless.
     under_18 = next(s for s in facts.national_teams if s.team == "Q2016992")
     assert under_18.code is None
     assert facts.skipped == ("P54 Q2016992 P3441: no FIFA code",)
@@ -197,9 +197,12 @@ def test_home_nations_get_their_fifa_codes_without_an_iso_code() -> None:
     assert (facts.clubs, facts.skipped) == ((), ())
 
 
-def _team(qid: str, codes: list[object]) -> Json:
+def _team(qid: str, codes: list[object], preferred: int | None = None) -> Json:
     country = {"rank": "normal", "mainsnak": _item("Q2")}
-    found = [{"rank": "normal", "mainsnak": _code(code)} for code in codes]
+    found = [
+        {"rank": "preferred" if i == preferred else "normal", "mainsnak": _code(code)}
+        for i, code in enumerate(codes)
+    ]
     claims = {"P1532": [country], "P3441": found}
     return {"id": qid, "labels": {}, "claims": claims}
 
@@ -213,7 +216,8 @@ def _code(value: object) -> Json:
     ("codes", "reason"),
     [
         ([], "P54 Q9 P3441: no FIFA code"),
-        (["Arg"], "P54 Q9 P3441: unusable string Arg"),
+        (["Arg"], "P54 Q9 P3441: unusable FIFA code 'Arg'"),
+        (["A" * 99], f"P54 Q9 P3441: unusable FIFA code '{'A' * 56}..."),
         ([{"amount": "+32"}], "P54 Q9 P3441: expected string, got quantity"),
         (["ARG", "URU"], "P54 Q9 P3441: 2 values, kept none"),
     ],
@@ -237,6 +241,16 @@ def test_the_same_code_twice_is_one_code() -> None:
 
     (spell,) = fetch_player(source, "Q1").national_teams
     assert spell.code == "ARG"
+
+
+def test_a_preferred_code_wins_over_a_normal_one() -> None:
+    teams = {"entities": {"Q9": _team("Q9", ["ENG", "GBR"], preferred=0)}}
+    source = SavedResponses({"Q1": _player(_spells("Q9")), "Q9": teams})
+
+    facts = fetch_player(source, "Q1")
+
+    (spell,) = facts.national_teams
+    assert (spell.code, facts.skipped) == ("ENG", ())
 
 
 @pytest.mark.parametrize("entities", [[], "Q9", None])
