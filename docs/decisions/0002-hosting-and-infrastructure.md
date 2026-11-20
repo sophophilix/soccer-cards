@@ -1,11 +1,29 @@
 # ADR 0002: Hosting and infrastructure as code
 
-> Status: Approved
+> Status: Approved. The amendment of 2026-11-20 (D8 to D10) awaits approval.
 > Created: 2026-11-15T11:16:22Z
-> Last reviewed: 2026-11-16T07:30:27Z
+> Last reviewed: 2026-11-20T00:05:00Z
 > Next review: Not scheduled
 
-## Review guide
+## Review guide for the amendment of 2026-11-20
+
+Decision requested: settle the open items on state storage, the address and
+CI credentials (D8 to D10). The tech lead chose the address and Azure in the
+lead session on 2026-11-20.
+
+Check these points:
+
+- [ ] The site answers at `soccercards.dsantmaj.com` only. OpenTofu manages
+      that one name and changes no setting that applies to the whole
+      `dsantmaj.com` zone (D8).
+- [ ] OpenTofu state lives in Azure Blob Storage, encrypted by OpenTofu
+      before upload, and GitHub signs in to Azure with OpenID Connect (D9).
+- [ ] Cloudflare logs, traces and Web Analytics stay off (D10).
+
+Respond with `approve`, `approve with follow-up: <action>` or
+`request changes: <specific issue>`.
+
+## Review guide (original)
 
 Decision requested: host the site on Cloudflare Workers static assets, and
 split ownership of the infrastructure between OpenTofu and Wrangler as below.
@@ -73,6 +91,34 @@ repository. Nothing on a laptop holds a deploy token.
 **D7. Rollback.** Rolling back is deploying the previous Worker version. The
 how-to guide records the command, and the tech lead runs it.
 
+**D8. Address.** The site answers at `soccercards.dsantmaj.com`, a Workers
+Custom Domain on the Worker `soccer-cards`. Cloudflare creates its DNS record
+and certificate, so nobody adds a CNAME by hand. OpenTofu owns the custom
+domain. It manages no zone-wide setting, because `dsantmaj.com` may serve
+other sites. Wrangler declares no route or custom domain.
+
+**D9. State.** OpenTofu state lives in a private Azure Blob Storage
+container, with blob versioning and soft delete on, and shared-key access
+off. The `azurerm` backend locks the state with a blob lease. OpenTofu
+encrypts the state before upload, with a passphrase held only as a GitHub
+environment secret. GitHub Actions signs in to Azure with OpenID Connect, so
+no Azure secret is stored. The tech lead creates the storage and the
+identity once, from `docs/how-to/set-up-hosting.md`.
+
+| GitHub environment | Required reviewer | Used for |
+|---|---|---|
+| `preview` | None | Uploading a Worker version for a pull request, and `tofu plan` |
+| `production` | The tech lead | `wrangler deploy` and `tofu apply` from `main` |
+
+Each environment has its own Cloudflare tokens. The `preview` tokens can
+upload a version and read the zone. Only the `production` tokens can deploy
+or change DNS.
+
+**D10. No logs or analytics.** The Worker's observability (logs and traces)
+is off in `wrangler.jsonc`, and Cloudflare Web Analytics is not enabled. Logs
+would hold visitors' IP addresses (ADR 0003 D5), and from 2026-12-01 Workers
+Logs are billed by volume. The free traffic graphs in the dashboard remain.
+
 ## Consequences
 
 - Hosting costs nothing at this size, and static requests are not billed as
@@ -92,10 +138,16 @@ how-to guide records the command, and the tech lead runs it.
 
 ## Risks and open items
 
-- **State storage.** Where OpenTofu state lives is not decided. An R2 bucket
-  with the S3 backend is the likely choice and is unverified.
-- **CI authentication.** Whether Cloudflare accepts GitHub's OpenID Connect
-  tokens in place of a stored API token was not researched.
+- **State storage.** Settled by D9 on 2026-11-20. An R2 bucket was not
+  chosen: its locking through the S3 backend is unverified, and the bucket
+  would have to exist before the state that describes it.
+- **CI authentication.** Azure uses OpenID Connect (D9). Cloudflare tokens
+  are still stored secrets, scoped per environment. Revisit if Cloudflare
+  accepts GitHub's OpenID Connect tokens.
+- **A lost state passphrase** makes the state unreadable. The state holds
+  one custom domain, so the recovery is `tofu import` from a new state.
+- **Pull requests from forks** get no secrets, so they get no preview. The
+  repository takes changes from its own branches only.
 - **Provider stability.** Pin the Cloudflare provider to an exact version and
   read its changelog before each upgrade.
 
@@ -105,3 +157,4 @@ how-to guide records the command, and the tech lead runs it.
 |---|---|---|
 | 2026-11-15T11:16:22Z | Drafted | Initial version, written by Claude for the tech lead. |
 | 2026-11-16T07:30:27Z | Approved | The tech lead replied "approve all" in the lead session. |
+| 2026-11-20T00:05:00Z | Amended (draft) | D8 to D10 added by Claude after the tech lead said "yes go with soccercards.dsantmaj.com and azure". Awaits approval. |
