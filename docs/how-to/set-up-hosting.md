@@ -129,7 +129,9 @@ Each identity reaches this one storage account and nothing else. The
 
 In the repository, open **Settings → Environments**.
 
-1. Create `preview`. Add no reviewer. Under **Deployment branches and tags**,
+1. Create `preview`. Add yourself as a **required reviewer**: its upload
+   token can deploy too, so each preview waits for you (ADR 0002 D9). Under
+   **Deployment branches and tags**,
    allow all branches.
 2. Create `production`. Add yourself as a **required reviewer**. Under
    **Deployment branches and tags**, allow `main` only.
@@ -155,6 +157,15 @@ In the repository, open **Settings → Environments**.
    `tofu apply`. This attaches `soccercards.dsantmaj.com`.
 3. Open `https://soccercards.dsantmaj.com`. The certificate can take a few
    minutes.
+
+## Approving deploys
+
+Each push to `main` runs `deploy`: the checks, then the deploy, which waits
+for you in `production`. One run holds the queue while it waits, so a newer
+merge's run doesn't start until you act. If a newer merge is waiting
+behind it, **reject** the older run's deployment. Approving it does nothing
+useful: it stops before deploying because its commit is no longer the head
+of `main`.
 
 ## Rolling back
 
