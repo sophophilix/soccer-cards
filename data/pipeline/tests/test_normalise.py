@@ -11,6 +11,7 @@ import pytest
 from soccer_cards_data import normalise
 from soccer_cards_data.commons import Avatar, Publish
 from soccer_cards_data.grades import GROUPS, GradeEntry, Override
+from soccer_cards_data.http import ReplyCheck
 from soccer_cards_data.normalise import NormaliseError, SizedPhoto
 from soccer_cards_data.photos import Photo
 from soccer_cards_data.wikidata import PlayerFacts, fetch_player
@@ -33,7 +34,9 @@ class SavedResponses:
     def __init__(self) -> None:
         self.first = ""
 
-    def get_json(self, url: str, params: Mapping[str, str]) -> object:
+    def get_json(
+        self, url: str, params: Mapping[str, str], *, check: ReplyCheck | None = None
+    ) -> object:
         self.first = self.first or params["ids"]
         name = self.first if params["ids"] == self.first else f"{self.first}-teams"
         return json.loads((FIXTURES / f"{name}.json").read_text(encoding="utf-8"))
@@ -118,8 +121,7 @@ def test_goalkeeper_without_photo_has_keeper_ratings_and_no_photo() -> None:
 
 def test_same_input_gives_the_same_output() -> None:
     first, second = _build(_facts()), _build(_facts())
-    assert json.dumps(first.player) == json.dumps(second.player)
-    assert first == second
+    assert json.dumps(vars(first)) == json.dumps(vars(second))  # Same bytes.
 
 
 @pytest.mark.parametrize("tier", ["ICON", "BASE", "LEGEND"])
