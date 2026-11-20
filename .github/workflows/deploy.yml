@@ -21,7 +21,9 @@ jobs:
   # The same jobs a pull request runs. A failed job stops the deploy, and can
   # be re-run in this run; the deploy then continues after approval.
   checks:
-    uses: ./.github/workflows/checks.yml
+    # actionlint 1.7.12 can't parse the `$/` form zizmor asks for. Remove the
+    # ignore and switch to `$/` when actionlint supports it.
+    uses: ./.github/workflows/checks.yml # zizmor: ignore[self-repository]
     permissions:
       contents: read
 
