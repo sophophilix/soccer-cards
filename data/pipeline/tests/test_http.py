@@ -35,12 +35,8 @@ Handler = Callable[[httpx.Request], httpx.Response]
 
 
 def _client(tmp_path: Path, handler: Handler, fake: FakeTime) -> PoliteClient:
-    return PoliteClient(
-        tmp_path,
-        transport=httpx.MockTransport(handler),
-        clock=fake.clock,
-        sleep=fake.sleep,
-    )
+    net = httpx.MockTransport(handler)
+    return PoliteClient(tmp_path, transport=net, clock=fake.clock, sleep=fake.sleep)
 
 
 def _replies(*responses: httpx.Response) -> tuple[Handler, list[httpx.Request]]:
@@ -85,16 +81,17 @@ def test_a_cached_response_is_reused_without_a_request(tmp_path: Path) -> None:
     assert len(seen) == 1
 
 
-def test_honours_retry_after_on_429(tmp_path: Path) -> None:
+@pytest.mark.parametrize(("header", "slept"), [(b"7", 7.0), ("²".encode(), 2.0)])
+def test_retry_after_on_429(tmp_path: Path, header: bytes, slept: float) -> None:
     handler, seen = _replies(
-        httpx.Response(429, headers={"Retry-After": "7"}),
+        httpx.Response(429, headers={b"Retry-After": header}),
         httpx.Response(200, json={}),
     )
     fake = FakeTime()
     with _client(tmp_path, handler, fake) as client:
         client.get_json(URL, {})
     assert len(seen) == 2
-    assert fake.sleeps[0] == 7
+    assert fake.sleeps[0] == slept  # An unreadable header falls back to back-off.
 
 
 def test_backs_off_on_5xx_and_errors_then_succeeds(tmp_path: Path) -> None:
@@ -114,16 +111,15 @@ def test_backs_off_on_5xx_and_errors_then_succeeds(tmp_path: Path) -> None:
     assert fake.sleeps[1] > fake.sleeps[0] >= MIN_GAP_SECONDS
 
 
-def test_gives_up_after_a_fixed_number_of_tries_naming_the_url(
-    tmp_path: Path,
-) -> None:
+def test_gives_up_after_max_tries_naming_the_url(tmp_path: Path) -> None:
     handler, seen = _replies(*[httpx.Response(500) for _ in range(MAX_TRIES)])
     with (
         _client(tmp_path, handler, FakeTime()) as client,
-        pytest.raises(FetchError, match=r"w/api\.php\?ids=Q9 after 4 tries"),
+        pytest.raises(FetchError, match=r"w/api\.php\?ids=Q9 after 4 tries") as caught,
     ):
         client.get_json(URL, {"ids": "Q9"})
     assert len(seen) == MAX_TRIES
+    assert "answered HTTP 500" in str(caught.value.__cause__)
 
 
 @pytest.mark.parametrize(
@@ -132,6 +128,7 @@ def test_gives_up_after_a_fixed_number_of_tries_naming_the_url(
         httpx.Response(404),
         httpx.Response(429, headers={"Retry-After": "Fri, 01 Jan 2100 00:00:00 GMT"}),
         httpx.Response(200, text="<html>not json</html>"),
+        httpx.Response(200, text='{"goals": NaN, "caps": Infinity}'),
     ],
 )
 def test_a_permanent_failure_stops_at_once_and_caches_nothing(
@@ -145,3 +142,16 @@ def test_a_permanent_failure_stops_at_once_and_caches_nothing(
         client.get_json(URL, {})
     assert len(seen) == 1
     assert list(tmp_path.iterdir()) == []
+
+
+@pytest.mark.parametrize(
+    "url", ["http://www.wikidata.org/w/api.php", "https://example.org/w/api.php"]
+)
+def test_a_url_off_the_allow_list_fails_unsent(tmp_path: Path, url: str) -> None:
+    handler, seen = _replies(httpx.Response(200, json={}))
+    with (
+        _client(tmp_path, handler, FakeTime()) as client,
+        pytest.raises(FetchError, match="is not an allowed source"),
+    ):
+        client.get_json(url, {})
+    assert seen == []

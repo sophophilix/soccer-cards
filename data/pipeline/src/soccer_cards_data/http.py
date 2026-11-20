@@ -14,7 +14,6 @@ from datetime import UTC, datetime
 from email.utils import parsedate_to_datetime
 from importlib.metadata import version
 from pathlib import Path
-from types import TracebackType
 from typing import Self
 
 import httpx
@@ -29,6 +28,9 @@ MAX_TRIES = 4  # Then the fetch fails.
 BACKOFF_SECONDS = 2.0  # The first back-off. Each later one doubles.
 MAX_WAIT_SECONDS = 120.0  # A longer Retry-After is a failure, not a wait.
 DEFAULT_CACHE_DIR = Path(__file__).resolve().parents[2] / ".cache"
+# The only hosts the pipeline may ask, all over HTTPS (ADR 0006 D1).
+_WIKIDATA = ("www.wikidata.org", "query.wikidata.org")
+ALLOWED_HOSTS = frozenset((*_WIKIDATA, "commons.wikimedia.org", "upload.wikimedia.org"))
 
 
 class FetchError(Exception):
@@ -68,12 +70,7 @@ class PoliteClient:
         """Return the client."""
         return self
 
-    def __exit__(
-        self,
-        exc_type: type[BaseException] | None,
-        exc: BaseException | None,
-        traceback: TracebackType | None,
-    ) -> None:
+    def __exit__(self, *_: object) -> None:
         """Close the connection pool."""
         self._http.close()
 
@@ -81,16 +78,19 @@ class PoliteClient:
         """Return the JSON reply to a GET, from the cache when it has one.
 
         Raises:
-            FetchError: The request failed for good, or the reply isn't JSON.
+            FetchError: The URL isn't an allowed HTTPS host, the request
+                failed for good, or the reply isn't strict JSON.
         """
         request = self._http.build_request("GET", url, params=params)
+        if request.url.scheme != "https" or request.url.host not in ALLOWED_HOSTS:
+            raise FetchError(f"{request.url} is not an allowed source")
         key = hashlib.sha256(str(request.url).encode()).hexdigest()
         cached = self._cache_dir / f"{key}.json"
         if cached.is_file():
-            return json.loads(cached.read_bytes())
+            return _parse(cached.read_bytes())
         body = self._send(request)
         try:
-            data = json.loads(body)
+            data = _parse(body)
         except ValueError as exc:
             raise FetchError(f"{request.url} did not return JSON") from exc
         self._cache_dir.mkdir(parents=True, exist_ok=True)
@@ -102,6 +102,7 @@ class PoliteClient:
     def _send(self, request: httpx.Request) -> bytes:
         host = request.url.host
         wait = 0.0
+        cause: Exception | None = None
         for attempt in range(MAX_TRIES):
             last = self._last_reply.get(host)
             gap = 0.0 if last is None else MIN_GAP_SECONDS - (self._clock() - last)
@@ -109,8 +110,9 @@ class PoliteClient:
             wait = BACKOFF_SECONDS * 2**attempt
             try:
                 response = self._http.send(request)
-            except httpx.TransportError:
-                continue  # A timeout or a dropped connection: try again.
+            except httpx.TransportError as exc:
+                cause = exc  # A timeout or a dropped connection: try again.
+                continue
             finally:
                 self._last_reply[host] = self._clock()
             status = response.status_code
@@ -118,10 +120,11 @@ class PoliteClient:
                 return response.content
             if status != httpx.codes.TOO_MANY_REQUESTS and status < 500:
                 raise FetchError(f"{request.url} answered HTTP {status}")
+            cause = FetchError(f"{request.url} answered HTTP {status}")
             wait = max(wait, _retry_after(response))
             if wait > MAX_WAIT_SECONDS:
                 raise FetchError(f"{request.url} asked to wait {wait:.0f} seconds")
-        raise FetchError(f"gave up on {request.url} after {MAX_TRIES} tries")
+        raise FetchError(f"gave up on {request.url} after {MAX_TRIES} tries") from cause
 
     def _sleep_at_least(self, seconds: float) -> None:
         if seconds > 0:
@@ -131,10 +134,19 @@ class PoliteClient:
 def _retry_after(response: httpx.Response) -> float:
     """Read Retry-After as seconds or an HTTP date. Unreadable means zero."""
     value = response.headers.get("Retry-After", "").strip()
-    if value.isdigit():
+    if value.isascii() and value.isdigit():  # Not "²", which int() refuses.
         return float(value)
     try:
         when = parsedate_to_datetime(value)
     except (TypeError, ValueError):
         return 0.0
     return (when.replace(tzinfo=when.tzinfo or UTC) - datetime.now(UTC)).total_seconds()
+
+
+def _refuse_constant(name: str) -> object:
+    raise ValueError(f"{name} is not JSON")
+
+
+def _parse(body: bytes) -> object:
+    """Parse strict JSON: NaN and Infinity are refused, not read as floats."""
+    return json.loads(body, parse_constant=_refuse_constant)
