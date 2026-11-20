@@ -2,89 +2,80 @@
 	import { describeCard, POSITIONS, TIER_NAMES, type CardFrontProps } from './card-front.ts';
 
 	const card: CardFrontProps = $props();
-	// Two avatars on one page each need their own clip path.
-	const clipId = $props.id();
+	const total = $derived(card.attack + card.defence + card.control);
 	// The prototype makes a name smaller once it passes this many letters.
 	const LONG_NAME_LENGTH = 10;
 	const STAR =
 		'100,50 82.5,55.7 97,67.1 76.8,65.5 88.3,82.1 72.5,76.8 75,93.3 61.3,81 58.7,99.2 50,81 41.3,99.2 38,82.9 25,93.3 28.8,75.3 11.7,82.1 23.2,65.5 3,67.1 15.5,56.1 0,50 17.5,44.3 3,32.9 23.2,34.5 11.7,17.9 27.5,23.2 25,6.7 38.7,19 41.3,0.8 50,19 58.7,0.8 62,17.1 75,6.7 71.2,24.7 88.3,17.9 76.8,34.5 97,32.9 84.5,43.9';
 </script>
 
-<!-- One picture with one name: a screen reader hears the sentence, not each piece of text.
-     Every tier draws the base look until T-0061 gives each tier class its own. -->
-<div class={['card', card.tier.toLowerCase()]} role="img" aria-label={describeCard(card)}>
-	<div class="ground"></div>
-	<svg class="burst" viewBox="0 0 100 100" aria-hidden="true"><polygon points={STAR} /></svg>
-	{#if card.photo}
-		<div class="photo">
-			<img
-				src={card.photo.src}
-				width={card.photo.widthPx}
-				height={card.photo.heightPx}
-				alt=""
-				loading="lazy"
-			/>
+<!-- One name for a screen reader. Every tier draws the base look until T-0061. -->
+<div class={['card', card.tier.toLowerCase()]}>
+	<div class="face" role="img" aria-label={describeCard(card)}>
+		<div class="ground"></div>
+		<svg class="burst" viewBox="0 0 100 100" aria-hidden="true"><polygon points={STAR} /></svg>
+		{#if card.photo}
+			<div class="photo">
+				<img
+					src={card.photo.src}
+					width={card.photo.widthPx}
+					height={card.photo.heightPx}
+					alt=""
+					loading="lazy"
+				/>
+			</div>
+		{:else}
+			<svg class="avatar" viewBox="0 0 200 220" aria-hidden="true" fill="#0e1512">
+				<rect x="86" y="92" width="28" height="34" rx="8" />
+				<path class="shirt" d="M14 220C14 160 34 128 76 116h48c42 12 62 44 62 104" />
+				<path d="M76 116Q100 140 124 116Z" />
+				<circle cx="100" cy="62" r="40" />
+				<text x="100" y="196" fill="#1b1f3b">{card.shirtNumber}</text>
+			</svg>
+		{/if}
+		<div class="overall"><b>{card.overall}</b><span>{POSITIONS[card.position].code}</span></div>
+		<div class="tier">{TIER_NAMES[card.tier]}</div>
+		<div class="nation">{card.nationalTeamCode}</div>
+		{#if card.cardTitle}<div class="title">{card.cardTitle}</div>{/if}
+		<div class="plate">
+			<div class="club">{card.clubName}</div>
+			<div class={['name', card.displayName.length > LONG_NAME_LENGTH && 'long']}>
+				{card.displayName}
+			</div>
+			<div class="stats">
+				<div class="att"><b>{card.attack}</b><span>ATT</span></div>
+				<div class="def"><b>{card.defence}</b><span>DEF</span></div>
+				<div class="ctrl"><b>{card.control}</b><span>CTRL</span></div>
+				<div class="total"><b>{total}</b><span>TOTAL</span></div>
+			</div>
 		</div>
-	{:else}
-		<!-- The prototype's kit avatar in a plain shirt: club colours aren't props yet. -->
-		<svg class="avatar" viewBox="0 0 200 220" aria-hidden="true" fill="#0e1512">
-			<clipPath id={clipId}>
-				<path d="M14 220C14 160 34 128 76 116h48c42 12 62 44 62 104Z" />
-			</clipPath>
-			<rect x="86" y="92" width="28" height="34" rx="8" />
-			<g clip-path="url(#{clipId})">
-				<rect y="100" width="200" height="130" fill="#f4f7fa" />
-				<path d="M76 116Q100 140 124 116v-8H76Z" />
-			</g>
-			<g fill="none" stroke="#0e1512" stroke-width="5">
-				<path d="M14 220C14 160 34 128 76 116h48c42 12 62 44 62 104" />
-			</g>
-			<circle cx="100" cy="62" r="40" />
-			<text x="100" y="196" fill="#1b1f3b">{card.shirtNumber}</text>
-		</svg>
-	{/if}
-	<div class="overall"><b>{card.overall}</b><span>{POSITIONS[card.position].code}</span></div>
-	<div class="tier">{TIER_NAMES[card.tier]}</div>
-	<div class="nation">{card.nationalTeamCode}</div>
-	{#if card.cardTitle}<div class="title">{card.cardTitle}</div>{/if}
-	<div class="plate">
-		<div class="club">{card.clubName}</div>
-		<div class={['name', card.displayName.length > LONG_NAME_LENGTH && 'long']}>
-			{card.displayName}
-		</div>
-		<div class="stats">
-			<div class="att"><b>{card.attack}</b><span>ATT</span></div>
-			<div class="def"><b>{card.defence}</b><span>DEF</span></div>
-			<div class="ctrl"><b>{card.control}</b><span>CTRL</span></div>
-			<div class="total"><b>{card.attack + card.defence + card.control}</b><span>TOTAL</span></div>
-		</div>
+		<div class="frame"></div>
 	</div>
-	<div class="frame"></div>
 </div>
 
 <style>
-	/* Every size comes from the card's own width (cqw), as in the prototype. */
+	/* .card is the size container, so cqw on .face and inside it measures the card. */
 	.card {
+		aspect-ratio: 5 / 7;
+		container-type: inline-size;
+	}
+	.face {
 		--g1: #2fcb7a;
 		--g2: #0b5c3a;
 		position: relative;
-		aspect-ratio: 5 / 7;
-		container-type: inline-size;
+		height: 100%;
 		overflow: hidden;
 		border-radius: 5cqw;
 		background: var(--card-ink);
 		box-shadow: 0 2cqw 6cqw var(--card-shadow);
 		color: var(--card-paper);
-		font: 800 4.2cqw/1 var(--font-data);
+		font: 800 4.2cqw/1 var(--font-data, sans-serif);
 	}
-	.card > * {
+	.face > * {
 		position: absolute;
 	}
-	.ground,
-	.frame {
-		inset: 0;
-	}
 	.ground {
+		inset: 0;
 		background:
 			radial-gradient(circle at 50% 36%, #ffffffeb, #fff0 32%),
 			repeating-conic-gradient(from 4deg at 50% 36%, #ffffff3d 0 6deg, #fff0 6deg 12deg),
@@ -114,6 +105,11 @@
 		left: 13%;
 		width: 74%;
 		bottom: 41cqw;
+	}
+	.shirt {
+		fill: #f4f7fa;
+		stroke: var(--card-ink);
+		stroke-width: 5;
 	}
 	.avatar text {
 		text-anchor: middle;
@@ -232,6 +228,7 @@
 		background: var(--booking);
 	}
 	.frame {
+		inset: 0;
 		z-index: 3;
 		padding: 2cqw;
 		border-radius: inherit;

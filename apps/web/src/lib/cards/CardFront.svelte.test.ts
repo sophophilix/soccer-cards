@@ -86,15 +86,18 @@ test.each([96, 180, 360])(
 		const screen = await render(CardFront, aCard({ displayName: name, clubName: club }));
 		screen.container.style.width = `${String(widthPx)}px`;
 
-		const card = screen.getByRole('img').element().getBoundingClientRect();
-		const tierFontPx = getComputedStyle(screen.getByText('Base').element()).fontSize;
-		expect(card.width).toBe(widthPx);
-		expect(card.height).toBeCloseTo((widthPx * 7) / 5, 0);
-		// The tier label is 4% of the card's width at every size.
-		expect(Number.parseFloat(tierFontPx)).toBeCloseTo(widthPx * 0.04, 1);
-		const nameBox = screen.getByText(name).element().getBoundingClientRect();
-		const clubBox = screen.getByText(club).element().getBoundingClientRect();
-		expect(nameBox.right).toBeLessThanOrEqual(card.right);
-		expect(clubBox.right).toBeLessThanOrEqual(card.right);
+		const card = screen.getByRole('img').element();
+		const box = card.getBoundingClientRect();
+		const text = (words: string): Element => screen.getByText(words).element();
+		const px = (element: Element, property: 'fontSize' | 'borderTopLeftRadius'): number =>
+			Number.parseFloat(getComputedStyle(element)[property]);
+		expect(box.width).toBe(widthPx);
+		expect(box.height).toBeCloseTo((widthPx * 7) / 5, 0);
+		expect(px(text('Base'), 'fontSize')).toBeCloseTo(widthPx * 0.04, 1);
+		expect(px(text('ESP'), 'fontSize')).toBeCloseTo(widthPx * 0.042, 1);
+		expect(px(text(club), 'fontSize')).toBeCloseTo(widthPx * 0.042, 1);
+		expect(px(card, 'borderTopLeftRadius')).toBeCloseTo(widthPx * 0.05, 1);
+		expect(text(name).getBoundingClientRect().right).toBeLessThanOrEqual(box.right);
+		expect(text(club).getBoundingClientRect().right).toBeLessThanOrEqual(box.right);
 	}
 );
