@@ -1,0 +1,16 @@
+{
+	"$schema": "https://json-schema.org/draft/2020-12/schema",
+	"$id": "editions.schema.json",
+	"title": "EditionList",
+	"description": "Every edition the API holds, as served at editions.json.",
+	"type": "object",
+	"properties": {
+		"editions": {
+			"description": "Each edition in full. The list is one file, so it is capped.",
+			"type": "array",
+			"maxItems": 1000,
+			"items": { "$ref": "edition.schema.json#/$defs/edition" }
+		}
+	},
+	"required": ["editions"]
+}
