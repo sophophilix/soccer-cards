@@ -1,10 +1,13 @@
 import type { CardId, CheckedCardSet } from './cards.ts';
+import { DIVISIONS } from './divisions.ts';
+import type { Division } from './divisions.ts';
 import { drawPack } from './draw-pack.ts';
 import type { PackKind } from './draw-pack.ts';
+import { TEAM_SIZE } from './lineup.ts';
 import type { Random } from './random.ts';
 
 /** The version of the player state's shape. A change of shape raises it. */
-export const STATE_VERSION = 1;
+export const STATE_VERSION = 2;
 /** The free standard packs a new player starts with. */
 export const STARTING_FREE_PACKS = 2;
 /** The coins a new player starts with. */
@@ -13,6 +16,8 @@ export const STARTING_COINS = 0;
 export const STANDARD_PACK_COST_COINS = 5;
 /** The price of a jumbo pack. A free pack never pays for it. */
 export const JUMBO_PACK_COST_COINS = 20;
+/** The wins in one division that move the player up to the next. */
+export const WINS_TO_GO_UP = 3;
 
 const PACK_COST_COINS = {
 	standard: STANDARD_PACK_COST_COINS,
@@ -34,6 +39,11 @@ export interface PlayerState {
 	readonly collection: Readonly<Record<CardId, number>>;
 	readonly favourites: readonly CardId[];
 	readonly pendingPack: PendingPack | null;
+	readonly division: Division['id'];
+	/** Wins since the player came into this division. The top division keeps counting. */
+	readonly divisionWins: number;
+	readonly wins: number;
+	readonly losses: number;
 }
 
 /** Why a change to the player state was refused. */
@@ -60,7 +70,11 @@ export function createPlayerState(): PlayerState {
 		coins: STARTING_COINS,
 		collection: {},
 		favourites: [],
-		pendingPack: null
+		pendingPack: null,
+		division: DIVISIONS[0].id,
+		divisionWins: 0,
+		wins: 0,
+		losses: 0
 	};
 }
 
@@ -112,4 +126,33 @@ export function addPendingPack(state: PlayerState): StateResult<'no-pending-pack
 		ok: true,
 		value: { ...state, collection: Object.fromEntries(copies), pendingPack: null }
 	};
+}
+
+/** Says whether the player owns the 11 different cards a match needs. */
+export function canPlayMatch(state: PlayerState): boolean {
+	return Object.values(state.collection).filter((copies) => copies > 0).length >= TEAM_SIZE;
+}
+
+/** Pays the division's prize, counts the win, and moves the player up after enough wins. */
+export function recordWin(state: PlayerState): PlayerState {
+	const rank = DIVISIONS.findIndex((division) => division.id === state.division);
+	const division = DIVISIONS[rank];
+	if (division === undefined) {
+		throw new RangeError(`the player is in an unknown division: ${state.division}`);
+	}
+	const next = DIVISIONS[rank + 1];
+	const divisionWins = state.divisionWins + 1;
+	const goesUp = next !== undefined && divisionWins >= WINS_TO_GO_UP;
+	return {
+		...state,
+		coins: state.coins + division.winCoins,
+		wins: state.wins + 1,
+		division: goesUp ? next.id : state.division,
+		divisionWins: goesUp ? 0 : divisionWins
+	};
+}
+
+/** Counts a loss. A loss never costs coins or moves the player down. */
+export function recordLoss(state: PlayerState): PlayerState {
+	return { ...state, losses: state.losses + 1 };
 }

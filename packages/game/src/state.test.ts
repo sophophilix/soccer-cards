@@ -30,17 +30,21 @@ const stateOf = (result: StateResult<StateRefusal>): PlayerState | undefined =>
 describe('createPlayerState', () => {
 	it('starts a player with 2 free packs, 0 coins and nothing collected', () => {
 		expect(createPlayerState()).toEqual({
-			version: 1,
+			version: 2,
 			freePacks: 2,
 			coins: 0,
 			collection: {},
 			favourites: [],
-			pendingPack: null
+			pendingPack: null,
+			division: 'division-4',
+			divisionWins: 0,
+			wins: 0,
+			losses: 0
 		});
 	});
 
 	it('names the starting values and the prices', () => {
-		expect([STATE_VERSION, STARTING_FREE_PACKS, STARTING_COINS]).toEqual([1, 2, 0]);
+		expect([STATE_VERSION, STARTING_FREE_PACKS, STARTING_COINS]).toEqual([2, 2, 0]);
 		expect([STANDARD_PACK_COST_COINS, JUMBO_PACK_COST_COINS]).toEqual([5, 20]);
 		expect([packCostCoins('standard'), packCostCoins('jumbo')]).toEqual([5, 20]);
 	});
