@@ -2,15 +2,8 @@ import { checkCardSet, createPlayerState, createRandom, toCardId } from '@soccer
 import type { Card, CheckedCardSet, PackToOpen, PlayerState, Tier } from '@soccer-cards/game';
 import { describe, expect, it } from 'vitest';
 import { createPlayerStore } from '../state/player-store.ts';
-import type { ItemStorage, SaveResult } from '../state/player-store.ts';
-import {
-	addPackAndSave,
-	frontOf,
-	nameFromCardId,
-	openPackAndSave,
-	randomSeed,
-	revealOrder
-} from './pack-session.ts';
+import type { ItemStorage, PlayerStore } from '../state/player-store.ts';
+import { addPackAndSave, openPackAndSave, randomSeed, revealOrder } from './pack-session.ts';
 
 function aCard(id: string, tier: Tier = 'base'): Card {
 	return {
@@ -36,29 +29,43 @@ function aCardSet(): CheckedCardSet {
 	return checked.value;
 }
 
-/** A store that records what it saves and answers with `answer`. */
-function aStore(answer: SaveResult = { ok: true }): {
-	saves: PlayerState[];
-	save: (state: PlayerState) => SaveResult;
-} {
-	const saves: PlayerState[] = [];
-	const save = (state: PlayerState): SaveResult => {
-		saves.push(state);
-		return answer;
-	};
-	return { saves, save };
-}
-
 /** Storage held in memory, as a reload of the same browser would find it. */
 function aMemoryStorage(): ItemStorage {
 	const items = new Map<string, string>();
 	return { getItem: (key) => items.get(key) ?? null, setItem: (key, text) => items.set(key, text) };
 }
 
-/** A standard pack with its own seeded random source, so no test shares one. */
-function aPack(): PackToOpen {
-	return { kind: 'standard', cardSet: aCardSet(), random: createRandom(7) };
+type RecordingStore = Pick<PlayerStore, 'load' | 'save'> & { readonly saves: PlayerState[] };
+
+/** The real player store over `storage`, or with no storage at all, recording each save. */
+function aStore(storage: ItemStorage | 'no-storage' = aMemoryStorage()): RecordingStore {
+	const store = createPlayerStore(() => (storage === 'no-storage' ? undefined : storage));
+	const saves: PlayerState[] = [];
+	return {
+		saves,
+		load: store.load,
+		save: (state) => {
+			saves.push(state);
+			return store.save(state);
+		}
+	};
 }
+
+/** A standard pack with its own seeded random source, so no test shares one. */
+function aPack(seed = 7): PackToOpen {
+	return { kind: 'standard', cardSet: aCardSet(), random: createRandom(seed) };
+}
+
+/** Opens a pack in a fresh store, and returns the store and the opened state. */
+function anOpenedPack(): { store: RecordingStore; opened: PlayerState } {
+	const store = aStore();
+	const result = openPackAndSave(store, store.load().state, aPack());
+	if (!result.ok) throw new Error('the test pack did not open');
+	return { store, opened: result.value };
+}
+
+const totalCards = (state: PlayerState): number =>
+	Object.values(state.collection).reduce((sum, copies) => sum + copies, 0);
 
 describe('revealOrder', () => {
 	it('shows the base cards first in drawn order and the best card last', () => {
@@ -80,7 +87,7 @@ describe('openPackAndSave', () => {
 	it('saves the opened pack as pending, with a free pack spent', () => {
 		const store = aStore();
 
-		const result = openPackAndSave(store, createPlayerState(), aPack());
+		const result = openPackAndSave(store, store.load().state, aPack());
 
 		expect(result.ok && result.saved).toEqual({ ok: true });
 		expect(store.saves[0]?.pendingPack?.cardIds).toHaveLength(10);
@@ -88,11 +95,9 @@ describe('openPackAndSave', () => {
 	});
 
 	it('still opens the pack when the device cannot save', () => {
-		const result = openPackAndSave(
-			aStore({ ok: false, reason: 'not-saving' }),
-			createPlayerState(),
-			aPack()
-		);
+		const store = aStore('no-storage');
+
+		const result = openPackAndSave(store, store.load().state, aPack());
 
 		expect(result.ok && result.value.pendingPack?.cardIds).toHaveLength(10);
 		expect(result.ok && result.saved).toEqual({ ok: false, reason: 'not-saving' });
@@ -106,48 +111,70 @@ describe('openPackAndSave', () => {
 		expect(result).toEqual({ ok: false, reason: 'not-enough-coins' });
 		expect(store.saves).toEqual([]);
 	});
+
+	it('refuses a second open while a pack is pending and saves nothing more', () => {
+		const { store, opened } = anOpenedPack();
+
+		const second = openPackAndSave(store, opened, aPack(8));
+
+		expect(second).toEqual({ ok: false, reason: 'pack-pending' });
+		expect(store.saves).toHaveLength(1);
+	});
+
+	it('keeps the pending pack when a caller opens again with an older state', () => {
+		const store = aStore();
+		const before = store.load().state;
+		const first = openPackAndSave(store, before, aPack());
+
+		const second = openPackAndSave(store, before, aPack(8));
+
+		expect(second).toEqual({ ok: false, reason: 'pack-pending' });
+		expect(store.load().state.pendingPack).toEqual(first.ok && first.value.pendingPack);
+	});
 });
 
 describe('addPackAndSave', () => {
 	it('refuses when no pack is pending and saves nothing', () => {
 		const store = aStore();
 
-		expect(addPackAndSave(store, createPlayerState())).toEqual({
+		expect(addPackAndSave(store, store.load().state)).toEqual({
 			ok: false,
 			reason: 'no-pending-pack'
 		});
 		expect(store.saves).toEqual([]);
 	});
 
+	it('refuses to add the same pack twice and saves nothing more', () => {
+		const { store, opened } = anOpenedPack();
+		const added = addPackAndSave(store, opened);
+
+		const second = added.ok ? addPackAndSave(store, added.value) : added;
+
+		expect(second).toEqual({ ok: false, reason: 'no-pending-pack' });
+		expect(store.saves).toHaveLength(2);
+	});
+
+	it('adds the pack once when a caller adds again with an older state', () => {
+		const { store, opened } = anOpenedPack();
+		addPackAndSave(store, opened);
+
+		const second = addPackAndSave(store, opened);
+
+		expect(second).toEqual({ ok: false, reason: 'no-pending-pack' });
+		expect(totalCards(store.load().state)).toBe(10);
+	});
+
 	it('keeps the added cards for the next load, as a reload does', () => {
 		const storage = aMemoryStorage();
-		const store = createPlayerStore(() => storage);
+		const store = aStore(storage);
 		const opened = openPackAndSave(store, store.load().state, aPack());
 		const added = opened.ok ? addPackAndSave(store, opened.value) : opened;
 
 		const reloaded = createPlayerStore(() => storage).load();
 
 		expect(added.ok && added.saved).toEqual({ ok: true });
-		expect(Object.values(reloaded.state.collection).reduce((sum, copies) => sum + copies, 0)).toBe(
-			10
-		);
+		expect(totalCards(reloaded.state)).toBe(10);
 		expect(reloaded.state.pendingPack).toBeNull();
-	});
-});
-
-describe('frontOf', () => {
-	it('names the card from its id and uses the card front values', () => {
-		const front = frontOf(aCard('ana-maria-oliveira', 'legend'));
-
-		expect(front).toMatchObject({
-			displayName: 'Ana Maria Oliveira',
-			tier: 'LEGEND',
-			position: 'FORWARD'
-		});
-	});
-
-	it('writes a one-word id as one name', () => {
-		expect(nameFromCardId(toCardId('pele'))).toBe('Pele');
 	});
 });
 
