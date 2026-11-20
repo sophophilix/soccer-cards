@@ -1,19 +1,22 @@
 # Runs the gates a developer runs: `make check COMPONENT=<name>` (ADR 0004 D4).
 # Each job name is a required check on `main`. Don't rename one without the
 # tech lead changing the ruleset.
+# On `main`, `deploy.yml` calls this workflow and deploys only when it passes.
 name: checks
 
 on:
   pull_request:
-  push:
-    branches: [main]
+  workflow_call:
 
 permissions:
   contents: read
 
+# A newer push cancels a pull request's older run. A run called from `main`
+# is never cancelled here: deploy.yml queues those runs. Called from there,
+# `github.workflow` is `deploy`, so this group never equals the caller's.
 concurrency:
   group: checks-${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   # The kit gates use the runner image's Python 3 and need no packages.
