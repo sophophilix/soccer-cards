@@ -1,6 +1,7 @@
 # The pipeline for `main` (ADR 0002 D3): run every gate in `checks.yml` on
 # this commit, then deploy it after the tech lead approves the `production`
-# environment, then plan infra/ and apply it after a second approval.
+# environment. infra/ is planned on every run, and applied after a second
+# approval only when the plan has changes.
 # Rollback stays with the tech lead (ADR 0002 D7).
 name: deploy
 
@@ -77,12 +78,93 @@ jobs:
           WRANGLER_SEND_METRICS: 'false'
         run: pnpm exec wrangler deploy --config apps/web/wrangler.jsonc --message "main ${GITHUB_SHA}"
 
-  # Plans every run, so drift made in the dashboard shows up, and applies the
-  # saved plan this job made. The Worker exists by now, so the custom domain
-  # can attach to it (ADR 0002 D8).
+  # Plans every run, so drift made in the dashboard shows up too. It needs no
+  # approval: `infra-plan` is `main` only and holds read-only credentials, so
+  # this job can't lock or change anything (ADR 0002 D9). The tech lead reads
+  # its summary before approving `apply`.
+  plan:
+    name: Plan infrastructure
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    environment: infra-plan
+    permissions:
+      contents: read
+      id-token: write # The azurerm backend signs in to Azure with OpenID Connect.
+    outputs:
+      changes: ${{ steps.plan.outputs.changes }}
+      fingerprint: ${{ steps.plan.outputs.fingerprint }}
+    defaults:
+      run:
+        working-directory: infra
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      # Same version and checksum as the infra job in checks.yml.
+      - uses: opentofu/setup-opentofu@a1320f892987e89d278cc92dc5adc984fb93aca4 # v2.0.2
+        with:
+          tofu_version: 1.13.9
+          tofu_wrapper: false
+          checksums: bc44eb6b06446ba83bd4072114891987f590f66cca712737a7f1147c50c539ce
+      # The credentials reach this step only. The plan file stays on the
+      # runner and its JSON in a variable: only addresses, actions and a
+      # SHA-256 of the resource changes come out.
+      - id: plan
+        name: Plan
+        env:
+          ARM_USE_OIDC: 'true'
+          ARM_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          TF_STATE_RESOURCE_GROUP: ${{ vars.TF_STATE_RESOURCE_GROUP }}
+          TF_STATE_STORAGE_ACCOUNT: ${{ vars.TF_STATE_STORAGE_ACCOUNT }}
+          TF_VAR_state_passphrase: ${{ secrets.TF_STATE_PASSPHRASE }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_INFRA_TOKEN }}
+          TF_IN_AUTOMATION: 'true'
+        run: |
+          set -o pipefail
+          tofu init -input=false -lockfile=readonly \
+            -backend-config="resource_group_name=${TF_STATE_RESOURCE_GROUP}" \
+            -backend-config="storage_account_name=${TF_STATE_STORAGE_ACCOUNT}" \
+            -backend-config=container_name=tfstate
+          # Exit code 0 is no changes, 2 is changes, anything else is an error.
+          set +e
+          tofu plan -input=false -lock=false -no-color -detailed-exitcode -var-file=production.tfvars -out=tfplan
+          code=$?
+          set -e
+          if [ "$code" = 0 ]; then
+            echo "No infrastructure changes. Nothing to apply, and nothing waits." >> "$GITHUB_STEP_SUMMARY"
+            echo "changes=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          [ "$code" = 2 ] || exit "$code"
+          json="$(tofu show -json tfplan)"
+          gone="$(jq -r '.resource_changes[]? | select(.change.actions | index("delete")) | "- `\(.address)`: \(.change.actions | join(" then "))"' <<< "$json")"
+          fingerprint="$(jq -cS '[.resource_changes[]? | select(.change.actions != ["no-op"]) | {address, change: (.change | {actions, before, after, after_unknown})}]' <<< "$json" | sha256sum | cut -d' ' -f1)"
+          {
+            echo '### Infrastructure plan'
+            echo '```'
+            tofu show -no-color tfplan
+            echo '```'
+            echo "Resource changes SHA-256: \`${fingerprint}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+          if [ -n "$gone" ]; then
+            printf '### Not applied: the plan destroys or replaces resources\n%s\n' "$gone" >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::The plan destroys or replaces resources. The tech lead decides how to proceed."
+            exit 1
+          fi
+          echo "changes=true" >> "$GITHUB_OUTPUT"
+          echo "fingerprint=${fingerprint}" >> "$GITHUB_OUTPUT"
+
+  # Runs only when `plan` found changes. A plan made with read-only
+  # credentials can't be applied, so this job plans again and applies its own
+  # saved plan only when it matches the one the tech lead read. The Worker
+  # exists by now, so the custom domain can attach to it (ADR 0002 D8).
   apply:
     name: Apply infrastructure
-    needs: deploy
+    needs: [deploy, plan]
+    if: ${{ needs.plan.outputs.changes == 'true' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     # Waits for the tech lead. This identity is the only one that can write
@@ -98,16 +180,6 @@ jobs:
     defaults:
       run:
         working-directory: infra
-    env:
-      ARM_USE_OIDC: 'true'
-      ARM_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
-      ARM_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-      TF_STATE_RESOURCE_GROUP: ${{ vars.TF_STATE_RESOURCE_GROUP }}
-      TF_STATE_STORAGE_ACCOUNT: ${{ vars.TF_STATE_STORAGE_ACCOUNT }}
-      TF_VAR_state_passphrase: ${{ secrets.TF_STATE_PASSPHRASE }}
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_INFRA_TOKEN }}
-      TF_IN_AUTOMATION: 'true'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -130,41 +202,39 @@ jobs:
             echo "Not applied: \`main\` moved to \`${head}\`." >> "$GITHUB_STEP_SUMMARY"
             exit 1
           fi
-      - run: >-
-          tofu init -input=false -lockfile=readonly
-          -backend-config="resource_group_name=${TF_STATE_RESOURCE_GROUP}"
-          -backend-config="storage_account_name=${TF_STATE_STORAGE_ACCOUNT}"
-          -backend-config=container_name=tfstate
-      # Exit code 0 is no changes, 2 is changes, anything else is an error.
-      - id: plan
-        name: Plan
-        run: |
-          set +e
-          tofu plan -input=false -lock-timeout=5m -no-color -detailed-exitcode -var-file=production.tfvars -out=tfplan
-          code=$?
-          set -e
-          case "$code" in
-            0) echo "No changes. Nothing to apply." >> "$GITHUB_STEP_SUMMARY"
-               echo "changes=false" >> "$GITHUB_OUTPUT" ;;
-            2) echo "changes=true" >> "$GITHUB_OUTPUT" ;;
-            *) exit "$code" ;;
-          esac
-      # The JSON stays inside the pipe. Only addresses and actions come out.
-      - name: Stop if the plan destroys or replaces anything
-        if: ${{ steps.plan.outputs.changes == 'true' }}
+      # The credentials reach this step only. The fingerprint is computed as
+      # in `plan`, so anything changed since then stops the run.
+      - name: Plan again, and apply if it matches the plan the tech lead read
+        env:
+          SEEN: ${{ needs.plan.outputs.fingerprint }}
+          ARM_USE_OIDC: 'true'
+          ARM_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          TF_STATE_RESOURCE_GROUP: ${{ vars.TF_STATE_RESOURCE_GROUP }}
+          TF_STATE_STORAGE_ACCOUNT: ${{ vars.TF_STATE_STORAGE_ACCOUNT }}
+          TF_VAR_state_passphrase: ${{ secrets.TF_STATE_PASSPHRASE }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_INFRA_TOKEN }}
+          TF_IN_AUTOMATION: 'true'
         run: |
           set -o pipefail
-          gone="$(tofu show -json tfplan | jq -r '.resource_changes[]? | select(.change.actions | index("delete")) | "- `\(.address)`: \(.change.actions | join(" then "))"')"
-          {
-            echo '### Plan'
-            echo '```'
-            tofu show -no-color tfplan
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
-          if [ -n "$gone" ]; then
-            printf '### Not applied: the plan destroys or replaces resources\n%s\n' "$gone" >> "$GITHUB_STEP_SUMMARY"
-            echo "::error::The plan destroys or replaces resources. The tech lead decides how to proceed."
+          tofu init -input=false -lockfile=readonly \
+            -backend-config="resource_group_name=${TF_STATE_RESOURCE_GROUP}" \
+            -backend-config="storage_account_name=${TF_STATE_STORAGE_ACCOUNT}" \
+            -backend-config=container_name=tfstate
+          tofu plan -input=false -lock-timeout=5m -no-color -var-file=production.tfvars -out=tfplan
+          json="$(tofu show -json tfplan)"
+          gone="$(jq -r '.resource_changes[]? | select(.change.actions | index("delete")) | .address' <<< "$json")"
+          fingerprint="$(jq -cS '[.resource_changes[]? | select(.change.actions != ["no-op"]) | {address, change: (.change | {actions, before, after, after_unknown})}]' <<< "$json" | sha256sum | cut -d' ' -f1)"
+          if [ -n "$gone" ] || [ "$fingerprint" != "$SEEN" ]; then
+            {
+              echo "### Not applied: this plan differs from the one in Plan infrastructure, or destroys or replaces resources"
+              echo '```'
+              tofu show -no-color tfplan
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::The plan changed since the tech lead read it, or destroys or replaces resources. Nothing was applied."
             exit 1
           fi
-      - if: ${{ steps.plan.outputs.changes == 'true' }}
-        run: tofu apply -input=false -no-color tfplan
+          tofu apply -input=false -no-color tfplan
+          echo "Applied the plan with resource changes SHA-256 \`${fingerprint}\`." >> "$GITHUB_STEP_SUMMARY"

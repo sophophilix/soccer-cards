@@ -32,16 +32,6 @@ jobs:
     defaults:
       run:
         working-directory: infra
-    env:
-      ARM_USE_OIDC: 'true'
-      ARM_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
-      ARM_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
-      ARM_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
-      TF_STATE_RESOURCE_GROUP: ${{ vars.TF_STATE_RESOURCE_GROUP }}
-      TF_STATE_STORAGE_ACCOUNT: ${{ vars.TF_STATE_STORAGE_ACCOUNT }}
-      TF_VAR_state_passphrase: ${{ secrets.TF_STATE_PASSPHRASE }}
-      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_INFRA_TOKEN }}
-      TF_IN_AUTOMATION: 'true'
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -52,16 +42,26 @@ jobs:
           tofu_version: 1.13.9
           tofu_wrapper: false
           checksums: bc44eb6b06446ba83bd4072114891987f590f66cca712737a7f1147c50c539ce
-      - run: >-
-          tofu init -input=false -lockfile=readonly
-          -backend-config="resource_group_name=${TF_STATE_RESOURCE_GROUP}"
-          -backend-config="storage_account_name=${TF_STATE_STORAGE_ACCOUNT}"
-          -backend-config=container_name=tfstate
-      - run: tofu plan -input=false -lock=false -no-color -var-file=production.tfvars -out=tfplan
-      # The JSON stays inside the pipe. Only addresses and actions come out.
-      - name: Summarise the plan
+      # The credentials reach this step only. The plan file stays on the
+      # runner and its JSON inside the pipe: only addresses and actions come out.
+      - name: Plan
+        env:
+          ARM_USE_OIDC: 'true'
+          ARM_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+          ARM_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+          ARM_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+          TF_STATE_RESOURCE_GROUP: ${{ vars.TF_STATE_RESOURCE_GROUP }}
+          TF_STATE_STORAGE_ACCOUNT: ${{ vars.TF_STATE_STORAGE_ACCOUNT }}
+          TF_VAR_state_passphrase: ${{ secrets.TF_STATE_PASSPHRASE }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_INFRA_TOKEN }}
+          TF_IN_AUTOMATION: 'true'
         run: |
           set -o pipefail
+          tofu init -input=false -lockfile=readonly \
+            -backend-config="resource_group_name=${TF_STATE_RESOURCE_GROUP}" \
+            -backend-config="storage_account_name=${TF_STATE_STORAGE_ACCOUNT}" \
+            -backend-config=container_name=tfstate
+          tofu plan -input=false -lock=false -no-color -var-file=production.tfvars -out=tfplan
           gone="$(tofu show -json tfplan | jq -r '.resource_changes[]? | select(.change.actions | index("delete")) | "- `\(.address)`: \(.change.actions | join(" then "))"')"
           {
             if [ -n "$gone" ]; then
