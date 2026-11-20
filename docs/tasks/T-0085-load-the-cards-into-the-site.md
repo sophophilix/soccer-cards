@@ -7,10 +7,11 @@ agent: web-implementer
 paths:
   - apps/web/src/lib/data/**
   - apps/web/vite.config.ts
+  - apps/web/node-builtins.d.ts
   - apps/web/svelte.config.js
   - apps/web/tests/data.spec.ts
 dependencies: []
-max_changed_lines: 360
+max_changed_lines: 400
 status: ready
 ---
 
