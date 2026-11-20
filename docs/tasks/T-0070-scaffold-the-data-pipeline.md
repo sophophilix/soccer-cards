@@ -13,6 +13,7 @@ dependencies:
   - ruff
   - mypy
   - bandit
+  - uv_build
 max_changed_lines: 250
 status: ready
 ---
@@ -41,6 +42,9 @@ and `make check COMPONENT=data` passes on it.
   are configured in `pyproject.toml`.
 - A console entry point `scdata` prints the package version with
   `--version` and exits 0, and prints usage and exits 2 for no command.
+- `pyproject.toml` pins the Python version through `.python-version`, sets
+  `[tool.uv] exclude-newer` to the two-week cutoff, and refuses to build any
+  dependency from source. `uv lock --check` passes with no extra flags.
 - `uv.lock` is committed. `.gitignore` excludes `.venv/`, caches and the
   pipeline's future fetch cache folder `data/pipeline/.cache/`.
 - `make check COMPONENT=data` passes.
