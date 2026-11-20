@@ -1,6 +1,6 @@
 ---
 name: cloudflare-infra
-description: "Guides hosting and infrastructure work: Cloudflare Workers static assets, Wrangler configuration, OpenTofu under infra/, response headers and deploys. Use when a task touches infra/, wrangler.jsonc, _headers, a deploy workflow, DNS or a domain. Requires ci-supply-chain."
+description: "Guides hosting and infrastructure work: Cloudflare Workers static assets, Wrangler configuration, OpenTofu under infra/, response headers and deploys. Use when a task touches infra/, wrangler.jsonc, _headers, a deploy workflow, DNS or a domain. Requires ci-supply-chain, and opentofu for infra/."
 metadata:
   version: "1.0.0"
 ---
@@ -63,20 +63,17 @@ the header.
 
 ## OpenTofu
 
-- Pin the OpenTofu version and the Cloudflare provider to exact versions.
-  Read the provider's changelog before an upgrade. Its v5 releases record
-  drift fixes.
-- State lives in a remote backend, never in git. `.gitignore` excludes it.
-- No value that is a secret appears in a `.tf` file or a committed
-  `.tfvars` file. Variables that hold one are marked `sensitive`.
-- One module per concern, with typed variables that have descriptions and
-  validation.
-- Name resources by what they are for, in snake_case.
-- Run `tofu fmt -check`, `tofu validate` and `tofu plan` in the task. Put the
-  plan summary in your report. A plan that destroys or replaces a resource
-  needs the tech lead's attention, so say so first in the report.
-- CI runs the plan on a pull request and applies on `main` only after the
-  tech lead approves the environment.
+The `opentofu` skill holds every rule for `infra/`: layout, versions,
+variables and tfvars, secrets, state, resources, tests, and plan and apply.
+Load it for any change there. In short:
+
+- Exact pins, a committed lock file, remote encrypted state.
+- Environment values in a committed `production.tfvars`, secrets only from
+  the environment, never in a file.
+- A plan that destroys or replaces a resource needs the tech lead's
+  attention. Say so first in the report.
+- CI plans on a pull request and applies on `main` only after the tech lead
+  approves the environment.
 
 ## Deploy and preview
 
@@ -90,5 +87,7 @@ the header.
 
 ## The gate
 
-`make check COMPONENT=infra` runs format, validate, a security scan of the
-configuration, and the Wrangler dry run.
+`make check COMPONENT=infra` runs `tofu fmt`, `tofu validate` and
+`tofu test` (the `opentofu` skill). `make check COMPONENT=web` covers
+`wrangler.jsonc` with its own test. Run `wrangler deploy --dry-run` by hand
+for a Wrangler change.

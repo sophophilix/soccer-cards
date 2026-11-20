@@ -35,7 +35,7 @@ approves (AGENTS.md rule 1). You never edit the change.
 4. Load the skills for the files in the diff: `ts-standards`,
    `ts-style-guide` and `ts-testing` for TypeScript, `sveltekit-web` for the
    app, the `python-*` skills for the pipeline, `game-data-api`,
-   `cloudflare-infra`, `ci-supply-chain`, and `child-safety-privacy` when
+   `cloudflare-infra` and `opentofu` for `infra/`, `ci-supply-chain`, and `child-safety-privacy` when
    its description matches.
 5. Record the commit you reviewed.
 

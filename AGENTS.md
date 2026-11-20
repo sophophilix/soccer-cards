@@ -121,6 +121,7 @@ Your agent definition preloads the skills for your role. The full set:
 | `sveltekit-web` | The web app: structure, Svelte 5, routing, offline use, accessibility, performance |
 | `game-data-api` | The data pipeline, the static API contract, ratings, photos and licences |
 | `cloudflare-infra` | Hosting, infrastructure as code, headers and deploys |
+| `opentofu` | OpenTofu practices for `infra/`: layout, versions, tfvars, secrets, state, tests, plan and apply |
 | `ci-supply-chain` | GitHub Actions, scanners, dependency updates and releases |
 | `child-safety-privacy` | What a site for children must and must not do |
 

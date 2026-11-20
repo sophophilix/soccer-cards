@@ -10,5 +10,16 @@
 	},
 	// The preview port. playwright.config.ts uses the same one.
 	"dev": { "port": 8787 },
-	"send_metrics": false
+	"send_metrics": false,
+	// Logs and traces would hold visitors' IP addresses, and the platform turns
+	// them on when this key is missing (ADR 0002 D10, ADR 0003 D5).
+	"observability": {
+		"enabled": false,
+		"logs": { "enabled": false },
+		"traces": { "enabled": false }
+	},
+	// The end-to-end tests run against a preview URL (T-0057). Without this key,
+	// a deploy leaves whatever the dashboard set.
+	"preview_urls": true
+	// No route or custom domain: OpenTofu owns the address (ADR 0002 D8).
 }
