@@ -5,12 +5,13 @@ import {
 	TEAM_SIZE,
 	WRONG_IN_GOAL_FACTOR,
 	bestTeam,
+	checkCardSet,
 	lineUp,
 	lineWorth,
 	toCardId
 } from './index.ts';
-import type { Card, CardId, Formation, LineUp, Position } from './index.ts';
-import { aCard } from './testing/cards.ts';
+import type { Card, CardId, CheckedCardSet, Formation, LineUp, Position } from './index.ts';
+import { aCard, aCheckedCardSetOf } from './testing/cards.ts';
 
 // A test card has attack 70, control 65 and defence 60 unless it says otherwise.
 const card = (id: string, position: Position, overrides: Partial<Card> = {}): Card =>
@@ -22,10 +23,10 @@ const cards = (position: Position, count: number): Card[] =>
 	);
 const idsOf = (team: readonly Card[]): CardId[] => team.map((each) => each.id);
 const lineUpOf = (team: readonly Card[], formation: Formation): LineUp | undefined => {
-	const result = lineUp(idsOf(team), team, formation);
+	const result = lineUp(idsOf(team), aCheckedCardSetOf(team), formation);
 	return result.ok ? result.value : undefined;
 };
-const reasonOf = (team: readonly CardId[], cardSet: readonly Card[]): string | undefined => {
+const reasonOf = (team: readonly CardId[], cardSet: CheckedCardSet): string | undefined => {
 	const result = lineUp(team, cardSet, '4-4-2');
 	return result.ok ? undefined : result.reason;
 };
@@ -119,9 +120,32 @@ describe('lineUp', () => {
 			[...idsOf(cards('MF', 10)), toCardId('MF-1')],
 			'not-eleven-different-cards'
 		],
-		['a card outside the set', [...idsOf(cards('MF', 10)), toCardId('lost')], 'card-not-in-set']
+		['a card outside the set', [...idsOf(cards('MF', 10)), toCardId('lost')], 'card-not-in-set'],
+		[
+			'a repeated card and a card outside the set',
+			[...idsOf(cards('MF', 9)), toCardId('MF-1'), toCardId('lost')],
+			'not-eleven-different-cards'
+		]
 	])('returns an error result for %s', (_name, team, reason) => {
-		expect(reasonOf(team, cards('MF', 12))).toBe(reason);
+		expect(reasonOf(team, aCheckedCardSetOf(cards('MF', 12)))).toBe(reason);
+	});
+
+	it('is never given a set that repeats a team card and lacks another: the check refuses it', () => {
+		const team = cards('MF', 11);
+		const cardSet = [...team.slice(0, 10), card('MF-1', 'FW')];
+
+		expect(checkCardSet(cardSet)).toEqual({
+			ok: false,
+			reason: 'repeated-card-id',
+			cardId: 'MF-1'
+		});
+	});
+
+	it('takes only a checked card set', () => {
+		const team = cards('MF', 11);
+
+		// @ts-expect-error -- a plain list of cards is not a checked card set
+		expect(lineUp(idsOf(team), team, '4-4-2').ok).toBe(true);
 	});
 });
 

@@ -1,4 +1,4 @@
-import type { Card, CardId } from './cards.ts';
+import type { CardId, CheckedCardSet } from './cards.ts';
 import { isFavourite } from './favourites.ts';
 import type { Random } from './random.ts';
 import type { PlayerState } from './state.ts';
@@ -15,7 +15,7 @@ export type TradeResult =
 /** Swaps one copy of a card for one copy of a different card of the same tier. */
 export function tradeCard(
 	state: PlayerState,
-	cardSet: readonly Card[],
+	cardSet: CheckedCardSet,
 	cardId: CardId,
 	random: Random
 ): TradeResult {
