@@ -10,8 +10,10 @@ paths:
   - data/pipeline/src/soccer_cards_data/wikidata.py
   - data/pipeline/tests/test_wikidata.py
   - THIRD_PARTY.md
+  - data/pipeline/src/soccer_cards_data/commons.py
+  - data/pipeline/tests/test_commons.py
 dependencies: []
-max_changed_lines: 160
+max_changed_lines: 220
 status: ready
 ---
 
@@ -32,6 +34,10 @@ player's own, so a national team can't become a club (T-0078 review F2).
   cached; a refused reply raises `FetchError` and writes nothing.
 - `wikidata.py` refuses an `error` body for both requests through it.
 - A `maxlag` error is retried with back-off like a 503, not cached.
+- Licence checks (T-0079) always re-read Commons: a caller can ask the
+  client not to use or write the cache for a request, and `commons.py`
+  does so, so a photo deleted or relicensed on Commons drops on the next
+  run (the `game-data-api` skill, ADR 0003 risks).
 - `THIRD_PARTY.md` gains a Wikidata row: CC0, the terms page and the date
   read (the `game-data-api` skill).
 - `make check COMPONENT=data` passes. No test reaches the network.

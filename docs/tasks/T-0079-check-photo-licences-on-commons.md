@@ -9,7 +9,7 @@ paths:
   - data/pipeline/tests/test_commons.py
   - data/pipeline/tests/fixtures/commons/**
 dependencies: []
-max_changed_lines: 360
+max_changed_lines: 400
 status: ready
 ---
 
