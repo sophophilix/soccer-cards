@@ -8,7 +8,6 @@ paths:
   - data/pipeline/src/soccer_cards_data/wikidata.py
   - data/pipeline/tests/test_wikidata.py
   - data/pipeline/tests/fixtures/wikidata/**
-  - THIRD_PARTY.md
 dependencies: []
 max_changed_lines: 400
 status: ready
@@ -30,8 +29,6 @@ through the HTTP client from T-0072. (Split from the original T-0072.)
   and national team spells with start and end, appearances and goals where
   Wikidata has them, and honours, each with its source and as-of date. A
   fact Wikidata lacks is absent, never zero.
-- `THIRD_PARTY.md` gains a Wikidata row: CC0, its terms page and the date
-  read (the `game-data-api` skill).
 - `make check COMPONENT=data` passes. No test reaches the network.
 
 ## Edge cases
@@ -49,3 +46,5 @@ through the HTTP client from T-0072. (Split from the original T-0072.)
 ## Out of scope
 
 - Names for positions and honours (the normalise stage), Commons photos.
+- Refusing error bodies before they are cached, the team reply check, and
+  the `THIRD_PARTY.md` row (T-0088).
