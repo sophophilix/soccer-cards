@@ -10,7 +10,7 @@ paths:
   - apps/web/preview-target.ts
   - apps/web/tests/preview-target.spec.ts
 dependencies: []
-max_changed_lines: 220
+max_changed_lines: 240
 status: ready
 ---
 
