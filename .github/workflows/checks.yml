@@ -37,8 +37,10 @@ jobs:
         with:
           fetch-depth: 2
           persist-credentials: false
-      # File names stay shell data. A name no rule knows runs every TypeScript
-      # gate. sdlc and docs always run, so they need no rule.
+      # File names stay shell data. --no-renames lists a moved file under its
+      # old path and its new one, so moving a file out of a component still
+      # runs that component's gate. -z and quotePath=false keep each name as it
+      # is. A name no rule places runs every gate. sdlc and docs always run.
       - id: diff
         env:
           EVENT: ${{ github.event_name }}
@@ -47,20 +49,20 @@ jobs:
           if [ "$EVENT" != pull_request ] || ! git rev-parse --verify --quiet 'HEAD^2' > /dev/null; then
             infra=true schema=true game=true web=true
           else
-            files="$(git diff --name-only 'HEAD^1' HEAD)"
-            while IFS= read -r f; do
+            git -c core.quotePath=false diff --no-renames --name-only -z 'HEAD^1' HEAD > "${RUNNER_TEMP}/changed"
+            while IFS= read -r -d '' f; do
               case "$f" in
-                '') ;;
-                .github/workflows/checks.yml | Makefile) infra=true schema=true game=true web=true ;;
+                .github/workflows/checks.yml) infra=true schema=true game=true web=true ;;
                 infra/*) infra=true ;;
                 packages/schema/*) schema=true game=true web=true ;;
                 packages/game/*) game=true web=true ;;
                 apps/web/*) web=true ;;
                 docs/* | tools/sdlc/* | bin/* | .claude/* | .github/* | evals/* | prototype/* | *.md | LICENSE) ;;
-                # The pnpm lockfile, the workspace and the shared tool configs.
-                *) schema=true game=true web=true ;;
+                # The Makefile, the pnpm lockfile, the workspace, the shared
+                # tool configs and any name no rule places.
+                *) infra=true schema=true game=true web=true ;;
               esac
-            done <<< "$files"
+            done < "${RUNNER_TEMP}/changed"
           fi
           {
             echo "infra=$infra"
@@ -181,8 +183,8 @@ jobs:
         with:
           node-version-file: .node-version
           package-manager-cache: false
-          # As in the schema job. The browsers come with the image, so there
-          # are none to cache.
+          # As in the schema job. The Playwright browsers come from the pinned
+          # image above, so the job downloads none and caches none.
           cache: ${{ github.event_name == 'pull_request' && 'pnpm' || '' }}
           cache-dependency-path: pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
