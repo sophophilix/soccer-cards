@@ -77,6 +77,14 @@ are yours to keep. Accepted decisions are in `docs/decisions/`.
     the SDLC kit` tells you which rule applies. Don't look for another way to
     do the same thing. If the rule blocks the task, stop and tell the lead.
 
+16. **One Azure account, the personal one.** The tech lead has a work and a
+    personal Azure account on the same machine. This project uses only the
+    personal one, through `AZURE_CONFIG_DIR=~/.azure-personal`. Before any
+    `az` command, run `az account show` with that variable set and say which
+    subscription and user it names. Never run `az` without the variable,
+    because the default profile may be the work account. If the output
+    isn't the personal account, stop and tell the lead.
+
 ## What the kit enforces
 
 `bin/sdlc` is a Python program with no model in it. The same input always

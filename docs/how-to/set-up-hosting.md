@@ -31,7 +31,29 @@ named `soccercards`. Cloudflare can't attach the custom domain over one.
 
 ## 2. Azure storage for OpenTofu state
 
-Run these in a terminal signed in with `az login`. The names are suggestions.
+This project uses your **personal** Azure account, never the work one. The
+Azure CLI keeps each sign-in in the folder `AZURE_CONFIG_DIR` names, so a
+separate folder keeps the two accounts apart.
+
+Once, sign in to the personal account in its own folder:
+
+```sh
+mkdir -p ~/.azure-personal
+AZURE_CONFIG_DIR=~/.azure-personal az login --tenant <personal-tenant-id-or-domain>
+```
+
+In every terminal you use for this guide, run these two lines first, and
+read the output before going on. It must name your personal subscription and
+email:
+
+```sh
+export AZURE_CONFIG_DIR=~/.azure-personal
+az account show --query "{subscription:name, user:user.name, tenant:tenantId}" -o table
+```
+
+If it names the work account, stop. Close the terminal and start again.
+
+The names below are suggestions.
 A storage account name must be unique across Azure, 3 to 24 lowercase letters
 and digits.
 
