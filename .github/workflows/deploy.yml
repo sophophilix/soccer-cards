@@ -1,0 +1,88 @@
+# Deploys a commit on `main` after its `checks` run passed and the tech lead
+# approved the `production` environment (ADR 0002 D3). The trigger is `push`,
+# not `workflow_run`: that trigger runs with secrets for any branch's run and
+# zizmor rejects it. Rollback stays with the tech lead (ADR 0002 D7).
+name: deploy
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  # Waits for the `checks` run of this exact commit. A run that fails or is
+  # cancelled stops the deploy, and the summary says why. Re-running `checks`
+  # and then this job deploys the commit if it is still the head of `main`.
+  checks-passed:
+    name: Wait for checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    # A newer push to main supersedes this one, which could not deploy anyway.
+    concurrency:
+      group: deploy-wait-${{ github.ref }}
+      cancel-in-progress: true
+    permissions:
+      actions: read # read the `checks` run of this commit
+    steps:
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          query="repos/${GITHUB_REPOSITORY}/actions/workflows/checks.yml/runs?head_sha=${GITHUB_SHA}&event=push&branch=main"
+          while :; do
+            run="$(gh api "$query" --jq '.workflow_runs[0] | "\(.status) \(.conclusion) \(.html_url)"')" || run="unreadable"
+            case "$run" in
+              "completed success "*) echo "checks passed on ${GITHUB_SHA}: ${run##* }"; exit 0 ;;
+              completed*)
+                echo "::error::checks did not pass on ${GITHUB_SHA} (${run}). Nothing deploys."
+                echo "checks did not pass on \`${GITHUB_SHA}\`: ${run}. Nothing was deployed." >> "$GITHUB_STEP_SUMMARY"
+                exit 1 ;;
+            esac
+            sleep 20
+          done
+
+  deploy:
+    name: Deploy to production
+    needs: checks-passed
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    # The job waits here for the tech lead's approval. An approval never given
+    # expires with the run, and nothing deploys.
+    environment:
+      name: production
+      url: https://soccercards.dsantmaj.com
+    # Serialises deploys. Never cancel one in progress. The head check below
+    # keeps an older commit from deploying after a newer one, because the
+    # queue order is not guaranteed.
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          package-manager-cache: false
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @soccer-cards/web run build
+      - name: Stop unless this commit is still the head of main
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          head="$(gh api "repos/${GITHUB_REPOSITORY}/commits/main" --jq .sha)"
+          if [ "$head" != "$GITHUB_SHA" ]; then
+            echo "::error::main moved to ${head}. That commit deploys in its own run. ${GITHUB_SHA} does not."
+            echo "Not deployed: \`main\` moved to \`${head}\`." >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+      - name: Deploy the build
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          WRANGLER_SEND_METRICS: "false"
+        run: pnpm exec wrangler deploy --config apps/web/wrangler.jsonc --message "main ${GITHUB_SHA}"
