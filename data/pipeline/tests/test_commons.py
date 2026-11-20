@@ -64,6 +64,7 @@ def test_licence_off_the_allow_list_gives_the_avatar() -> None:
 
 PAGE = "https://commons.wikimedia.org/wiki/File:"
 NO_PAGE = "file page is not on Commons"
+DISAGREE = "licence names disagree"
 NO_IMAGE = "image URL is not on upload.wikimedia.org"
 BAD_AUTHOR = "author is missing or not plain text"
 
@@ -77,7 +78,11 @@ BAD_AUTHOR = "author is missing or not plain text"
         ("meta", "Artist", {"value": "A" * 201}, BAD_AUTHOR),
         ("meta", "License", None, "licence is missing"),
         ("meta", "LicenseShortName", None, "licence is missing"),
-        ("meta", "LicenseShortName", {"value": "CC BY 3.0"}, "licence names disagree"),
+        ("meta", "LicenseShortName", {"value": "CC BY 3.0"}, DISAGREE),
+        ("meta", "LicenseShortName", {"value": "CC BY-NC 4.0"}, DISAGREE),
+        ("meta", "LicenseShortName", {"value": "GFDL"}, DISAGREE),
+        ("meta", "LicenseShortName", {"value": "All rights reserved"}, DISAGREE),
+        ("meta", "LicenseShortName", {"value": "CC BY-SA 4.0,3.0"}, DISAGREE),
         ("meta", "NonFree", {"value": "true"}, "file is marked non-free"),
         ("info", "extmetadata", None, "reply has no metadata"),
         ("info", "descriptionurl", None, NO_PAGE),
@@ -86,6 +91,9 @@ BAD_AUTHOR = "author is missing or not plain text"
         ("info", "url", None, NO_IMAGE),
         ("info", "url", "http://upload.wikimedia.org/a.jpg", NO_IMAGE),
         ("info", "url", "https://example.org/a.jpg", NO_IMAGE),
+        ("info", "url", "https://upload.wikimedia.org/a/../b.jpg", NO_IMAGE),
+        ("info", "url", "https://upload.wikimedia.org/a/%2E%2E/b.jpg", NO_IMAGE),
+        ("info", "url", "https://upload.wikimedia.org", NO_IMAGE),
     ],
 )
 def test_an_incomplete_or_wrong_record_gives_the_avatar(
@@ -109,13 +117,23 @@ def test_unreadable_or_missing_file_gives_the_avatar(reply: object) -> None:
     assert decide(reply) == Avatar("file is not on Commons")
 
 
-def test_file_page_with_other_letters_is_percent_encoded() -> None:
+def test_cc_by_licence_with_a_non_commercial_short_name_gives_the_avatar() -> None:
+    reply = _reply("cc-by-sa-3.0")
+    meta = reply["query"]["pages"][0]["imageinfo"][0]["extmetadata"]
+    meta["License"] = {"value": "cc-by-4.0"}
+    meta["LicenseShortName"] = {"value": "CC BY-NC 4.0"}
+    assert decide(reply) == Avatar(DISAGREE)
+
+
+def test_file_page_is_percent_encoded_and_image_url_keeps_host_and_path() -> None:
     reply = _reply("cc-by-sa-3.0")
     info = reply["query"]["pages"][0]["imageinfo"][0]
     info["descriptionurl"] = PAGE + "Ла фа.jpg"
+    info["url"] = "https://u:p@upload.wikimedia.org:8443/a/b.jpg?x=1#y"
     decision = decide(reply)
     assert isinstance(decision, Publish)
     assert decision.source_uri == PAGE + "%D0%9B%D0%B0%20%D1%84%D0%B0.jpg"
+    assert decision.image_url == "https://upload.wikimedia.org/a/b.jpg"
 
 
 @pytest.mark.parametrize(
@@ -125,6 +143,10 @@ def test_file_page_with_other_letters_is_percent_encoded() -> None:
         ("CC_BY_4.0", "cc by 4.0", "CC-BY-4.0"),
         ("cc-by-3.0-us", "CC BY 3.0 us", "CC-BY-3.0-US"),
         ("cc-by-sa-2.1-jp", None, "CC-BY-SA-2.1-JP"),
+        ("cc-by-sa-2.5,2.0,1.0", "CC BY-SA 2.5, 2.0, 1.0", "CC-BY-SA-2.5"),
+        ("cc-by-1.0,4.0", "CC BY 1.0,4.0", "CC-BY-4.0"),
+        ("cc-by-sa-3.0,2.5-au", None, None),  # No CC-BY-SA AU version on SPDX.
+        ("cc-by-nc-sa-2.5,2.0", None, None),
         ("cc0", "CC0", "CC0-1.0"),
         ("cc-zero", None, "CC0-1.0"),
         ("pd", "Public domain", "CC-PDM-1.0"),
@@ -155,6 +177,8 @@ def test_licence_names_map_to_the_right_code_or_none(
         ("Ana<img src=x>B", "AnaB"),
         ("&lt;b&gt;", "<b>"),
         ("Ana</b> B<i>", "Ana B"),
+        ("Ana<span hidden>X</span>", "Ana"),
+        ('Ana<b style="Visibility: hidden">X</b>', "Ana"),
     ],
 )
 def test_author_markup_and_control_characters_are_removed(html: str, text: str) -> None:
@@ -163,5 +187,11 @@ def test_author_markup_and_control_characters_are_removed(html: str, text: str) 
 
 @pytest.mark.parametrize("name", ["", "A.jpg|B.jpg", "File:A.jpg"])
 def test_a_bad_file_name_is_refused(name: str, tmp_path: Path) -> None:
-    with PoliteClient(tmp_path) as client, pytest.raises(ValueError, match="file name"):
+    def handler(request: httpx.Request) -> httpx.Response:
+        pytest.fail(f"no request was expected, got {request.url}")
+
+    with (
+        PoliteClient(tmp_path, transport=httpx.MockTransport(handler)) as client,
+        pytest.raises(ValueError, match="file name"),
+    ):
         commons.check_photo(client, name)

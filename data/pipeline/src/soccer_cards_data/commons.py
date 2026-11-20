@@ -1,14 +1,13 @@
 """Decide publish or avatar for a player's Commons photo (ADR 0003 D2 and D3).
 
-The patterns are copies of `$defs/attribution` in `packages/schema`. A test
-keeps them equal.
+Patterns copy `$defs/attribution` in `packages/schema`; a test keeps them equal.
 """
 
 import re
 import unicodedata
 from dataclasses import dataclass
 from html.parser import HTMLParser
-from urllib.parse import quote, urlsplit, urlunsplit
+from urllib.parse import quote, unquote, urlsplit
 
 from soccer_cards_data.http import PoliteClient
 
@@ -24,7 +23,7 @@ LICENSE_PATTERN = re.compile(
 SOURCE_PATTERN = re.compile(
     r"^https://commons\.wikimedia\.org/wiki/File:[A-Za-z0-9._~:@!$&'()*+,;=%-]+$"
 )
-_CC = re.compile(r"cc-(by|by-sa)-(\d\.\d)(?:-([a-z]{2,3}))?")
+_CC = re.compile(r"cc-(by|by-sa)-(\d\.\d(?:,\d\.\d)*)(?:-([a-z]{2,3}))?")
 _NAMED = {"cc0": "CC0-1.0", "cc0-1.0": "CC0-1.0", "cc-zero": "CC0-1.0"}
 _NAMED |= {"pd": "CC-PDM-1.0", "public-domain": "CC-PDM-1.0"}
 
@@ -85,7 +84,7 @@ def decide(reply: object) -> Publish | Avatar:
     code = license_code(name)
     if code is None:
         return Avatar(f"licence {name[:40]!a} is not allowed")
-    if license_code(short_name) not in (None, code):
+    if license_code(short_name) != code:
         return Avatar("licence names disagree")
     author = plain_author(_value(meta, "Artist") or "")
     if len(author) > 200 or not AUTHOR_PATTERN.fullmatch(author):
@@ -102,17 +101,24 @@ def decide(reply: object) -> Publish | Avatar:
 def license_code(name: str) -> str | None:
     """Map a Commons licence name to its SPDX id, or None when not allowed.
 
-    Both forms Commons uses are read: `cc-by-sa-4.0` and `CC BY-SA 4.0`.
+    Both forms Commons uses are read: `cc-by-sa-4.0` and `CC BY-SA 4.0`. A
+    name that offers several versions, such as `CC BY-SA 2.5,2.0,1.0`, gives
+    the newest of them that is on the allow list.
     """
-    key = re.sub(r"[\s_-]+", "-", name.strip().lower())
+    key = re.sub(r"\s*,\s*", ",", name.strip().lower())
+    key = re.sub(r"[\s_-]+", "-", key)
     if key in _NAMED:
         return _NAMED[key]
     match = _CC.fullmatch(key)
     if match is None:
         return None
-    kind, version, port = match.groups()
-    code = f"CC-{kind.upper()}-{version}" + (f"-{port.upper()}" if port else "")
-    return code if LICENSE_PATTERN.fullmatch(code) else None
+    kind, versions, port = match.groups()
+    suffix = f"-{port.upper()}" if port else ""
+    for version in sorted(versions.split(","), reverse=True):
+        code = f"CC-{kind.upper()}-{version}{suffix}"
+        if LICENSE_PATTERN.fullmatch(code):
+            return code
+    return None
 
 
 def plain_author(html: str) -> str:
@@ -130,7 +136,6 @@ def plain_author(html: str) -> str:
 class _TextParser(HTMLParser):
     _VOID = frozenset({"area", "base", "br", "col", "embed", "hr", "img", "input"})
     _BREAK = frozenset({"br", "p", "div", "li", "tr", "td", "th"})
-    _SKIP = frozenset({"script", "style"})
 
     def __init__(self) -> None:
         super().__init__(convert_charrefs=True)
@@ -142,8 +147,11 @@ class _TextParser(HTMLParser):
             self.parts.append(" ")
         if tag in self._VOID:
             return
-        style = "".join((dict(attrs).get("style") or "").split()).lower()
-        self._open.append((tag, tag in self._SKIP or "display:none" in style))
+        named = dict(attrs)
+        style = "".join((named.get("style") or "").split()).lower()
+        hidden = "hidden" in named or tag in ("script", "style")
+        hidden |= "display:none" in style or "visibility:hidden" in style
+        self._open.append((tag, hidden))
 
     def handle_endtag(self, tag: str) -> None:
         if tag in self._BREAK:
@@ -182,9 +190,10 @@ def _source_uri(value: object) -> str | None:
 
 
 def _image_url(value: object) -> str | None:
-    if not isinstance(value, str):
-        return None
-    parts = urlsplit(value)
+    parts = urlsplit(value if isinstance(value, str) else "")
+    segments = set(unquote(parts.path).split("/"))
     if parts.scheme != "https" or parts.hostname != IMAGE_HOST:
         return None
-    return urlunsplit((parts.scheme, parts.netloc, parts.path, "", ""))
+    if not parts.path.startswith("/") or {".", ".."} & segments:
+        return None
+    return f"https://{IMAGE_HOST}{parts.path}"  # No user, port, query or fragment.
