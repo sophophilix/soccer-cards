@@ -1,8 +1,8 @@
 # ADR 0002: Hosting and infrastructure as code
 
-> Status: Approved. The amendment of 2026-11-20 (D8 to D10) awaits approval.
+> Status: Approved, with the amendment of 2026-11-20 (D8 to D10).
 > Created: 2026-11-15T11:16:22Z
-> Last reviewed: 2026-11-20T00:05:00Z
+> Last reviewed: 2026-11-20T09:43:42Z
 > Next review: Not scheduled
 
 ## Review guide for the amendment of 2026-11-20
@@ -103,12 +103,15 @@ off. The `azurerm` backend locks the state with a blob lease. OpenTofu
 encrypts the state before upload, with a passphrase held only as a GitHub
 environment secret. GitHub Actions signs in to Azure with OpenID Connect, so
 no Azure secret is stored. The tech lead creates the storage and the
-identity once, from `docs/how-to/set-up-hosting.md`.
+identities once, from `docs/how-to/set-up-hosting.md`.
 
-| GitHub environment | Required reviewer | Used for |
-|---|---|---|
-| `preview` | None | Uploading a Worker version for a pull request, and `tofu plan` |
-| `production` | The tech lead | `wrangler deploy` and `tofu apply` from `main` |
+| GitHub environment | Required reviewer | Azure identity and role | Used for |
+|---|---|---|---|
+| `preview` | None | `soccercards-github-plan`, Storage Blob Data Reader | Uploading a Worker version for a pull request, and `tofu plan -lock=false` |
+| `production` | The tech lead | `soccercards-github-infra`, Storage Blob Data Contributor | `wrangler deploy` and `tofu apply` from `main` |
+
+Any branch can use `preview`, so its identity can read the state but never
+write or lock it. Only `production` can change the state.
 
 Each environment has its own Cloudflare tokens. The `preview` tokens can
 upload a version and read the zone. Only the `production` tokens can deploy
@@ -158,3 +161,4 @@ Logs are billed by volume. The free traffic graphs in the dashboard remain.
 | 2026-11-15T11:16:22Z | Drafted | Initial version, written by Claude for the tech lead. |
 | 2026-11-16T07:30:27Z | Approved | The tech lead replied "approve all" in the lead session. |
 | 2026-11-20T00:05:00Z | Amended (draft) | D8 to D10 added by Claude after the tech lead said "yes go with soccercards.dsantmaj.com and azure". Awaits approval. |
+| 2026-11-20T09:43:42Z | Approved | The tech lead replied "yes do the read-only identity, and approve" in the lead session. D8 to D10 approved. D9 now gives `preview` a separate read-only Azure identity, as that reply decided. |

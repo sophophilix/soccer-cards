@@ -90,31 +90,40 @@ az storage container create --name tfstate --account-name "$SA" --auth-mode logi
 The role assignment can take a few minutes to apply. If the last command
 says you lack permission, wait and run it again.
 
-## 3. A sign-in for GitHub Actions
+## 3. Two sign-ins for GitHub Actions
+
+Each GitHub environment gets its own Azure identity (ADR 0002 D9). Any branch
+can use `preview`, so its identity can only read the state. Only
+`production` can write it.
+
+| Identity | Federated for | Role on the storage account |
+|---|---|---|
+| `soccercards-github-plan` | `environment:preview` | Storage Blob Data Reader |
+| `soccercards-github-infra` | `environment:production` | Storage Blob Data Contributor |
 
 ```sh
-APP_ID=$(az ad app create --display-name soccercards-github-infra --query appId -o tsv)
-az ad sp create --id "$APP_ID"
-
-for ENV in preview production; do
-  az ad app federated-credential create --id "$APP_ID" --parameters "{
-    \"name\": \"github-$ENV\",
+make_identity() { # <app name> <environment> <role>
+  local app_id
+  app_id=$(az ad app create --display-name "$1" --query appId -o tsv)
+  az ad sp create --id "$app_id"
+  az ad app federated-credential create --id "$app_id" --parameters "{
+    \"name\": \"github-$2\",
     \"issuer\": \"https://token.actions.githubusercontent.com\",
-    \"subject\": \"repo:$REPO:environment:$ENV\",
+    \"subject\": \"repo:$REPO:environment:$2\",
     \"audiences\": [\"api://AzureADTokenExchange\"]
   }"
-done
+  az role assignment create --assignee "$app_id" --role "$3" --scope "$SA_ID"
+  echo "$2: AZURE_CLIENT_ID=$app_id"
+}
 
-az role assignment create --assignee "$APP_ID" \
-  --role "Storage Blob Data Contributor" --scope "$SA_ID"
-
-echo "AZURE_CLIENT_ID=$APP_ID"
+make_identity soccercards-github-plan preview "Storage Blob Data Reader"
+make_identity soccercards-github-infra production "Storage Blob Data Contributor"
 echo "AZURE_TENANT_ID=$(az account show --query tenantId -o tsv)"
 echo "AZURE_SUBSCRIPTION_ID=$(az account show --query id -o tsv)"
 ```
 
-The identity can read and write blobs in this one storage account and
-nothing else.
+Each identity reaches this one storage account and nothing else. The
+`production` identity must have no federated credential for `preview`.
 
 ## 4. GitHub environments
 
@@ -133,7 +142,8 @@ In the repository, open **Settings → Environments**.
 | Variable | Value |
 |---|---|
 | `CLOUDFLARE_ACCOUNT_ID` | `6e55015905bde9a976153c3a3a677061` |
-| `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID` | From the end of step 3 |
+| `AZURE_CLIENT_ID` | From step 3. A different identity in each environment |
+| `AZURE_TENANT_ID`, `AZURE_SUBSCRIPTION_ID` | From the end of step 3 |
 | `TF_STATE_RESOURCE_GROUP` | `rg-soccercards-tfstate` |
 | `TF_STATE_STORAGE_ACCOUNT` | `stsoccercardstate` |
 
