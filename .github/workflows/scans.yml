@@ -77,6 +77,25 @@ jobs:
             exit 1
           fi
           exit "$status"
+      # The data pipeline's uv project. The same count check: every
+      # `[[package]]` in uv.lock, the project itself included, must reach the
+      # scanner, so a lock it can't parse fails. A lock with no packages
+      # expects none and passes. It runs even when the pnpm scan fails, so
+      # one finding doesn't hide the other.
+      - name: Scan data/pipeline/uv.lock
+        if: ${{ !cancelled() }}
+        run: |
+          status=0
+          "$RUNNER_TEMP/osv-scanner" scan source --config=osv-scanner.toml \
+            --lockfile=data/pipeline/uv.lock >"$RUNNER_TEMP/osv-uv.log" 2>&1 || status=$?
+          cat "$RUNNER_TEMP/osv-uv.log"
+          expected="$(grep --count '^\[\[package\]\]$' data/pipeline/uv.lock || true)"
+          found="$(sed -nE 's/.*found ([0-9]+) packages.*/\1/p' "$RUNNER_TEMP/osv-uv.log" | head -n 1)"
+          if [ "${found:-0}" -lt "${expected:-0}" ]; then
+            echo "::error::OSV-Scanner found ${found:-0} packages, and uv.lock holds ${expected:-0}"
+            exit 1
+          fi
+          exit "$status"
 
   # Compares the pull request's dependencies with its base, so it has
   # nothing to do on a push or on the weekly run and is skipped there.

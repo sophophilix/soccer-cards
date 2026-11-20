@@ -2,8 +2,7 @@
 # and gets the same review as any other change. Nothing merges by itself.
 # Options: https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference
 #
-# The uv and terraform ecosystems are left out until data/ and infra/ exist.
-# Add each one in the task that scaffolds its directory.
+# The terraform ecosystem for infra/ is not added yet.
 version: 2
 
 updates:
@@ -25,6 +24,25 @@ updates:
         update-types: [minor, patch]
     # Gives "build(deps): ..." or "build(deps-dev): ...", which the commit
     # hook accepts.
+    commit-message:
+      prefix: build
+      include: scope
+
+  # The data pipeline's uv project. Dependabot updates pyproject.toml and
+  # uv.lock together.
+  - package-ecosystem: uv
+    directory: /data/pipeline
+    schedule:
+      interval: weekly
+      day: monday
+    # Wait 14 days after a release, as for npm.
+    cooldown:
+      default-days: 14
+    groups:
+      uv-minor-patch:
+        patterns: ['*']
+        update-types: [minor, patch]
+    # Gives "build(deps): ..." or "build(deps-dev): ...".
     commit-message:
       prefix: build
       include: scope
