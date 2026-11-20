@@ -162,6 +162,7 @@ def compute_card(
     names = GOALKEEPER_RATINGS if keeper else OUTFIELD_RATINGS
     _check_grades("goalkeeper" if keeper else "outfield", names, grades)
     facts = facts or Facts()
+    _check_counts(facts)
     age = _age(facts)
     moves = {
         "shooting": _shooting_move(position, facts),
@@ -201,11 +202,14 @@ def _check_grades(
             )
 
 
-def _age(facts: Facts) -> int | None:
+def _check_counts(facts: Facts) -> None:
     for field in ("club_appearances", "club_goals", "caps", "international_goals"):
         count = getattr(facts, field)
         if count is not None and (type(count) is not int or count < 0):
             raise RatingInputError(f"facts.{field}", "must be a whole number from 0")
+
+
+def _age(facts: Facts) -> int | None:
     born, as_of = facts.birth_date, facts.as_of
     if born is None or as_of is None:
         return None
