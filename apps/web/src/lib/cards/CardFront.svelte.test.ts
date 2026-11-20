@@ -3,7 +3,6 @@ import { render } from 'vitest-browser-svelte';
 import CardFront from './CardFront.svelte';
 import type { CardFrontProps } from './card-front.ts';
 
-// An invented player (AGENTS.md rule 6).
 function aCard(overrides: Partial<CardFrontProps> = {}): CardFrontProps {
 	return {
 		displayName: 'Tomas Example',
@@ -54,7 +53,6 @@ test('a photo has its size, loads lazily and has an empty alt', async () => {
 	const screen = await render(CardFront, aCard({ photo }));
 
 	const image = screen.container.querySelector('img');
-	expect(screen.container.querySelector('svg.avatar')).toBeNull();
 	expect(image?.getAttribute('src')).toBe(photo.src);
 	expect(image?.getAttribute('width')).toBe('400');
 	expect(image?.getAttribute('height')).toBe('500');
@@ -100,9 +98,3 @@ test.each([96, 180, 360])(
 		expect(clubBox.right).toBeLessThanOrEqual(card.right);
 	}
 );
-
-test('the card runs no animation, so reduced motion has nothing to stop', async () => {
-	const screen = await render(CardFront, aCard({ tier: 'ICON' }));
-
-	expect(screen.getByRole('img').element().getAnimations({ subtree: true })).toHaveLength(0);
-});

@@ -20,17 +20,12 @@ export interface CardFrontProps {
 
 export const TIER_NAMES = { BASE: 'Base', RARE: 'Rare', LEGEND: 'Legend', ICON: 'Icon' } as const;
 
-const POSITIONS = {
+export const POSITIONS = {
 	GOALKEEPER: { code: 'GK', name: 'Goalkeeper' },
 	DEFENDER: { code: 'DF', name: 'Defender' },
 	MIDFIELDER: { code: 'MF', name: 'Midfielder' },
 	FORWARD: { code: 'FW', name: 'Forward' }
 } as const satisfies Record<Position, { code: string; name: string }>;
-
-/** The two letters for a position on the card's badge. */
-export function positionCode(position: Position): string {
-	return POSITIONS[position].code;
-}
 
 /** Says what a card shows in one sentence, for a screen reader. */
 export function describeCard(card: CardFrontProps): string {
