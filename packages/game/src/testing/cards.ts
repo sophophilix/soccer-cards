@@ -29,7 +29,12 @@ export function aCardSet(counts: TierCounts): Card[] {
 
 /** Builds a checked card set for a test, with the given number of cards in each tier. */
 export function aCheckedCardSet(counts: TierCounts): CheckedCardSet {
-	const result = checkCardSet(aCardSet(counts));
+	return aCheckedCardSetOf(aCardSet(counts));
+}
+
+/** Checks the given cards as a card set for a test. */
+export function aCheckedCardSetOf(cards: readonly Card[]): CheckedCardSet {
+	const result = checkCardSet(cards);
 	if (!result.ok) {
 		throw new RangeError(`a test card set must pass the check: ${result.reason}`);
 	}

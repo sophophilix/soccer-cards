@@ -53,3 +53,5 @@ export {
 export type { MatchResult, MatchSide, Moment, SideName, Strength, Tactic } from './match.ts';
 export { CORNERS, saveChance, startShootOut, takeKick } from './penalties.ts';
 export type { Corner, Kick, KickResult, Kicker, ShootOut } from './penalties.ts';
+export { DIVISIONS, computerSide } from './divisions.ts';
+export type { ComputerSide, ComputerSideResult, Division } from './divisions.ts';
