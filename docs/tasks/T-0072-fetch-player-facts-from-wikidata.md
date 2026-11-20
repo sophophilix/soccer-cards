@@ -55,9 +55,9 @@ from a cache.
 
 ## Tests
 
-- Contract tests on saved responses in `tests/fixtures/wikidata/` for two
-  invented-looking but real-shaped entities (one outfield player, one
-  goalkeeper). The fixture files are trimmed to the fields used.
+- Contract tests on saved responses in `tests/fixtures/wikidata/` for one
+  outfield player and one goalkeeper (Wikidata is CC0). The fixture files
+  are trimmed to the fields used.
 - `test_http.py`: the User-Agent, the gap between requests, `Retry-After`,
   back-off and the give-up, against a fake transport.
 
