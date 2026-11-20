@@ -10,6 +10,11 @@
 			"type": "integer",
 			"minimum": 1
 		},
+		"formulaVersion": {
+			"description": "The ratings formula these ratings follow. A whole number from 1 that goes up when the formula changes.",
+			"type": "integer",
+			"minimum": 1
+		},
 		"generateTime": {
 			"description": "When the pipeline wrote this release, as an RFC 3339 moment in UTC.",
 			"type": "string",
@@ -21,7 +26,7 @@
 			"items": { "$ref": "#/$defs/collection" }
 		}
 	},
-	"required": ["dataVersion", "generateTime", "collections"],
+	"required": ["dataVersion", "formulaVersion", "generateTime", "collections"],
 	"$defs": {
 		"collection": {
 			"title": "DiscoveryCollection",
