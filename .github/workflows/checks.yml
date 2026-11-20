@@ -57,6 +57,9 @@ jobs:
                 packages/schema/*) schema=true game=true web=true ;;
                 packages/game/*) game=true web=true ;;
                 apps/web/*) web=true ;;
+                # Knip reads the workflows' `pnpm exec` binaries, and every
+                # TypeScript gate runs Knip.
+                .github/workflows/*) schema=true ;;
                 docs/* | tools/sdlc/* | bin/* | .claude/* | .github/* | evals/* | prototype/* | *.md | LICENSE) ;;
                 # The Makefile, the pnpm lockfile, the workspace, the shared
                 # tool configs and any name no rule places.
