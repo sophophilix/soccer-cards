@@ -7,6 +7,7 @@ agent: infra-implementer
 paths:
   - .github/workflows/infra.yml
   - .github/workflows/checks.yml
+  - .github/workflows/deploy.yml
 dependencies:
   - opentofu/setup-opentofu
   - azure/login
@@ -45,9 +46,11 @@ infra gate also runs on every pull request.
   OpenTofu as `TF_VAR_state_passphrase` from `tofu init` on. Init uses
   `-input=false -lockfile=readonly`, and the backend location comes from
   `-backend-config` with the `TF_STATE_*` variables.
-- On `main`, when `infra/` changed and `checks` succeeded on that commit, it
-  plans with `-out=tfplan` and applies exactly that saved plan in the
-  `production` environment, which waits for the tech lead.
+- On `main`, the pipeline in `deploy.yml` (T-0058) gains an apply job that
+  `needs` the deploy job, so the Worker exists before the custom domain is
+  attached. When `infra/` changed in that push, it plans with `-out=tfplan`
+  and applies exactly that saved plan in the `production` environment, which
+  waits for the tech lead. `infra.yml` handles pull requests only.
 - A plan that destroys or replaces a resource stops before apply and says
   so in the summary.
 - Only one run touches the state at a time (a concurrency group), and runs
@@ -58,8 +61,9 @@ infra gate also runs on every pull request.
 
 - A pull request from a fork or Dependabot gets no secrets: the plan job is
   skipped and says why.
-- The custom domain needs the Worker to exist. The summary on the first
-  `main` run says to deploy first if the apply fails for that reason.
+- The first apply runs on the first `main` push that changes `infra/` after
+  this task. If `infra/` didn't change, nothing is applied, and the summary
+  says so.
 
 ## Tests
 
