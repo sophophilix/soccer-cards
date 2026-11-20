@@ -11,14 +11,64 @@ on:
 permissions:
   contents: read
 
-# A newer push cancels a pull request's older run. A run called from `main`
-# is never cancelled here: deploy.yml queues those runs. Called from there,
-# `github.workflow` is `deploy`, so this group never equals the caller's.
+# A newer push cancels a pull request's older run. Any other run gets a group
+# of its own, so a `main` run's checks start at once, behind no other run, and
+# are never cancelled. deploy.yml queues only its deploy and apply jobs.
 concurrency:
-  group: checks-${{ github.workflow }}-${{ github.ref }}
+  group: checks-${{ github.workflow }}-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  # Says which component gates a pull request needs. Every other event runs
+  # them all. A gate is skipped only when this job succeeded and said `false`,
+  # so a failure here runs every gate. A skipped job reports success under its
+  # own name, so the required checks stay the same.
+  changes:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      infra: ${{ steps.diff.outputs.infra }}
+      schema: ${{ steps.diff.outputs.schema }}
+      game: ${{ steps.diff.outputs.game }}
+      web: ${{ steps.diff.outputs.web }}
+    steps:
+      # A pull request's merge commit and its first parent, the base.
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      # File names stay shell data. A name no rule knows runs every TypeScript
+      # gate. sdlc and docs always run, so they need no rule.
+      - id: diff
+        env:
+          EVENT: ${{ github.event_name }}
+        run: |
+          infra=false schema=false game=false web=false
+          if [ "$EVENT" != pull_request ] || ! git rev-parse --verify --quiet 'HEAD^2' > /dev/null; then
+            infra=true schema=true game=true web=true
+          else
+            files="$(git diff --name-only 'HEAD^1' HEAD)"
+            while IFS= read -r f; do
+              case "$f" in
+                '') ;;
+                .github/workflows/checks.yml | Makefile) infra=true schema=true game=true web=true ;;
+                infra/*) infra=true ;;
+                packages/schema/*) schema=true game=true web=true ;;
+                packages/game/*) game=true web=true ;;
+                apps/web/*) web=true ;;
+                docs/* | tools/sdlc/* | bin/* | .claude/* | .github/* | evals/* | prototype/* | *.md | LICENSE) ;;
+                # The pnpm lockfile, the workspace and the shared tool configs.
+                *) schema=true game=true web=true ;;
+              esac
+            done <<< "$files"
+          fi
+          {
+            echo "infra=$infra"
+            echo "schema=$schema"
+            echo "game=$game"
+            echo "web=$web"
+          } | tee -a "$GITHUB_OUTPUT" >> "$GITHUB_STEP_SUMMARY"
+
   # The kit gates use the runner image's Python 3 and need no packages.
   sdlc:
     runs-on: ubuntu-24.04
@@ -40,6 +90,8 @@ jobs:
 
   # Mock providers only: no backend, no credentials (the opentofu skill).
   infra:
+    needs: changes
+    if: ${{ !cancelled() && (needs.changes.result != 'success' || needs.changes.outputs.infra != 'false') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -56,6 +108,8 @@ jobs:
       - run: make check COMPONENT=infra
 
   schema:
+    needs: changes
+    if: ${{ !cancelled() && (needs.changes.result != 'success' || needs.changes.outputs.schema != 'false') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -68,10 +122,16 @@ jobs:
         with:
           node-version-file: .node-version
           package-manager-cache: false
+          # The pnpm store, keyed on the lockfile, on pull requests only. A
+          # `main` run holds deploy secrets, so it neither reads nor writes it.
+          cache: ${{ github.event_name == 'pull_request' && 'pnpm' || '' }}
+          cache-dependency-path: pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
       - run: make check COMPONENT=schema
 
   game:
+    needs: changes
+    if: ${{ !cancelled() && (needs.changes.result != 'success' || needs.changes.outputs.game != 'false') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
@@ -83,10 +143,15 @@ jobs:
         with:
           node-version-file: .node-version
           package-manager-cache: false
+          # As in the schema job.
+          cache: ${{ github.event_name == 'pull_request' && 'pnpm' || '' }}
+          cache-dependency-path: pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
       - run: make check COMPONENT=game
 
   web:
+    needs: changes
+    if: ${{ !cancelled() && (needs.changes.result != 'success' || needs.changes.outputs.web != 'false') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     # Playwright's image holds the browsers and their system packages, so the
@@ -116,6 +181,10 @@ jobs:
         with:
           node-version-file: .node-version
           package-manager-cache: false
+          # As in the schema job. The browsers come with the image, so there
+          # are none to cache.
+          cache: ${{ github.event_name == 'pull_request' && 'pnpm' || '' }}
+          cache-dependency-path: pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
       # Playwright finds no browser when its version and the image's differ.
       # The image records its version in /ms-playwright/.docker-info.

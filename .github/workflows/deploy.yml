@@ -12,12 +12,11 @@ on:
 permissions:
   contents: read
 
-# One run at a time, and a run in progress is never cancelled. A newer push
-# replaces only a run that is still pending, so the run that starts next is
-# always the newest commit.
-concurrency:
-  group: deploy-${{ github.ref }}
-  cancel-in-progress: false
+# No workflow-level concurrency group: the checks and the read-only plan start
+# at once, even while an older run waits for approval. Only `deploy` and
+# `apply` queue, each in its own group. A job in progress, or waiting for
+# approval, is never cancelled. A newer run's pending job replaces an older
+# pending one, and the head-of-main guard stops an older commit that runs.
 
 jobs:
   # The same jobs a pull request runs. A failed job stops the deploy, and can
@@ -39,6 +38,10 @@ jobs:
     environment:
       name: production
       url: https://soccercards.dsantmaj.com
+    # One deploy at a time across runs. Never cancelled.
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -59,8 +62,8 @@ jobs:
           name: site
           path: apps/web/build
           digest-mismatch: error
-      # Re-running an older run's failed job after a newer commit deployed
-      # would otherwise put the older commit back on the site.
+      # An older run approved after a newer push, or re-run after a newer
+      # commit deployed, would otherwise put the older commit on the site.
       - name: Stop unless this commit is still the head of main
         env:
           GH_TOKEN: ${{ github.token }}
@@ -210,7 +213,8 @@ jobs:
     # Waits for the tech lead. This identity is the only one that can write
     # and lock the state (ADR 0002 D9).
     environment: production
-    # A second guard on the state beside the workflow's group. Never cancelled.
+    # One apply at a time across runs, so one run writes the state at a time
+    # beside the backend's lease lock. Never cancelled.
     concurrency:
       group: opentofu-production
       cancel-in-progress: false
@@ -231,7 +235,8 @@ jobs:
           tofu_version: 1.13.9
           tofu_wrapper: false
           checksums: bc44eb6b06446ba83bd4072114891987f590f66cca712737a7f1147c50c539ce
-      # An older run re-run after a newer commit would apply older code.
+      # An older run approved or re-run after a newer push would apply older
+      # code.
       - name: Stop unless this commit is still the head of main
         env:
           GH_TOKEN: ${{ github.token }}
