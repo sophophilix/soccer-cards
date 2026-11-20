@@ -6,6 +6,7 @@ kind: feature
 agent: web-implementer
 paths:
   - apps/web/src/routes/**
+  - apps/web/src/app.css
   - apps/web/src/lib/ui/**
   - apps/web/tests/**
 dependencies: []
@@ -25,6 +26,13 @@ own address, so the back button and a reload land where they were.
   one page; here each is a route (the `sveltekit-web` skill, "Routing and
   rendering").
 - Runs after T-0048, which provides the tokens and fonts.
+- T-0048 left two things for this task (its review, F1 and F2). The
+  page has no pitch stripes yet, though `--stripe` is defined: axe can't
+  measure contrast over a gradient, and the home page's contrast test
+  fails when axe sets a check aside. And two light-theme pairs copied
+  from the prototype miss WCAG 2.2 AA, which the `sveltekit-web` skill
+  sets as the target: white on `--accent` is 4.17 to 1, and `--focus` on
+  `--bg` is 2.85 to 1.
 - Each view is an empty, designed placeholder for now: its heading and one
   line saying what will be there. Later tasks fill them.
 - Aim for about 220 changed lines. The limit is 340.
@@ -40,6 +48,16 @@ own address, so the back button and a reload land where they were.
 - The current view's tab is marked for sight and for a screen reader
   (`aria-current`).
 - Every internal link uses `resolve()`.
+- The page has the prototype's pitch stripes behind the content. Text
+  never sits on the stripes directly: it sits on a surface whose contrast
+  axe can measure, and the accessibility tests still fail when axe sets a
+  contrast check aside.
+- In the light theme, `--focus` becomes the nearest shade of the
+  prototype's blue that reaches 3 to 1 against `--bg` and `--surface`,
+  and `--accent` the nearest shade of its red that reaches 4.5 to 1 with
+  `--accent-ink`. The report gives the old and new values and the measured
+  ratios. The dark theme keeps its values if they already pass; say what
+  they measure.
 - Each tab is at least 44 by 44 CSS pixels, has a visible focus ring, and
   the whole bar works with the keyboard.
 - Each page has its own `<title>` and one `h1`.
