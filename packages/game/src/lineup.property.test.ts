@@ -5,9 +5,10 @@ import type { Card, CardId, Formation, LineUp } from './index.ts';
 import { aCard, aCheckedCardSetOf } from './testing/cards.ts';
 
 const stat = fc.integer({ min: 1, max: 99 });
+const anyId = fc.integer({ min: 1, max: 30 }).map((place) => toCardId(`card-${String(place)}`));
 const anyCard = fc
 	.record({
-		id: fc.integer({ min: 1, max: 30 }).map((place) => toCardId(`card-${String(place)}`)),
+		id: anyId,
 		position: fc.constantFrom(...POSITIONS),
 		overall: stat,
 		attack: stat,
@@ -16,6 +17,7 @@ const anyCard = fc
 	})
 	.map(aCard);
 const team = fc.uniqueArray(anyCard, { minLength: 11, maxLength: 11, selector: (card) => card.id });
+const owned = fc.uniqueArray(anyCard, { minLength: 1, maxLength: 30, selector: (card) => card.id });
 const formation = fc.constantFrom<Formation>('4-4-2', '4-3-3', '3-5-2', '5-3-2');
 
 const lineUpOf = (cards: readonly Card[], chosen: Formation): LineUp | undefined => {
@@ -70,8 +72,8 @@ describe('line-up properties', () => {
 
 	it('returns no repeated card from the best team', () => {
 		fc.assert(
-			fc.property(fc.array(anyCard, { maxLength: 40 }), formation, (cards, chosen) => {
-				const best = bestTeam(cards, chosen);
+			fc.property(owned, fc.array(anyId, { maxLength: 40 }), formation, (cards, ids, chosen) => {
+				const best = bestTeam(aCheckedCardSetOf(cards), ids, chosen);
 
 				expect(new Set(best).size).toBe(best.length);
 			})
