@@ -24,7 +24,12 @@ __pycache__/
 .ruff_cache/
 .mypy_cache/
 .pytest_cache/
+.coverage
+.coverage.*
 playwright-report/
+
+# The data pipeline's fetch cache (ADR 0006 D1). Fetched data is never committed.
+/data/pipeline/.cache/
 test-results/
 
 # Infrastructure state, plans and variable files never go in git. The
