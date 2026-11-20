@@ -65,6 +65,7 @@ def test_outfield_player_facts_from_saved_responses() -> None:
     assert len(facts.skipped) == 6
     assert all("'precision': 8" in reason for reason in facts.skipped)
     assert sum(not h.dates for h in facts.honours) == 9
+    assert facts.photo == "Leo Messi Argentina v Egypt 7 July 2026-1.jpg"
     assert source.requests[0] == {
         "action": "wbgetentities",
         "ids": "Q615",
@@ -93,6 +94,7 @@ def test_goalkeeper_facts_from_saved_responses() -> None:
     under_18 = next(s for s in facts.national_teams if s.team == "Q2016992")
     assert under_18.code is None
     assert facts.skipped == ("P54 Q2016992 P3441: no FIFA code",)
+    assert facts.photo == "Manuel Neuer Ecuador v Germany 25 June 2026-148.jpg"
 
 
 def _player(
@@ -277,3 +279,66 @@ def test_a_team_missing_from_the_reply_is_reported_not_filed_as_a_club() -> None
         "P54 Q7: not in Wikidata's reply, spell dropped",
         "P54 Q8: Wikidata has no item, spell dropped",
     )
+
+
+def _photo(value: object, rank: str = "normal") -> Json:
+    return {"rank": rank, "mainsnak": _code(value)}
+
+
+@pytest.mark.parametrize(
+    ("photos", "expected"),
+    [
+        ([], None),
+        ([_photo("A.jpg"), _photo("B.jpg")], "A.jpg"),
+        ([_photo("A.jpg"), _photo("B.jpg", "preferred")], "B.jpg"),
+        ([_photo("A.jpg", "deprecated"), _photo("B.jpg")], "B.jpg"),
+        ([_photo("A.jpg", "deprecated")], None),
+        ([{"rank": "normal", "mainsnak": {"snaktype": "novalue"}}], None),
+    ],
+)
+def test_the_photo_is_the_first_p18_file_preferred_rank_first(
+    photos: list[Json], expected: str | None
+) -> None:
+    claims: Json = {"P18": photos} if photos else {}
+    facts = fetch_player(SavedResponses({"Q1": _player(claims)}), "Q1")
+
+    assert (facts.photo, facts.skipped) == (expected, ())
+
+
+@pytest.mark.parametrize(
+    ("value", "reason"),
+    [
+        ({"amount": "+1"}, "P18: expected string, got quantity"),
+        ("", "P18: unusable file name ''"),
+        ("File:A.jpg", "P18: unusable file name 'File:A.jpg'"),
+        ("A|B.jpg", "P18: unusable file name 'A|B.jpg'"),
+        ("A\nB.jpg", "P18: unusable file name 'A\\nB.jpg'"),
+        (" A.jpg", "P18: unusable file name ' A.jpg'"),
+        ("no-extension", "P18: unusable file name 'no-extension'"),
+        ("A" * 300 + ".jpg", f"P18: unusable file name '{'A' * 56}..."),
+    ],
+)
+def test_a_malformed_photo_is_skipped_and_reported(value: object, reason: str) -> None:
+    claims: Json = {"P18": [_photo(value, "preferred"), _photo("Good.jpg")]}
+    facts = fetch_player(SavedResponses({"Q1": _player(claims)}), "Q1")
+
+    assert (facts.photo, facts.skipped) == ("Good.jpg", (reason,))
+
+
+# C1 control, bidi override, bidi isolate, line and paragraph separators.
+@pytest.mark.parametrize("code", [0x85, 0x9F, 0x202E, 0x2066, 0x2028, 0x2029])
+def test_a_photo_name_with_a_hidden_character_is_skipped(code: int) -> None:
+    name = f"A{chr(code)}B.jpg"
+    claims: Json = {"P18": [_photo(name, "preferred"), _photo("Good.jpg")]}
+    facts = fetch_player(SavedResponses({"Q1": _player(claims)}), "Q1")
+
+    assert facts.photo == "Good.jpg"
+    assert facts.skipped == (f"P18: unusable file name {name!r}",)
+
+
+def test_a_bad_photo_after_the_chosen_one_is_still_reported() -> None:
+    claims: Json = {"P18": [_photo("Good.jpg"), _photo("File:Bad.jpg")]}
+    facts = fetch_player(SavedResponses({"Q1": _player(claims)}), "Q1")
+
+    assert facts.photo == "Good.jpg"
+    assert facts.skipped == ("P18: unusable file name 'File:Bad.jpg'",)

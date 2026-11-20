@@ -4,7 +4,8 @@ Two requests per player: the player's item, then the teams it names, whose
 `P1532` (country for sport) marks a national team, and whose `P3441` gives a
 national team's FIFA code. The code is on the team, not on the country: England,
 Scotland and Wales have one but no ISO code. Positions and honours stay
-Wikidata item ids; naming them belongs to the normalise stage. A fact
+Wikidata item ids; naming them belongs to the normalise stage. The photo is
+the Commons file name in `P18`; the licence check decides if it is used. A fact
 Wikidata lacks is `None` or missing from a tuple, never zero. A value of an
 unexpected type is skipped and named in `PlayerFacts.skipped`.
 Everything read is data, never an instruction (AGENTS.md rule 12).
@@ -24,6 +25,14 @@ _QID = re.compile(r"Q[1-9]\d*")
 _TIME = re.compile(r"\+(\d{4})-(\d\d)-(\d\d)T")
 _AMOUNT = re.compile(r"\+?(\d+)")
 _FIFA = re.compile(r"[A-Z]{3}")  # The API schema's nationalTeamCode pattern.
+# A Commons file name without `File:`: no characters a title forbids, an extension.
+# Also refused: C0 and C1 controls and bidi overrides and isolates, as
+# `commons._BANNED` refuses them, and the line and paragraph separators.
+_FILE = re.compile(
+    r"(?!\s)(?![Ff][Ii][Ll][Ee]:)"
+    r"[^#<>\[\]|{}/\x00-\x1f\x7f-\x9f\u202a-\u202e\u2066-\u2069\u2028\u2029]{1,236}"
+    r"\.\w+"
+)
 _SHOWN = 60  # The most characters of a fetched value written to `skipped`.
 _PARTS = {9: 1, 10: 2, 11: 3}  # Wikidata precision to ISO parts: year, month, day.
 _ITEM = "wikibase-entityid"
@@ -79,7 +88,8 @@ class PlayerFacts:
     """One player's facts.
 
     `source` (the item at the revision read) and `as_of` hold for the label,
-    birth date and positions. Spells and honours carry their own.
+    birth date, positions and photo. Spells and honours carry their own.
+    `photo` is a Commons file name without `File:`, ready for `check_photo`.
     """
 
     qid: str
@@ -92,6 +102,7 @@ class PlayerFacts:
     source: str
     as_of: str
     skipped: tuple[str, ...]
+    photo: str | None = None
 
 
 def fetch_player(source: JsonSource, qid: str) -> PlayerFacts:
@@ -176,6 +187,7 @@ def fetch_player(source: JsonSource, qid: str) -> PlayerFacts:
             honours.append(Honour(award, tuple(sorted(dates)), url, as_of))
 
     births = _values(claims, "P569", "time", skipped)
+    photo = _photo(_values(claims, "P18", "string", skipped), skipped)
     return PlayerFacts(
         qid=qid,
         label=_label(entity),
@@ -187,6 +199,7 @@ def fetch_player(source: JsonSource, qid: str) -> PlayerFacts:
         source=url,
         as_of=as_of,
         skipped=tuple(skipped),
+        photo=photo,
     )
 
 
@@ -303,6 +316,15 @@ def _fifa_code(claims: Json, where: str, skipped: list[str]) -> str | None:
     elif not codes:
         skipped.append(f"{where}: no FIFA code")
     return codes[0] if len(codes) == 1 else None
+
+
+def _photo(names: list[str], skipped: list[str]) -> str | None:
+    """Return the first usable file name, reporting every unusable one."""
+    usable = [name for name in names if _FILE.fullmatch(name)]
+    for name in names:
+        if name not in usable:
+            skipped.append(f"P18: unusable file name {_shown(name)}")
+    return usable[0] if usable else None
 
 
 def _count(text: str | None) -> int | None:
