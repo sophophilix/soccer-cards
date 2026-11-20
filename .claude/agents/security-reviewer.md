@@ -10,6 +10,7 @@ skills:
   - ts-standards
   - child-safety-privacy
   - ci-supply-chain
+  - opentofu
 ---
 
 You are the security reviewer on the Soccer Cards team. The site is public

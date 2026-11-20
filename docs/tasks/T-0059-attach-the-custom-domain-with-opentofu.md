@@ -10,7 +10,7 @@ paths:
 dependencies:
   - opentofu
   - cloudflare/cloudflare
-max_changed_lines: 260
+max_changed_lines: 300
 status: ready
 ---
 
@@ -23,8 +23,9 @@ T-0060 runs it.
 
 ## Context
 
-- ADR 0002 D2, D8, D9 and D10. The `cloudflare-infra` skill, section
-  "OpenTofu".
+- ADR 0002 D2, D8, D9 and D10. The `opentofu` skill is the standard for
+  every file in `infra/`. The `cloudflare-infra` skill says what OpenTofu
+  owns.
 - `docs/how-to/set-up-hosting.md` for the names of the backend settings,
   secrets and variables CI will pass.
 - Read before writing a key: the OpenTofu pages on the `azurerm` backend
@@ -53,8 +54,13 @@ T-0060 runs it.
   `dsantmaj.com`. No zone-wide setting and no other DNS record is managed.
 - Variables have types, descriptions and validation: the account ID is 32
   hexadecimal characters, the hostname ends in the zone name.
-- `.gitignore` excludes `.terraform/`, state files, plan files and
-  `*.tfvars`, except `.terraform.lock.hcl`.
+- No variable has a default that belongs to the environment. The account ID,
+  zone, hostname and Worker name are in a committed
+  `infra/production.tfvars`, which holds no secret.
+- The custom domain has `lifecycle { prevent_destroy = true }`.
+- `.gitignore` excludes `.terraform/`, state files, plan files and every
+  `*.tfvars` and `*.auto.tfvars` except `infra/production.tfvars`, and keeps
+  `.terraform.lock.hcl`.
 - `make check COMPONENT=infra` passes.
 
 ## Edge cases
@@ -67,8 +73,9 @@ T-0060 runs it.
 ## Tests
 
 - `infra/tests/*.tftest.hcl` with a mock Cloudflare provider: the custom
-  domain has the expected hostname, service and zone; each validation
-  refuses a bad value.
+  domain has the expected hostname, service and zone; each condition of
+  each validation refuses a bad value (including an uppercase hostname);
+  and the values in `production.tfvars` pass validation.
 
 ## Out of scope
 
