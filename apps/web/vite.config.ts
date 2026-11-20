@@ -8,6 +8,10 @@ import { readScriptHashes, writeScriptSources } from './src/lib/response-headers
 
 const BUILD_FOLDER = 'build';
 const HEADERS_FILE = `${BUILD_FOLDER}/_headers`;
+// The static API (ADR 0005), served at /api/v1/ from the site's own origin (ADR 0003 D5).
+// The build copies nothing when the folder is missing, so the site builds before T-0084.
+const API_SOURCE_FOLDER = '../../data/api/v1';
+const API_BUILD_FOLDER = `${BUILD_FOLDER}/api/v1`;
 const LIB_COVERAGE_PERCENT = 80;
 // The style attribute on SvelteKit's route announcer. static/_headers has the same hash.
 const ANNOUNCER_STYLE_HASH = 'sha256-S8qMpvofolR8Mpjy4kQvEm7m1q8clzU4dfDH0AmvZjo=';
@@ -30,13 +34,15 @@ async function writeScriptHashesToHeaders(): Promise<void> {
 	await writeFile(HEADERS_FILE, headers);
 }
 
-/** Wraps an adapter so the response header is finished as part of every build. */
-function withScriptHashesInHeaders(inner: Adapter): Adapter {
+/** Wraps an adapter so every build finishes the response header and then adds the API files. */
+function withApiAndScriptHashes(inner: Adapter): Adapter {
 	return {
 		...inner,
 		adapt: async (builder) => {
 			await inner.adapt(builder);
 			await writeScriptHashesToHeaders();
+			// After the hashes are read, so no file in the API can widen script-src.
+			builder.copy(API_SOURCE_FOLDER, API_BUILD_FOLDER);
 		}
 	};
 }
@@ -45,7 +51,7 @@ export default defineConfig({
 	plugins: [
 		sveltekit({
 			// 404.html is the page wrangler serves for a path that doesn't exist.
-			adapter: withScriptHashesInHeaders(adapter({ pages: BUILD_FOLDER, fallback: '404.html' })),
+			adapter: withApiAndScriptHashes(adapter({ pages: BUILD_FOLDER, fallback: '404.html' })),
 			// Each page's <meta> tag gets a hash for each inline script. The build
 			// copies those hashes into the response header, which holds the rest
 			// (ADR 0002 D5, ADR 0003 D6).
