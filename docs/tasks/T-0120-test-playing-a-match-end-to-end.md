@@ -7,7 +7,7 @@ agent: web-implementer
 paths:
   - apps/web/tests/match-play.spec.ts
 dependencies: []
-max_changed_lines: 250
+max_changed_lines: 300
 status: ready
 ---
 
@@ -38,6 +38,11 @@ first build was 605 lines, so its end-to-end spec moved here.
 - Leaving before full time saves nothing.
 - Play again goes back to the pick screen with the same 11.
 - Axe scans the stage at full time with no violations.
+- When a new moment appears, the older commentary lines keep their text
+  (T-0114 review F1), and the result panel has `role="status"` for a win,
+  a loss and a draw (T-0114 review F2).
+- Kick off tapped twice starts one match, and a failed save still shows
+  the result with the store's notice (T-0114 review F4).
 - `make check COMPONENT=web` passes.
 
 ## Edge cases
