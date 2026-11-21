@@ -75,9 +75,25 @@ test.beforeEach(async ({ page }) => {
 test('lists every player once, by line then highest rating', async ({ page }) => {
 	const buttons = page.getByRole('button', { name: /^(Pick|Take out) Name /, exact: false });
 
-	await expect(buttons).toHaveCount(13);
-	await expect(buttons.first()).toHaveAccessibleName('Take out Name p-fw-3, Forward, rating 63');
-	await expect(buttons.last()).toHaveAccessibleName('Take out Name p-gk-1, Goalkeeper, rating 61');
+	const names = await buttons.evaluateAll((all) =>
+		all.map((each) => (each.getAttribute('aria-label') ?? '').replace(/^(Pick|Take out) /, ''))
+	);
+
+	expect(names).toEqual([
+		'Name p-fw-3, Forward, rating 63',
+		'Name p-fw-2, Forward, rating 62',
+		'Name p-fw-1, Forward, rating 61',
+		'Name p-mf-5, Midfielder, rating 65',
+		'Name p-mf-4, Midfielder, rating 64',
+		'Name p-mf-3, Midfielder, rating 63',
+		'Name p-mf-2, Midfielder, rating 62',
+		'Name p-mf-1, Midfielder, rating 61',
+		'Name p-df-4, Defender, rating 64',
+		'Name p-df-3, Defender, rating 63',
+		'Name p-df-2, Defender, rating 62',
+		'Name p-df-1, Defender, rating 61',
+		'Name p-gk-1, Goalkeeper, rating 61'
+	]);
 });
 
 test('starts with the best 11 and a Kick off that is ready', async ({ page }) => {
@@ -90,9 +106,13 @@ test('starts with the best 11 and a Kick off that is ready', async ({ page }) =>
 test('taking a player out and putting them back changes the count and Kick off', async ({
 	page
 }) => {
+	const forwards = page.locator('.line').filter({ hasText: 'Forward' });
+	await expect(forwards).toContainText('Name p-fw-3');
+
 	await pick(page, 'p-fw-3').click();
 
 	await expect(page.getByText('10 of 11 picked')).toBeVisible();
+	await expect(forwards).not.toContainText('Name p-fw-3');
 	await expect(pick(page, 'p-fw-3')).toHaveAccessibleName('Pick Name p-fw-3, Forward, rating 63');
 	await expect(pick(page, 'p-fw-3')).toHaveAttribute('aria-pressed', 'false');
 	await expect(page.getByRole('button', { name: 'Kick off' })).toBeDisabled();
@@ -101,6 +121,7 @@ test('taking a player out and putting them back changes the count and Kick off',
 	await pick(page, 'p-fw-3').click();
 
 	await expect(page.getByText('11 of 11 picked')).toBeVisible();
+	await expect(forwards).toContainText('Name p-fw-3');
 	await expect(page.getByRole('button', { name: 'Kick off' })).toBeEnabled();
 });
 
@@ -112,11 +133,19 @@ test('a twelfth player changes nothing and says why in a live region', async ({ 
 	await expect(page.getByRole('status')).toHaveText(FULL);
 });
 
-test('a double tap on one player leaves them out, never twice in', async ({ page }) => {
-	await pick(page, 'p-df-1').dblclick();
+test('a double tap on an unpicked player with room leaves them out, never twice in', async ({
+	page
+}) => {
+	await pick(page, 'p-fw-3').click();
+	await expect(page.getByText('10 of 11 picked')).toBeVisible();
 
-	await expect(page.getByText('11 of 11 picked')).toBeVisible();
-	await expect(pick(page, 'p-df-1')).toHaveAttribute('aria-pressed', 'true');
+	// Two taps on the same button. A real double click can miss the second time on WebKit,
+	// because the hint above the list changes height after the first tap.
+	await pick(page, 'p-mf-5').dispatchEvent('click');
+	await pick(page, 'p-mf-5').dispatchEvent('click');
+
+	await expect(page.getByText('10 of 11 picked')).toBeVisible();
+	await expect(pick(page, 'p-mf-5')).toHaveAttribute('aria-pressed', 'false');
 });
 
 test('Clear empties the team and Pick my best team fills it again', async ({ page }) => {
