@@ -50,7 +50,7 @@
 			<button
 				type="button"
 				class="btn"
-				disabled={isShowingKick || isOver}
+				aria-disabled={isShowingKick || isOver}
 				onclick={() => {
 					pick(corner);
 				}}>{LABELS[corner]}</button
