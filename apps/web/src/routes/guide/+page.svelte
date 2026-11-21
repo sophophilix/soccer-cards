@@ -44,7 +44,8 @@
 </svelte:head>
 
 <main>
-	<h1>Collector guide</h1>
+	<h1 class="sr-only">Guide</h1>
+	<h2>Collector guide</h2>
 	{#if status === 'loading'}
 		<p class="muted">Getting the cards…</p>
 	{:else if status === 'no-cards' || cardSet === undefined}

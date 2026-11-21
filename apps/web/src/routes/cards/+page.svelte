@@ -83,7 +83,8 @@
 </svelte:head>
 
 <main>
-	<h1>My cards</h1>
+	<h1 class="sr-only">Cards</h1>
+	<h2>My cards</h2>
 	{#if notice}<p class="banner">{notice}</p>{/if}
 	{#if status === 'loading'}
 		<p class="muted">Getting your cards…</p>

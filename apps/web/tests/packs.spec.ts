@@ -57,9 +57,7 @@ test.describe('with the cards served', () => {
 		await page.goto('/');
 
 		await page.getByRole('button', { name: 'Open free pack (2 left)' }).click();
-		await expect(
-			page.getByTestId('spot').getByRole('button', { name: /card\. Press for the next card\./ })
-		).toBeVisible();
+		await expect(page.getByTestId('spot').getByRole('img', { name: /Overall/ })).toBeVisible();
 		await page.getByRole('button', { name: 'Skip to all cards' }).click();
 		await expect(
 			page.getByRole('heading', { name: `Your ${String(CARDS_IN_PACK)} cards` })
@@ -76,11 +74,11 @@ test.describe('with the cards served', () => {
 		await page.getByRole('button', { name: 'Open free pack (2 left)' }).click();
 
 		for (let step = 0; step < CARDS_IN_PACK - 1; step += 1) {
-			await page.getByRole('button', { name: 'Next card' }).click();
+			await page.getByRole('button', { name: 'Next card', exact: true }).click();
 		}
 
 		await expect(page.getByText('Card 10 of 10')).toBeVisible();
-		await expect(page.getByText(/^(Rare|Legend|Icon)$/)).toBeVisible();
+		await expect(page.locator('.chip', { hasText: /^(Rare|Legend|Icon)$/ })).toBeVisible();
 	});
 
 	test('shows the cards without animation when reduced motion is asked for', async ({ page }) => {

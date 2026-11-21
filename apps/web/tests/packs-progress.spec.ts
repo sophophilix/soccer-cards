@@ -30,27 +30,28 @@ test.describe('the Packs screen guards', () => {
 
 	test('keeps an opened pack across a reload', async ({ page }) => {
 		await page.goto('/');
-		await page.getByRole('button', { name: 'Open pack' }).click();
+		await page.getByRole('button', { name: /^Open free pack/ }).click();
 		await page.getByRole('button', { name: 'Skip to all cards' }).click();
 
 		await page.reload();
 
 		await expect(page.getByRole('heading', { name: 'Your 10 cards' })).toBeVisible();
 		await page.getByRole('button', { name: 'Add to my collection' }).click();
+		await expect(page).toHaveURL(/\/cards$/);
 		await page.reload();
-		await expect(page.getByText('Cards in your collection: 10')).toBeVisible();
+		await expect(page.getByRole('link', { name: 'Cards (10)' })).toBeVisible();
 	});
 
 	test('a double tap on Open opens one pack', async ({ page }) => {
 		await page.goto('/');
-		await expect(page.getByRole('button', { name: 'Open pack' })).toBeEnabled();
+		await expect(page.getByRole('button', { name: /^Open free pack/ })).toBeEnabled();
 
-		await page.getByRole('button', { name: 'Open pack' }).evaluate((button: HTMLElement) => {
+		await page.getByRole('button', { name: /^Open free pack/ }).evaluate((button: HTMLElement) => {
 			button.click();
 			button.click();
 		});
 
-		await expect(page.getByRole('heading', { name: 'Card 1 of 10' })).toBeVisible();
+		await expect(page.getByText('Card 1 of 10')).toBeVisible();
 		const saved = await page.evaluate((key) => localStorage.getItem(key), STATE_KEY);
 		expect(JSON.parse(saved ?? '{}')).toMatchObject({ freePacks: 1 });
 	});
@@ -68,44 +69,50 @@ test.describe('the Packs screen guards', () => {
 		await page.goto('/');
 
 		await expect(page.getByText("Your cards can't be saved on this device.")).toBeVisible();
-		await page.getByRole('button', { name: 'Open pack' }).click();
+		await page.getByRole('button', { name: /^Open free pack/ }).click();
 
-		await expect(page.getByRole('heading', { name: 'Card 1 of 10' })).toBeVisible();
+		await expect(page.getByText('Card 1 of 10')).toBeVisible();
 	});
 
 	test('says so when the device is full', async ({ page }) => {
 		await page.goto('/');
-		await expect(page.getByRole('button', { name: 'Open pack' })).toBeEnabled();
+		await expect(page.getByRole('button', { name: /^Open free pack/ })).toBeEnabled();
 		await page.evaluate(() => {
 			Storage.prototype.setItem = () => {
 				throw new DOMException('full', 'QuotaExceededError');
 			};
 		});
 
-		await page.getByRole('button', { name: 'Open pack' }).click();
+		await page.getByRole('button', { name: /^Open free pack/ }).click();
 
 		await expect(
 			page.getByText('This device is full, so your cards were not saved.')
 		).toBeVisible();
-		await expect(page.getByRole('heading', { name: 'Card 1 of 10' })).toBeVisible();
+		await expect(page.getByText('Card 1 of 10')).toBeVisible();
 	});
 
 	test('says so when another tab changed the saved cards', async ({ page }) => {
 		await page.goto('/');
-		await expect(page.getByRole('button', { name: 'Open pack' })).toBeEnabled();
+		await expect(page.getByRole('button', { name: /^Open free pack/ })).toBeEnabled();
 		await page.evaluate((key) => {
 			localStorage.setItem(key, `${localStorage.getItem(key) ?? ''} `);
 		}, STATE_KEY);
 
-		await page.getByRole('button', { name: 'Open pack' }).click();
+		await page.getByRole('button', { name: /^Open free pack/ }).click();
 
 		await expect(page.getByText('The game is open in another tab')).toBeVisible();
 	});
 
 	test('turns a card to its back with the real ratings', async ({ page }) => {
 		await page.goto('/');
-		await page.getByRole('button', { name: 'Open pack' }).click();
+		await page.getByRole('button', { name: /^Open free pack/ }).click();
+		await page.getByRole('button', { name: 'Skip to all cards' }).click();
 
+		// As in the prototype, a card turns over in the large view from the summary.
+		await page
+			.getByRole('button', { name: /^Look at / })
+			.first()
+			.click();
 		await page.getByRole('button', { name: /showing the front/ }).click();
 
 		await expect(page.getByTestId('back').getByText('PACE')).toBeVisible();
@@ -113,35 +120,31 @@ test.describe('the Packs screen guards', () => {
 
 	test('the Packs screen has no accessibility violation while a card shows', async ({ page }) => {
 		await page.goto('/');
-		await page.getByRole('button', { name: 'Open pack' }).click();
-		await expect(page.getByRole('heading', { name: 'Card 1 of 10' })).toBeVisible();
+		await page.getByRole('button', { name: /^Open free pack/ }).click();
+		await expect(page.getByText('Card 1 of 10')).toBeVisible();
 
 		const results = await new AxeBuilder({ page }).exclude('[data-art]').analyze();
 
 		expect(results.violations).toEqual([]);
 	});
 
-	test('keeps focus on the next step with the keyboard alone, and clears the announcement', async ({
+	test('keeps focus on the next step with the keyboard alone, then goes to Cards', async ({
 		page
 	}) => {
 		await page.goto('/');
-		const open = page.getByRole('button', { name: 'Open pack' });
+		const open = page.getByRole('button', { name: /^Open free pack/ });
 		await expect(open).toBeEnabled();
 
 		await open.focus();
 		await page.keyboard.press('Enter');
-		await expect(page.getByRole('button', { name: 'Next card' })).toBeFocused();
+		await expect(page.getByRole('button', { name: 'Next card', exact: true })).toBeFocused();
 
 		await page.getByRole('button', { name: 'Skip to all cards' }).focus();
 		await page.keyboard.press('Enter');
 		await expect(page.getByRole('button', { name: 'Add to my collection' })).toBeFocused();
 
+		// Adding goes to the Cards view, as in the prototype.
 		await page.keyboard.press('Enter');
-		await expect(page.getByRole('status')).toHaveText('10 cards added to your collection.');
-		await expect(page.getByRole('heading', { name: 'Open a pack' })).toBeFocused();
-
-		await page.getByRole('button', { name: 'Open pack' }).focus();
-		await page.keyboard.press('Enter');
-		await expect(page.getByRole('status')).toHaveText('');
+		await expect(page).toHaveURL(/\/cards$/);
 	});
 });

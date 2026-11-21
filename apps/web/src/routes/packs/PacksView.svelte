@@ -193,9 +193,9 @@
 </svelte:head>
 
 <main class="view">
-	<h1 class="visually-hidden">Packs</h1>
+	<h1 class="sr-only">Packs</h1>
 	{#if notice}<p class="banner">{notice}</p>{/if}
-	<p role="status" class="visually-hidden">{announcement}</p>
+	<p role="status" class="sr-only">{announcement}</p>
 	{#if data.status === 'failed'}
 		<div class="empty">
 			<p>We can't get the cards right now. Check you are online, then try again.</p>
@@ -265,16 +265,17 @@
 			</div>
 			{#key shown}
 				<div class={['spot', isStar && tier.toLowerCase()]} data-testid="spot">
-					<button
-						type="button"
+					<!-- A tap on the card moves on, as in the prototype. Keyboard and screen reader users
+					     have the Next card button below, so the card itself is not a second control. -->
+					<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+					<div
 						class="cardtap"
-						aria-label={`${current.props.front.displayName}, ${TIER_NAMES[tier]} card. Press for the next card.`}
 						onclick={() => {
 							show(shown + 1);
 						}}
 					>
 						<BigCard front={current.props.front} arrive />
-					</button>
+					</div>
 				</div>
 			{/key}
 			<div class="row center">
@@ -341,14 +342,6 @@
 {/if}
 
 <style>
-	.visually-hidden {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		overflow: hidden;
-		clip-path: inset(50%);
-		white-space: nowrap;
-	}
 	.cardtap {
 		all: unset;
 		display: grid;
@@ -356,10 +349,6 @@
 		width: min(100%, 320px, 52vh);
 		border-radius: 5cqw;
 		cursor: pointer;
-	}
-	.cardtap:focus-visible {
-		outline: 3px solid var(--focus);
-		outline-offset: 3px;
 	}
 	.cardtap :global(.big) {
 		width: 100%;

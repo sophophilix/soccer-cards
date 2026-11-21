@@ -121,7 +121,7 @@
 </svelte:head>
 
 <main>
-	<h1>Match</h1>
+	<h1 class="sr-only">Match</h1>
 	{#if notice}<p class="banner">{notice}</p>{/if}
 	{#if data.status === 'failed'}
 		<p>We can't get the cards right now. Check you are online, then try again.</p>

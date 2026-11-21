@@ -48,6 +48,11 @@
 	.idle {
 		animation: var(--animate-sheen, none);
 	}
+	@media (prefers-reduced-motion: reduce) {
+		.idle {
+			animation: none;
+		}
+	}
 	.tilted {
 		position: relative;
 		container-type: inline-size;

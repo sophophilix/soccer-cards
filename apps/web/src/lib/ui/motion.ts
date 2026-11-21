@@ -86,7 +86,12 @@ export function turnCard(inner: HTMLElement, degrees: 0 | 180): void {
 /** Pops a result or a banner in, so the moment lands. It only grows: faded text fails contrast. */
 export function pop(node: HTMLElement): void {
 	if (prefersStill()) return;
-	gsap.from(node, { scale: 0.8, duration: MOTION.pop, ease: 'back.out(2)', clearProps: 'transform' });
+	gsap.from(node, {
+		scale: 0.8,
+		duration: MOTION.pop,
+		ease: 'back.out(2)',
+		clearProps: 'transform'
+	});
 }
 
 /**

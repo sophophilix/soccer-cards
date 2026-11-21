@@ -143,7 +143,8 @@ test.describe('with 11 different cards', () => {
 		).toBeVisible();
 		const marked = page.getByTestId('lineup').getByRole('button', { name: /out of position/ });
 		await expect(marked).toHaveCount(1);
-		await expect(marked).toHaveCSS('outline-style', 'dashed');
+		// The outline goes round the whole card, which holds the button over its art.
+		await expect(marked.locator('xpath=..')).toHaveCSS('outline-style', 'dashed');
 	});
 
 	test('the screen has no accessibility violation, with a card out of position', async ({
