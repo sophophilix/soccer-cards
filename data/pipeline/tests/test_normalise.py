@@ -191,6 +191,9 @@ def test_refused_inputs_name_the_player(changes: dict[str, Any], message: str) -
         (("Q11681748",), "FORWARD"),
         (("Q6008848",), "MIDFIELDER"),
         (("Q268258",), "DEFENDER"),
+        (("Q9731197",), "FORWARD"),  # centre-forward
+        (("Q1642283",), "FORWARD"),  # second striker
+        (("Q1201458",), "MIDFIELDER"),  # playmaker
         (("Q8025128", "Q280658"), "FORWARD"),  # A basic position beats an earlier one.
     ],
 )
@@ -315,6 +318,42 @@ def test_two_senior_teams_without_an_end_date_fail_naming_the_player() -> None:
 def test_two_senior_teams_ending_together_fail_naming_the_player() -> None:
     with pytest.raises(normalise.NormaliseError, match="Q615: can't tell"):
         _build(_two_senior("2021", "2021"))
+
+
+def test_regional_team_with_no_fifa_code_is_not_a_national_team() -> None:
+    base = _facts().national_teams[-1]
+    regional = replace(
+        base, team="Q999004", team_label="Rivertown regional team", code=None, end=None
+    )
+    facts = replace(_facts(), national_teams=(*_facts().national_teams, regional))
+
+    current, others = normalise.current_senior_teams(facts)
+
+    assert {s.team for s in current} == {base.team}
+    assert others == []
+
+
+def test_regional_team_open_beside_a_national_team_does_not_tie() -> None:
+    base = _facts().national_teams[-1]
+    national = replace(base, end=None)
+    regional = replace(
+        base, team="Q999004", team_label="Rivertown regional team", code=None, end=None
+    )
+    facts = replace(_facts(), national_teams=(national, regional))
+
+    current, _ = normalise.current_senior_teams(facts)
+
+    assert {s.team for s in current} == {base.team}
+
+
+def test_player_with_only_a_regional_team_has_no_national_team() -> None:
+    base = _facts().national_teams[-1]
+    regional = replace(
+        base, team="Q999004", team_label="Rivertown regional team", code=None
+    )
+    facts = replace(_facts(), national_teams=(regional,))
+
+    assert normalise.current_senior_teams(facts) == ([], [])
 
 
 def test_photo_record_holds_size_type_and_credit() -> None:
