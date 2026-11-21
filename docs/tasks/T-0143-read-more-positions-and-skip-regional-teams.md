@@ -7,8 +7,6 @@ agent: data-implementer
 paths:
   - data/pipeline/src/soccer_cards_data/normalise.py
   - data/pipeline/tests/test_normalise.py
-  - data/pipeline/src/soccer_cards_data/build.py
-  - data/pipeline/tests/test_build.py
 dependencies: []
 max_changed_lines: 150
 status: ready
@@ -49,14 +47,16 @@ T-0140 couldn't add five well-known players because of two gaps in
   national team. Only teams with a code take part in choosing the current
   team.
 - A player whose only national spells are teams with no code has no
-  `nationalTeamCode`, as for a player with no national team. `build.py`'s
-  `_team_codes` must not fail for that player.
+  senior national team in `normalise.py`. The build still refuses that
+  player, because `player.schema.json` requires `nationalTeamCode` and every
+  card shows a nation (ADR 0005). That contract stays.
 - `make check COMPONENT=data` passes.
 
 ## Edge cases
 
 - A player with Spain (open) and Catalonia (open): Spain is chosen.
-- A player with only Catalonia: no national team code, and no failure.
+- A player with only Catalonia: no senior national team in `normalise.py`.
+  The build refuses the player, as for any player with no national team.
 - A position item that maps to two positions: not possible. Each Q-id maps
   to one.
 
@@ -64,8 +64,6 @@ T-0140 couldn't add five well-known players because of two gaps in
 
 - `test_normalise.py`: each new position, and the three national team cases
   above.
-- `test_build.py`: a player with only a team with no code builds with no
-  `nationalTeamCode`.
 
 ## Out of scope
 
