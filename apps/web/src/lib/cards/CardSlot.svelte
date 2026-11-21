@@ -24,19 +24,23 @@
 		outOfPosition = false,
 		children
 	}: Props = $props();
+
+	// WebKit doesn't focus a button on a click, so a dialog this opens would have no place to
+	// return focus to. Focusing it first makes every browser behave the same.
+	function press(event: MouseEvent & { currentTarget: HTMLButtonElement }): void {
+		event.currentTarget.focus();
+		onclick();
+	}
 </script>
 
-<!-- A small card in a grid. The button's name says what a tap does; the card art is decoration. -->
-<button
-	type="button"
-	class={['slot', dim && 'dim', outOfPosition && 'oop']}
-	aria-label={label}
-	aria-pressed={pressed}
-	{onclick}
->
-	<span class="art" aria-hidden="true"><CardFront {...front} /></span>
+<!-- The card art sits outside the button, as FlipCard's faces do, so the button's name is the
+     whole of what it says (WCAG 2.5.3, label in name). The button covers the art. -->
+<div class={['slot', dim && 'dim', outOfPosition && 'oop']}>
+	<span class="art" aria-hidden="true" data-art><CardFront {...front} /></span>
+	<button type="button" class="cover" aria-label={label} aria-pressed={pressed} onclick={press}
+	></button>
 	{@render children?.()}
-</button>
+</div>
 
 <style>
 	.art {

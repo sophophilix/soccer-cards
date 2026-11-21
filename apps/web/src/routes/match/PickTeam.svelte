@@ -175,7 +175,7 @@
 					tap(card.id);
 				}}
 			>
-				{#if isIn}<span class="badge tick" aria-hidden="true">✓</span>{/if}
+				{#if isIn}<span class="badge tick" aria-hidden="true" data-art>✓</span>{/if}
 			</CardSlot>
 		{/if}
 	{/each}

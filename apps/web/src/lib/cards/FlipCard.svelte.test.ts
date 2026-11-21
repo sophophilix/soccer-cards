@@ -132,6 +132,7 @@ test('the button is the only stop in the tab order on either side', async () => 
 test('the turn animates the transform only, and is still moving just after the tap', async () => {
 	const screen = await render(FlipCard, aFlipCard());
 	const turning = part(screen, 'turning');
+	if (!(turning instanceof HTMLElement)) throw new Error('the turning part is not an element');
 
 	await screen.getByRole('button').click();
 

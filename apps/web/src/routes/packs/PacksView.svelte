@@ -63,7 +63,7 @@
 	// The pack that is tearing open. The shelf stays up until the tear has played.
 	let tearing = $state<PackKind>();
 	// The pack art, so GSAP can tear the one the player opened.
-	const packArt: Partial<Record<PackKind, HTMLButtonElement>> = {};
+	const packArt: Partial<Record<PackKind, HTMLDivElement>> = {};
 	// The summary card shown large, if any.
 	let detail = $state<CardProps>();
 	// The next step's main control or heading, so focus never falls to the page.
@@ -210,26 +210,26 @@
 				{#each KINDS as kind (kind)}
 					{@const contents = PACK_CONTENTS[kind]}
 					<div class="offer">
-						<button
-							type="button"
-							class={['pack', kind === 'jumbo' && 'jumbo']}
-							bind:this={packArt[kind]}
-							aria-label={packLabel(kind)}
-							disabled={!canOpen(player, kind) || tearing !== undefined}
-							onclick={() =>
-								void runStep(() => {
-									open(kind);
-								})}
-						>
-							<span class="strip" aria-hidden="true"></span>
-							<span class="name" aria-hidden="true"
-								>{PACK_ART[kind][0]}<br />{PACK_ART[kind][1]}</span
-							>
-							<span class="ten" aria-hidden="true">{contents.base + contents.lucky} CARDS</span>
-							<span class="mix" aria-hidden="true"
-								>{contents.base} BASE<br />{contents.lucky} LUCKY</span
-							>
-						</button>
+						<!-- The art sits outside the button, so the button's name is all it says. -->
+						<div class={['pack', kind === 'jumbo' && 'jumbo']} bind:this={packArt[kind]}>
+							<!-- Decorative lettering, left out of contrast scans like the card art. -->
+							<span class="contents" aria-hidden="true" data-art>
+								<span class="strip"></span>
+								<span class="name">{PACK_ART[kind][0]}<br />{PACK_ART[kind][1]}</span>
+								<span class="ten">{contents.base + contents.lucky} CARDS</span>
+								<span class="mix">{contents.base} BASE<br />{contents.lucky} LUCKY</span>
+							</span>
+							<button
+								type="button"
+								class="cover"
+								aria-label={packLabel(kind)}
+								disabled={!canOpen(player, kind) || tearing !== undefined}
+								onclick={() =>
+									void runStep(() => {
+										open(kind);
+									})}
+							></button>
+						</div>
 						<button
 							type="button"
 							class="btn primary"

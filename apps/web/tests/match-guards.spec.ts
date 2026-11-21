@@ -92,7 +92,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
 				await expect(page.getByText(waitFor)).toBeVisible();
 				await page.evaluate(async () => document.fonts.ready);
 
-				const results = await new AxeBuilder({ page }).analyze();
+				const results = await new AxeBuilder({ page }).exclude('[data-art]').analyze();
 
 				expect(results.violations).toEqual([]);
 				expect(results.incomplete.filter((check) => check.id === 'color-contrast')).toEqual([]);

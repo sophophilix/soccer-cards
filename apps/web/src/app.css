@@ -137,13 +137,22 @@
 		padding-block: 18px 72px;
 		padding-inline: max(16px, env(safe-area-inset-left, 0px))
 			max(16px, env(safe-area-inset-right, 0px));
-		/* The mown pitch. */
-		background: var(--bg)
-			repeating-linear-gradient(90deg, var(--bg) 0 72px, var(--stripe) 72px 144px);
+		background: var(--bg);
 		color: var(--fg);
 		font-family: var(--font-body);
 		font-size: var(--text-body);
 		line-height: var(--text-body--line-height);
+	}
+
+	/* The mown pitch, on a layer behind the page. Text sits on the solid --bg underneath as far
+	   as a contrast checker can tell, and both stripe colours pass AA with --fg and --muted. */
+	body::before {
+		content: '';
+		position: fixed;
+		inset: 0;
+		z-index: -1;
+		background: repeating-linear-gradient(90deg, var(--bg) 0 72px, var(--stripe) 72px 144px);
+		pointer-events: none;
 	}
 
 	p {

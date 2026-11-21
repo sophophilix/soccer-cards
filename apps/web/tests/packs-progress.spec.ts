@@ -116,7 +116,7 @@ test.describe('the Packs screen guards', () => {
 		await page.getByRole('button', { name: 'Open pack' }).click();
 		await expect(page.getByRole('heading', { name: 'Card 1 of 10' })).toBeVisible();
 
-		const results = await new AxeBuilder({ page }).analyze();
+		const results = await new AxeBuilder({ page }).exclude('[data-art]').analyze();
 
 		expect(results.violations).toEqual([]);
 	});

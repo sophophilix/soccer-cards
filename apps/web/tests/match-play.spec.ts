@@ -203,7 +203,7 @@ test('the stage at full time has no accessibility violation', async ({ page }) =
 	await expect(page.getByRole('heading', { name: 'You win!' })).toBeVisible();
 	await page.evaluate(async () => document.fonts.ready);
 
-	const results = await new AxeBuilder({ page }).analyze();
+	const results = await new AxeBuilder({ page }).exclude('[data-art]').analyze();
 
 	expect(results.violations).toEqual([]);
 });

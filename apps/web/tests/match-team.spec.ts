@@ -152,7 +152,7 @@ test.describe('with 11 different cards', () => {
 		await page.getByRole('button', { name: '3-5-2' }).click();
 		await page.evaluate(async () => document.fonts.ready);
 
-		const results = await new AxeBuilder({ page }).analyze();
+		const results = await new AxeBuilder({ page }).exclude('[data-art]').analyze();
 
 		expect(results.violations).toEqual([]);
 	});

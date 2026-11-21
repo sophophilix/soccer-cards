@@ -106,8 +106,8 @@
 								role="img"
 								aria-label={`${entry.face.displayName}, not collected yet`}
 							>
-								<b aria-hidden="true">?</b>
-								<span aria-hidden="true"
+								<b aria-hidden="true" data-art>?</b>
+								<span aria-hidden="true" data-art
 									>{numberText(entry.number)}<br />{surname(entry.face.displayName)}</span
 								>
 							</div>

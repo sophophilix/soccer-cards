@@ -4,7 +4,7 @@
 		".": {},
 		"apps/web": {
 			"project": ["src/**/*.{ts,svelte}", "tests/**/*.ts"],
-			"ignoreDependencies": ["@fontsource/*"]
+			"ignoreDependencies": ["@fontsource/*", "tailwindcss"]
 		},
 		"packages/*": {
 			"project": ["src/**/*.ts"]

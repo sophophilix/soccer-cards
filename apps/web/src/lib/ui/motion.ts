@@ -5,7 +5,7 @@ import { gsap } from 'gsap';
 // through the CSS object model, which the page's policy allows; style attributes it refuses.
 
 /** Timings from the prototype, in seconds. docs/design/brand-kit.md lists them. */
-export const MOTION = {
+const MOTION = {
 	tear: { shake: 0.7, rip: 0.45, ripDelay: 0.35, drop: 0.3 },
 	arrive: 0.5,
 	flip: 0.55,
@@ -15,7 +15,7 @@ export const MOTION = {
 } as const;
 
 /** True when the player asked for less motion, or when there's no window to ask. */
-export function prefersStill(): boolean {
+function prefersStill(): boolean {
 	return (
 		typeof window === 'undefined' || window.matchMedia('(prefers-reduced-motion: reduce)').matches
 	);
@@ -27,7 +27,11 @@ export function tearPack(pack: HTMLElement): Promise<void> {
 	const strip = pack.querySelector<HTMLElement>('.strip');
 	const { shake, rip, ripDelay, drop } = MOTION.tear;
 	return new Promise((done) => {
-		const timeline = gsap.timeline({ onComplete: () => { done(); } });
+		const timeline = gsap.timeline({
+			onComplete: () => {
+				done();
+			}
+		});
 		timeline.to(pack, {
 			keyframes: [
 				{ rotation: -4, duration: shake * 0.2 },
@@ -56,11 +60,6 @@ export function tearPack(pack: HTMLElement): Promise<void> {
 	});
 }
 
-/** Puts a torn pack back as it was, ready to open again. */
-export function resetPack(pack: HTMLElement): void {
-	gsap.set([pack, pack.querySelector('.strip')], { clearProps: 'all' });
-}
-
 /** A new card rises into place with a little spin. */
 export function arrive(node: HTMLElement): void {
 	if (prefersStill()) return;
@@ -84,16 +83,10 @@ export function turnCard(inner: HTMLElement, degrees: 0 | 180): void {
 	});
 }
 
-/** Pops a result or a banner in, so the moment lands. */
+/** Pops a result or a banner in, so the moment lands. It only grows: faded text fails contrast. */
 export function pop(node: HTMLElement): void {
 	if (prefersStill()) return;
-	gsap.from(node, {
-		scale: 0.8,
-		opacity: 0,
-		duration: MOTION.pop,
-		ease: 'back.out(2)',
-		clearProps: 'all'
-	});
+	gsap.from(node, { scale: 0.8, duration: MOTION.pop, ease: 'back.out(2)', clearProps: 'transform' });
 }
 
 /**

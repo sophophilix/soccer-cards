@@ -13,6 +13,7 @@
 	import { edgeBanner, kickLine, momentLine } from './commentary.ts';
 	import { DIVISION_NAMES, LINES, LINE_NAMES, TACTIC_WORDS } from './match-words.ts';
 	import Penalties from './Penalties.svelte';
+	import { pop } from '../../lib/ui/motion.ts';
 
 	interface Props {
 		readonly match: PlayedMatch;
@@ -162,7 +163,7 @@
 		<Penalties {shootOut} onPick={pickCorner} />
 	</div>{/if}
 {#if finished !== undefined}
-	<div class="result" role="status">
+	<div class="result" role="status" {@attach pop}>
 		<h2 tabindex="-1" bind:this={resultHeading}>{won ? 'You win!' : 'The AI wins'}</h2>
 		<p>
 			{score.home} – {score.away}{onPenalties}.
