@@ -5,24 +5,21 @@
 		formatCareer,
 		formatFee,
 		formatLicense,
-		goalCountsFrom,
 		listRatings,
 		type CardBackProps
 	} from './card-back.ts';
+	import { loadGoalCounts, type GoalCounts } from '../data/load-goal-counts.ts';
 
 	const card: CardBackProps = $props();
 	// The player's record on the site holds the goal counts the card list leaves out.
-	let loaded = $state<ReturnType<typeof goalCountsFrom>>({});
+	let loaded = $state<GoalCounts>({});
 	$effect(() => {
-		const uri = card.detailUri;
-		if (uri === undefined || typeof fetch === 'undefined') return;
+		const id = card.playerId;
+		if (id === undefined || typeof fetch === 'undefined') return;
 		let isCurrent = true;
-		fetch(uri)
-			.then(async (response) => (response.ok ? goalCountsFrom(await response.json()) : {}))
-			.then((counts) => {
-				if (isCurrent) loaded = counts;
-			})
-			.catch(() => undefined);
+		void loadGoalCounts((path) => fetch(path), id).then((counts) => {
+			if (isCurrent) loaded = counts;
+		});
 		return () => {
 			isCurrent = false;
 		};

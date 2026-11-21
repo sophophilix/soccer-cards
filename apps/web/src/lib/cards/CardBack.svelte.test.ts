@@ -1,4 +1,4 @@
-import { expect, test } from 'vitest';
+import { expect, test, vi } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import CardBack from './CardBack.svelte';
 import type { CardBackProps } from './card-back.ts';
@@ -155,4 +155,17 @@ test('the back takes its paper and ink from the card tokens, not the page theme'
 	const back = getComputedStyle(screen.container.querySelector('.back') ?? document.body);
 	expect(back.backgroundColor).toBe('rgb(1, 2, 3)');
 	expect(back.color).toBe('rgb(4, 5, 6)');
+});
+
+test('goal tiles come from the player record the loader reads', async () => {
+	const record = { clubGoalCount: { value: 25 }, nationalTeamGoalCount: { value: 8 } };
+	const fetchRecord = vi.fn(() => Promise.resolve(new Response(JSON.stringify(record))));
+	vi.stubGlobal('fetch', fetchRecord);
+
+	const screen = await render(CardBack, aBack({ playerId: 'p-1' }));
+
+	await expect.element(screen.getByText('25')).toBeVisible();
+	expect(rows(screen.container, '.facts > div').join(', ')).toContain('COUNTRY GOALS 8');
+	expect(fetchRecord).toHaveBeenCalledWith('/api/v1/players/p-1.json');
+	vi.unstubAllGlobals();
 });

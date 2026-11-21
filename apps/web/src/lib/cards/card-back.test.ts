@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { countryName, formatCardNumber, formatLicense, goalCountsFrom } from './card-back.ts';
+import { countryName, formatCardNumber, formatLicense } from './card-back.ts';
 
 describe('countryName', () => {
 	test.each([
@@ -28,26 +28,4 @@ describe('formatLicense', () => {
 test('a card number has three digits', () => {
 	expect(formatCardNumber(17)).toBe('#017');
 	expect(formatCardNumber(123)).toBe('#123');
-});
-
-describe('goalCountsFrom', () => {
-	test('reads both counts from a player record', () => {
-		const record = { clubGoalCount: { value: 25 }, nationalTeamGoalCount: { value: 8 } };
-
-		expect(goalCountsFrom(record)).toEqual({ clubGoalCount: 25, nationalTeamGoalCount: 8 });
-	});
-
-	test('leaves out a count that is missing, negative or not whole', () => {
-		const record = { clubGoalCount: { value: -1 }, nationalTeamGoalCount: { value: 2.5 } };
-
-		expect(goalCountsFrom(record)).toEqual({});
-		expect(goalCountsFrom({ nationalTeamGoalCount: { value: 0 } })).toEqual({
-			nationalTeamGoalCount: 0
-		});
-	});
-
-	test('reads nothing from a body that is not a record', () => {
-		expect(goalCountsFrom(null)).toEqual({});
-		expect(goalCountsFrom('players')).toEqual({});
-	});
 });
