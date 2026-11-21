@@ -151,6 +151,8 @@ export type ShotEnd = 'goal' | 'save' | 'wide';
 export interface ShotScene {
 	readonly ball: SVGGElement;
 	readonly keeper: SVGGElement;
+	/** The keeper's left and right arms, each turning at its shoulder. */
+	readonly arms: readonly [SVGGElement, SVGGElement];
 	readonly net: SVGGElement;
 	readonly word: HTMLElement;
 }
@@ -180,6 +182,9 @@ export function playShot(
 	timeline
 		.set(scene.ball, { x: 0, y: 0, scale: 1, rotation: 0, opacity: 1 })
 		.set(scene.keeper, { x: 0, y: 0, rotation: 0 })
+		// Ready: knees soft, arms out and low, gloves open.
+		.set(scene.arms[0], { rotation: 35, svgOrigin: '138 59' })
+		.set(scene.arms[1], { rotation: -35, svgOrigin: '162 59' })
 		.set(scene.net, { scaleY: 1, skewX: 0, transformOrigin: '50% 0%' })
 		.set(scene.word, { scale: 0, opacity: 0 })
 		.to(
@@ -206,7 +211,10 @@ export function playShot(
 				transformOrigin: '50% 50%'
 			},
 			diveDelay
-		);
+		)
+		// Both arms reach up past the head as the keeper goes, toward where the ball is coming.
+		.to(scene.arms[0], { rotation: 165, duration: dive * 0.8, ease: 'power2.out' }, diveDelay)
+		.to(scene.arms[1], { rotation: -165, duration: dive * 0.8, ease: 'power2.out' }, diveDelay);
 	if (shot.end === 'goal') {
 		timeline.to(
 			scene.net,
@@ -269,7 +277,8 @@ export function celebrate(
 ): void {
 	if (prefersStill()) return;
 	const duration = MOTION.celebrate;
-	const timeline = gsap.timeline();
+	// The celebration starts when the ball is in the net, not when it's struck.
+	const timeline = gsap.timeline({ delay: MOTION.shot.flight });
 	timeline.from(card, { scale: 0.3, opacity: 0, duration: 0.3, ease: 'back.out(2)' });
 	if (move === 'Knee slide') {
 		timeline.from(

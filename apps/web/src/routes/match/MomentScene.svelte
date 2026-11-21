@@ -18,6 +18,8 @@
 
 	let ball = $state<SVGGElement>();
 	let keeper = $state<SVGGElement>();
+	let armLeft = $state<SVGGElement>();
+	let armRight = $state<SVGGElement>();
 	let net = $state<SVGGElement>();
 	let word = $state<HTMLElement>();
 	let timeline: ReturnType<typeof playShot> | undefined;
@@ -25,9 +27,9 @@
 	const celebration = $derived(shot?.scorer ? celebrationOf(shot.scorer.cardId) : undefined);
 
 	$effect(() => {
-		if (shot === undefined || !ball || !keeper || !net || !word) return;
+		if (shot === undefined || !ball || !keeper || !net || !word || !armLeft || !armRight) return;
 		timeline?.kill();
-		timeline = playShot({ ball, keeper, net, word }, shot);
+		timeline = playShot({ ball, keeper, arms: [armLeft, armRight], net, word }, shot);
 	});
 
 	// The celebration's card and confetti are new for each goal, so they start themselves.
@@ -77,13 +79,30 @@
 					/>{/each}
 			</g>
 			<path class="frame" d="M60 94 V20 H240 V94" />
+			<!-- A sticker-style keeper: boots, socks, shorts, a striped jersey with a number one,
+			     hair and big gloves. The arms are their own parts, so they reach for the ball. -->
 			<g bind:this={keeper} class={['keeper', shot?.keeper ?? 'ai']}>
-				<rect x="140" y="62" width="20" height="26" rx="6" />
-				<rect class="arm" x="124" y="64" width="18" height="7" rx="3.5" />
-				<rect class="arm" x="158" y="64" width="18" height="7" rx="3.5" />
-				<rect class="leg" x="142" y="86" width="7" height="16" rx="3" />
-				<rect class="leg" x="151" y="86" width="7" height="16" rx="3" />
-				<circle class="head" cx="150" cy="54" r="8" />
+				<path class="skin" d="M143 86h6v9h-6zM151 86h6v9h-6z" />
+				<path class="sock" d="M142.5 92.5h7v8h-7zM150.5 92.5h7v8h-7z" />
+				<path class="boot" d="M141 100h9l1.5 4.5h-12zM149.5 100h9l2 4.5h-12z" />
+				<path class="shorts" d="M139 80h22l1.5 9.5h-10l-2.5-3-2.5 3h-10z" />
+				<path class="shirt" d="M137.5 59.5q12.5-6.5 25 0l2 22.5q-14.5 3.2-29 0z" />
+				<path class="stripe" d="M136.6 67h26.8l.3 4.2h-27.4z" />
+				<path class="collar" d="M145 55.6l5 5 5-5" />
+				<text class="number" x="150" y="80.5">1</text>
+				<g bind:this={armLeft} class="arm">
+					<path class="sleeve" d="M134.6 58.5h6.2l.8 12.5h-7.4z" />
+					<rect class="glove" x="133.6" y="69.5" width="8.4" height="9.5" rx="3.4" />
+				</g>
+				<g bind:this={armRight} class="arm">
+					<path class="sleeve" d="M159.2 58.5h6.2l-.4 12.5h-7.4z" />
+					<rect class="glove" x="157.8" y="69.5" width="8.4" height="9.5" rx="3.4" />
+				</g>
+				<circle class="skin" cx="150" cy="49" r="7.5" />
+				<path class="hair" d="M142.4 48.6q0-9 7.6-9t7.6 9q-2.4-4.4-7.6-4.4t-7.6 4.4z" />
+				<circle class="eye" cx="147.2" cy="49.6" r="1.1" />
+				<circle class="eye" cx="152.8" cy="49.6" r="1.1" />
+				<path class="smile" d="M147.6 52.6q2.4 1.8 4.8 0" />
 			</g>
 			<g bind:this={ball} class="ball">
 				<circle cx="150" cy="152" r="7" />
@@ -155,20 +174,60 @@
 		stroke-width: 5;
 		stroke-linejoin: round;
 	}
-	/* Your keeper wears yellow; the AI's wears pink, so a child knows whose goal it is. */
+	/* Your keeper wears yellow; the AI's wears pink, so a child knows whose goal it is. Every
+	   part has the same dark outline, like a sticker. */
+	.keeper path,
 	.keeper rect,
-	.keeper .head {
+	.keeper circle {
 		stroke: #0e1512;
-		stroke-width: 1.5;
+		stroke-width: 1.4;
+		stroke-linejoin: round;
 	}
-	.keeper.player rect {
-		fill: #ffc93c;
+	.keeper.player {
+		--kit: #ffc93c;
+		--kit-dark: #e0a400;
 	}
-	.keeper.ai rect {
-		fill: #ff7ad9;
+	.keeper.ai {
+		--kit: #ff7ad9;
+		--kit-dark: #c8379f;
 	}
-	.keeper .head {
-		fill: #f3c9a0;
+	.shirt,
+	.sleeve,
+	.sock {
+		fill: var(--kit);
+	}
+	.keeper .stripe {
+		fill: var(--kit-dark);
+		stroke: none;
+	}
+	.shorts,
+	.boot,
+	.hair {
+		fill: #1b2a24;
+	}
+	.skin {
+		fill: #e8b48a;
+	}
+	.collar {
+		fill: none;
+		stroke-linecap: round;
+	}
+	.glove {
+		fill: #b6ff3c;
+	}
+	.keeper .eye {
+		fill: #0e1512;
+		stroke: none;
+	}
+	.keeper .smile {
+		fill: none;
+		stroke-width: 1;
+		stroke-linecap: round;
+	}
+	.number {
+		fill: #0e1512;
+		font: 800 9px/1 var(--font-data);
+		text-anchor: middle;
 	}
 	.ball circle {
 		fill: #fff;
