@@ -85,6 +85,17 @@ test('the preview sends the other security headers', async ({ request }) => {
 	expect(headers['permissions-policy']).toContain('geolocation=()');
 });
 
+// Exactly this value: no includeSubDomains and no preload, which would bind the whole domain.
+for (const path of ['/', '/api/v1/players.json', '/no-such-page']) {
+	test(`the response at ${path} tells browsers to use HTTPS for a year, this host only`, async ({
+		request
+	}) => {
+		const response = await request.get(path);
+
+		expect(response.headers()['strict-transport-security']).toBe('max-age=31536000');
+	});
+}
+
 test('a file with a hash in its name is cached for a year', async ({ page, request }) => {
 	await page.goto('/');
 	const hashedFile = await page.locator('link[rel="modulepreload"]').first().getAttribute('href');

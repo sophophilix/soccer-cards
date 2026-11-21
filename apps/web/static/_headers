@@ -3,9 +3,12 @@
 # SvelteKit starts the app from an inline script, and its hash changes with
 # the build. The build adds each built page's script hashes to script-src in
 # the copy of this file in the build folder (vite.config.ts).
+# HSTS is one year for this subdomain only: no includeSubDomains, no preload,
+# because either would bind every site on dsantmaj.com (T-0133).
 # The style hash is the style attribute on SvelteKit's route announcer.
 /*
   Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-hashes' 'sha256-S8qMpvofolR8Mpjy4kQvEm7m1q8clzU4dfDH0AmvZjo='; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+  Strict-Transport-Security: max-age=31536000
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=(), accelerometer=(), gyroscope=(), magnetometer=()
