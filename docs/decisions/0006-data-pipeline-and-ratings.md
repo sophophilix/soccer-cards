@@ -2,7 +2,7 @@
 
 > Status: Approved
 > Created: 2026-11-20
-> Last reviewed: 2026-11-21T14:15:23Z
+> Last reviewed: 2026-11-21T14:42:38Z
 > Next review: Not scheduled
 
 ## Review guide
@@ -69,6 +69,15 @@ The tech lead doesn't review grades one by one: the cards ship, and the
 players' feedback, passed on by the tech lead, corrects a grade through a
 normal pull request. A grade file never holds a number on the 1 to 99 scale,
 and never cites a video game or a card maker.
+
+At scale, for the thousands of players ADR 0008 D6 brings in, grades come in
+batches by league or squad. A starting formula proposes each grade from
+Wikidata facts (position, caps, goals, honours, the level of the league), and
+the drafting agent keeps or changes it, with a reason either way. A reviewer
+agent then checks a random sample of each batch, at least one player in ten
+and every Icon or Legend, and sends the whole batch back if the sample shows a
+pattern of wrong grades. The starting formula and the sample size are
+constants with a version, like the rating formula.
 
 **D3. The formula.** One module, with a version number and named constants:
 

@@ -68,9 +68,14 @@ names and ids. `v2` adds the collections the larger set needs and the AIP
 methods a static file couldn't offer:
 
 - `GET /api/v2/players`, `/clubs`, `/leagues`, `/national-teams`, with
-  `page_size` and `page_token` (AIP-158), `filter` on documented fields such
-  as `league`, `club`, `nationalTeam`, `tier` and `position` (AIP-160), and
-  `order_by` (AIP-132).
+  `pageSize` and `pageToken`, answered with `nextPageToken` (AIP-158),
+  `filter` on documented fields such as `league`, `club`, `nationalTeam`,
+  `tier` and `position` (AIP-160), and `orderBy` (AIP-132). Query parameters
+  and fields are camelCase, like every field since ADR 0005 D4; FastAPI's
+  models carry camelCase aliases.
+- A program checks the OpenAPI file against the AIP rules, as ADR 0005 D10's
+  checks do for the JSON Schemas, so a route or field that breaks them fails
+  CI.
 - `GET /api/v2/players/{player}` and the same for each collection.
 - `GET /api/v2/clubs/{club}/players` and
   `/api/v2/national-teams/{team}/players` for squads.
@@ -139,14 +144,15 @@ binding and the limits before the rest is built.
 Worker and the rate-limit rule are OpenTofu resources in `infra/`, planned in
 CI and applied by the tech lead (ADR 0002). Worker logs stay off (ADR 0002 D10).
 
-## Open item
+## Ratings at scale (settled)
 
-**Ratings at scale.** ADR 0006 grades each player's skills by hand with a
-reason. That doesn't scale to thousands. A research task is reading the terms
-of three free-tier sports APIs (Football-Data.org, API-Football, TheSportsDB)
-to see whether their statistics may be stored and used for our own ratings on
-a public site. The method is decided in a follow-up to ADR 0006 once that
-report is in.
+A research task read the terms of three free-tier sports APIs
+(Football-Data.org, API-Football, TheSportsDB) on 2026-11-22. None was cleanly
+usable: the free tiers miss the A-League, the Australian national teams or
+women's football, or don't allow storing and republishing their data, and
+API-Football's pages couldn't be read. Player facts stay on CC0 Wikidata, and
+grades are drafted by agents in batches from a Wikidata starting formula, with
+a reviewer agent sampling each batch (ADR 0006 D2 as amended 2026-11-21).
 
 ## Consequences
 
@@ -165,3 +171,4 @@ report is in.
 | -------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 2026-11-21T14:27:52Z | Drafted  | From the tech lead's answers on 2026-11-21: "we do need to build a proper db and api", "the website still can be how it is it just pulls all the data from an api... it needs to be the modern tht is AI agent appropriate", Cloudflare serverless chosen, and the player scope including the Socceroos, Matildas and Western Sydney Wanderers. |
 | 2026-11-21T14:34:12Z | Approved | The tech lead said "ADR 008 is fine...but the API needs to be built using FAST API skill published by fast api...and if there is a DB skill lets us it". D1 and D5 now name FastAPI; D10 adds FastAPI on Python Workers with the official FastAPI skill and Cloudflare's official skills plugin, and a spike comes first.                       |
+| 2026-11-21T14:42:38Z | Amended  | The tech lead chose "go with agent-drafted grades": the ratings item is settled (ADR 0006 D2). D3 now uses camelCase paging names (`pageSize`, `pageToken`, `nextPageToken`) and adds a check of the OpenAPI file against the AIPs, after the tech lead asked whether the API follows Google's API design patterns.                             |

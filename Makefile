@@ -79,7 +79,10 @@ check-infra: ## Format, validate and test the OpenTofu configuration
 # The Python pipeline runs its tools through the locked uv environment
 # (ADR 0006 D5, the python-standards skill). A missing project or tool fails.
 PIPELINE := data/pipeline
-check-data: ## Gates for the Python data pipeline
+# The player API (ADR 0008) is Python under uv too, so the data gate covers it
+# once it exists. The same tools and rules apply to both projects.
+API := apps/api
+check-data: ## Gates for the Python data pipeline and the Python player API
 	@[ -f $(PIPELINE)/pyproject.toml ] || { echo "$@: $(PIPELINE) is not scaffolded yet (see docs/decisions/0006)"; exit 1; }
 	@command -v uv >/dev/null || { echo "$@: uv is not installed"; exit 1; }
 	@cd $(PIPELINE) && uv sync --locked --quiet
@@ -88,3 +91,11 @@ check-data: ## Gates for the Python data pipeline
 	@cd $(PIPELINE) && uv run --frozen mypy src tests
 	@cd $(PIPELINE) && uv run --frozen bandit -q -c pyproject.toml -r src
 	@cd $(PIPELINE) && uv run --frozen pytest -q
+	@if [ -f $(API)/pyproject.toml ]; then \
+		cd $(API) && uv sync --locked --quiet && \
+		uv run --frozen ruff check . && \
+		uv run --frozen ruff format --check . && \
+		uv run --frozen mypy src tests && \
+		uv run --frozen bandit -q -c pyproject.toml -r src && \
+		uv run --frozen pytest -q; \
+	fi
