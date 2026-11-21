@@ -1,0 +1,45 @@
+{
+  "club": "clubs/manchester-city-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-12",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+    "value": 211
+  },
+  "displayName": "Erling Haaland",
+  "name": "players/erling-haaland",
+  "nationalTeamCode": "NOR",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-04",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+    "value": 65
+  },
+  "outfieldRatings": {
+    "defending": 55,
+    "dribbling": 75,
+    "pace": 85,
+    "passing": 65,
+    "physical": 95,
+    "shooting": 98
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Erling_Haaland_France_v_Norway_26_June_26-008_(cropped).jpg"
+    },
+    "heightPx": 642,
+    "mimeType": "image/webp",
+    "uri": "photos/erling-haaland.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 88,
+    "control": 74,
+    "defence": 71,
+    "overall": 86
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "RARE",
+  "updateTime": "2026-11-21T03:57:58Z"
+}

@@ -1,0 +1,45 @@
+{
+  "club": "clubs/inter-miami-cf",
+  "clubGoalCount": {
+    "retrieveDate": "2026-08-30",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q615&oldid=2568260945",
+    "value": 570
+  },
+  "displayName": "Lionel Messi",
+  "name": "players/lionel-messi",
+  "nationalTeamCode": "ARG",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-12",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q615&oldid=2568260945",
+    "value": 126
+  },
+  "outfieldRatings": {
+    "defending": 55,
+    "dribbling": 95,
+    "pace": 82,
+    "passing": 95,
+    "physical": 72,
+    "shooting": 98
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Leo_Messi_Argentina_v_Egypt_7_July_2026-1.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/lionel-messi.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 94,
+    "control": 91,
+    "defence": 67,
+    "overall": 90
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "LEGEND",
+  "updateTime": "2026-11-21T03:57:58Z"
+}

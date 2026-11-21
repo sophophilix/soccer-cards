@@ -1,0 +1,44 @@
+{
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-19",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2572326718",
+    "value": 83
+  },
+  "displayName": "Franz Beckenbauer",
+  "name": "players/franz-beckenbauer",
+  "nationalTeamCode": "GER",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-19",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2572326718",
+    "value": 14
+  },
+  "outfieldRatings": {
+    "defending": 95,
+    "dribbling": 85,
+    "pace": 82,
+    "passing": 95,
+    "physical": 82,
+    "shooting": 76
+  },
+  "photo": {
+    "attribution": {
+      "author": "Panini Group",
+      "licenseCode": "CC-PDM-1.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Franz_Beckenbauer_(1975).jpg"
+    },
+    "heightPx": 657,
+    "mimeType": "image/webp",
+    "uri": "photos/franz-beckenbauer.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 81,
+    "control": 88,
+    "defence": 90,
+    "overall": 92
+  },
+  "position": "DEFENDER",
+  "state": "RETIRED",
+  "tier": "ICON",
+  "updateTime": "2026-11-21T03:57:58Z"
+}

@@ -1,0 +1,45 @@
+{
+  "club": "clubs/arsenal-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-10",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q30007142&oldid=2564356349",
+    "value": 25
+  },
+  "displayName": "Declan Rice",
+  "name": "players/declan-rice",
+  "nationalTeamCode": "ENG",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-07-18",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q30007142&oldid=2564356349",
+    "value": 8
+  },
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 75,
+    "pace": 75,
+    "passing": 75,
+    "physical": 85,
+    "shooting": 74
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Declan_Rice_England_v_Ghana_23_June_2026-150_(cropped).jpg"
+    },
+    "heightPx": 652,
+    "mimeType": "image/webp",
+    "uri": "photos/declan-rice.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 75,
+    "control": 76,
+    "defence": 83,
+    "overall": 81
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T03:57:58Z"
+}

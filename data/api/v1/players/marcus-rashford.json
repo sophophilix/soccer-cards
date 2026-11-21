@@ -1,0 +1,45 @@
+{
+  "club": "clubs/manchester-united-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-09-20",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q22951255&oldid=2561179517",
+    "value": 97
+  },
+  "displayName": "Marcus Rashford",
+  "name": "players/marcus-rashford",
+  "nationalTeamCode": "ENG",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-07-18",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q22951255&oldid=2561179517",
+    "value": 19
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 85,
+    "pace": 85,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 74
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Marcus_Rashford_England_v_Panama_27_June_26-047.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/marcus-rashford.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 79,
+    "control": 80,
+    "defence": 71,
+    "overall": 81
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T03:57:58Z"
+}

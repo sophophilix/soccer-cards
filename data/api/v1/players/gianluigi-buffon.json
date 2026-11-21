@@ -1,0 +1,44 @@
+{
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-09",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q68060&oldid=2567312419",
+    "value": 0
+  },
+  "displayName": "Gianluigi Buffon",
+  "goalkeeperRatings": {
+    "diving": 95,
+    "handling": 95,
+    "kicking": 75,
+    "positioning": 95,
+    "reflexes": 95,
+    "speed": 75
+  },
+  "name": "players/gianluigi-buffon",
+  "nationalTeamCode": "ITA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-09",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q68060&oldid=2567312419",
+    "value": 0
+  },
+  "photo": {
+    "attribution": {
+      "author": "Original: Doha Stadium Plus Qatar from Doha, Qatar Derivative work: Alza08 Author:",
+      "licenseCode": "CC-BY-2.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Gianluigi_Buffon_(31784615942)_(cropped).jpg"
+    },
+    "heightPx": 686,
+    "mimeType": "image/webp",
+    "uri": "photos/gianluigi-buffon.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 75,
+    "control": 85,
+    "defence": 95,
+    "overall": 95
+  },
+  "position": "GOALKEEPER",
+  "state": "RETIRED",
+  "tier": "LEGEND",
+  "updateTime": "2026-11-21T03:57:58Z"
+}

@@ -12,6 +12,8 @@ from soccer_cards_data import ratings
 GRADES_DIR = Path(__file__).resolve().parents[2] / "grades"
 PLAYERS_FILE = GRADES_DIR / "players.toml"
 OVERRIDES_FILE = GRADES_DIR / "overrides.toml"
+PHOTOS_FILE = GRADES_DIR / "photos.toml"
+AVATAR = "avatar"
 
 GROUPS = {
     "outfield": ratings.OUTFIELD_RATINGS,
@@ -59,6 +61,15 @@ class Override:
     reason: str
 
 
+@dataclass(frozen=True)
+class PhotoChoice:
+    """A photo the lead sets for one player: a Commons file, or None for none."""
+
+    qid: str
+    file: str | None
+    reason: str
+
+
 def load_grades(path: Path = PLAYERS_FILE) -> dict[str, GradeEntry]:
     """Return each player's grades by Q-id. Any broken rule raises GradeFileError."""
     players: dict[str, GradeEntry] = {}
@@ -90,6 +101,39 @@ def load_overrides(
             raise GradeFileError(f"{qid}: must be one of {', '.join(OVERRIDE_TIERS)}")
         overrides[qid] = Override(qid, tier, _check_reason(qid, reason))
     return overrides
+
+
+def load_photo_choices(
+    players: Mapping[str, GradeEntry], path: Path = PHOTOS_FILE
+) -> dict[str, PhotoChoice]:
+    """Return each hand-chosen photo by Q-id. Any broken rule raises GradeFileError."""
+    choices: dict[str, PhotoChoice] = {}
+    for qid, line in _read(path).items():
+        if _check_qid(qid) not in players:
+            raise GradeFileError(f"{qid}: is not in the grade file")
+        match line:
+            case {"photo": str() as photo, "reason": str() as reason} if len(line) == 2:
+                pass
+            case _:
+                raise GradeFileError(f"{qid}: must be {{ photo = ..., reason = ... }}")
+        reason = _check_reason(qid, reason)
+        if photo == AVATAR:
+            choices[qid] = PhotoChoice(qid, None, reason)
+        elif _file_name(photo):
+            choices[qid] = PhotoChoice(qid, photo, reason)
+        else:
+            raise GradeFileError(f"{qid}: must be avatar or a Commons file name")
+    return choices
+
+
+def _file_name(name: str) -> bool:
+    """Say whether `name` is a bare Commons file name on one line."""
+    return (
+        bool(name.strip())
+        and "|" not in name
+        and "\n" not in name
+        and not name.lower().startswith("file:")
+    )
 
 
 def _read(path: Path) -> dict[str, Any]:

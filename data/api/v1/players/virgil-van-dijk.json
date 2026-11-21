@@ -1,0 +1,45 @@
+{
+  "club": "clubs/liverpool-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-11",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2562718695",
+    "value": 47
+  },
+  "displayName": "Virgil van Dijk",
+  "name": "players/virgil-van-dijk",
+  "nationalTeamCode": "NED",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-04",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2562718695",
+    "value": 14
+  },
+  "outfieldRatings": {
+    "defending": 95,
+    "dribbling": 65,
+    "pace": 82,
+    "passing": 85,
+    "physical": 93,
+    "shooting": 66
+  },
+  "photo": {
+    "attribution": {
+      "author": "Ailura",
+      "licenseCode": "CC-BY-SA-3.0-AT",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:20160604_AUT_NED_8876_(cropped).jpg"
+    },
+    "heightPx": 583,
+    "mimeType": "image/webp",
+    "uri": "photos/virgil-van-dijk.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 71,
+    "control": 78,
+    "defence": 92,
+    "overall": 91
+  },
+  "position": "DEFENDER",
+  "state": "ACTIVE",
+  "tier": "LEGEND",
+  "updateTime": "2026-11-21T03:57:58Z"
+}
