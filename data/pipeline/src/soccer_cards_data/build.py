@@ -56,7 +56,7 @@ def build(
     facts = {qid: wikidata.fetch_player(client, qid) for qid in sorted(entries)}
     years = {q: y for q, f in facts.items() if (y := names.birth_year(f)) is not None}
     labels = {qid: names.display_name(f) for qid, f in facts.items()}
-    codes = {qid: _team_code(f) for qid, f in facts.items()}  # Before any download.
+    codes = _team_codes(facts)  # Before any download.
     ids = _read_ids(ids_file)
     slugs = ids["players"] = _slugs(ids["players"], labels, years)
     problems = [line for f in facts.values() for line in f.skipped]
@@ -113,12 +113,21 @@ def _photo(
     return normalise.SizedPhoto(decision, photos.write_photo(image, slug, work))
 
 
-def _team_code(fact: wikidata.PlayerFacts) -> str:
-    """Return the one FIFA code the player's national teams share, youth included."""
-    codes = sorted({s.code for s in fact.national_teams if s.code})
-    if len(codes) != 1:
-        raise BuildError(f"{fact.qid}: needs one national team code, found {codes}")
-    return codes[0]
+def _team_codes(facts: Mapping[str, wikidata.PlayerFacts]) -> dict[str, str]:
+    """Return each player's one senior national team code, or fail naming all."""
+    codes: dict[str, str] = {}
+    failed = []
+    for qid, fact in facts.items():
+        found = sorted(
+            {s.code for s in normalise.senior_national_teams(fact) if s.code}
+        )
+        if len(found) == 1:
+            codes[qid] = found[0]
+        else:
+            failed.append(f"{qid}: found {found}")
+    if failed:
+        raise BuildError("needs one national team code: " + "; ".join(failed))
+    return codes
 
 
 def _slugs(
