@@ -1,7 +1,12 @@
 <!-- The Match view: loads the cards and the player, then shows the screen for what the player has. -->
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { DIVISIONS, TEAM_SIZE, WINS_TO_GO_UP } from '@soccer-cards/game';
+	import {
+		DIVISIONS,
+		STANDARD_PACK_COST_COINS,
+		TEAM_SIZE,
+		WINS_TO_GO_UP
+	} from '@soccer-cards/game';
 	import type { CardId, CheckedCardSet, PlayerState } from '@soccer-cards/game';
 	import { resolve } from '$app/paths';
 	import type { CardFace } from '../../lib/data/card-face-from-summary.ts';
@@ -73,7 +78,9 @@
 		<h2>Match is locked</h2>
 		<p>{lockedText(owned.length, player.freePacks)}</p>
 		<a class="btn primary" href={resolve('/packs')}
-			>{player.freePacks > 0 || player.coins >= 5 ? 'Open packs' : 'Go to packs'}</a
+			>{player.freePacks > 0 || player.coins >= STANDARD_PACK_COST_COINS
+				? 'Open packs'
+				: 'Go to packs'}</a
 		>
 	{:else}
 		<h2>Pick your team</h2>

@@ -95,6 +95,14 @@ test('is locked with 10 cards and suggests trading doubles when no pack is free'
 	await expect(page.getByRole('link', { name: 'Go to packs' })).toBeVisible();
 });
 
+test('offers Open packs when no pack is free but 5 coins buy one', async ({ page }) => {
+	await savePlayer(page, IDS.slice(0, 10), { freePacks: 0, coins: 5 });
+
+	await page.goto('/match');
+
+	await expect(page.getByRole('link', { name: 'Open packs' })).toBeVisible();
+});
+
 test('does not count a saved card the card set no longer has', async ({ page }) => {
 	await savePlayer(page, [...IDS.slice(0, 10), 'gone-player']);
 
