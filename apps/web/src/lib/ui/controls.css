@@ -73,8 +73,11 @@
 }
 .btn:disabled,
 .btn[aria-disabled='true'] {
+	/* Plainly not available: no red, no press shadow, no fade. */
+	border-color: var(--line);
+	background: var(--surface);
 	box-shadow: none;
-	opacity: 0.5;
+	color: var(--muted);
 	transform: none;
 	cursor: not-allowed;
 }
@@ -307,23 +310,31 @@
 	--p1: #1fa37a;
 	--p2: #0b4f5c;
 	--p3: #2b1f7a;
+	/* The pack's width, and one hundredth of it. A cqw on the pack's own properties would measure
+	   the window, not the pack, so its corners, dots and shadow use --u. Its children use cqw. */
+	--pack-width: min(38vw, 190px);
+	--u: calc(var(--pack-width) / 100);
 	position: relative;
 	display: grid;
 	align-content: center;
 	justify-items: center;
-	gap: 3cqw;
-	width: min(38vw, 190px);
+	gap: calc(3 * var(--u));
+	width: var(--pack-width);
 	aspect-ratio: 5 / 7.3;
 	container-type: inline-size;
 	padding: 0;
 	border: 0;
-	border-radius: 3cqw;
+	border-radius: calc(3 * var(--u));
 	background:
-		radial-gradient(circle, rgba(255, 255, 255, 0.2) 0.6cqw, transparent 0.75cqw) 0 0 / 3.4cqw
-			3.4cqw,
+		radial-gradient(
+				circle,
+				rgba(255, 255, 255, 0.2) calc(0.6 * var(--u)),
+				transparent calc(0.75 * var(--u))
+			)
+			0 0 / calc(3.4 * var(--u)) calc(3.4 * var(--u)),
 		linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.35) 45%, transparent 60%),
 		linear-gradient(160deg, var(--p1), var(--p2) 55%, var(--p3));
-	box-shadow: 0 4cqw 10cqw var(--card-shadow);
+	box-shadow: 0 calc(4 * var(--u)) calc(10 * var(--u)) var(--card-shadow);
 	color: var(--card-paper);
 	font-family: var(--font-data);
 	cursor: pointer;
@@ -332,7 +343,7 @@
 	--p1: #f0503c;
 	--p2: #8a1f6b;
 	--p3: #2b1f7a;
-	width: min(42vw, 212px);
+	--pack-width: min(42vw, 212px);
 }
 .pack::after {
 	content: '';
@@ -377,8 +388,6 @@
 }
 .pack:has(.cover:disabled) {
 	cursor: not-allowed;
-	filter: grayscale(0.6);
-	opacity: 0.7;
 }
 /* The strip GSAP tears off the top of a pack (lib/ui/motion.ts). */
 .pack .strip {
