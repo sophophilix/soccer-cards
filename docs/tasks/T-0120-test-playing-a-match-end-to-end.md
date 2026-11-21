@@ -8,7 +8,7 @@ paths:
   - apps/web/tests/match-play.spec.ts
 dependencies: []
 max_changed_lines: 300
-status: ready
+status: done
 ---
 
 ## Goal

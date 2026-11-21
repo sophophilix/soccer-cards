@@ -7,6 +7,7 @@ agent: web-implementer
 paths:
   - apps/web/src/routes/match/MatchView.svelte
   - apps/web/src/routes/match/MatchStage.svelte
+  - apps/web/src/routes/match/Penalties.svelte
   - apps/web/tests/match-notices.spec.ts
 dependencies: []
 max_changed_lines: 200
@@ -22,7 +23,7 @@ stronger double-tap test from the T-0120 review (F1).
 
 ## Context
 
-- Merge T-0115 first; it also changes `MatchStage.svelte`.
+- T-0115 is merged; it added `Penalties.svelte`.
 - `routes/packs/PacksView.svelte` `SAVE_NOTICES`: `not-saving`,
   `storage-full` and `changed-in-another-tab` each have their own words.
   `MatchView.svelte` shows the `not-saving` words for every refusal.
@@ -35,6 +36,8 @@ stronger double-tap test from the T-0120 review (F1).
   cards, where they differ from Packs.
 - After Skip to full time, focus moves to the result panel's heading (or
   the next control), not to the page body.
+- In the shoot-out, focus stays on or returns to a corner button while a
+  kick shows, and moves to the result when it ends (T-0115 review F1).
 - The score board has a role or heading that names it to a screen reader.
 - A test fires two Kick off clicks before Svelte flushes and sees one
   match. Removing the guard in `MatchView`'s `kickOff` makes it fail; say
