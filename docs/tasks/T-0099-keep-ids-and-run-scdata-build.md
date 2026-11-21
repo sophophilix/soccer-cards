@@ -11,7 +11,7 @@ paths:
   - data/pipeline/tests/test_build.py
   - data/pipeline/tests/test_cli.py
 dependencies: []
-max_changed_lines: 200
+max_changed_lines: 260
 status: ready
 ---
 
