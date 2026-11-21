@@ -385,3 +385,44 @@ def test_the_label_is_english_else_multilingual_for_player_and_team(
 
     assert facts.label == expected
     assert facts.clubs[0].team_label == expected
+
+
+def _with_career_end(statements: list[Json]) -> Json:
+    reply = json.loads((FIXTURES / "Q615.json").read_text(encoding="utf-8"))
+    (entity,) = reply["entities"].values()
+    entity["claims"]["P2032"] = statements
+    return reply  # type: ignore[no-any-return]
+
+
+def _time(value: str, precision: int = 11, rank: str = "normal") -> Json:
+    snak = {
+        "snaktype": "value",
+        "property": "P2032",
+        "datavalue": {
+            "type": "time",
+            "value": {"time": value, "precision": precision},
+        },
+    }
+    return {"mainsnak": snak, "rank": rank, "type": "statement"}
+
+
+def test_career_end_is_read_from_p2032() -> None:
+    reply = _with_career_end([_time("+2024-05-18T00:00:00Z")])
+    facts = fetch_player(SavedResponses({"Q615": reply}), "Q615")
+    assert facts.career_end == "2024-05-18"
+
+
+def test_career_end_keeps_the_year_when_only_the_year_is_known() -> None:
+    reply = _with_career_end([_time("+2019-00-00T00:00:00Z", precision=9)])
+    facts = fetch_player(SavedResponses({"Q615": reply}), "Q615")
+    assert facts.career_end == "2019"
+
+
+def test_career_end_ignores_a_deprecated_statement() -> None:
+    reply = _with_career_end([_time("+2019-01-01T00:00:00Z", rank="deprecated")])
+    facts = fetch_player(SavedResponses({"Q615": reply}), "Q615")
+    assert facts.career_end is None
+
+
+def test_career_end_is_absent_when_wikidata_has_none() -> None:
+    assert fetch_player(SavedResponses(), "Q615").career_end is None
