@@ -1,8 +1,8 @@
 # ADR 0008: A player API and database on Cloudflare serverless
 
-> Status: In review
+> Status: Approved
 > Created: 2026-11-21T14:27:52Z
-> Last reviewed: 2026-11-21T14:27:52Z
+> Last reviewed: 2026-11-21T14:34:12Z
 > Next review: Not scheduled
 
 ## Review guide
@@ -52,11 +52,11 @@ protects: no other host, no personal data, no accounts and nothing to write to.
 
 **D1. Three tiers.**
 
-| Tier     | What it is                                                              | Writes                 |
-| -------- | ----------------------------------------------------------------------- | ---------------------- |
-| Website  | The SvelteKit site, unchanged in look; reads from the API               | nothing                |
-| API      | A Cloudflare Worker answering `/api/v2/*` on `soccercards.dsantmaj.com` | nothing                |
-| Database | Cloudflare D1, one database for the player data                         | the data pipeline only |
+| Tier     | What it is                                                                                      | Writes                 |
+| -------- | ----------------------------------------------------------------------------------------------- | ---------------------- |
+| Website  | The SvelteKit site, unchanged in look; reads from the API                                       | nothing                |
+| API      | A FastAPI app on a Cloudflare Python Worker answering `/api/v2/*` on `soccercards.dsantmaj.com` | nothing                |
+| Database | Cloudflare D1, one database for the player data                                                 | the data pipeline only |
 
 **D2. The API lives on the site's own address.** A Worker route serves
 `/api/v2/*` next to the static site. The site's content security policy keeps
@@ -88,9 +88,10 @@ using a Cloudflare token scoped to this database. A rate-limit rule on
 
 **D5. Built for AI agents.**
 
-- `GET /api/v2/openapi.json`: an OpenAPI 3.1 description generated from the
-  JSON Schemas in `packages/schema`, so the code, the checks and the
-  description can't drift apart.
+- `GET /api/v2/openapi.json`: the OpenAPI 3.1 description FastAPI generates
+  from the app's models. A test checks every response model against the JSON
+  Schemas in `packages/schema`, so the code, the checks and the description
+  can't drift apart.
 - An MCP server as a second Worker with read-only tools (`search_players`,
   `get_player`, `list_squad`, `get_club`), calling the same query layer.
 - `/llms.txt` describing the API, its resources and its rules in plain text.
@@ -121,6 +122,19 @@ was read.
 The site moves to `v2` screen by screen. `v1` stays until the site no longer
 reads it and the tech lead retires it.
 
+**D10. FastAPI on Python Workers, built with the publishers' own skills.**
+The API is a FastAPI app in Python, run on Cloudflare Python Workers through
+their ASGI adapter (`asgi.entrypoint(app)`), with the D1 binding for reads. It
+sits next to the Python pipeline under `uv`, under the team's Python
+standards. Agents that build it use the official FastAPI skill, which ships
+inside the `fastapi` package and is installed with
+`uvx library-skills install --skill fastapi --yes --claude`, and Cloudflare's
+official skills plugin (`cloudflare/skills`: its `wrangler` skill covers D1,
+and it has a Workers best-practices skill). No community-made D1 or SQLModel
+skill is used. The first task is a spike: a FastAPI Worker answering one
+`/api/v2` route from a one-table D1 database on the preview, to prove the
+binding and the limits before the rest is built.
+
 **D9. Infrastructure is code.** The D1 database, the Worker routes, the MCP
 Worker and the rate-limit rule are OpenTofu resources in `infra/`, planned in
 CI and applied by the tech lead (ADR 0002). Worker logs stay off (ADR 0002 D10).
@@ -136,8 +150,10 @@ report is in.
 
 ## Consequences
 
-- A new Worker package (`apps/api`) in TypeScript, and an MCP Worker. New
-  packages for them go in their briefs.
+- A new Python Worker project (`apps/api`) with FastAPI, and an MCP Worker.
+  New packages for them go in their briefs.
+- Two kit changes: the FastAPI skill and Cloudflare's skills plugin for the
+  agent that builds the API.
 - Infrastructure work for the tech lead to approve and apply.
 - The site's data loaders change from files to API calls, screen by screen.
 - More players means more photos to check for licences, and more grades.
@@ -148,3 +164,4 @@ report is in.
 | Reviewed at          | Decision | Notes                                                                                                                                                                                                                                                                                                                                           |
 | -------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 2026-11-21T14:27:52Z | Drafted  | From the tech lead's answers on 2026-11-21: "we do need to build a proper db and api", "the website still can be how it is it just pulls all the data from an api... it needs to be the modern tht is AI agent appropriate", Cloudflare serverless chosen, and the player scope including the Socceroos, Matildas and Western Sydney Wanderers. |
+| 2026-11-21T14:34:12Z | Approved | The tech lead said "ADR 008 is fine...but the API needs to be built using FAST API skill published by fast api...and if there is a DB skill lets us it". D1 and D5 now name FastAPI; D10 adds FastAPI on Python Workers with the official FastAPI skill and Cloudflare's official skills plugin, and a spike comes first.                       |
