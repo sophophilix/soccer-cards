@@ -9,6 +9,7 @@ paths:
   - apps/web/src/routes/match/MatchStage.svelte
   - apps/web/src/routes/match/Penalties.svelte
   - apps/web/tests/match-notices.spec.ts
+  - apps/web/tests/match-play.spec.ts
 dependencies: []
 max_changed_lines: 200
 status: ready
