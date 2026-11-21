@@ -7,6 +7,11 @@ name: checks
 on:
   pull_request:
   workflow_call:
+  # Every gate in full on `main` each night (ADR 0004 D14), to catch a test
+  # the affected scope or the change map didn't pick. 16:23 UTC is early
+  # morning in Sydney.
+  schedule:
+    - cron: '23 16 * * *'
 
 permissions:
   contents: read
