@@ -22,7 +22,7 @@ place can beat a stronger one.
 
 ## Context
 
-- Merge T-0112 first. It names the pick screen's component; if it is not
+- Merge T-0116 first. It builds the pick screen in `PickTeam.svelte`; if it is not
   `PickTeam.svelte`, stop and tell the lead so the brief's paths are fixed.
 - The prototype's `pickgrid`, `togglePick`, `best` and `clearteam`, and the
   "N of 11 picked" chip.
