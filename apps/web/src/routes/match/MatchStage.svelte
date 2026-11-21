@@ -1,12 +1,15 @@
 <!-- The match stage: reveals a match that is already played, one moment at a time, then its result. -->
 <script lang="ts">
-	import { STANDARD_PACK_COST_COINS } from '@soccer-cards/game';
-	import type { CardId } from '@soccer-cards/game';
+	import { STANDARD_PACK_COST_COINS, createRandom, takeKick } from '@soccer-cards/game';
+	import type { CardId, Corner, Random, ShootOut } from '@soccer-cards/game';
 	import { resolve } from '$app/paths';
 	import type { CardFace } from '../../lib/data/card-face-from-summary.ts';
+	import { startPenalties } from '../../lib/match/play-match.ts';
 	import type { FinishedMatch, PlayedMatch } from '../../lib/match/play-match.ts';
-	import { edgeBanner, momentLine } from './commentary.ts';
+	import { randomSeed } from '../../lib/packs/pack-session.ts';
+	import { edgeBanner, kickLine, momentLine } from './commentary.ts';
 	import { DIVISION_NAMES, LINES, LINE_NAMES, TACTIC_WORDS } from './match-words.ts';
+	import Penalties from './Penalties.svelte';
 
 	interface Props {
 		readonly match: PlayedMatch;
@@ -35,10 +38,28 @@
 		away: revealed.filter((each) => each.outcome === 'goal' && each.side === 'away').length
 	});
 	const clock = $derived(isOver ? 'FT' : `${String(revealed.at(-1)?.minute ?? 0)}'`);
-	const lines = $derived(
-		revealed.map((each, id) => ({ id, ...momentLine(each, nameOf) })).toReversed()
-	);
 	const isLevel = $derived(isOver && score.home === score.away);
+	let shootOut = $state.raw<ShootOut>();
+	let random: Random | undefined;
+	const penaltyWinner = $derived(
+		shootOut?.status.kind === 'over' ? shootOut.status.winner : undefined
+	);
+	const lines = $derived(
+		[
+			...revealed.map((each) => momentLine(each, nameOf)),
+			...(shootOut?.kicks ?? []).map((kick) => kickLine(kick))
+		]
+			.map((line, id) => ({ id, ...line }))
+			.toReversed()
+	);
+	const won = $derived(
+		penaltyWinner === undefined ? score.home > score.away : penaltyWinner === 'player'
+	);
+	const onPenalties = $derived(
+		shootOut === undefined || penaltyWinner === undefined
+			? ''
+			: ` (${String(shootOut.score.player)} – ${String(shootOut.score.opponent)} on penalties)`
+	);
 	const banner = $derived(edgeBanner(match.result.tacticalEdge, home.tactic, away.tactic));
 	const plan = (side: typeof home): string =>
 		`${side.formation} · ${TACTIC_WORDS[side.tactic].name}`;
@@ -58,10 +79,23 @@
 	});
 
 	$effect(() => {
-		if (!isOver || isLevel || hasReported) return;
-		hasReported = true;
-		onFullTime(score.home > score.away);
+		if (isLevel && shootOut === undefined) {
+			random = createRandom(randomSeed());
+			shootOut = startPenalties(match);
+		}
 	});
+
+	$effect(() => {
+		if (!isOver || (isLevel && penaltyWinner === undefined) || hasReported) return;
+		hasReported = true;
+		onFullTime(won);
+	});
+
+	function pickCorner(corner: Corner): void {
+		if (shootOut === undefined || random === undefined) return;
+		const next = takeKick(shootOut, corner, random);
+		if (next.ok) shootOut = next.value;
+	}
 </script>
 
 {#snippet team(side: typeof home)}
@@ -89,17 +123,18 @@
 	<span class="chip">AI: {plan(away)}</span>
 </div>
 {#if banner !== undefined}<p class="banner">{banner}</p>{/if}
-{#if isLevel}
+{#if isLevel && penaltyWinner === undefined}
 	<div class="result" role="status">
 		<h2>Full time</h2>
 		<p>It is level, so it goes to penalties!</p>
 	</div>
-{:else if finished !== undefined}
-	{@const won = score.home > score.away}
+{/if}
+{#if shootOut !== undefined}<Penalties {shootOut} onPick={pickCorner} />{/if}
+{#if finished !== undefined}
 	<div class="result" role="status">
 		<h2>{won ? 'You win!' : 'The AI wins'}</h2>
 		<p>
-			{score.home} – {score.away}.
+			{score.home} – {score.away}{onPenalties}.
 			{#if won}
 				You earned {finished.coinsWon} coins.{finished.wentUp
 					? ` You go up to ${DIVISION_NAMES[finished.state.division]}!`
