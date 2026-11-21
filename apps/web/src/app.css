@@ -1,8 +1,12 @@
-/* The base stylesheet for every page. The layout loads it. */
+/* The brand kit in code: every colour, font, size, radius, shadow and easing the site uses.
+   docs/design/brand-kit.md explains each one. Components use these tokens and nothing else.
+   The layout loads this file once for every page. */
 
+@import 'tailwindcss';
 @import './lib/ui/fonts.css';
-@import './lib/ui/controls.css';
+@import './lib/ui/controls.css' layer(components);
 
+/* ---------- Colour: the semantic palette, which dark mode swaps ---------- */
 :root {
 	--bg: #e7f0ea;
 	--stripe: #dde9e1;
@@ -24,9 +28,6 @@
 	--att: #ff5a3c;
 	--def: #3d8bff;
 	--ctrl: #2fcb7a;
-	--font-display: 'Bowlby One', 'Arial Black', Impact, sans-serif;
-	--font-data: 'Saira Condensed', 'Arial Narrow', 'Helvetica Neue', sans-serif;
-	--font-body: 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
 	/* The smallest size a thumb can hit (WCAG 2.2, target size). */
 	--tap-target-min: 44px;
 	color-scheme: light;
@@ -49,63 +50,200 @@
 	}
 }
 
-*,
-*::before,
-*::after {
-	box-sizing: border-box;
+/* The palette as Tailwind colours: bg-surface, text-fg, border-line, bg-booking and so on.
+   Inline, so each utility follows the variable and dark mode needs no dark: prefix. */
+@theme inline {
+	--color-*: initial;
+	--color-bg: var(--bg);
+	--color-stripe: var(--stripe);
+	--color-surface: var(--surface);
+	--color-fg: var(--fg);
+	--color-muted: var(--muted);
+	--color-line: var(--line);
+	--color-accent: var(--accent);
+	--color-accent-ink: var(--accent-ink);
+	--color-booking: var(--booking);
+	--color-booking-ink: var(--booking-ink);
+	--color-focus: var(--focus);
+	--color-scrim: var(--scrim);
+	--color-card-ink: var(--card-ink);
+	--color-card-paper: var(--card-paper);
+	--color-att: var(--att);
+	--color-def: var(--def);
+	--color-ctrl: var(--ctrl);
+	--color-transparent: transparent;
 }
 
-body {
-	margin: 0;
-	padding-block: 18px 72px;
-	padding-inline: max(16px, env(safe-area-inset-left, 0px))
-		max(16px, env(safe-area-inset-right, 0px));
-	/* The mown pitch. Text never sits on it: axe can't measure contrast over a gradient. */
-	background: var(--bg) repeating-linear-gradient(90deg, var(--bg) 0 72px, var(--stripe) 72px 144px);
-	color: var(--fg);
-	font: 400 16px/1.5 var(--font-body);
+/* ---------- Type, shape, depth and motion ---------- */
+@theme {
+	/* Three families: display for names and headings, data for numbers and labels, body for text. */
+	--font-*: initial;
+	--font-display: 'Bowlby One', 'Arial Black', Impact, sans-serif;
+	--font-data: 'Saira Condensed', 'Arial Narrow', 'Helvetica Neue', sans-serif;
+	--font-body: 'Figtree', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+	/* The type scale. Display sizes grow with the screen between a phone and a laptop. */
+	--text-masthead: clamp(24px, 6vw, 36px);
+	--text-masthead--line-height: 1;
+	--text-heading: clamp(20px, 5vw, 26px);
+	--text-heading--line-height: 1.1;
+	--text-result: clamp(28px, 8vw, 44px);
+	--text-result--line-height: 1.1;
+	--text-score: clamp(34px, 10vw, 52px);
+	--text-score--line-height: 1;
+	--text-button: 17px;
+	--text-button--line-height: 1;
+	--text-button-small: 15px;
+	--text-button-small--line-height: 1;
+	--text-tab: 16px;
+	--text-tab--line-height: 1;
+	--text-label: 15px;
+	--text-label--line-height: 1.2;
+	--text-body: 16px;
+	--text-body--line-height: 1.5;
+
+	/* Letter spacing for the condensed data face, from tight to wide. */
+	--tracking-data: 0.06em;
+	--tracking-button: 0.08em;
+	--tracking-label: 0.12em;
+	--tracking-heading: 0.14em;
+	--tracking-wide: 0.16em;
+
+	--radius-chip: 4px;
+	--radius-banner: 10px;
+	--radius-panel: 14px;
+	--radius-pill: 999px;
+
+	/* The press-down button sits 3px above its own shadow. */
+	--shadow-press: 0 3px 0 var(--fg);
+	--shadow-none: 0 0 0 var(--fg);
+
+	/* Easings shared by CSS and lib/ui/motion.ts. */
+	--ease-spring: cubic-bezier(0.3, 1.3, 0.5, 1);
+	--ease-arrive: cubic-bezier(0.2, 1.2, 0.4, 1);
+
+	/* Loops that run on their own. Everything a player triggers runs through GSAP. */
+	--animate-sheen: sheen 5s ease-in-out infinite alternate;
+	--animate-pulse-glow: pulse-glow 1.2s ease-in-out infinite alternate;
+	--animate-spin-glow: spin 3s linear infinite;
+	--animate-wiggle: wiggle 0.32s ease-in-out infinite alternate;
+
+	--breakpoint-wide: 760px;
 }
 
-h1 {
-	margin: 0;
-	font: 400 clamp(24px, 6vw, 36px) / 1 var(--font-display);
-	letter-spacing: 0.01em;
+/* ---------- Base ---------- */
+@layer base {
+	body {
+		padding-block: 18px 72px;
+		padding-inline: max(16px, env(safe-area-inset-left, 0px))
+			max(16px, env(safe-area-inset-right, 0px));
+		/* The mown pitch. */
+		background: var(--bg)
+			repeating-linear-gradient(90deg, var(--bg) 0 72px, var(--stripe) 72px 144px);
+		color: var(--fg);
+		font-family: var(--font-body);
+		font-size: var(--text-body);
+		line-height: var(--text-body--line-height);
+	}
+
+	p {
+		max-width: 60ch;
+	}
+
+	/* Each view sits straight on the pitch, as in the prototype. */
+	main {
+		display: grid;
+		gap: 18px;
+	}
+
+	/* A view's title takes the section heading; the masthead holds the game name. */
+	main h1,
+	h2 {
+		font-family: var(--font-display);
+		font-size: var(--text-heading);
+		line-height: var(--text-heading--line-height);
+		text-wrap: balance;
+	}
+
+	h3 {
+		color: var(--muted);
+		font: 800 var(--text-label) / var(--text-label--line-height) var(--font-data);
+		letter-spacing: var(--tracking-heading);
+		text-transform: uppercase;
+	}
+
+	:focus-visible {
+		outline: 3px solid var(--focus);
+		outline-offset: 3px;
+	}
+
+	/* An inline box ignores min-height, so a link in a sentence becomes a small
+	   flex box that still sits on the line of text. A link keeps its underline
+	   and takes the text colour, which has enough contrast in both themes. */
+	a,
+	button {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: var(--tap-target-min);
+		min-height: var(--tap-target-min);
+		cursor: pointer;
+	}
+
+	a {
+		color: inherit;
+	}
 }
 
-p {
-	margin: 0;
-	max-width: 60ch;
+/* ---------- The loops' keyframes ---------- */
+@keyframes sheen {
+	from {
+		--mx: 10%;
+		--my: 20%;
+	}
+	to {
+		--mx: 90%;
+		--my: 80%;
+	}
+}
+@keyframes pulse-glow {
+	to {
+		opacity: 0.25;
+		transform: scale(1.08);
+	}
+}
+@keyframes spin {
+	to {
+		transform: rotate(1turn);
+	}
+}
+@keyframes wiggle {
+	from {
+		transform: rotate(-1.6deg);
+	}
+	to {
+		transform: rotate(1.6deg);
+	}
 }
 
-/* Each view sits straight on the pitch, as in the prototype. */
-main {
-	display: grid;
-	gap: 18px;
+/* The big card's glare and foil follow these. Registered so the sheen can animate them. */
+@property --mx {
+	syntax: '<percentage>';
+	inherits: true;
+	initial-value: 50%;
+}
+@property --my {
+	syntax: '<percentage>';
+	inherits: true;
+	initial-value: 50%;
 }
 
-/* A view's title takes the prototype's section heading; the masthead holds the game name. */
-main h1 {
-	font: 400 clamp(20px, 5vw, 26px) / 1.1 var(--font-display);
-	text-wrap: balance;
-}
-
-:focus-visible {
-	outline: 3px solid var(--focus);
-	outline-offset: 3px;
-}
-
-/* An inline box ignores min-height, so a link in a sentence becomes a small
-   flex box that still sits on the line of text. A link keeps its underline
-   and takes the text colour, which has enough contrast in both themes. */
-a,
-button {
-	display: inline-flex;
-	align-items: center;
-	justify-content: center;
-	min-width: var(--tap-target-min);
-	min-height: var(--tap-target-min);
-}
-
-a {
-	color: inherit;
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
 }
