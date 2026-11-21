@@ -185,6 +185,23 @@ def test_refused_inputs_name_the_player(changes: dict[str, Any], message: str) -
         _build(facts, **changes)
 
 
+@pytest.mark.parametrize(
+    ("listed", "expected"),
+    [
+        (("Q11681748",), "FORWARD"),
+        (("Q6008848",), "MIDFIELDER"),
+        (("Q268258",), "DEFENDER"),
+        (("Q8025128", "Q280658"), "FORWARD"),  # A basic position beats an earlier one.
+    ],
+)
+def test_specific_positions_map_to_card_positions(
+    listed: tuple[str, ...], expected: str
+) -> None:
+    record = _build(replace(_facts(), positions=listed))
+
+    assert record.player["position"] == expected
+
+
 def test_one_word_name_has_no_given_or_family_name() -> None:
     record = _build(replace(_facts(), label="Pelé"))
     assert record.player["displayName"] == "Pelé"

@@ -31,6 +31,7 @@ class FakeWikimedia:
 
     def __init__(self, *, no_photo: tuple[str, ...] = (), image: int = 200) -> None:
         self.no_photo, self.image, self.asked = no_photo, image, list[str]()
+        self.positions = dict[str, list[str]]()  # Replaces a player's P413.
         self.open_teams = list[str]()  # Teams whose spells have no end date.
         teams = [FIXTURES / f"wikidata/{q}-teams.json" for q in ("Q615", "Q107365")]
         self.teams = [_json(path) for path in teams]
@@ -56,7 +57,22 @@ class FakeWikimedia:
             reply = _json(FIXTURES / f"wikidata/{params['ids']}.json")
             if params["ids"] in self.no_photo:
                 del reply["entities"][params["ids"]]["claims"]["P18"]
-            for claim in reply["entities"][params["ids"]]["claims"].get("P54", []):
+            claims = reply["entities"][params["ids"]]["claims"]
+            if params["ids"] in self.positions:
+                claims["P413"] = [
+                    {
+                        "mainsnak": {
+                            "snaktype": "value",
+                            "datavalue": {
+                                "type": "wikibase-entityid",
+                                "value": {"id": item},
+                            },
+                        },
+                        "rank": "normal",
+                    }
+                    for item in self.positions[params["ids"]]
+                ]
+            for claim in claims.get("P54", []):
                 value = claim["mainsnak"].get("datavalue", {}).get("value", {})
                 if value.get("id") in self.open_teams:
                     claim.get("qualifiers", {}).pop("P582", None)
@@ -340,3 +356,29 @@ def test_only_youth_spells_fail_and_every_failing_player_is_named_at_once(
     assert "Q615: found" in str(error.value)
     assert "Q107365: found" in str(error.value)
     assert not any("upload" in a for a in net.asked)
+
+
+def test_a_specific_only_player_builds_with_the_mapped_position(
+    tmp_path: Path,
+) -> None:
+    net = FakeWikimedia()
+    net.positions = {"Q615": ["Q8025128"]}  # Wing half.
+
+    _run(tmp_path, net=net)
+
+    player = _json(tmp_path / "api/v1/players/lionel-messi.json")
+    assert player["position"] == "MIDFIELDER"
+
+
+def test_players_with_no_usable_position_are_named_at_once_before_any_download(
+    tmp_path: Path,
+) -> None:
+    net = FakeWikimedia()
+    net.positions = {"Q615": ["Q1"], "Q107365": ["Q11681748"]}  # Winger, no keeper.
+
+    with pytest.raises(BuildError) as error:
+        _run(tmp_path, net=net)
+
+    assert "Q615: no Wikidata position" in str(error.value)
+    assert "Q107365: no Wikidata position" in str(error.value)
+    assert not any("upload" in a or "File:" in a for a in net.asked)

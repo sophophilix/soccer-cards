@@ -41,6 +41,25 @@ test('Packs to Cards lists the highest tier first, with copies and an unknown ca
 	await expect(items.nth(2)).toContainText('Unknown card');
 });
 
+test('a card opens large, flips to its back with the credit, and Escape returns focus', async ({
+	page
+}) => {
+	await ownCards(page);
+	await page.goto('/cards');
+	const tile = page.getByRole('button', { name: /Juno Marshwick/ });
+
+	await tile.click();
+	const dialog = page.getByRole('dialog');
+	await expect(dialog).toBeVisible();
+	await dialog.getByRole('button', { name: /see the back/ }).click();
+	await expect(dialog).toContainText('Photo:');
+	expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
+	await page.keyboard.press('Escape');
+
+	await expect(dialog).toBeHidden();
+	await expect(tile).toBeFocused();
+});
+
 test('an empty collection points to Packs', async ({ page }) => {
 	await page.goto('/cards');
 
