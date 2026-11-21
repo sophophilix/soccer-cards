@@ -33,6 +33,11 @@
 		'storage-full': 'This device is full, so your cards were not saved.',
 		'changed-in-another-tab': 'The game is open in another tab, so your cards were not saved here.'
 	} as const;
+	const REFUSALS = {
+		'not-enough-cards': 'There are not enough cards yet.',
+		'not-enough-coins': 'You do not have enough coins for that pack.',
+		'pack-pending': 'You already have a pack to look at. Add it to your collection first.'
+	} as const;
 	const ODDS =
 		`Each lucky card: Rare ${String(LUCKY_ODDS.rare)} in 100 · ` +
 		`Legend ${String(LUCKY_ODDS.legend)} in 100 · Icon ${String(LUCKY_ODDS.icon)} in 100`;
@@ -50,6 +55,10 @@
 	let announcement = $state('');
 	// True while a step runs, so a second tap can't start another on an old state.
 	let isBusy = $state(false);
+	// The next step's main control or heading, so focus never falls to the page.
+	let nextButton = $state<HTMLButtonElement>();
+	let addButton = $state<HTMLButtonElement>();
+	let shelfHeading = $state<HTMLHeadingElement>();
 	const store = createPlayerStore(browserStorage);
 
 	// Each card of the pending pack with what it shows, the best last.
@@ -82,10 +91,17 @@
 			: { status: 'failed' };
 	}
 
+	/** Moves focus to a control the next screen shows, once the screen has changed. */
+	async function focusAfterStep(target: () => HTMLElement | undefined): Promise<void> {
+		await tick();
+		target()?.focus();
+	}
+
 	/** Runs one step, and holds the buttons until the screen shows its result. */
 	async function runStep(step: () => void): Promise<void> {
 		if (isBusy) return;
 		isBusy = true;
+		announcement = '';
 		try {
 			step();
 			await tick();
@@ -113,12 +129,19 @@
 		const random = createRandom(randomSeed());
 		const result = openPackAndSave(store, player, { kind, cardSet: data.cardSet, random });
 		if (!result.ok) {
-			if (result.reason === 'not-enough-cards') announcement = 'There are not enough cards yet.';
+			announcement = REFUSALS[result.reason];
 			return;
 		}
 		player = result.value;
 		shown = 0;
 		notice = noticeAfter(result.saved);
+		void focusAfterStep(() => nextButton);
+	}
+
+	function show(index: number): void {
+		announcement = '';
+		shown = index;
+		if (index >= pack.length) void focusAfterStep(() => addButton);
 	}
 
 	function add(): void {
@@ -129,6 +152,7 @@
 		player = result.value;
 		notice = noticeAfter(result.saved);
 		announcement = `${String(count)} cards added to your collection.`;
+		void focusAfterStep(() => shelfHeading);
 	}
 </script>
 
@@ -146,7 +170,7 @@
 	{:else if data.status === 'loading' || player === undefined}
 		<p>Getting the cards ready…</p>
 	{:else if player.pendingPack === null}
-		<h2>Open a pack</h2>
+		<h2 tabindex="-1" bind:this={shelfHeading}>Open a pack</h2>
 		<p>Coins: {player.coins} · Cards in your collection: {total}</p>
 		<div class="shelf">
 			{#each KINDS as kind (kind)}
@@ -183,11 +207,24 @@
 			</div>
 		{/key}
 		<div class="row">
-			<button type="button" class="btn primary" onclick={() => (shown += 1)}>
+			<button
+				type="button"
+				class="btn primary"
+				bind:this={nextButton}
+				onclick={() => {
+					show(shown + 1);
+				}}
+			>
 				{isLast ? `See all ${String(pack.length)}` : 'Next card'}
 			</button>
 			{#if !isLast}
-				<button type="button" class="btn" onclick={() => (shown = pack.length)}>
+				<button
+					type="button"
+					class="btn"
+					onclick={() => {
+						show(pack.length);
+					}}
+				>
 					Skip to all cards
 				</button>
 			{/if}
@@ -197,7 +234,13 @@
 		<ul class="grid">
 			{#each pack as card, index (index)}<li><CardFront {...card.props.front} /></li>{/each}
 		</ul>
-		<button type="button" class="btn primary" disabled={isBusy} onclick={() => void runStep(add)}>
+		<button
+			type="button"
+			class="btn primary"
+			bind:this={addButton}
+			disabled={isBusy}
+			onclick={() => void runStep(add)}
+		>
 			Add to my collection
 		</button>
 	{/if}
