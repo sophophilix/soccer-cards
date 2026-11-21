@@ -57,6 +57,7 @@ def build(
     years = {q: y for q, f in facts.items() if (y := names.birth_year(f)) is not None}
     labels = {qid: names.display_name(f) for qid, f in facts.items()}
     codes = _team_codes(facts)  # Before any download.
+    _check_positions(facts, entries)  # Also before any download.
     ids = _read_ids(ids_file)
     slugs = ids["players"] = _slugs(ids["players"], labels, years)
     problems = [line for f in facts.values() for line in f.skipped]
@@ -131,6 +132,20 @@ def _team_codes(facts: Mapping[str, wikidata.PlayerFacts]) -> dict[str, str]:
     if failed:
         raise BuildError("needs one national team code: " + "; ".join(failed))
     return codes
+
+
+def _check_positions(
+    facts: Mapping[str, wikidata.PlayerFacts], entries: Mapping[str, grades.GradeEntry]
+) -> None:
+    """Fail naming every player with no usable position."""
+    failed = []
+    for qid, fact in facts.items():
+        try:
+            normalise.card_position(fact, entries[qid])
+        except normalise.NormaliseError as exc:
+            failed.append(str(exc))
+    if failed:
+        raise BuildError("needs a usable position: " + "; ".join(failed))
 
 
 def _slugs(
