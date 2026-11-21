@@ -7,7 +7,7 @@ agent: web-implementer
 paths:
   - apps/web/src/lib/match/**
 dependencies: []
-max_changed_lines: 300
+max_changed_lines: 360
 status: ready
 ---
 
