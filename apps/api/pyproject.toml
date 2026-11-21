@@ -1,0 +1,67 @@
+[project]
+name = "soccer-cards-api"
+version = "0.1.0"
+description = "The Soccer Cards player API: FastAPI on a Cloudflare Python Worker reading D1."
+requires-python = ">=3.13"
+dependencies = [
+    "fastapi>=0.162.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.11,<0.14"]
+build-backend = "uv_build"
+
+[tool.uv]
+# Only releases at least two weeks old, as in data/pipeline.
+exclude-newer = "2026-11-07T00:00:00Z"
+
+[tool.uv.build-backend]
+module-name = "soccer_cards_api"
+
+[tool.ruff]
+line-length = 88
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W", "B", "S", "UP", "C4", "SIM", "RUF", "D"]
+ignore = ["E501"]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.per-file-ignores]
+# Tests use assert, and test names say what each test checks.
+"tests/**" = ["S101", "D"]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = false
+
+[tool.bandit]
+exclude_dirs = ["tests"]
+skips = ["B101"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra --strict-markers --tb=short --import-mode=importlib --cov --cov-report=term-missing"
+
+[tool.coverage.run]
+branch = true
+source_pkgs = ["soccer_cards_api"]
+
+[tool.coverage.report]
+fail_under = 90
+show_missing = true
+
+[dependency-groups]
+dev = [
+    "bandit>=1.9.4",
+    "mypy>=2.4.1",
+    "pytest>=9.2.0",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.17.4",
+]
