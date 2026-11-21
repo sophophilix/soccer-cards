@@ -1,7 +1,7 @@
 import { toCardId } from '@soccer-cards/game';
-import type { CardId, Moment } from '@soccer-cards/game';
+import type { CardId, Kick, Moment } from '@soccer-cards/game';
 import { describe, expect, it } from 'vitest';
-import { edgeBanner, momentLine } from './commentary.ts';
+import { edgeBanner, kickLine, momentLine } from './commentary.ts';
 
 const nameOf = (id: CardId): string => id.toUpperCase();
 const aMoment = (changes: Partial<Moment>): Moment => ({
@@ -43,6 +43,44 @@ describe('momentLine', () => {
 
 		expect(line.text).toBe("7' MID wins the ball for the AI. FWD shoots… just wide.");
 		expect(line.isGoal).toBe(false);
+	});
+});
+
+describe('kickLine', () => {
+	const aKick = (changes: Partial<Kick>): Kick => ({
+		kicker: 'player',
+		shot: 'left',
+		dive: 'right',
+		outcome: 'goal',
+		...changes
+	});
+
+	it('tells of the player scoring', () => {
+		expect(kickLine(aKick({}))).toEqual({
+			text: 'You shoot left, the keeper goes right: GOAL!',
+			isGoal: true
+		});
+	});
+
+	it('tells of a save', () => {
+		const line = kickLine(aKick({ shot: 'middle', dive: 'middle', outcome: 'save' }));
+
+		expect(line).toEqual({
+			text: 'You shoot the middle, the keeper goes the middle: SAVED!',
+			isGoal: false
+		});
+	});
+
+	it('tells of a kick over the bar', () => {
+		expect(kickLine(aKick({ outcome: 'miss' })).text).toBe(
+			'You shoot left, the keeper goes right: over the bar!'
+		);
+	});
+
+	it('tells of the other side kicking at the player keeper', () => {
+		const line = kickLine(aKick({ kicker: 'opponent', shot: 'right', dive: 'middle' }));
+
+		expect(line.text).toBe('They shoot right, your keeper goes the middle: GOAL!');
 	});
 });
 
