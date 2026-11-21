@@ -78,9 +78,7 @@ test.describe('with 11 different cards', () => {
 		await page.goto('/match');
 	});
 
-	test('starts with 4-4-2 and All-out attack, and a Kick off that is not ready', async ({
-		page
-	}) => {
+	test('starts with 4-4-2 and All-out attack, and a Kick off that is ready', async ({ page }) => {
 		await expect(page.getByRole('button', { name: '4-4-2' })).toHaveAttribute(
 			'aria-pressed',
 			'true'
@@ -93,9 +91,9 @@ test.describe('with 11 different cards', () => {
 			'aria-pressed',
 			'false'
 		);
-		await expect(page.getByRole('button', { name: 'Kick off' })).toBeDisabled();
+		await expect(page.getByRole('button', { name: 'Kick off' })).toBeEnabled();
 		await expect(page.getByText('Everyone is in their own position.')).toBeVisible();
-		await expect(page.getByText('Name p-gk-1')).toBeVisible();
+		await expect(page.getByText('Name p-gk-1').first()).toBeVisible();
 		await expect(page.getByText('Goalkeeper · 60')).toBeVisible();
 	});
 
