@@ -7,7 +7,7 @@
 		TEAM_SIZE,
 		WINS_TO_GO_UP
 	} from '@soccer-cards/game';
-	import type { CardId, CheckedCardSet, PlayerState } from '@soccer-cards/game';
+	import type { CardId, CheckedCardSet, Formation, PlayerState, Tactic } from '@soccer-cards/game';
 	import { resolve } from '$app/paths';
 	import type { CardFace } from '../../lib/data/card-face-from-summary.ts';
 	import { loadCardSet } from '../../lib/data/load-card-set.ts';
@@ -15,6 +15,7 @@
 	import { browserStorage, createPlayerStore } from '../../lib/state/player-store.ts';
 	import type { LoadOutcome } from '../../lib/state/player-store.ts';
 	import { DIVISION_NAMES, lockedText } from './match-words.ts';
+	import PickTeam from './PickTeam.svelte';
 
 	const NOT_SAVING = "Your progress can't be saved on this device. You can still play.";
 	const RESTARTED = "We couldn't use your saved cards, so the game starts again.";
@@ -35,6 +36,8 @@
 	let data = $state.raw<Data>({ status: 'loading' });
 	let player = $state.raw<PlayerState>();
 	let notice = $state('');
+	let formation = $state<Formation>('4-4-2');
+	let tactic = $state<Tactic>('attack');
 	const store = createPlayerStore(browserStorage);
 
 	// A card the set no longer has is not counted and not shown.
@@ -52,6 +55,14 @@
 		notice = LOAD_NOTICES[loaded.outcome];
 		void fetchCards();
 	});
+
+	function chooseFormation(next: Formation): void {
+		formation = next;
+	}
+
+	function chooseTactic(next: Tactic): void {
+		tactic = next;
+	}
 
 	async function fetchCards(): Promise<void> {
 		data = { status: 'loading' };
@@ -93,6 +104,15 @@
 			<span class="chip">The AI opens {division.packs} packs · win {division.winCoins} coins</span>
 			<span class="muted">Wins {player.wins} · Losses {player.losses}</span>
 		</div>
+		<PickTeam
+			cardSet={data.cardSet}
+			faces={data.faces}
+			{owned}
+			{formation}
+			{tactic}
+			onFormation={chooseFormation}
+			onTactic={chooseTactic}
+		/>
 	{/if}
 </main>
 
