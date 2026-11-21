@@ -41,6 +41,7 @@ def build(
     api_dir: Path = API_DIR,
     grades_file: Path = grades.PLAYERS_FILE,
     overrides_file: Path = grades.OVERRIDES_FILE,
+    photos_file: Path = grades.PHOTOS_FILE,
     ids_file: Path = IDS_FILE,
 ) -> tuple[str, ...]:
     """Build the API at `now`, an RFC 3339 moment, and return what was dropped.
@@ -53,6 +54,7 @@ def build(
     if not entries:
         raise BuildError(f"{grades_file.name} lists no players")
     overrides = grades.load_overrides(entries, overrides_file)
+    chosen = grades.load_photo_choices(entries, photos_file)
     facts = {qid: wikidata.fetch_player(client, qid) for qid in sorted(entries)}
     years = {q: y for q, f in facts.items() if (y := names.birth_year(f)) is not None}
     labels = {qid: names.display_name(f) for qid, f in facts.items()}
@@ -75,7 +77,7 @@ def build(
     try:
         records = []
         for qid, fact in facts.items():
-            photo = _photo(client, fact, slugs[qid], work)
+            photo = _photo(client, fact, chosen.get(qid), slugs[qid], work)
             if isinstance(photo, Avatar):
                 problems.append(f"{qid}: avatar, {photo.reason!a}")
             record = normalise.build_player(
@@ -102,12 +104,20 @@ def build(
 
 
 def _photo(
-    client: PoliteClient, fact: wikidata.PlayerFacts, slug: str, work: Path
+    client: PoliteClient,
+    fact: wikidata.PlayerFacts,
+    choice: grades.PhotoChoice | None,
+    slug: str,
+    work: Path,
 ) -> normalise.SizedPhoto | Avatar | None:
-    """Check the player's Commons photo, and write it when it may be published."""
-    if fact.photo is None:
+    """Check the player's Commons photo, and write it when it may be published.
+
+    A hand choice replaces Wikidata's P18, or removes the photo.
+    """
+    file_name = fact.photo if choice is None else choice.file
+    if file_name is None:
         return None
-    decision = check_photo(client, fact.photo)
+    decision = check_photo(client, file_name)
     if isinstance(decision, Avatar):
         return decision
     image = client.get_bytes(decision.image_url, max_bytes=MAX_PHOTO_BYTES)
