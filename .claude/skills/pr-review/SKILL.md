@@ -49,6 +49,13 @@ Record each gate as `pass`, `fail`, `unavailable`, `not_run` or
 `not_applicable`, with the command and a short result as evidence. Never
 take a result from the implementer's report.
 
+`verify` runs the gates of every component the change touches, in the
+affected scope (ADR 0004 D14). When the tree is clean and a pass was already
+recorded for it, `verify` reuses that pass and says so. The kit recorded it,
+not the implementer, so it counts as `pass`. Write "reused" in the evidence.
+Don't run the full suites again. Run a narrower command only for something
+you need to see yourself, such as one test.
+
 A failed or unavailable gate makes the verdict `rejected`. Keep reviewing and
 keep your findings. Mark a finding `unverified` when the failed gate stops
 you confirming it.

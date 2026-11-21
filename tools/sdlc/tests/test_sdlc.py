@@ -632,6 +632,62 @@ class VerifyScopeTest(unittest.TestCase):
         self.assertEqual(sorted((root / "gates.log").read_text().splitlines()), ["game affected main", "web affected main"])
 
 
+class GateReuseTest(unittest.TestCase):
+    """A pass on the same clean tree is reused; anything else runs again (ADR 0004 D14)."""
+
+    def setUp(self) -> None:
+        self.repo = Repo()
+        self.addCleanup(self.repo.close)
+        root = self.repo.root
+        (root / "Makefile").write_text("check:\n\t@echo $(COMPONENT) >> gates.log\n")
+        (root / ".gitignore").write_text(".sdlc/\ngates.log\n")
+        packs = root / "packages" / "game" / "src" / "packs"
+        packs.mkdir(parents=True)
+        self.git("init", "-q", "-b", "main")
+        self.git("add", "-A")
+        self.git("commit", "-q", "-m", "chore: start")
+        self.git("switch", "-q", "-c", "feat/jumbo")
+        (packs / "jumbo.ts").write_text("export const size = 20;\n")
+        (packs / "jumbo.test.ts").write_text("test('size', () => {});\n")
+        self.git("add", "-A")
+        self.git("commit", "-q", "-m", "feat: jumbo")
+
+    def git(self, *args: str) -> None:
+        subprocess.run(["git", "-C", str(self.repo.root), "-c", "user.name=t", "-c", "user.email=t@example.org", *args], check=True, capture_output=True)
+
+    def runs(self) -> int:
+        log = self.repo.root / "gates.log"
+        return len(log.read_text().splitlines()) if log.exists() else 0
+
+    def test_a_second_verify_on_the_same_tree_reuses_the_pass(self) -> None:
+        self.assertEqual(sdlc.verify(self.repo.root), [])
+        self.assertEqual(self.runs(), 2)  # game and web
+        with contextlib.redirect_stderr(io.StringIO()) as err:
+            self.assertEqual(sdlc.verify(self.repo.root), [])
+        self.assertEqual(self.runs(), 2)
+        self.assertIn("reused the pass", err.getvalue())
+
+    def test_an_uncommitted_change_runs_the_gates_again(self) -> None:
+        sdlc.verify(self.repo.root)
+        (self.repo.root / "packages" / "game" / "src" / "packs" / "jumbo.ts").write_text("export const size = 21;\n")
+        sdlc.verify(self.repo.root)
+        self.assertEqual(self.runs(), 4)
+
+    def test_a_new_commit_runs_the_gates_again(self) -> None:
+        sdlc.verify(self.repo.root)
+        (self.repo.root / "packages" / "game" / "src" / "packs" / "jumbo.ts").write_text("export const size = 21;\n")
+        self.git("commit", "-qam", "fix: size")
+        sdlc.verify(self.repo.root)
+        self.assertEqual(self.runs(), 4)
+
+    def test_a_failure_is_never_reused(self) -> None:
+        (self.repo.root / "Makefile").write_text("check:\n\t@echo $(COMPONENT) >> gates.log; exit 1\n")
+        self.git("commit", "-qam", "chore: failing gate")
+        sdlc.verify(self.repo.root)
+        sdlc.verify(self.repo.root)
+        self.assertGreaterEqual(self.runs(), 2 * len(sdlc.COMPONENTS))
+
+
 class HookTest(unittest.TestCase):
     def run_hook(self, event: object) -> subprocess.CompletedProcess[str]:
         script = Path(__file__).resolve().parents[1] / "sdlc.py"

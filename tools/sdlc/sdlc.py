@@ -682,16 +682,65 @@ def verify(root: Path, run_gates: bool = True) -> list[str]:
     if run_gates:
         # The gates of every component the change touches, in the affected
         # scope (ADR 0004 D4, D14). The brief's own component always runs.
+        # A pass on the same clean tree against the same base is reused, so
+        # the reviewer and the lead don't rerun tests the implementer passed.
+        tree = _clean_tree(root)
+        base_sha = _git(root, "rev-parse", "--verify", "--quiet", base)[1].strip()
         for component in sorted(components_for(sorted(changed)) | {str(meta["component"])}):
+            key = {"tree": tree, "base": base_sha, "component": component, "scope": "affected"}
+            recorded = _recorded_pass(root, key) if tree else None
+            if recorded:
+                print(f"gate 'make check COMPONENT={component}': reused the pass recorded at {recorded} for tree {tree[:12]}", file=sys.stderr)
+                continue
             command = ["make", "-s", "check", f"COMPONENT={component}", "SCOPE=affected", f"BASE={base}"]
             try:
                 gate = subprocess.run(command, cwd=root, capture_output=True, text=True, timeout=1500, check=False)
                 if gate.returncode != 0:
                     tail = "\n".join((gate.stdout + gate.stderr).strip().splitlines()[-40:])
                     failures.append(f"gate 'make check COMPONENT={component}' failed:\n{tail}")
+                elif tree and _clean_tree(root) == tree:
+                    _record_pass(root, key)
             except (OSError, subprocess.SubprocessError) as exc:
                 failures.append(f"gate 'make check COMPONENT={component}' is unavailable ({exc}). Unavailable is not a pass.")
     return failures
+
+
+GATE_RESULTS = "gate-results.jsonl"
+
+
+def _clean_tree(root: Path) -> str:
+    """Return HEAD's tree id when the working tree has no change git can see, else ''."""
+    code, status = _git(root, "status", "--porcelain", "--untracked-files=normal")
+    if code != 0 or status.strip():
+        return ""
+    code, tree = _git(root, "rev-parse", "HEAD^{tree}")
+    return tree.strip() if code == 0 else ""
+
+
+def _recorded_pass(root: Path, key: dict[str, str]) -> str:
+    """Return when a pass for exactly this key was recorded, or ''. A failure is never recorded."""
+    try:
+        lines = (shared_root(root) / ".sdlc" / GATE_RESULTS).read_text(encoding="utf-8").splitlines()
+    except OSError:
+        return ""
+    for line in reversed(lines):
+        try:
+            record = json.loads(line)
+        except ValueError:
+            continue
+        if isinstance(record, dict) and all(record.get(k) == v for k, v in key.items()):
+            return str(record.get("at", ""))
+    return ""
+
+
+def _record_pass(root: Path, key: dict[str, str]) -> None:
+    try:
+        folder = shared_root(root) / ".sdlc"
+        folder.mkdir(exist_ok=True)
+        with (folder / GATE_RESULTS).open("a", encoding="utf-8") as handle:
+            handle.write(json.dumps({"at": _now(), **key}, sort_keys=True) + "\n")
+    except OSError as exc:
+        print(f"SDLC kit: the gate result could not be recorded ({exc})", file=sys.stderr)
 
 
 # ---------- reviews ----------
