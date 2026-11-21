@@ -118,9 +118,12 @@ def _team_codes(facts: Mapping[str, wikidata.PlayerFacts]) -> dict[str, str]:
     codes: dict[str, str] = {}
     failed = []
     for qid, fact in facts.items():
-        found = sorted(
-            {s.code for s in normalise.senior_national_teams(fact) if s.code}
-        )
+        try:
+            current, _ = normalise.current_senior_teams(fact)
+        except normalise.NormaliseError as exc:
+            failed.append(str(exc))
+            continue
+        found = sorted({s.code for s in current if s.code})
         if len(found) == 1:
             codes[qid] = found[0]
         else:

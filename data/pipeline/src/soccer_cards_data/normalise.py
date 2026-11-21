@@ -80,6 +80,36 @@ def senior_national_teams(facts: PlayerFacts) -> list[Spell]:
     return [s for s in facts.national_teams if not _YOUTH.search(s.team_label or "U21")]
 
 
+def current_senior_teams(facts: PlayerFacts) -> tuple[list[Spell], list[Spell]]:
+    """Split the senior spells into the current team's and the other teams'.
+
+    The current team has a spell with no end date or, if every spell has ended,
+    the latest end date.
+
+    Raises:
+        NormaliseError: Two teams tie, so the current one can't be told.
+    """
+    senior = senior_national_teams(facts)
+    teams = {s.team for s in senior}
+    if len(teams) <= 1:
+        return senior, []
+    open_teams = {s.team for s in senior if s.end is None}
+    if open_teams:
+        candidates = open_teams
+    else:
+        latest = max(s.end or "" for s in senior)
+        candidates = {s.team for s in senior if s.end == latest}
+    if len(candidates) != 1:
+        raise NormaliseError(
+            f"{facts.qid}: can't tell the current senior national team"
+        )
+    current = candidates.pop()
+    return (
+        [s for s in senior if s.team == current],
+        [s for s in senior if s.team != current],
+    )
+
+
 def build_player(
     facts: PlayerFacts,
     entry: GradeEntry,
@@ -104,10 +134,11 @@ def build_player(
     problems: list[str] = []
     # Youth teams are left out. A national team with no label counts as youth.
     clubs = [s for s in facts.clubs if not _YOUTH.search(s.team_label or "")]
-    senior = senior_national_teams(facts)
-    if len({s.team for s in senior}) > 1:
-        problems.append(f"{qid}: plays for more than one senior national team")
-        senior = []
+    senior, others = current_senior_teams(facts)
+    problems += [
+        f"{qid}: dropped senior national team {t}"
+        for t in sorted({s.team_label or s.team for s in others})
+    ]
     club_counts = _totals(clubs, CLUB_BOUNDS, qid, problems)
     caps, nation_goals = _totals(senior, NATIONAL_BOUNDS, qid, problems)
     position = _position(facts, entry)
