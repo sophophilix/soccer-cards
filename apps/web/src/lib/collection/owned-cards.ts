@@ -1,6 +1,6 @@
 import { TIERS, toCardId } from '@soccer-cards/game';
 import type { Card, CardId, Tier } from '@soccer-cards/game';
-import type { CardBackProps } from '../cards/card-back.ts';
+import { backFor, type CardBackProps } from '../cards/card-back.ts';
 import type { CardFrontProps } from '../cards/card-front.ts';
 import type { CardFace } from '../data/card-face-from-summary.ts';
 
@@ -88,5 +88,5 @@ export function cardViewProps(card: Card, face: CardFace): CardViewProps {
 		})
 	};
 	if (face.ratings === undefined) return { front };
-	return { front, back: { ratings: face.ratings, photoCredit: face.photo?.credit } };
+	return { front, back: backFor(front, face.ratings, face.photo?.credit, card.id) };
 }
