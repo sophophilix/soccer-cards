@@ -80,7 +80,7 @@
 					>{inTier.filter((entry) => copies(entry.card.id) > 0).length} of {inTier.length}</span
 				>
 			</div>
-			<ul class="grid fixed">
+			<ul class="grid deck">
 				{#each inTier as entry (entry.card.id)}
 					<li>
 						{#if copies(entry.card.id) > 0}

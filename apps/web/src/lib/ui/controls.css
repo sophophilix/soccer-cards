@@ -173,7 +173,7 @@
 .grid.cols-7 {
 	--cols: 7;
 }
-.grid.fixed {
+.grid.deck {
 	grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
 	gap: 10px;
 }
@@ -186,6 +186,8 @@
 	all: unset;
 	position: relative;
 	display: block;
+	/* A button sizes to its content, and the card measures the button, so set the width. */
+	width: 100%;
 	container-type: inline-size;
 	border-radius: 5cqw;
 	cursor: pointer;

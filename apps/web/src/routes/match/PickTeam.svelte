@@ -159,7 +159,7 @@
 </div>
 <p class="muted" role="status">{message}</p>
 <h3>Your players</h3>
-<div class="grid fixed pickgrid" data-testid="your-players">
+<div class="grid deck pickgrid" data-testid="your-players">
 	{#each players as card (card.id)}
 		{@const face = faces.get(card.id)}
 		{#if face !== undefined}
