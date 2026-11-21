@@ -29,6 +29,9 @@ POSITIONS = {
 # Specific positions, used only when a player lists none of the four above.
 SPECIFIC_POSITIONS = {
     "Q11681748": Position.FORWARD,  # winger
+    "Q9731197": Position.FORWARD,  # centre-forward
+    "Q1642283": Position.FORWARD,  # second striker
+    "Q1201458": Position.MIDFIELDER,  # playmaker
     "Q90326494": Position.MIDFIELDER,  # attacking midfielder
     "Q18691898": Position.MIDFIELDER,  # defensive midfielder
     "Q6008848": Position.MIDFIELDER,  # central midfielder

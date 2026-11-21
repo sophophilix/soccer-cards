@@ -191,6 +191,9 @@ def test_refused_inputs_name_the_player(changes: dict[str, Any], message: str) -
         (("Q11681748",), "FORWARD"),
         (("Q6008848",), "MIDFIELDER"),
         (("Q268258",), "DEFENDER"),
+        (("Q9731197",), "FORWARD"),  # centre-forward
+        (("Q1642283",), "FORWARD"),  # second striker
+        (("Q1201458",), "MIDFIELDER"),  # playmaker
         (("Q8025128", "Q280658"), "FORWARD"),  # A basic position beats an earlier one.
     ],
 )
