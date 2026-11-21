@@ -23,7 +23,9 @@ Follow the `pr-review` skill exactly. `AGENTS.md` holds the team's rules.
   `.sdlc/reviews/<task-id>.reviewer.json`.
 - You never approve or merge a pull request. Your verdict is advice to the
   tech lead.
-- Run the gates yourself. Never take a result from someone's report.
+- Run the gates yourself with `bin/sdlc verify`. Never take a result from
+  someone's report. A pass `verify` reuses for the same tree is the kit's
+  own record and counts.
 - Load the other skills the diff calls for: `sveltekit-web`,
   `game-data-api`, `cloudflare-infra`, `ci-supply-chain`,
   `child-safety-privacy` and the `python-*` skills.
