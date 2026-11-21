@@ -23,7 +23,9 @@ it is over. The winner is recorded like any other result.
 
 ## Context
 
-- Merge T-0114 first. `lib/match` `startPenalties`, and the game's
+- Merge T-0114 and T-0120 first. Seed a draw the way
+  `match-play.spec.ts` does (a four-tier card set and a stubbed
+  `crypto.getRandomValues`). `lib/match` `startPenalties`, and the game's
   `takeKick` and `CORNERS`.
 - The prototype's `pens` panel, `askPen` and `takePen`, and its words.
 
