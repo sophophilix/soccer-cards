@@ -56,10 +56,26 @@ test('puts the card number on the front as the shirt number', () => {
 	});
 });
 
-test('names the tier and the position in the words the card front uses', () => {
-	const { front } = cardPropsOf(aCard({ tier: 'icon', position: 'GK' }), aFace());
+test.each([
+	['base', 'BASE'],
+	['rare', 'RARE'],
+	['legend', 'LEGEND'],
+	['icon', 'ICON']
+] as const)('names the %s tier %s on the card front', (tier, expected) => {
+	const { front } = cardPropsOf(aCard({ tier }), aFace());
 
-	expect(front).toMatchObject({ tier: 'ICON', position: 'GOALKEEPER', overall: 84 });
+	expect(front.tier).toBe(expected);
+});
+
+test.each([
+	['GK', 'GOALKEEPER'],
+	['DF', 'DEFENDER'],
+	['MF', 'MIDFIELDER'],
+	['FW', 'FORWARD']
+] as const)('names the %s position %s on the card front', (position, expected) => {
+	const { front } = cardPropsOf(aCard({ position }), aFace());
+
+	expect(front.position).toBe(expected);
 });
 
 test('gives the back the ratings and the photo credit', () => {
