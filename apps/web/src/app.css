@@ -1,6 +1,7 @@
 /* The base stylesheet for every page. The layout loads it. */
 
 @import './lib/ui/fonts.css';
+@import './lib/ui/controls.css';
 
 :root {
 	--bg: #e7f0ea;
@@ -76,13 +77,16 @@ p {
 	max-width: 60ch;
 }
 
+/* Each view sits straight on the pitch, as in the prototype. */
 main {
 	display: grid;
-	gap: 12px;
-	padding: 18px;
-	border: 2px solid var(--line);
-	border-radius: 14px;
-	background: var(--surface);
+	gap: 18px;
+}
+
+/* A view's title takes the prototype's section heading; the masthead holds the game name. */
+main h1 {
+	font: 400 clamp(20px, 5vw, 26px) / 1.1 var(--font-display);
+	text-wrap: balance;
 }
 
 :focus-visible {

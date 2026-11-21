@@ -3,9 +3,11 @@
 
 	interface Props {
 		pathname: string;
+		/** How many cards the player holds, shown on the Cards tab once known. */
+		cardCount?: number | undefined;
 	}
 
-	const { pathname }: Props = $props();
+	const { pathname, cardCount }: Props = $props();
 
 	const VIEWS = [
 		{ name: 'Packs', path: '/packs' },
@@ -24,7 +26,9 @@
 <nav aria-label="Views">
 	{#each VIEWS as view (view.path)}
 		{@const href = resolve(view.path)}
-		<a {href} aria-current={href === currentPath ? 'page' : undefined}>{view.name}</a>
+		<a {href} aria-current={href === currentPath ? 'page' : undefined}
+			>{view.name}{#if view.name === 'Cards' && cardCount !== undefined}&nbsp;({cardCount}){/if}</a
+		>
 	{/each}
 </nav>
 
