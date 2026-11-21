@@ -366,6 +366,8 @@ def _labels(**by_language: str) -> Json:
         (_labels(mul="Sergio Ramos"), "Sergio Ramos"),
         (_labels(en="Ramos", mul="Sergio Ramos"), "Ramos"),
         (_labels(mul="\u30e9\u30e2\u30b9"), "\u30e9\u30e2\u30b9"),
+        (_labels(en="", mul="Sergio Ramos"), "Sergio Ramos"),
+        (_labels(en="  ", mul="Sergio Ramos"), "Sergio Ramos"),
         ({}, None),
         (_labels(de="Sergio Ramos"), None),
     ],
