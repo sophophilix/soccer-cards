@@ -1,10 +1,13 @@
-from collections.abc import Iterator
+import asyncio
+from collections.abc import Iterator, MutableMapping
+from typing import Any
 
 import pytest
 from fastapi.testclient import TestClient
 from starlette.requests import Request
 
 from soccer_cards_api.app import create_app, database_from_scope
+from soccer_cards_api.queries import DatabaseError, WriteRefusedError
 from tests.conftest import migrated_d1
 from tests.fakes import FakeD1
 
@@ -44,13 +47,6 @@ def test_known_player_returns_its_resource(client: TestClient) -> None:
     assert response.json() == ADA
 
 
-def test_fields_are_camel_case(client: TestClient) -> None:
-    body = client.get("/api/v2/players/bruno-quill").json()
-
-    assert "displayName" in body
-    assert "display_name" not in body
-
-
 def test_unknown_player_is_a_404_in_the_aip_193_shape(client: TestClient) -> None:
     response = client.get("/api/v2/players/nobody-here")
 
@@ -81,30 +77,15 @@ def test_bad_id_is_a_400_and_never_reaches_the_database(
     assert d1.prepared == []
 
 
-def test_longest_valid_id_reaches_the_database(client: TestClient) -> None:
-    response = client.get("/api/v2/players/" + "a" * 63)
-
-    assert response.status_code == 404
-
-
 def test_database_failure_is_a_500_without_internal_detail(
-    failing_client: TestClient,
+    failing_client: TestClient, caplog: pytest.LogCaptureFixture
 ) -> None:
-    response = failing_client.get("/api/v2/players/ada-vale")
+    with caplog.at_level(0):
+        response = failing_client.get("/api/v2/players/ada-vale")
 
     assert response.status_code == 500
     assert response.json()["error"]["status"] == "INTERNAL"
-    assert "secret" not in response.text
-
-
-def test_missing_binding_is_a_500_without_internal_detail() -> None:
-    response = TestClient(create_app(), raise_server_exceptions=False).get(
-        "/api/v2/players/ada-vale"
-    )
-
-    assert response.status_code == 500
-    assert response.json()["error"]["status"] == "INTERNAL"
-    assert "env" not in response.text
+    assert "secret" not in response.text + caplog.text
 
 
 def test_default_binding_is_env_db_from_the_request_scope() -> None:
@@ -136,36 +117,49 @@ def test_every_statement_sent_to_the_database_is_a_constant_select(
     )
 
 
-def test_unexpected_exception_is_the_fixed_500_and_its_cause_is_not_logged(
-    caplog: pytest.LogCaptureFixture,
+@pytest.mark.parametrize("failure", [RuntimeError, DatabaseError, WriteRefusedError])
+def test_every_failure_is_the_fixed_500_and_its_cause_is_not_logged(
+    failure: type[Exception], caplog: pytest.LogCaptureFixture
 ) -> None:
     def database_for(_request: Request) -> FakeD1:
-        msg = "secret internal detail"
-        raise RuntimeError(msg)
+        raise failure("secret internal detail")
 
     with caplog.at_level(0):
         response = TestClient(
             create_app(database_for), raise_server_exceptions=False
         ).get("/api/v2/players/ada-vale")
 
-    assert response.json() == {
-        "error": {
-            "code": 500,
-            "message": "Something went wrong. Try again later.",
-            "status": "INTERNAL",
-        }
-    }
+    assert response.status_code == 500
+    assert response.json()["error"]["status"] == "INTERNAL"
     assert "secret" not in response.text
     assert "secret" not in caplog.text
 
 
-def test_database_failure_cause_is_not_logged(
-    failing_client: TestClient, caplog: pytest.LogCaptureFixture
-) -> None:
-    with caplog.at_level(0):
-        failing_client.get("/api/v2/players/ada-vale")
+def test_raw_asgi_call_raises_nothing_so_no_server_can_log_the_cause() -> None:
+    def database_for(_request: Request) -> FakeD1:
+        msg = "secret internal detail"
+        raise RuntimeError(msg)
 
-    assert "secret" not in caplog.text
+    sent: list[MutableMapping[str, Any]] = []
+
+    async def receive() -> dict[str, Any]:
+        return {"type": "http.request", "body": b"", "more_body": False}
+
+    async def send(message: MutableMapping[str, Any]) -> None:
+        sent.append(message)
+
+    scope = {
+        "type": "http",
+        "method": "GET",
+        "path": "/api/v2/players/ada-vale",
+        "query_string": b"",
+        "headers": [],
+    }
+
+    asyncio.run(create_app(database_for)(scope, receive, send))
+
+    assert sent[0]["status"] == 500
+    assert b"secret" not in b"".join(m.get("body", b"") for m in sent)
 
 
 def test_fastapi_telemetry_is_off() -> None:

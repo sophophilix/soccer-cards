@@ -6,15 +6,11 @@ from typing import Any
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
+from starlette.types import ASGIApp, Message, Receive, Scope, Send
 
 from soccer_cards_api.errors import ApiError, error_response, internal_error
 from soccer_cards_api.players import Player, PlayerRepository, is_valid_player_id
-from soccer_cards_api.queries import (
-    Database,
-    DatabaseError,
-    ReadOnlyQueries,
-    WriteRefusedError,
-)
+from soccer_cards_api.queries import Database, ReadOnlyQueries
 
 DatabaseFor = Callable[[Request], Database]
 
@@ -23,6 +19,33 @@ _STATUS_NAMES = {
     404: "NOT_FOUND",
     405: "METHOD_NOT_ALLOWED",
 }
+
+
+class _FixedInternalError:
+    """Turn any error that escapes the app into the fixed 500, and stop there.
+
+    Starlette's own 500 handler re-raises after it answers, and the Workers
+    adapter logs that exception with its traceback. Catching it here means the
+    cause reaches neither the response nor a log (T-0135 security F5).
+    """
+
+    def __init__(self, app: ASGIApp) -> None:
+        self._app = app
+
+    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+        started = False
+
+        async def tracked_send(message: Message) -> None:
+            nonlocal started
+            started = started or message["type"] == "http.response.start"
+            await send(message)
+
+        try:
+            await self._app(scope, receive, tracked_send)
+        except Exception:
+            if scope["type"] != "http" or started:
+                raise
+            await internal_error()(scope, receive, send)
 
 
 def database_from_scope(request: Request) -> Database:
@@ -67,20 +90,7 @@ def create_app(database_for: DatabaseFor = database_from_scope) -> FastAPI:
         return error_response(exc.status_code, status, message)
 
     # Every database failure and every unexpected error is the one fixed 500.
-    # The handlers never read the exception, so its cause is not shown or logged.
-    @app.exception_handler(DatabaseError)
-    async def _database(_request: Request, _exc: DatabaseError) -> JSONResponse:
-        return internal_error()
-
-    @app.exception_handler(WriteRefusedError)
-    async def _write_refused(
-        _request: Request, _exc: WriteRefusedError
-    ) -> JSONResponse:
-        return internal_error()
-
-    @app.exception_handler(Exception)
-    async def _unexpected(_request: Request, _exc: Exception) -> JSONResponse:
-        return internal_error()
+    app.add_middleware(_FixedInternalError)
 
     @app.get(
         "/api/v2/players/{player:path}",
