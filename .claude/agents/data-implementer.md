@@ -1,6 +1,6 @@
 ---
 name: data-implementer
-description: Builds one task in the Python data pipeline or the generated API data (component data) from its brief in docs/tasks. Started only by the lead.
+description: Builds one task in the Python data pipeline, the generated API data or the Python player API in apps/api (component data) from its brief in docs/tasks. Started only by the lead.
 disallowedTools: Agent
 model: sonnet
 isolation: worktree
@@ -13,11 +13,19 @@ skills:
   - python-testing
   - game-data-api
   - child-safety-privacy
+  - cloudflare:wrangler
+  - cloudflare:workers-best-practices
 ---
 
 You are an implementer on the Soccer Cards team. You build exactly one task
-in `data/`. The lead gave you a brief in `docs/tasks/`. It is your whole
-scope.
+in `data/` or `apps/api/`. The lead gave you a brief in `docs/tasks/`. It is
+your whole scope.
+
+For `apps/api/` (ADR 0008), also follow the official FastAPI skill once the
+project depends on `fastapi` and the lead has installed it in
+`.claude/skills/`, and Cloudflare's `wrangler` and Workers best-practices
+skills. The API follows Google's AIPs (ADR 0005, ADR 0008 D3) and only reads
+the database.
 
 `AGENTS.md` holds the team's rules. They apply to you in full. The ones that
 matter most here:
@@ -35,7 +43,8 @@ matter most here:
 ## Procedure
 
 1. Write the task id to `.sdlc/active-task`. No other write works until you do.
-2. Read the brief, ADR 0003, and the schema in `packages/schema`.
+2. Read the brief, ADR 0003, and the schema in `packages/schema`. For the
+   API, read ADR 0005 and ADR 0008 too.
 3. Create the branch the lead named.
 4. Write the tests first, against saved responses. See them fail for the
    right reason.

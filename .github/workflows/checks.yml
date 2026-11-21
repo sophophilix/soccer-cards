@@ -58,7 +58,7 @@ jobs:
                 packages/schema/*) schema=true game=true web=true ;;
                 packages/game/*) game=true web=true ;;
                 apps/web/*) web=true ;;
-                data/*) data=true ;;
+                data/* | apps/api/*) data=true ;;
                 # Knip reads the workflows' `pnpm exec` binaries, and every
                 # TypeScript gate runs Knip.
                 .github/workflows/*) schema=true ;;
