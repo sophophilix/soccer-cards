@@ -6,6 +6,7 @@ kind: feature
 agent: data-implementer
 paths:
   - data/api/v1/**
+  - data/pipeline/ids.toml
   - data/pipeline/tests/test_published_api.py
 dependencies: []
 max_changed_lines: 400
@@ -20,7 +21,11 @@ fetched live by an agent (ADR 0006 D6).
 ## Context
 
 - ADR 0003 D4 and ADR 0006 D1, D6: few, sequential requests with the
-  project's User-Agent. `scdata build` from T-0083.
+  project's User-Agent. Run `uv run --frozen scdata build` from
+  `data/pipeline` (T-0083, T-0098, T-0099, T-0101, T-0103).
+- The kit treats `data/api/**` as generated: it can't be edited by hand
+  and doesn't count towards the line limit. The run also fills
+  `ids.toml`, which is counted.
 
 ## Acceptance criteria
 
