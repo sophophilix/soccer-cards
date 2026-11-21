@@ -1,5 +1,5 @@
 import type { Card, Position, Tier } from '@soccer-cards/game';
-import type { CardBackProps } from '../../lib/cards/card-back.ts';
+import { backFor, type CardBackProps } from '../../lib/cards/card-back.ts';
 import type { CardFrontProps } from '../../lib/cards/card-front.ts';
 import type { CardFace } from '../../lib/data/card-face-from-summary.ts';
 
@@ -44,6 +44,6 @@ export function cardPropsOf(card: Card, face: CardFace): CardProps {
 	const back: CardBackProps | undefined =
 		face.ratings === undefined
 			? undefined
-			: { ratings: face.ratings, photoCredit: face.photo?.credit };
+			: backFor(front, face.ratings, face.photo?.credit, card.id);
 	return { front, back };
 }

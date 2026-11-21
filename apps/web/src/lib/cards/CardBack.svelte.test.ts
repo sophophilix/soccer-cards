@@ -110,7 +110,9 @@ test('the credit line names the photo author and the licence as text', async () 
 
 	const screen = await render(CardBack, aBack({ photoCredit }));
 
-	expect(rows(screen.container, '.credit')).toEqual(['Photo: <b>Jane</b> Example, CC-BY-SA-4.0']);
+	expect(rows(screen.container, '.credit')).toEqual([
+		'Photo: <b>Jane</b> Example, CC BY-SA 4.0, via Wikimedia Commons'
+	]);
 	expect(screen.container.querySelector('.credit b, .credit a')).toBeNull();
 });
 
