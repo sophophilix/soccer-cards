@@ -7,11 +7,12 @@ agent: web-implementer
 paths:
   - apps/web/src/routes/match/Penalties.svelte
   - apps/web/src/routes/match/MatchStage.svelte
+  - apps/web/src/routes/match/MatchView.svelte
   - apps/web/src/routes/match/commentary.ts
   - apps/web/src/routes/match/commentary.test.ts
   - apps/web/tests/match-penalties.spec.ts
 dependencies: []
-max_changed_lines: 300
+max_changed_lines: 400
 status: ready
 ---
 
@@ -28,6 +29,12 @@ it is over. The winner is recorded like any other result.
   `crypto.getRandomValues`). `lib/match` `startPenalties`, and the game's
   `takeKick` and `CORNERS`.
 - The prototype's `pens` panel, `askPen` and `takePen`, and its words.
+- `MatchStage` calls `MatchView`'s full-time handler only for a decided
+  match. The shoot-out's winner is saved through the same
+  `finishMatchAndSave` path, once. Keep the reveal and Play again working
+  for a draw.
+- Every screen task so far ran over its limit. If the end-to-end spec
+  pushes this past 400, stop and tell the lead rather than cutting tests.
 
 ## Acceptance criteria
 
