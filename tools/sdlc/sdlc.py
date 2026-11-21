@@ -505,6 +505,69 @@ def _dependency_names(text: str, kind: str) -> set[str]:
     return {re.split(r"[\s<>=!~\[;@]", e, maxsplit=1)[0].lower() for e in entries}
 
 
+# ---------- which gates a change needs (ADR 0004 D14) ----------
+
+# The components whose gates CI runs only when a change touches them. `sdlc`
+# and `docs` run on every pull request, because each takes seconds.
+CI_COMPONENTS = ("infra", "schema", "game", "web", "data")
+EVERY_COMPONENT = frozenset(COMPONENTS)
+
+# Each changed path takes the components of the first rule its glob matches.
+# A path no rule matches runs every gate. Order matters: narrow rules first.
+CHANGE_MAP: list[tuple[str, frozenset[str]]] = [
+    # The gates' own workflow changes how every gate runs.
+    (".github/workflows/checks.yml", EVERY_COMPONENT),
+    ("infra/**", frozenset({"infra"})),
+    # The schema generates the types the game and the site import.
+    ("packages/schema/**", frozenset({"schema", "game", "web"})),
+    ("packages/game/**", frozenset({"game", "web"})),
+    ("apps/web/**", frozenset({"web"})),
+    # The site's build copies the published API, so its tests read it.
+    ("data/api/**", frozenset({"data", "web"})),
+    ("data/**", frozenset({"data"})),
+    ("apps/api/**", frozenset({"data"})),
+    # Knip reads the workflows' `pnpm exec` binaries, and every TypeScript
+    # gate runs Knip. The schema gate is the cheapest of them.
+    (".github/workflows/**", frozenset({"ci", "schema"})),
+    (".github/**", frozenset({"ci"})),
+    ("docs/tasks/**", frozenset({"docs"})),
+    ("tools/sdlc/**", frozenset({"sdlc"})),
+    ("bin/sdlc", frozenset({"sdlc"})),
+    # Prose and configuration no gate reads.
+    ("docs/**", frozenset()),
+    (".claude/**", frozenset()),
+    ("evals/**", frozenset()),
+    ("prototype/**", frozenset()),
+    ("**/*.md", frozenset()),
+    ("LICENSE", frozenset()),
+]
+
+
+def components_for(paths: list[str]) -> set[str]:
+    """Return the components whose gates a change to these paths needs."""
+    needed: set[str] = set()
+    for path in paths:
+        for pattern, components in CHANGE_MAP:
+            if matches(path, [pattern]):
+                needed |= components
+                break
+        else:
+            needed |= EVERY_COMPONENT
+    return needed
+
+
+def changed_paths(root: Path, base: str, head: str = "HEAD") -> list[str] | None:
+    """Return the paths changed between base and head, or None if git can't say.
+
+    --no-renames lists a moved file under its old path and its new one, so
+    moving a file out of a component still runs that component's gate.
+    """
+    code, out = _git(root, "-c", "core.quotePath=false", "diff", "--no-renames", "--name-only", "-z", base, head)
+    if code != 0:
+        return None
+    return [p for p in out.split("\0") if p]
+
+
 def verify(root: Path, run_gates: bool = True) -> list[str]:
     """Check the working tree against the active task brief. Returns the failures."""
     brief, meta, errors = active_brief(root)
@@ -912,6 +975,7 @@ USAGE = """usage: sdlc <command>
   evidence TASK-ID     print the kit's records for one task, for the pull request
   merge-check TASK-ID  say whether the lead may merge the task's pull request
   commit-msg FILE      check a commit message (Conventional Commits)
+  changes BASE [HEAD]  print name=true|false for each CI gate a diff needs
 """
 
 
@@ -971,6 +1035,14 @@ def main(argv: list[str]) -> int:
             print(f"- {error}", file=sys.stderr)
         print("merge-check: " + ("the tech lead must merge this one" if errors else "the lead may merge"))
         return 1 if errors else 0
+    if command == "changes" and len(args) in (1, 2):
+        root = find_root(Path.cwd() / "AGENTS.md")
+        paths = changed_paths(root, *args) if root is not None else None
+        # If git can't say what changed, every gate runs.
+        needed = EVERY_COMPONENT if paths is None else components_for(paths)
+        for name in CI_COMPONENTS:
+            print(f"{name}={'true' if name in needed else 'false'}")
+        return 0
     if command == "commit-msg" and len(args) == 1:
         subject = next((line for line in Path(args[0]).read_text(encoding="utf-8").splitlines() if line.strip() and not line.startswith("#")), "")
         if subject.startswith(("Merge ", "Revert ")) or COMMIT_RE.match(subject):

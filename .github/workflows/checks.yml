@@ -38,44 +38,20 @@ jobs:
         with:
           fetch-depth: 2
           persist-credentials: false
-      # File names stay shell data. --no-renames lists a moved file under its
-      # old path and its new one, so moving a file out of a component still
-      # runs that component's gate. -z and quotePath=false keep each name as it
-      # is. A name no rule places runs every gate. sdlc and docs always run.
+      # The path-to-component map lives in tools/sdlc (CHANGE_MAP, ADR 0004
+      # D14), so `sdlc verify` and CI pick the same gates. It uses the
+      # runner's Python 3 and no packages. A name no rule places, or a diff
+      # git can't make, runs every gate. sdlc and docs always run.
       - id: diff
         env:
           EVENT: ${{ github.event_name }}
         run: |
-          infra=false schema=false game=false web=false data=false
           if [ "$EVENT" != pull_request ] || ! git rev-parse --verify --quiet 'HEAD^2' > /dev/null; then
-            infra=true schema=true game=true web=true data=true
+            printf '%s\n' infra=true schema=true game=true web=true data=true > "${RUNNER_TEMP}/gates"
           else
-            git -c core.quotePath=false diff --no-renames --name-only -z 'HEAD^1' HEAD > "${RUNNER_TEMP}/changed"
-            while IFS= read -r -d '' f; do
-              case "$f" in
-                .github/workflows/checks.yml) infra=true schema=true game=true web=true data=true ;;
-                infra/*) infra=true ;;
-                packages/schema/*) schema=true game=true web=true ;;
-                packages/game/*) game=true web=true ;;
-                apps/web/*) web=true ;;
-                data/* | apps/api/*) data=true ;;
-                # Knip reads the workflows' `pnpm exec` binaries, and every
-                # TypeScript gate runs Knip.
-                .github/workflows/*) schema=true ;;
-                docs/* | tools/sdlc/* | bin/* | .claude/* | .github/* | evals/* | prototype/* | *.md | LICENSE) ;;
-                # The Makefile, the pnpm lockfile, the workspace, the shared
-                # tool configs and any name no rule places.
-                *) infra=true schema=true game=true web=true data=true ;;
-              esac
-            done < "${RUNNER_TEMP}/changed"
+            bin/sdlc changes 'HEAD^1' HEAD > "${RUNNER_TEMP}/gates"
           fi
-          {
-            echo "infra=$infra"
-            echo "schema=$schema"
-            echo "game=$game"
-            echo "web=$web"
-            echo "data=$data"
-          } | tee -a "$GITHUB_OUTPUT" >> "$GITHUB_STEP_SUMMARY"
+          tee -a "$GITHUB_OUTPUT" < "${RUNNER_TEMP}/gates" >> "$GITHUB_STEP_SUMMARY"
 
   # The kit gates use the runner image's Python 3 and need no packages.
   sdlc:
