@@ -27,11 +27,8 @@
 	}
 </script>
 
-<div
-	class={['relative w-[min(100%,320px,52vh)] touch-pan-y', !tracking && 'animate-sheen']}
-	{@attach tilt}
->
-	<div class="@container relative transform-3d">
+<div class={['big', !tracking && 'idle']} {@attach tilt}>
+	<div class="tilted">
 		{#if back}
 			<FlipCard {front} {back} />
 		{:else}
@@ -42,6 +39,20 @@
 </div>
 
 <style>
+	/* The card art sizes itself, so it looks the same wherever it's shown. */
+	.big {
+		position: relative;
+		width: min(100%, 320px, 52vh);
+		touch-action: pan-y;
+	}
+	.idle {
+		animation: var(--animate-sheen, none);
+	}
+	.tilted {
+		position: relative;
+		container-type: inline-size;
+		transform-style: preserve-3d;
+	}
 	.glare {
 		position: absolute;
 		inset: 0;

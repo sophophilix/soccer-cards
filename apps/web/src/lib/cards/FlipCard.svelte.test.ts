@@ -129,14 +129,17 @@ test('the button is the only stop in the tab order on either side', async () => 
 	expect(tabStops()).toBe(1);
 });
 
-test('the turn animates the transform only', async () => {
+test('the turn animates the transform only, and is still moving just after the tap', async () => {
 	const screen = await render(FlipCard, aFlipCard());
+	const turning = part(screen, 'turning');
 
 	await screen.getByRole('button').click();
 
-	const turning = getComputedStyle(part(screen, 'turning'));
-	expect(turning.transitionProperty).toBe('transform');
-	expect(turning.transitionDuration).not.toBe('0s');
+	// GSAP writes only the transform, part way through the turn.
+	expect(turning.style.transform).toMatch(/rotateY\(/);
+	expect(turning.style.transform).not.toMatch(/rotateY\(180deg\)/);
+	expect(turning.style.opacity).toBe('');
+	await expect.poll(() => turning.style.transform).toMatch(/rotateY\(180deg\)/);
 });
 
 test('with reduced motion the sides swap with no movement', async () => {
