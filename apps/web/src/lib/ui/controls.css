@@ -192,7 +192,9 @@
 	/* A button sizes to its content, and the card measures the button, so set the width. */
 	width: 100%;
 	container-type: inline-size;
-	border-radius: 5cqw;
+	/* The card's corner, 5% of its width, as a percentage of its own size. A cqw here would
+	   measure the window: an element can't be its own size container. */
+	border-radius: 5% / 3.57%;
 	cursor: pointer;
 	transition:
 		opacity 0.2s,
@@ -264,12 +266,12 @@
 	display: grid;
 	align-content: center;
 	justify-items: center;
-	gap: 3cqw;
+	gap: 0.4em;
 	aspect-ratio: 5 / 7;
 	container-type: inline-size;
-	padding: 4cqw;
+	padding: 4%;
 	border: 2px dashed var(--line);
-	border-radius: 5cqw;
+	border-radius: 5% / 3.57%;
 	background: var(--surface);
 	color: var(--muted);
 	font-family: var(--font-data);
