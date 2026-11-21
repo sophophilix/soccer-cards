@@ -8,6 +8,8 @@ paths:
   - apps/api/pyproject.toml
   - apps/api/uv.lock
   - apps/api/.gitignore
+  - apps/api/src/soccer_cards_api/errors.py
+  - apps/api/tests/test_errors.py
   - apps/api/src/soccer_cards_api/app.py
   - apps/api/src/soccer_cards_api/players.py
   - apps/api/src/worker.py
@@ -48,6 +50,10 @@ Workers runtime, to prove the parts fit before the rest of the API is built.
   `displayName`, `position`, `tier` and `overall`, camelCase by model alias.
 - An unknown player is a 404, a bad id (ADR 0005 D2) a 400 that never reaches
   the database, and a database failure a 500, all in T-0135's error shape.
+- A 500 body comes only from one fixed-message helper in `errors.py` (for
+  example `internal_error()`), and the app maps every `DatabaseError` and
+  unexpected exception to it, so no internal detail reaches a response
+  (T-0135 review F1).
 - `wrangler.jsonc` binds D1 as `DB` for local development, and a migration
   creates `players` and seeds the three invented players.
 - The Worker runs locally on the Workers runtime (`pywrangler dev`, after
