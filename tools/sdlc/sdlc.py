@@ -568,6 +568,56 @@ def changed_paths(root: Path, base: str, head: str = "HEAD") -> list[str] | None
     return [p for p in out.split("\0") if p]
 
 
+def worktree_changes(root: Path, base: str) -> list[str] | None:
+    """Return the paths that differ from base in the working tree, untracked ones included."""
+    code, out = _git(root, "-c", "core.quotePath=false", "diff", "--no-renames", "--name-only", "-z", base)
+    if code != 0:
+        return None
+    others = _git(root, "-c", "core.quotePath=false", "ls-files", "--others", "--exclude-standard", "-z")[1]
+    return sorted({p for p in (out + "\0" + others).split("\0") if p})
+
+
+WEB = "apps/web"
+# Specs that visit every screen. They run with any route's own specs.
+E2E_EVERY_SCREEN = ["tests/a11y/*.spec.ts", "tests/privacy/*.spec.ts", "tests/views.spec.ts"]
+
+
+def e2e_specs(root: Path, paths: list[str]) -> list[str] | None:
+    """Return the Playwright specs a change can reach, relative to apps/web. None means all.
+
+    A spec reaches the app through the browser, not through imports, so the
+    map is by route folder: `src/routes/packs/` runs `tests/packs*.spec.ts`
+    and the specs that visit every screen. Shared code runs every spec.
+    """
+    web = root / WEB
+    picked: set[str] = set()
+
+    def glob(pattern: str) -> set[str]:
+        return {p.relative_to(web).as_posix() for p in web.glob(pattern)}
+
+    for path in paths:
+        if "web" not in components_for([path]):
+            continue
+        if not path.startswith(WEB + "/"):
+            return None
+        rel = path[len(WEB) + 1 :]
+        if rel.startswith("tests/") and rel.endswith(".spec.ts"):
+            if (web / rel).is_file():
+                picked.add(rel)
+            continue
+        parts = rel.split("/")
+        if len(parts) > 3 and parts[:2] == ["src", "routes"]:
+            own = glob(f"tests/{parts[2]}*.spec.ts")
+            if not own:
+                return None
+            picked |= own
+            for pattern in E2E_EVERY_SCREEN:
+                picked |= glob(pattern)
+            continue
+        return None
+    return sorted(picked)
+
+
 def verify(root: Path, run_gates: bool = True) -> list[str]:
     """Check the working tree against the active task brief. Returns the failures."""
     brief, meta, errors = active_brief(root)
@@ -630,14 +680,17 @@ def verify(root: Path, run_gates: bool = True) -> list[str]:
         failures.append("a refactor must not change tests: " + ", ".join(sorted(tests)))
 
     if run_gates:
-        component = str(meta["component"])
-        try:
-            gate = subprocess.run(["make", "-s", "check", f"COMPONENT={component}"], cwd=root, capture_output=True, text=True, timeout=1500, check=False)
-            if gate.returncode != 0:
-                tail = "\n".join((gate.stdout + gate.stderr).strip().splitlines()[-40:])
-                failures.append(f"gate 'make check COMPONENT={component}' failed:\n{tail}")
-        except (OSError, subprocess.SubprocessError) as exc:
-            failures.append(f"gate 'make check COMPONENT={component}' is unavailable ({exc}). Unavailable is not a pass.")
+        # The gates of every component the change touches, in the affected
+        # scope (ADR 0004 D4, D14). The brief's own component always runs.
+        for component in sorted(components_for(sorted(changed)) | {str(meta["component"])}):
+            command = ["make", "-s", "check", f"COMPONENT={component}", "SCOPE=affected", f"BASE={base}"]
+            try:
+                gate = subprocess.run(command, cwd=root, capture_output=True, text=True, timeout=1500, check=False)
+                if gate.returncode != 0:
+                    tail = "\n".join((gate.stdout + gate.stderr).strip().splitlines()[-40:])
+                    failures.append(f"gate 'make check COMPONENT={component}' failed:\n{tail}")
+            except (OSError, subprocess.SubprocessError) as exc:
+                failures.append(f"gate 'make check COMPONENT={component}' is unavailable ({exc}). Unavailable is not a pass.")
     return failures
 
 
@@ -976,6 +1029,8 @@ USAGE = """usage: sdlc <command>
   merge-check TASK-ID  say whether the lead may merge the task's pull request
   commit-msg FILE      check a commit message (Conventional Commits)
   changes BASE [HEAD]  print name=true|false for each CI gate a diff needs
+  e2e-specs BASE       print the Playwright specs the working tree's change reaches, or 'all'
+  touched BASE DIR...  exit 0 if the working tree changes a path under one of the folders
 """
 
 
@@ -1042,6 +1097,16 @@ def main(argv: list[str]) -> int:
         needed = EVERY_COMPONENT if paths is None else components_for(paths)
         for name in CI_COMPONENTS:
             print(f"{name}={'true' if name in needed else 'false'}")
+        return 0
+    if command in ("e2e-specs", "touched") and args:
+        root = find_root(Path.cwd() / "AGENTS.md")
+        paths = worktree_changes(root, args[0]) if root is not None else None
+        if command == "touched":
+            # If git can't say what changed, the folder counts as touched.
+            dirs = tuple(d.rstrip("/") + "/" for d in args[1:])
+            return 0 if paths is None or any(p.startswith(dirs) for p in paths) else 1
+        specs = None if paths is None or root is None else e2e_specs(root, paths)
+        print("all" if specs is None else "\n".join(specs))
         return 0
     if command == "commit-msg" and len(args) == 1:
         subject = next((line for line in Path(args[0]).read_text(encoding="utf-8").splitlines() if line.strip() and not line.startswith("#")), "")

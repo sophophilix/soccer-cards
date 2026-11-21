@@ -1,7 +1,13 @@
 # One command source for local use, the agent hooks and CI (ADR 0004 D4).
-# `bin/sdlc verify` runs `make check COMPONENT=<component>` for the active task.
+# `bin/sdlc verify` runs `make check COMPONENT=<component> SCOPE=affected` for
+# each component the active task's change touches.
 COMPONENT ?= sdlc
 COMPONENTS := web game schema data infra ci docs sdlc
+# SCOPE=full runs every test, as CI does. SCOPE=affected runs the same static
+# checks and only the tests a change since BASE can reach, without coverage
+# thresholds. `sdlc verify` uses it (ADR 0004 D4, D14).
+SCOPE ?= full
+BASE ?= origin/main
 
 .DEFAULT_GOAL := help
 .PHONY: help check check-all dev preview e2e e2e-ui $(addprefix check-,$(COMPONENTS))
@@ -42,9 +48,13 @@ e2e-ui: ## Run the end-to-end tests in Playwright's UI mode
 
 # A TypeScript gate runs the canonical scripts in ts-standards for one
 # package, then Knip for the workspace. A missing package or script fails.
+# The three static checks run in parallel: pnpm runs every script the pattern
+# matches at once. The affected scope runs the Vitest tests whose import graph
+# reaches a file changed since BASE.
 define ts-gate
 	@[ -f $(1)/package.json ] || { echo "$@: $(1) is not scaffolded yet (see docs/decisions/0001)"; exit 1; }
-	@for script in format:check lint typecheck test; do pnpm --dir $(1) run $$script || exit 1; done
+	@pnpm --dir $(1) run '/^(format:check|lint|typecheck)$$/'
+	@if [ "$(SCOPE)" = affected ]; then pnpm --dir $(1) exec vitest run --changed $(BASE) --passWithNoTests; else pnpm --dir $(1) run test; fi
 	@pnpm run unused
 endef
 
@@ -56,7 +66,12 @@ check-schema: ## Gates for packages/schema
 
 check-web: ## Gates for apps/web, including the end-to-end tests
 	$(call ts-gate,$(WEB))
-	@pnpm --dir $(WEB) run test:e2e
+	@if [ "$(SCOPE)" != affected ]; then pnpm --dir $(WEB) run test:e2e; \
+	else specs="$$(bin/sdlc e2e-specs $(BASE))"; \
+		if [ "$$specs" = all ]; then pnpm --dir $(WEB) run test:e2e; \
+		elif [ -z "$$specs" ]; then echo "check-web: no end-to-end spec reaches this change"; \
+		else echo "check-web: end-to-end specs for this change:" $$specs; pnpm --dir $(WEB) run test:e2e $$specs; fi; \
+	fi
 
 # Workflows are linted by actionlint and audited by zizmor (the
 # ci-supply-chain skill). A missing tool fails the gate.
@@ -85,13 +100,16 @@ API := apps/api
 check-data: ## Gates for the Python data pipeline and the Python player API
 	@[ -f $(PIPELINE)/pyproject.toml ] || { echo "$@: $(PIPELINE) is not scaffolded yet (see docs/decisions/0006)"; exit 1; }
 	@command -v uv >/dev/null || { echo "$@: uv is not installed"; exit 1; }
-	@cd $(PIPELINE) && uv sync --locked --quiet
-	@cd $(PIPELINE) && uv run --frozen ruff check .
-	@cd $(PIPELINE) && uv run --frozen ruff format --check .
-	@cd $(PIPELINE) && uv run --frozen mypy src tests
-	@cd $(PIPELINE) && uv run --frozen bandit -q -c pyproject.toml -r src
-	@cd $(PIPELINE) && uv run --frozen pytest -q
-	@if [ -f $(API)/pyproject.toml ]; then \
+	@# The affected scope runs a project's tools only when the change touches it.
+	@if [ "$(SCOPE)" != affected ] || bin/sdlc touched $(BASE) data/; then \
+		cd $(PIPELINE) && uv sync --locked --quiet && \
+		uv run --frozen ruff check . && \
+		uv run --frozen ruff format --check . && \
+		uv run --frozen mypy src tests && \
+		uv run --frozen bandit -q -c pyproject.toml -r src && \
+		uv run --frozen pytest -q; \
+	else echo "check-data: $(PIPELINE) is unchanged"; fi
+	@if [ -f $(API)/pyproject.toml ] && { [ "$(SCOPE)" != affected ] || bin/sdlc touched $(BASE) $(API)/; }; then \
 		cd $(API) && uv sync --locked --quiet && \
 		uv run --frozen ruff check . && \
 		uv run --frozen ruff format --check . && \
