@@ -1,16 +1,25 @@
 ---
 id: T-0135
-title: Prove a FastAPI Python Worker can answer one v2 route from D1
+title: Scaffold the API project with a read-only query layer and AIP errors
 component: data
 kind: feature
 agent: data-implementer
 paths:
-  - apps/api/**
+  - apps/api/.gitignore
+  - apps/api/.python-version
+  - apps/api/pyproject.toml
+  - apps/api/uv.lock
+  - apps/api/src/soccer_cards_api/__init__.py
+  - apps/api/src/soccer_cards_api/queries.py
+  - apps/api/src/soccer_cards_api/errors.py
+  - apps/api/tests/__init__.py
+  - apps/api/tests/fakes.py
+  - apps/api/tests/test_queries.py
+  - apps/api/tests/test_errors.py
 dependencies:
   - fastapi
-  - workers-py
-  - httpx
   - pytest
+  - pytest-cov
   - mypy
   - ruff
   - bandit
@@ -20,59 +29,43 @@ status: ready
 
 ## Goal
 
-ADR 0008 puts the player API on a FastAPI app running on a Cloudflare Python
-Worker, reading Cloudflare D1. Before building the whole API, prove the parts
-fit: one route, one table, locally, with the project's gates passing.
+The first half of the ADR 0008 spike: the `apps/api` project with its gates,
+the read-only query layer every route will use, and the one AIP-193 error
+shape. The route, the Worker and D1 are T-0136.
 
 ## Context
 
-- ADR 0005 (Google's AIPs, resource names, camelCase fields) and ADR 0008 (D2
-  to D5, D10). Read both first.
-- Cloudflare's Python Workers run FastAPI through an ASGI adapter
-  (`asgi.entrypoint(app)`, Python 3.13 or later, the `python_workers`
-  compatibility flag). Use Cloudflare's `wrangler` and Workers best-practices
-  skills, and the official FastAPI skill once `fastapi` is installed and the
-  lead has added it.
-- `workers-py` is Cloudflare's tooling for Python Workers under `uv`. If the
-  tooling needs a different or extra package, stop and tell the lead before
-  adding it: the brief lists every package.
-- Data is invented for this spike: three players with made-up names. No
-  network request in tests.
+- ADR 0005 and ADR 0008 (D3, D4, D10). The first build of the whole spike was
+  646 lines, over the 400 limit, so it is split; a first build exists on
+  `feat/T-0135-spike-fastapi-worker-reading-d1` (commit b0b8170). Take this
+  task's files from it.
+- The gates match `data/pipeline`: ruff, mypy strict, bandit, pytest with
+  `pytest-cov` and a 90% branch coverage floor. `make check COMPONENT=data`
+  runs them once `apps/api/pyproject.toml` exists.
+- Python 3.13, the Workers runtime's version.
 
 ## Acceptance criteria
 
-- `apps/api` is a `uv` project with a `src` layout and its own `pyproject.toml`
-  (ruff, mypy, bandit and pytest configured as in `data/pipeline`), so
-  `make check COMPONENT=data` runs its gates.
-- A `wrangler.jsonc` for a Python Worker with a D1 binding named `DB` for local
-  development only, and a SQL migration that creates a `players` table and
-  seeds the three invented players.
-- `GET /api/v2/players/{player}` returns the player's AIP resource:
-  `name` (`players/{id}`), `displayName`, `position`, `tier` and `overall`,
-  with camelCase field names from model aliases.
-- An unknown player returns 404 with one AIP-193 error body
-  (`{"error": {"code": 404, "message": "...", "status": "NOT_FOUND"}}`).
-- A player id that isn't a valid slug (ADR 0005 D2) returns 400 with the same
-  error shape and never reaches the database.
-- The query layer has no write method: every statement is a `SELECT` with
-  bound parameters.
-- The report says how the Worker was run locally (for example
-  `pywrangler dev`) and pastes one real request and response from it.
+- `apps/api` is a `uv` project with a `src` layout whose gates pass under
+  `make check COMPONENT=data`.
+- The query layer has no write method: it runs only a single `SELECT` with
+  bound parameters, and refuses anything else.
+- One AIP-193 error body,
+  `{"error": {"code": ..., "message": "...", "status": "..."}}`, for 400, 404
+  and 500, with no internal detail in a 500's message.
 
 ## Edge cases
 
-- An id with uppercase letters, a slash, `..` or more than 63 characters: 400.
-- A D1 error: 500 with the AIP-193 shape and no internal detail in the message.
+- `INSERT`, `UPDATE`, `DELETE`, `DROP`, a stacked statement, `WITH ... DELETE`
+  and an empty string are refused.
+- An injection string is bound as a parameter, never interpolated.
 
 ## Tests
 
-- pytest with FastAPI's test client and an in-memory stand-in for the D1
-  binding: the player found, unknown, a bad id, the error shape, camelCase
-  names, and a test that the query layer refuses anything but `SELECT`.
+- `test_queries.py` and `test_errors.py` with an in-memory fake of the D1
+  binding (`fakes.py`).
 
 ## Out of scope
 
-- Deploying, infrastructure and a real D1 database (a later task, applied by
-  the tech lead).
-- The pipeline publishing to D1, the list methods, OpenAPI checks, the MCP
-  server and the website.
+- The FastAPI app, routes, the Worker entry point, `wrangler.jsonc` and the D1
+  migration (T-0136).
