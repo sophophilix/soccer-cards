@@ -19,12 +19,24 @@ from soccer_cards_data.photos import Photo
 from soccer_cards_data.wikidata import PlayerFacts, Spell
 
 Position = ratings.Position
-# Wikidata's position items (P413). A player's other positions are ignored.
+# Wikidata's position items (P413) for the four card positions.
 POSITIONS = {
     "Q201330": Position.GOALKEEPER,
     "Q336286": Position.DEFENDER,
     "Q193592": Position.MIDFIELDER,
     "Q280658": Position.FORWARD,
+}
+# Specific positions, used only when a player lists none of the four above.
+SPECIFIC_POSITIONS = {
+    "Q11681748": Position.FORWARD,  # winger
+    "Q90326494": Position.MIDFIELDER,  # attacking midfielder
+    "Q18691898": Position.MIDFIELDER,  # defensive midfielder
+    "Q6008848": Position.MIDFIELDER,  # central midfielder
+    "Q8025128": Position.MIDFIELDER,  # wing half
+    "Q1109563": Position.MIDFIELDER,  # centerhalf
+    "Q268258": Position.DEFENDER,  # centre-back
+    "Q90173132": Position.DEFENDER,  # full-back
+    "Q1489923": Position.DEFENDER,  # sweeper
 }
 # The fields written to players/{id}.json but not to the summary in players.json.
 FULL_ONLY = ("updateTime", "clubGoalCount", "nationalTeamGoalCount")
@@ -141,7 +153,7 @@ def build_player(
     ]
     club_counts = _totals(clubs, CLUB_BOUNDS, qid, problems)
     caps, nation_goals = _totals(senior, NATIONAL_BOUNDS, qid, problems)
-    position = _position(facts, entry)
+    position = card_position(facts, entry)
     card_facts = ratings.Facts(
         *club_counts, caps, nation_goals, _day(facts.birth_date), _day(facts.as_of)
     )
@@ -179,13 +191,18 @@ def _require(ok: bool, qid: str, reason: str) -> None:
         raise NormaliseError(f"{qid}: {reason}")
 
 
-def _position(facts: PlayerFacts, entry: GradeEntry) -> Position:
-    """Return the first Wikidata position that fits the grade group."""
+def card_position(facts: PlayerFacts, entry: GradeEntry) -> Position:
+    """Return the card position: the first basic one listed, else the first specific.
+
+    Raises:
+        NormaliseError: No listed position fits the grade group.
+    """
     keeper = entry.group == "goalkeeper"
-    for item in facts.positions:
-        found = POSITIONS.get(item)
-        if found is not None and (found == Position.GOALKEEPER) == keeper:
-            return found
+    for table in (POSITIONS, SPECIFIC_POSITIONS):
+        for item in facts.positions:
+            found = table.get(item)
+            if found is not None and (found == Position.GOALKEEPER) == keeper:
+                return found
     raise NormaliseError(f"{facts.qid}: no Wikidata position fits the grades")
 
 
