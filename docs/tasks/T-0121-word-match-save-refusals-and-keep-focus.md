@@ -17,7 +17,8 @@ status: ready
 
 When a match result can't be saved, the Match screen says why, in the same
 words as the Packs screen. A keyboard user keeps their place after Skip to
-full time. These come from the T-0114 review (round 2 F1, F3).
+full time. These come from the T-0114 review (round 2 F1, F3), plus a
+stronger double-tap test from the T-0120 review (F1).
 
 ## Context
 
@@ -35,6 +36,9 @@ full time. These come from the T-0114 review (round 2 F1, F3).
 - After Skip to full time, focus moves to the result panel's heading (or
   the next control), not to the page body.
 - The score board has a role or heading that names it to a screen reader.
+- A test fires two Kick off clicks before Svelte flushes and sees one
+  match. Removing the guard in `MatchView`'s `kickOff` makes it fail; say
+  in the report that you checked this (T-0120 review F1).
 - `make check COMPONENT=web` passes.
 
 ## Edge cases
@@ -45,7 +49,7 @@ full time. These come from the T-0114 review (round 2 F1, F3).
 ## Tests
 
 - `match-notices.spec.ts`: one test per refusal reason (stub the storage
-  to fail each way), and focus after Skip.
+  to fail each way), focus after Skip, and the double Kick off.
 
 ## Out of scope
 
