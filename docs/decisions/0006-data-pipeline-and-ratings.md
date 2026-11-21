@@ -2,7 +2,7 @@
 
 > Status: Approved
 > Created: 2026-11-20
-> Last reviewed: 2026-11-20T14:26:35Z
+> Last reviewed: 2026-11-21T14:15:23Z
 > Next review: Not scheduled
 
 ## Review guide
@@ -50,11 +50,11 @@ party's ratings are used (ADR 0003 D1).
 
 **D1. Sources.**
 
-| Source | Terms | Gives |
-|---|---|---|
-| Wikidata, through its SPARQL endpoint and entity data | CC0 | Name, birth date, position, clubs with appearances and goals, national team with caps and goals, honours |
-| Wikimedia Commons | Per file (ADR 0003 D2) | Photos, with author and licence |
-| `data/pipeline/grades/` | This project | Skill grades (D2) and tier overrides (D4) |
+| Source                                                | Terms                  | Gives                                                                                                    |
+| ----------------------------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------- |
+| Wikidata, through its SPARQL endpoint and entity data | CC0                    | Name, birth date, position, clubs with appearances and goals, national team with caps and goals, honours |
+| Wikimedia Commons                                     | Per file (ADR 0003 D2) | Photos, with author and licence                                                                          |
+| `data/pipeline/grades/`                               | This project           | Skill grades (D2) and tier overrides (D4)                                                                |
 
 Each request sends `User-Agent: SoccerCardsDataPipeline/<version>
 (https://github.com/sophophilix/soccer-cards)`. Requests to a host go one at
@@ -89,8 +89,9 @@ version and shows the before and after for every player in the pull request
 **D4. Tiers.** By rule on `overall`: `LEGEND` from 88, `RARE` from 84, `BASE`
 below. Honours count only through overrides: a file lists a player, a tier
 and a reason, and a reviewer agent checks each line. `ICON` is given only by
-override, to retired greats, so the pack rules always have at least one
-Icon card.
+override, to all-time greats, whether retired or still playing, so the pack
+rules always have at least one Icon card. An active player's reason must name
+the career honours that make them an all-time great, not one season.
 
 **D5. Build.** `data/pipeline/` is one uv project with a `src` layout, under
 the team's `python-standards`, `python-style-guide` and `python-testing`
@@ -134,8 +135,9 @@ request itself comes later, with its own decision.
 
 ## Review history
 
-| Reviewed at | Decision | Notes |
-|---|---|---|
-| 2026-11-20 | Proposed | Drafted by Claude after the tech lead said "yes to the ratings approach, go ahead". |
+| Reviewed at          | Decision | Notes                                                                                                                                                                                                                                                        |
+| -------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 2026-11-20           | Proposed | Drafted by Claude after the tech lead said "yes to the ratings approach, go ahead".                                                                                                                                                                          |
 | 2026-11-20T13:09:36Z | Approved | The tech lead said "yes to the ratings approach, go ahead", then "i dont think i can review these ... 1-5 skill grades ..., just deploy them and my kids will feedback". D2 now has a reviewer agent check grades, and feedback corrects them after release. |
-| 2026-11-20T14:26:35Z | Amended | The tech lead chose "By listed override (Recommended)" for `ICON` (D4) and "Agent runs it (Recommended)" for the pipeline runs (D6). |
+| 2026-11-20T14:26:35Z | Amended  | The tech lead chose "By listed override (Recommended)" for `ICON` (D4) and "Agent runs it (Recommended)" for the pipeline runs (D6).                                                                                                                         |
+| 2026-11-21T14:15:23Z | Amended  | After the kids asked for Messi and Ronaldo as Icons, the tech lead said "yes make them icons". D4 now gives `ICON` to all-time greats whether retired or still playing.                                                                                      |
