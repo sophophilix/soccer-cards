@@ -12,7 +12,9 @@
 	import { cardPropsOf } from '../packs/card-props.ts';
 	import { edgeBanner, kickLine, momentLine } from './commentary.ts';
 	import { DIVISION_NAMES, LINES, LINE_NAMES, TACTIC_WORDS } from './match-words.ts';
+	import MomentScene from './MomentScene.svelte';
 	import Penalties from './Penalties.svelte';
+	import { shotOfKick, shotOfMoment } from './scene-shot.ts';
 	import { pop } from '../../lib/ui/motion.ts';
 
 	interface Props {
@@ -26,7 +28,8 @@
 	}
 	const { match, cardSet, faces, coins, finished, onFullTime, onAgain }: Props = $props();
 
-	const MOMENT_MS = 1100;
+	// Long enough for the goal scene to play a shot and the scorer to celebrate.
+	const MOMENT_MS = 2200;
 	const REDUCED_MOTION_MOMENT_MS = 150;
 	const moments = $derived(match.result.moments);
 	const home = $derived(match.home);
@@ -37,6 +40,8 @@
 
 	let shown = $state(0);
 	let hasReported = false;
+	// A replay of a save holds the match until it ends.
+	let replaying = $state(false);
 	const isOver = $derived(shown >= moments.length);
 	const revealed = $derived(moments.slice(0, shown));
 	const score = $derived({
@@ -69,12 +74,24 @@
 			: ` (${String(shootOut.score.player)} – ${String(shootOut.score.opponent)} on penalties)`
 	);
 	const banner = $derived(edgeBanner(match.result.tacticalEdge, home.tactic, away.tactic));
+	// The scene shows the newest shot: the last penalty kick, or else the last moment shown.
+	const sceneShot = $derived.by(() => {
+		const kicks = shootOut?.kicks ?? [];
+		const lastKick = kicks.at(-1);
+		if (lastKick !== undefined) return shotOfKick(lastKick, kicks.length - 1);
+		const moment = revealed.at(-1);
+		if (moment === undefined) return undefined;
+		const card = cardOf.get(moment.shooter);
+		const face = faces.get(moment.shooter);
+		const scorer = card && face ? cardPropsOf(card, face).front : undefined;
+		return shotOfMoment(moment, scorer);
+	});
 	const plan = (side: typeof home): string =>
 		`${side.formation} · ${TACTIC_WORDS[side.tactic].name}`;
 
 	$effect(() => {
 		// Reading `shown` here sets the next moment's timer each time one is shown.
-		if (shown >= moments.length) return;
+		if (shown >= moments.length || replaying) return;
 		const timer = setTimeout(
 			() => {
 				shown += 1;
@@ -110,6 +127,10 @@
 		if (finished === undefined) return;
 		void tick().then(() => resultHeading?.focus());
 	});
+
+	function holdForReplay(isReplaying: boolean): void {
+		replaying = isReplaying;
+	}
 
 	function pickCorner(corner: Corner): void {
 		if (shootOut === undefined || random === undefined) return;
@@ -153,6 +174,7 @@
 	<span class="chip">AI: {plan(away)}</span>
 </div>
 {#if banner !== undefined}<p class="banner">{banner}</p>{/if}
+<MomentScene shot={sceneShot} onReplay={holdForReplay} />
 {#if isLevel && penaltyWinner === undefined}
 	<div class="result" role="status">
 		<h2>Full time</h2>

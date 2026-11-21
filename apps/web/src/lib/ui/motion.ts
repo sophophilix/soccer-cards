@@ -11,7 +11,10 @@ const MOTION = {
 	flip: 0.55,
 	tiltFollow: 0.08,
 	tiltRest: 0.55,
-	pop: 0.35
+	pop: 0.35,
+	shot: { flight: 0.45, dive: 0.35, diveDelay: 0.08, ripple: 0.12, word: 0.3 },
+	celebrate: 1.1,
+	replaySpeed: 0.35
 } as const;
 
 /** True when the player asked for less motion, or when there's no window to ask. */
@@ -137,4 +140,171 @@ export function tiltToPointer(
 		surface.removeEventListener('pointercancel', rest);
 		gsap.killTweensOf(tilted);
 	};
+}
+
+/** Where a shot goes, from the shooter's view: a corner of the goal, or past a post. */
+export type ShotAim = 'left' | 'middle' | 'right';
+/** What a shot does: in, kept out, or past the post. */
+export type ShotEnd = 'goal' | 'save' | 'wide';
+
+/** The parts of a goal scene (MomentScene.svelte) a shot moves. */
+export interface ShotScene {
+	readonly ball: SVGGElement;
+	readonly keeper: SVGGElement;
+	readonly net: SVGGElement;
+	readonly word: HTMLElement;
+}
+
+// The scene's goal mouth in its own units (viewBox 0 0 300 170): where the ball ends for each aim.
+const BALL_START = { x: 150, y: 152 };
+const AIMS: Readonly<Record<ShotAim, { x: number; y: number; dive: number; turn: number }>> = {
+	left: { x: 88, y: 50, dive: -52, turn: -70 },
+	middle: { x: 150, y: 44, dive: 0, turn: 0 },
+	right: { x: 212, y: 50, dive: 52, turn: 70 }
+};
+const WIDE = { left: { x: 42, y: 34 }, middle: { x: 150, y: 6 }, right: { x: 258, y: 34 } };
+
+/**
+ * Plays one shot: the ball flies, the keeper dives to `dive`, and the net ripples on a goal or
+ * the ball bounces off on a save. Returns the timeline, so a save can be replayed slowly. With
+ * reduced motion everything jumps to the end at once.
+ */
+export function playShot(
+	scene: ShotScene,
+	shot: { readonly aim: ShotAim; readonly dive: ShotAim; readonly end: ShotEnd }
+): gsap.core.Timeline {
+	const { flight, dive, diveDelay, ripple, word } = MOTION.shot;
+	const target = shot.end === 'wide' ? WIDE[shot.aim] : AIMS[shot.aim];
+	const keeper = AIMS[shot.dive];
+	const timeline = gsap.timeline();
+	timeline
+		.set(scene.ball, { x: 0, y: 0, scale: 1, rotation: 0, opacity: 1 })
+		.set(scene.keeper, { x: 0, y: 0, rotation: 0 })
+		.set(scene.net, { scaleY: 1, skewX: 0, transformOrigin: '50% 0%' })
+		.set(scene.word, { scale: 0, opacity: 0 })
+		.to(
+			scene.ball,
+			{
+				x: target.x - BALL_START.x,
+				y: target.y - BALL_START.y,
+				scale: 0.55,
+				rotation: 540,
+				duration: flight,
+				ease: 'power2.out'
+			},
+			0
+		)
+		.to(
+			scene.keeper,
+			{
+				x: keeper.dive,
+				y: shot.dive === 'middle' ? -14 : -20,
+				rotation: keeper.turn,
+				duration: dive,
+				ease: 'power3.out',
+				// The keeper turns about the middle of the body, so the gloves reach the corner.
+				transformOrigin: '50% 50%'
+			},
+			diveDelay
+		);
+	if (shot.end === 'goal') {
+		timeline.to(
+			scene.net,
+			{
+				scaleY: 1.12,
+				skewX: shot.aim === 'left' ? -6 : 6,
+				duration: ripple,
+				yoyo: true,
+				repeat: 3
+			},
+			flight
+		);
+	} else if (shot.end === 'save') {
+		timeline.to(
+			scene.ball,
+			{
+				x: shot.aim === 'left' ? '+=30' : '-=30',
+				y: '+=60',
+				scale: 0.7,
+				duration: 0.35,
+				ease: 'bounce.out'
+			},
+			flight
+		);
+	}
+	timeline.to(scene.word, { scale: 1, opacity: 1, duration: word, ease: 'back.out(3)' }, flight);
+	if (prefersStill()) timeline.progress(1).pause();
+	return timeline;
+}
+
+/** Plays a finished shot again in slow motion, as a replay. Resolves when it ends. */
+export function replay(timeline: gsap.core.Timeline): Promise<void> {
+	if (prefersStill()) return Promise.resolve();
+	return new Promise((done) => {
+		timeline.eventCallback('onComplete', () => {
+			timeline.timeScale(1);
+			timeline.eventCallback('onComplete', null);
+			done();
+		});
+		timeline.timeScale(MOTION.replaySpeed).restart();
+	});
+}
+
+/** The celebrations a scorer can do. Each player always does the same one. */
+const CELEBRATIONS = ['Knee slide', 'Spin', 'Jump for joy', 'Big wave'] as const;
+export type Celebration = (typeof CELEBRATIONS)[number];
+
+/** A player's own celebration, the same every time, picked from their card's id. */
+export function celebrationOf(cardId: string): Celebration {
+	let hash = 0;
+	for (const char of cardId) hash = (hash * 31 + char.charCodeAt(0)) % 9973;
+	return CELEBRATIONS[hash % CELEBRATIONS.length] ?? 'Spin';
+}
+
+/** The scorer's card bursts in and celebrates, while confetti flies. */
+export function celebrate(
+	card: HTMLElement,
+	confetti: readonly HTMLElement[],
+	move: Celebration
+): void {
+	if (prefersStill()) return;
+	const duration = MOTION.celebrate;
+	const timeline = gsap.timeline();
+	timeline.from(card, { scale: 0.3, opacity: 0, duration: 0.3, ease: 'back.out(2)' });
+	if (move === 'Knee slide') {
+		timeline.from(
+			card,
+			{ x: -140, rotation: -12, duration: duration * 0.6, ease: 'power3.out' },
+			0
+		);
+	} else if (move === 'Spin') {
+		timeline.to(card, { rotationY: 720, duration: duration * 0.8, ease: 'power2.inOut' }, 0.1);
+	} else if (move === 'Jump for joy') {
+		timeline.to(
+			card,
+			{ y: -36, duration: duration * 0.18, yoyo: true, repeat: 3, ease: 'power1.out' },
+			0.2
+		);
+	} else {
+		timeline.to(
+			card,
+			{ rotation: 8, duration: duration * 0.12, yoyo: true, repeat: 5, ease: 'sine.inOut' },
+			0.2
+		);
+	}
+	for (const bit of confetti) {
+		timeline.fromTo(
+			bit,
+			{ x: 0, y: 0, opacity: 1, rotation: 0 },
+			{
+				x: gsap.utils.random(-140, 140),
+				y: gsap.utils.random(-110, 60),
+				rotation: gsap.utils.random(-540, 540),
+				opacity: 0,
+				duration: gsap.utils.random(0.8, 1.3),
+				ease: 'power2.out'
+			},
+			0.05
+		);
+	}
 }
