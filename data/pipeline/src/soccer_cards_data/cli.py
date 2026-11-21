@@ -20,7 +20,14 @@ from soccer_cards_data.wikidata import WikidataError
 PROG = "scdata"
 DISTRIBUTION = "soccer-cards-data"
 # ValueError covers the grades, labels, ratings, normalise and TOML errors.
-FAILURES = (build.BuildError, FetchError, PhotoError, ValueError, WikidataError)
+FAILURES = (
+    build.BuildError,
+    FetchError,
+    OSError,
+    PhotoError,
+    ValueError,
+    WikidataError,
+)
 
 
 def _parser() -> argparse.ArgumentParser:

@@ -248,3 +248,28 @@ def test_the_new_folder_is_world_readable_and_stale_ones_are_removed(
 
     assert not stale.exists()
     assert (tmp_path / "api/v1").stat().st_mode & 0o777 == 0o755
+
+
+def test_a_failed_run_leaves_the_registry_alone(tmp_path: Path) -> None:
+    ids = '[players]\nQ1 = "someone"\n\n[clubs]\n'
+    (tmp_path / "ids.toml").write_text(ids, encoding="utf-8")
+
+    with pytest.raises(FetchError):
+        _run(tmp_path, net=FakeWikimedia(image=404))
+
+    assert (tmp_path / "ids.toml").read_text(encoding="utf-8") == ids
+
+
+def test_a_run_killed_between_the_renames_restores_the_last_good_copy(
+    tmp_path: Path,
+) -> None:
+    _run(tmp_path)
+    before = _tree(tmp_path / "api/v1")
+    (tmp_path / "api/v1").rename(tmp_path / "api/.v1-abc-old")
+    (tmp_path / "api/.v1-def").mkdir()
+
+    with pytest.raises(FetchError):
+        _run(tmp_path, now=LATER, net=FakeWikimedia(image=404))
+
+    assert _tree(tmp_path / "api/v1") == before
+    assert [p.name for p in (tmp_path / "api").iterdir()] == ["v1"]

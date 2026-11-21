@@ -61,8 +61,14 @@ def build(
     slugs = ids["players"] = _slugs(ids["players"], labels, years)
     problems = [line for f in facts.values() for line in f.skipped]
     api_dir.parent.mkdir(parents=True, exist_ok=True)
-    for stale in api_dir.parent.glob(f".{api_dir.name}-*"):
-        shutil.rmtree(stale, ignore_errors=True)  # Left by an earlier killed run.
+    leftovers = sorted(api_dir.parent.glob(f".{api_dir.name}-*"))
+    if not api_dir.exists() and (
+        kept := [p for p in leftovers if p.name.endswith("-old")]
+    ):
+        kept[0].rename(api_dir)  # A run was killed between the renames.
+    for stale in leftovers:
+        if not stale.name.endswith("-old"):
+            shutil.rmtree(stale, ignore_errors=True)
     work = Path(tempfile.mkdtemp(prefix=f".{api_dir.name}-", dir=api_dir.parent))
     work.chmod(0o755)  # mkdtemp gives 0700, and this folder becomes the served API.
     try:
@@ -87,8 +93,8 @@ def build(
             validate(work)
         except ValidationError as exc:
             raise BuildError(str(exc)) from exc
+        _write_ids(ids_file, ids)  # Before the swap, so no live slug is unregistered.
         _swap(work, api_dir)
-        _write_ids(ids_file, ids)
     finally:
         shutil.rmtree(work, ignore_errors=True)
     return tuple(problems)
