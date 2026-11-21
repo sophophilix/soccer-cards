@@ -45,22 +45,28 @@
 		status = 'ready';
 	});
 
-	function keep(next: PlayerState): void {
-		player = next;
-		if (store) notice = saveNotice(store.save(next));
+	// Shows the new state only when it was saved. A refused save leaves the old state on screen.
+	function keep(next: PlayerState): string | undefined {
+		if (!store) {
+			player = next;
+			return undefined;
+		}
+		const words = saveNotice(store.save(next));
+		notice = words;
+		if (words === undefined) player = next;
+		return words;
 	}
 
 	function toggleFavourite(entry: KnownCard): string {
 		if (!player) return '';
 		if (isFavourite(player, entry.id)) {
 			const result = removeFavourite(player, entry.id);
-			if (result.ok) keep(result.value);
-			return 'Star removed';
+			if (!result.ok) return "That card isn't a favourite.";
+			return keep(result.value) ?? 'Star removed';
 		}
 		const result = addFavourite(player, entry.id);
 		if (!result.ok) return TRADE_REFUSALS[result.reason];
-		keep(result.value);
-		return `${entry.face.displayName} is now a favourite`;
+		return keep(result.value) ?? `${entry.face.displayName} is now a favourite`;
 	}
 
 	function trade(entry: KnownCard): TradeOutcome {
@@ -69,7 +75,8 @@
 		if (!result.ok) return { ok: false, message: TRADE_REFUSALS[result.reason] };
 		const card = cardSet.find((each) => each.id === result.receivedCardId);
 		const face = faces.get(result.receivedCardId);
-		keep(result.value);
+		const refused = keep(result.value);
+		if (refused !== undefined) return { ok: false, message: refused };
 		if (card === undefined || face === undefined) {
 			return { ok: false, message: 'Trade done.' };
 		}
