@@ -103,6 +103,8 @@ class PlayerFacts:
     as_of: str
     skipped: tuple[str, ...]
     photo: str | None = None
+    # When the career ended: P2032, "work period (end)". None when not recorded.
+    career_end: str | None = None
 
 
 def fetch_player(source: JsonSource, qid: str) -> PlayerFacts:
@@ -188,6 +190,7 @@ def fetch_player(source: JsonSource, qid: str) -> PlayerFacts:
 
     births = _values(claims, "P569", "time", skipped)
     photo = _photo(_values(claims, "P18", "string", skipped), skipped)
+    ends = sorted(_values(claims, "P2032", "time", skipped))
     return PlayerFacts(
         qid=qid,
         label=_label(entity),
@@ -200,6 +203,7 @@ def fetch_player(source: JsonSource, qid: str) -> PlayerFacts:
         as_of=as_of,
         skipped=tuple(skipped),
         photo=photo,
+        career_end=ends[0] if ends else None,
     )
 
 

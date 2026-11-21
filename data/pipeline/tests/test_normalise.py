@@ -129,12 +129,65 @@ def test_override_sets_the_tier(tier: str) -> None:
     _assert_structure(record)
 
 
-def test_player_with_no_spells_is_retired_with_no_counts() -> None:
+def test_player_with_no_spells_is_active_and_reported() -> None:
     record = _build(replace(_facts(), clubs=(), national_teams=()), photo=None)
     _assert_structure(record)
-    assert record.player["state"] == "RETIRED"
+    assert record.player["state"] == "ACTIVE"
+    assert record.problems == ("Q615: no spells and no work period end, kept ACTIVE",)
     for key in ("club", "clubGoalCount", "nationalTeamGoalCount", "photo"):
         assert key not in record.player
+
+
+def test_player_with_no_spells_and_a_career_end_is_retired() -> None:
+    facts = replace(_facts(), clubs=(), national_teams=(), career_end="2020-05")
+    record = _build(facts, photo=None)
+    assert record.player["state"] == "RETIRED"
+    assert record.problems == ()
+
+
+def _closed(end: str | None, **changes: Any) -> PlayerFacts:
+    """Messi with every club spell closed at `end`, and no national team."""
+    clubs = tuple(replace(s, end=end) for s in _facts().clubs)
+    return replace(_facts(), clubs=clubs, national_teams=(), **changes)
+
+
+@pytest.mark.parametrize(
+    ("end", "state"),
+    [
+        ("2024-12-31", "RETIRED"),  # Two years before 2026.
+        ("2024", "RETIRED"),  # A year only: years are compared.
+        ("2025-01-01", "ACTIVE"),  # Within the window.
+        ("2026", "ACTIVE"),
+    ],
+)
+def test_state_follows_the_latest_spell_end(end: str, state: str) -> None:
+    record = _build(_closed(end))
+    assert record.player["state"] == record.summary["state"] == state
+    assert record.problems == ()
+
+
+def test_open_national_team_spell_keeps_a_player_active() -> None:
+    senior = replace(_facts().national_teams[-1], end=None)
+    facts = replace(_closed("2015"), national_teams=(senior,))
+    assert _build(facts).player["state"] == "ACTIVE"
+
+
+def test_open_club_spell_is_active_whatever_its_age() -> None:
+    old = replace(_facts().clubs[0], start="1999", end=None)
+    facts = replace(_closed("2001"), clubs=(old,))
+    assert _build(facts).player["state"] == "ACTIVE"
+
+
+def test_career_end_retires_a_player_and_reports_an_open_spell() -> None:
+    record = _build(replace(_facts(), career_end="2026"))
+    assert record.player["state"] == "RETIRED"
+    assert record.problems == ("Q615: work period end and an open spell conflict",)
+
+
+def test_career_end_retires_a_player_with_only_closed_recent_spells() -> None:
+    record = _build(_closed("2026", career_end="2026"))
+    assert record.player["state"] == "RETIRED"
+    assert record.problems == ()
 
 
 @pytest.mark.parametrize(("label", "total"), [(None, None), ("Barca U19", 564)])

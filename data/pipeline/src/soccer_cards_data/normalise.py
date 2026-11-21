@@ -171,11 +171,12 @@ def build_player(
         raise NormaliseError(f"{qid}: {exc}") from exc
     keeper = position == Position.GOALKEEPER
     current = sorted((s for s in clubs if s.end is None), key=_newest)
+    state = _state(facts, clubs, update_time, problems)
     club, club_slug = _club(current, qid, problems)
     player: dict[str, object] = {
         "name": f"players/{slug}",
         "displayName": name,
-        "state": "ACTIVE" if current else "RETIRED",
+        "state": state,
         "club": f"clubs/{club_slug}" if club_slug else None,
         "nationalTeamCode": national_team_code,
         "position": position.value,
@@ -192,6 +193,32 @@ def build_player(
     summary = {k: v for k, v in player.items() if k not in FULL_ONLY}
     club_qid = current[-1].team if club else None
     return PlayerRecord(player, summary, club or None, tuple(problems), club_qid)
+
+
+def _state(
+    facts: PlayerFacts, clubs: Sequence[Spell], update_time: str, problems: list[str]
+) -> str:
+    """Return ACTIVE or RETIRED, and report what Wikidata leaves unclear.
+
+    Wikidata often leaves a current spell without a start or with a stale end,
+    so a missing open spell doesn't mean a player retired. RETIRED needs a
+    work period end (P2032) or a last spell that ended two or more calendar
+    years before the run. The run's date is `update_time`'s. Years are
+    compared, whatever precision an end date has.
+    """
+    spells = [*clubs, *senior_national_teams(facts)]
+    has_open = any(s.end is None for s in spells)
+    if facts.career_end is not None:
+        if has_open:
+            problems.append(f"{facts.qid}: work period end and an open spell conflict")
+        return "RETIRED"
+    if has_open:
+        return "ACTIVE"
+    if not spells:
+        problems.append(f"{facts.qid}: no spells and no work period end, kept ACTIVE")
+        return "ACTIVE"
+    last_year = max(int(s.end[:4]) for s in spells if s.end)
+    return "RETIRED" if int(update_time[:4]) - last_year >= 2 else "ACTIVE"
 
 
 def _require(ok: bool, qid: str, reason: str) -> None:
