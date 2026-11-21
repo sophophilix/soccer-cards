@@ -568,6 +568,70 @@ class ChangesTest(unittest.TestCase):
         self.assertEqual(out.getvalue().split(), [f"{c}=true" for c in sdlc.CI_COMPONENTS])
 
 
+class E2eSpecsTest(unittest.TestCase):
+    """Which Playwright specs a change reaches (ADR 0004 D14)."""
+
+    def setUp(self) -> None:
+        self._tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._tmp.cleanup)
+        self.root = Path(self._tmp.name)
+        for spec in ("packs.spec.ts", "packs-progress.spec.ts", "match.spec.ts", "views.spec.ts", "a11y/home.spec.ts", "privacy/journeys.spec.ts"):
+            path = self.root / "apps" / "web" / "tests" / spec
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("")
+
+    def specs(self, *paths: str) -> list[str] | None:
+        return sdlc.e2e_specs(self.root, list(paths))
+
+    def test_a_route_runs_its_specs_and_the_every_screen_specs(self) -> None:
+        self.assertEqual(
+            self.specs("apps/web/src/routes/packs/PacksView.svelte"),
+            ["tests/a11y/home.spec.ts", "tests/packs-progress.spec.ts", "tests/packs.spec.ts", "tests/privacy/journeys.spec.ts", "tests/views.spec.ts"],
+        )
+
+    def test_a_changed_spec_runs_itself(self) -> None:
+        self.assertEqual(self.specs("apps/web/tests/match.spec.ts"), ["tests/match.spec.ts"])
+
+    def test_a_deleted_spec_runs_nothing(self) -> None:
+        self.assertEqual(self.specs("apps/web/tests/gone.spec.ts"), [])
+
+    def test_shared_code_runs_every_spec(self) -> None:
+        for path in ("apps/web/src/lib/cards/CardFront.svelte", "apps/web/src/app.css", "apps/web/src/routes/+layout.svelte", "apps/web/tests/helpers.ts", "packages/game/src/packs.ts", "data/api/v1/players.json", "pnpm-lock.yaml"):
+            with self.subTest(path=path):
+                self.assertIsNone(self.specs(path))
+
+    def test_a_route_with_no_specs_of_its_own_runs_every_spec(self) -> None:
+        self.assertIsNone(self.specs("apps/web/src/routes/guide/GuideView.svelte"))
+
+    def test_a_change_the_site_doesnt_read_runs_nothing(self) -> None:
+        self.assertEqual(self.specs("apps/api/src/app.py", "docs/tasks/T-0001-x.md", "infra/main.tf"), [])
+
+
+class VerifyScopeTest(unittest.TestCase):
+    """verify runs each touched component's gate in the affected scope."""
+
+    def test_each_touched_component_runs_once_in_the_affected_scope(self) -> None:
+        repo = Repo()
+        self.addCleanup(repo.close)
+        root = repo.root
+        (root / "Makefile").write_text("check:\n\t@echo $(COMPONENT) $(SCOPE) $(BASE) >> gates.log\n")
+        (root / ".gitignore").write_text(".sdlc/\ngates.log\n")
+        packs = root / "packages" / "game" / "src" / "packs"
+        packs.mkdir(parents=True)
+
+        def git(*args: str) -> None:
+            subprocess.run(["git", "-C", str(root), "-c", "user.name=t", "-c", "user.email=t@example.org", *args], check=True, capture_output=True)
+
+        git("init", "-q", "-b", "main")
+        git("add", "-A")
+        git("commit", "-q", "-m", "chore: start")
+        git("switch", "-q", "-c", "feat/jumbo")
+        (packs / "jumbo.ts").write_text("export const size = 20;\n")
+        (packs / "jumbo.test.ts").write_text("test('size', () => {});\n")
+        self.assertEqual(sdlc.verify(root), [])
+        self.assertEqual(sorted((root / "gates.log").read_text().splitlines()), ["game affected main", "web affected main"])
+
+
 class HookTest(unittest.TestCase):
     def run_hook(self, event: object) -> subprocess.CompletedProcess[str]:
         script = Path(__file__).resolve().parents[1] / "sdlc.py"
