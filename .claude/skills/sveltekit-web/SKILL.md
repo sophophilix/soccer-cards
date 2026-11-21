@@ -74,8 +74,16 @@ apps/web/
 - Derive with `$derived`. Use `$effect` only to reach outside Svelte, such as
   a canvas or storage, and clean up what it starts.
 - Never use `{@html}`.
-- Scope styles to the component. Colours, sizes and fonts come from the
-  design tokens in one global stylesheet.
+- Style with Tailwind CSS v4 utilities and the shared component classes in
+  `lib/ui/controls.css` (ADR 0007). Every colour, font, size, radius, shadow
+  and easing is a token in `src/app.css`; `docs/design/brand-kit.md` explains
+  them. Never write a raw value a token covers.
+- Card art keeps scoped CSS on the same tokens, and sizes itself without the
+  global stylesheet, as component tests load none.
+- Never name a shared class after a Tailwind utility (`fixed`, `hidden`,
+  `block`, `static`).
+- The prototype is the source of truth for the look. The `frontend-design`
+  skill helps you build it well; it doesn't change it.
 - Size the card from its own width with container units, as the prototype
   does, so one component serves every size.
 
@@ -113,7 +121,10 @@ apps/web/
 ## Animation
 
 - Animate `transform` and `opacity` only. Never animate layout properties.
-- Keep the flip, the foil and the pack tear from the prototype.
+- GSAP runs every animation a player starts, through `lib/ui/motion.ts`. CSS
+  runs only loops that play on their own (ADR 0007). Add a new motion as a
+  function there, with its timing in `MOTION`.
+- Keep the flip, the foil, the tilt and the pack tear from the prototype.
 - Under `prefers-reduced-motion`, replace movement with a plain change. A
   test covers it.
 - Nothing flashes more than three times in a second.
