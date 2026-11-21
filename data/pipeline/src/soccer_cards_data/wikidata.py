@@ -103,7 +103,7 @@ class PlayerFacts:
     as_of: str
     skipped: tuple[str, ...]
     photo: str | None = None
-    # When the career ended: P2032, "work period (end)". None when not recorded.
+    # When the career ended: P2032, "end of work period". None when not recorded.
     career_end: str | None = None
 
 

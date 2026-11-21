@@ -202,7 +202,7 @@ def _state(
 
     Wikidata often leaves a current spell without a start or with a stale end,
     so a missing open spell doesn't mean a player retired. RETIRED needs a
-    work period end (P2032) or a last spell that ended two or more calendar
+    end of work period (P2032) or a last spell that ended two or more calendar
     years before the run. The run's date is `update_time`'s. Years are
     compared, whatever precision an end date has.
     """
@@ -210,12 +210,16 @@ def _state(
     has_open = any(s.end is None for s in spells)
     if facts.career_end is not None:
         if has_open:
-            problems.append(f"{facts.qid}: work period end and an open spell conflict")
+            problems.append(
+                f"{facts.qid}: end of work period and an open spell conflict"
+            )
         return "RETIRED"
     if has_open:
         return "ACTIVE"
     if not spells:
-        problems.append(f"{facts.qid}: no spells and no work period end, kept ACTIVE")
+        problems.append(
+            f"{facts.qid}: no spells and no end of work period, kept ACTIVE"
+        )
         return "ACTIVE"
     last_year = max(int(s.end[:4]) for s in spells if s.end)
     return "RETIRED" if int(update_time[:4]) - last_year >= 2 else "ACTIVE"

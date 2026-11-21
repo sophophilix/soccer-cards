@@ -133,7 +133,9 @@ def test_player_with_no_spells_is_active_and_reported() -> None:
     record = _build(replace(_facts(), clubs=(), national_teams=()), photo=None)
     _assert_structure(record)
     assert record.player["state"] == "ACTIVE"
-    assert record.problems == ("Q615: no spells and no work period end, kept ACTIVE",)
+    assert record.problems == (
+        "Q615: no spells and no end of work period, kept ACTIVE",
+    )
     for key in ("club", "clubGoalCount", "nationalTeamGoalCount", "photo"):
         assert key not in record.player
 
@@ -181,7 +183,7 @@ def test_open_club_spell_is_active_whatever_its_age() -> None:
 def test_career_end_retires_a_player_and_reports_an_open_spell() -> None:
     record = _build(replace(_facts(), career_end="2026"))
     assert record.player["state"] == "RETIRED"
-    assert record.problems == ("Q615: work period end and an open spell conflict",)
+    assert record.problems == ("Q615: end of work period and an open spell conflict",)
 
 
 def test_career_end_retires_a_player_with_only_closed_recent_spells() -> None:
