@@ -1,5 +1,12 @@
 import { expect, test } from '@playwright/test';
 
+// The Packs view asks for the card data. Answer from the test so no 404 is logged, published or not.
+test.beforeEach(async ({ page }) => {
+	await page.route('**/api/v1/*.json', (route) =>
+		route.fulfill({ json: { players: [], clubs: [] } })
+	);
+});
+
 test('the home page requests no other host', async ({ page, baseURL }) => {
 	const requestedOrigins = new Set<string>();
 	page.on('request', (request) => requestedOrigins.add(new URL(request.url()).origin));

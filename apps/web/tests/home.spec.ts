@@ -1,14 +1,15 @@
 import { expect, test } from '@playwright/test';
 
 const NOT_FOUND_STATUS = 404;
-const PACKS_LINE = 'Open packs of cards here. Coming soon.';
 
-test('the home page shows the Packs view and one line of text', async ({ page }) => {
+test('the home page shows the Packs view, with a heading and a way to open a pack or retry', async ({
+	page
+}) => {
+	await page.route('**/api/v1/*.json', (route) => route.fulfill({ status: 404, body: '' }));
 	await page.goto('/');
 
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Packs');
-	await expect(page.getByRole('heading')).toHaveCount(1);
-	await expect(page.getByText(PACKS_LINE)).toBeVisible();
+	await expect(page.getByRole('button', { name: 'Try again' })).toBeVisible();
 });
 
 test('the home page has a title and a language', async ({ page }) => {
@@ -33,5 +34,6 @@ test.describe('with JavaScript turned off', () => {
 		await page.goto('/');
 
 		await expect(page.getByRole('heading', { level: 1 })).toHaveText('Packs');
+		await expect(page.getByText('Getting the cards ready')).toBeVisible();
 	});
 });
