@@ -1,0 +1,35 @@
+{
+  "club": "clubs/ol-lyonnes",
+  "displayName": "Ada Hegerberg",
+  "name": "players/ada-hegerberg",
+  "nationalTeamCode": "NOR",
+  "outfieldRatings": {
+    "defending": 55,
+    "dribbling": 75,
+    "pace": 74,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 95
+  },
+  "photo": {
+    "attribution": {
+      "author": "Pierre-Yves Beaudouin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:20141015_-_PSG-Lyon_-_0662.jpg"
+    },
+    "heightPx": 761,
+    "mimeType": "image/webp",
+    "uri": "photos/ada-hegerberg.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 85,
+    "control": 75,
+    "defence": 65,
+    "overall": 79
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

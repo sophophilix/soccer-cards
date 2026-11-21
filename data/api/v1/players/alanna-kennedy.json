@@ -1,0 +1,40 @@
+{
+  "club": "clubs/western-new-york-flash",
+  "displayName": "Alanna Kennedy",
+  "name": "players/alanna-kennedy",
+  "nationalTeamCode": "AUS",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-16",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4708263&oldid=2570191977",
+    "value": 7
+  },
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 65,
+    "pace": 74,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 74
+  },
+  "photo": {
+    "attribution": {
+      "author": "Efcso",
+      "licenseCode": "CC-BY-SA-3.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Alanna_Kennedy_WSW.jpg"
+    },
+    "heightPx": 654,
+    "mimeType": "image/webp",
+    "uri": "photos/alanna-kennedy.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 72,
+    "control": 71,
+    "defence": 80,
+    "overall": 76
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

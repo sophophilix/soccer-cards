@@ -1,0 +1,45 @@
+{
+  "club": "clubs/fc-barcelona",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-10",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q113704154&oldid=2570943738",
+    "value": 37
+  },
+  "displayName": "Lamine Yamal",
+  "name": "players/lamine-yamal",
+  "nationalTeamCode": "ESP",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-07",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q113704154&oldid=2570943738",
+    "value": 11
+  },
+  "outfieldRatings": {
+    "defending": 55,
+    "dribbling": 95,
+    "pace": 85,
+    "passing": 85,
+    "physical": 75,
+    "shooting": 84
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Lamine_Yamal_Argentina_v_Spain_19_July_2026-214_(new_cropped).jpg"
+    },
+    "heightPx": 648,
+    "mimeType": "image/webp",
+    "uri": "photos/lamine-yamal.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 87,
+    "control": 88,
+    "defence": 67,
+    "overall": 84
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "RARE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

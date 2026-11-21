@@ -1,0 +1,40 @@
+{
+  "club": "clubs/everton-f-c-women",
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-19",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16227231&oldid=2571987539",
+    "value": 27
+  },
+  "displayName": "Hayley Raso",
+  "name": "players/hayley-raso",
+  "nationalTeamCode": "AUS",
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 75,
+    "pace": 83,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 73
+  },
+  "photo": {
+    "attribution": {
+      "author": "Katie Chan",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:20240124-Hayley_Raso.jpg"
+    },
+    "heightPx": 320,
+    "mimeType": "image/webp",
+    "uri": "photos/hayley-raso.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 76,
+    "control": 76,
+    "defence": 71,
+    "overall": 75
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

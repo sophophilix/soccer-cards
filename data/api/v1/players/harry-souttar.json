@@ -1,0 +1,35 @@
+{
+  "club": "clubs/leicester-city-f-c",
+  "displayName": "Harry Souttar",
+  "name": "players/harry-souttar",
+  "nationalTeamCode": "AUS",
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 65,
+    "pace": 75,
+    "passing": 75,
+    "physical": 95,
+    "shooting": 65
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Harry_Souttar_Australia_v_USA_19_June_2026-27.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/harry-souttar.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 68,
+    "control": 73,
+    "defence": 86,
+    "overall": 81
+  },
+  "position": "DEFENDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

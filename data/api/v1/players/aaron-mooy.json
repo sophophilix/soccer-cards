@@ -1,0 +1,34 @@
+{
+  "displayName": "Aaron Mooy",
+  "name": "players/aaron-mooy",
+  "nationalTeamCode": "AUS",
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 75,
+    "pace": 72,
+    "passing": 85,
+    "physical": 73,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "Granada",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:20180601_FIFA_Friendly_Match_Czech_Republic_vs._Australia_Aaron_Mooy_850_0283.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/aaron-mooy.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 75,
+    "control": 79,
+    "defence": 75,
+    "overall": 78
+  },
+  "position": "MIDFIELDER",
+  "state": "RETIRED",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

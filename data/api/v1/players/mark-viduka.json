@@ -1,0 +1,44 @@
+{
+  "clubGoalCount": {
+    "retrieveDate": "2026-08-10",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q239513&oldid=2529583158",
+    "value": 202
+  },
+  "displayName": "Mark Viduka",
+  "name": "players/mark-viduka",
+  "nationalTeamCode": "AUS",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-08-10",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q239513&oldid=2529583158",
+    "value": 11
+  },
+  "outfieldRatings": {
+    "defending": 55,
+    "dribbling": 75,
+    "pace": 62,
+    "passing": 75,
+    "physical": 82,
+    "shooting": 86
+  },
+  "photo": {
+    "attribution": {
+      "author": "David Luu from Sydney, Australia",
+      "licenseCode": "CC-BY-SA-2.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Mark_Viduka_2005_WCQ.jpg"
+    },
+    "heightPx": 538,
+    "mimeType": "image/webp",
+    "uri": "photos/mark-viduka.webp",
+    "widthPx": 281
+  },
+  "playStats": {
+    "attack": 78,
+    "control": 74,
+    "defence": 66,
+    "overall": 77
+  },
+  "position": "FORWARD",
+  "state": "RETIRED",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

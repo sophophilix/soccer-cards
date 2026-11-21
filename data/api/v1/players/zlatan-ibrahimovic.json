@@ -1,0 +1,44 @@
+{
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-18",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q46896&oldid=2558287798",
+    "value": 405
+  },
+  "displayName": "Zlatan Ibrahimović",
+  "name": "players/zlatan-ibrahimovic",
+  "nationalTeamCode": "SWE",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-18",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q46896&oldid=2558287798",
+    "value": 62
+  },
+  "outfieldRatings": {
+    "defending": 55,
+    "dribbling": 85,
+    "pace": 72,
+    "passing": 75,
+    "physical": 82,
+    "shooting": 97
+  },
+  "photo": {
+    "attribution": {
+      "author": "Colleen Sturtevant",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Zlatan_Ibrahimovi%C4%87_nyc.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/zlatan-ibrahimovic.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 87,
+    "control": 79,
+    "defence": 67,
+    "overall": 85
+  },
+  "position": "FORWARD",
+  "state": "RETIRED",
+  "tier": "RARE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

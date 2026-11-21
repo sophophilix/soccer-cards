@@ -1,0 +1,45 @@
+{
+  "club": "clubs/fc-bayern-munich",
+  "clubGoalCount": {
+    "retrieveDate": "2026-05-16",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q96072055&oldid=2571925193",
+    "value": 48
+  },
+  "displayName": "Jamal Musiala",
+  "name": "players/jamal-musiala",
+  "nationalTeamCode": "GER",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-06-06",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q96072055&oldid=2571925193",
+    "value": 9
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 95,
+    "pace": 75,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 86
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Jamal_Musiala_Ecuador_v_Germany_25_June_2026-174_(cropped).jpg"
+    },
+    "heightPx": 739,
+    "mimeType": "image/webp",
+    "uri": "photos/jamal-musiala.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 85,
+    "control": 83,
+    "defence": 70,
+    "overall": 79
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

@@ -1,0 +1,44 @@
+{
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-19",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2572077243",
+    "value": 237
+  },
+  "displayName": "Wayne Rooney",
+  "name": "players/wayne-rooney",
+  "nationalTeamCode": "ENG",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-19",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2572077243",
+    "value": 53
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 75,
+    "pace": 72,
+    "passing": 75,
+    "physical": 82,
+    "shooting": 95
+  },
+  "photo": {
+    "attribution": {
+      "author": "Дмитрий Голубович",
+      "licenseCode": "CC-BY-SA-3.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Wayne-Rooney-2015-10-21.jpg"
+    },
+    "heightPx": 567,
+    "mimeType": "image/webp",
+    "uri": "photos/wayne-rooney.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 84,
+    "control": 75,
+    "defence": 77,
+    "overall": 84
+  },
+  "position": "FORWARD",
+  "state": "RETIRED",
+  "tier": "RARE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

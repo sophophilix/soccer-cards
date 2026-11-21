@@ -1,0 +1,44 @@
+{
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-15",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q459830&oldid=2570028705",
+    "value": 125
+  },
+  "displayName": "Steven Gerrard",
+  "name": "players/steven-gerrard",
+  "nationalTeamCode": "ENG",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-15",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q459830&oldid=2570028705",
+    "value": 21
+  },
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 75,
+    "pace": 72,
+    "passing": 85,
+    "physical": 82,
+    "shooting": 86
+  },
+  "photo": {
+    "attribution": {
+      "author": "Эдгар Брещанов",
+      "licenseCode": "CC-BY-SA-3.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Steven_Gerrard_2018.jpg"
+    },
+    "heightPx": 619,
+    "mimeType": "image/webp",
+    "uri": "photos/steven-gerrard.webp",
+    "widthPx": 412
+  },
+  "playStats": {
+    "attack": 81,
+    "control": 79,
+    "defence": 83,
+    "overall": 85
+  },
+  "position": "MIDFIELDER",
+  "state": "RETIRED",
+  "tier": "RARE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

@@ -1,0 +1,45 @@
+{
+  "club": "clubs/levante-ud",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-12",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1587689&oldid=2557274118",
+    "value": 0
+  },
+  "displayName": "Mathew Ryan",
+  "goalkeeperRatings": {
+    "diving": 75,
+    "handling": 75,
+    "kicking": 75,
+    "positioning": 85,
+    "reflexes": 75,
+    "speed": 75
+  },
+  "name": "players/mathew-ryan",
+  "nationalTeamCode": "AUS",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-07-03",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1587689&oldid=2557274118",
+    "value": 0
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Mathew_Ryan_Australia_v_USA_19_June_2026-119.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/mathew-ryan.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 75,
+    "control": 76,
+    "defence": 77,
+    "overall": 80
+  },
+  "position": "GOALKEEPER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

@@ -1,0 +1,35 @@
+{
+  "club": "clubs/fc-luzern",
+  "displayName": "Tomi Juric",
+  "name": "players/tomi-juric",
+  "nationalTeamCode": "AUS",
+  "outfieldRatings": {
+    "defending": 55,
+    "dribbling": 75,
+    "pace": 72,
+    "passing": 75,
+    "physical": 73,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "Дмитрий Садовников",
+      "licenseCode": "CC-BY-SA-3.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Tomi_Juri%C4%87.jpg"
+    },
+    "heightPx": 705,
+    "mimeType": "image/webp",
+    "uri": "photos/tomi-juric.webp",
+    "widthPx": 472
+  },
+  "playStats": {
+    "attack": 74,
+    "control": 75,
+    "defence": 64,
+    "overall": 72
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

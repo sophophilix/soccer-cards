@@ -1,0 +1,45 @@
+{
+  "club": "clubs/melbourne-city-fc",
+  "clubGoalCount": {
+    "retrieveDate": "2024-11-05",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q176304&oldid=2562667425",
+    "value": 72
+  },
+  "displayName": "Mathew Leckie",
+  "name": "players/mathew-leckie",
+  "nationalTeamCode": "AUS",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2022-11-30",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q176304&oldid=2562667425",
+    "value": 14
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 75,
+    "pace": 82,
+    "passing": 75,
+    "physical": 73,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Mathew_Leckie_Australia_v_USA_19_June_2026-62_(cropped).jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/mathew-leckie.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 76,
+    "control": 76,
+    "defence": 70,
+    "overall": 77
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

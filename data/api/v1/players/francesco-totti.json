@@ -1,0 +1,39 @@
+{
+  "displayName": "Francesco Totti",
+  "name": "players/francesco-totti",
+  "nationalTeamCode": "ITA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-26",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20110&oldid=2560883321",
+    "value": 9
+  },
+  "outfieldRatings": {
+    "defending": 55,
+    "dribbling": 85,
+    "pace": 72,
+    "passing": 95,
+    "physical": 72,
+    "shooting": 95
+  },
+  "photo": {
+    "attribution": {
+      "author": "Photojournalist Roberto Vicario derivative work: Clarus The Dogcow (talk)",
+      "licenseCode": "CC-BY-SA-3.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Francesco_Totti_Vicario_(crop).jpg"
+    },
+    "heightPx": 326,
+    "mimeType": "image/webp",
+    "uri": "photos/francesco-totti.webp",
+    "widthPx": 263
+  },
+  "playStats": {
+    "attack": 88,
+    "control": 86,
+    "defence": 66,
+    "overall": 81
+  },
+  "position": "MIDFIELDER",
+  "state": "RETIRED",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

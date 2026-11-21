@@ -1,0 +1,34 @@
+{
+  "displayName": "Lucy Bronze",
+  "name": "players/lucy-bronze",
+  "nationalTeamCode": "ENG",
+  "outfieldRatings": {
+    "defending": 95,
+    "dribbling": 75,
+    "pace": 82,
+    "passing": 85,
+    "physical": 73,
+    "shooting": 85
+  },
+  "photo": {
+    "attribution": {
+      "author": "James Boyes from UK",
+      "licenseCode": "CC-BY-2.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Lucy_Bronze_(2019)_(cropped).jpg"
+    },
+    "heightPx": 711,
+    "mimeType": "image/webp",
+    "uri": "photos/lucy-bronze.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 82,
+    "control": 80,
+    "defence": 86,
+    "overall": 85
+  },
+  "position": "DEFENDER",
+  "state": "RETIRED",
+  "tier": "RARE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

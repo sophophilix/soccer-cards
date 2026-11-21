@@ -8,7 +8,7 @@ from typing import Any
 from soccer_cards_data.validate import validate
 
 API = Path(__file__).resolve().parents[2] / "api/v1"
-PLAYER_COUNT = 24
+PLAYER_COUNT = 64
 
 
 def _json(rel: str) -> Any:
@@ -19,7 +19,7 @@ def test_the_committed_folder_passes_the_schema() -> None:
     validate(API)
 
 
-def test_it_holds_the_first_24_players() -> None:
+def test_it_holds_the_first_64_players() -> None:
     assert len(_json("players.json")["players"]) == PLAYER_COUNT
     assert len(list((API / "players").glob("*.json"))) == PLAYER_COUNT
 
@@ -34,7 +34,7 @@ def test_every_photo_has_a_credit_and_every_credit_a_file() -> None:
     assert on_players <= credited
 
 
-def test_it_holds_23_photos_and_one_avatar() -> None:
+def test_it_holds_63_photos_and_one_avatar() -> None:
     players = _json("players.json")["players"]
     avatars = [p["displayName"] for p in players if "photo" not in p]
     assert avatars == ["Peter Schmeichel"]

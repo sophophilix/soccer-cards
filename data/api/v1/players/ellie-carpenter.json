@@ -1,0 +1,40 @@
+{
+  "club": "clubs/portland-thorns-fc",
+  "displayName": "Ellie Carpenter",
+  "name": "players/ellie-carpenter",
+  "nationalTeamCode": "AUS",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-16",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23013501&oldid=2570218031",
+    "value": 1
+  },
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 75,
+    "pace": 85,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "Thewomensgame at English Wikipedia",
+      "licenseCode": "CC-BY-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Ellie-carpenter-2017-algarve_(cropped).jpg"
+    },
+    "heightPx": 719,
+    "mimeType": "image/webp",
+    "uri": "photos/ellie-carpenter.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 77,
+    "control": 76,
+    "defence": 81,
+    "overall": 80
+  },
+  "position": "DEFENDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

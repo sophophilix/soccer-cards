@@ -1,0 +1,45 @@
+{
+  "club": "clubs/liverpool-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-13",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q94699949&oldid=2566952577",
+    "value": 40
+  },
+  "displayName": "Florian Wirtz",
+  "name": "players/florian-wirtz",
+  "nationalTeamCode": "GER",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-04",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q94699949&oldid=2566952577",
+    "value": 12
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 85,
+    "pace": 75,
+    "passing": 85,
+    "physical": 75,
+    "shooting": 86
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Florian_Wirtz_Ecuador_v_Germany_25_June_2026-181_(cropped).jpg"
+    },
+    "heightPx": 733,
+    "mimeType": "image/webp",
+    "uri": "photos/florian-wirtz.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 84,
+    "control": 83,
+    "defence": 71,
+    "overall": 81
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

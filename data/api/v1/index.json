@@ -2,24 +2,24 @@
   "collections": [
     {
       "collectionId": "clubs",
-      "itemCount": 11,
+      "itemCount": 25,
       "schemaId": "clubs.schema.json",
       "uri": "clubs.json"
     },
     {
       "collectionId": "credits",
-      "itemCount": 23,
+      "itemCount": 63,
       "schemaId": "credits.schema.json",
       "uri": "credits.json"
     },
     {
       "collectionId": "players",
-      "itemCount": 24,
+      "itemCount": 64,
       "schemaId": "players.schema.json",
       "uri": "players.json"
     }
   ],
-  "dataVersion": 3,
+  "dataVersion": 4,
   "formulaVersion": 1,
-  "generateTime": "2026-11-21T14:18:36Z"
+  "generateTime": "2026-11-21T22:00:18Z"
 }

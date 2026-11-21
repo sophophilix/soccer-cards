@@ -1,0 +1,45 @@
+{
+  "club": "clubs/arsenal-w-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-30",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q2754626&oldid=2562672492",
+    "value": 191
+  },
+  "displayName": "Vivianne Miedema",
+  "name": "players/vivianne-miedema",
+  "nationalTeamCode": "NED",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-30",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q2754626&oldid=2562672492",
+    "value": 84
+  },
+  "outfieldRatings": {
+    "defending": 55,
+    "dribbling": 75,
+    "pace": 74,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 98
+  },
+  "photo": {
+    "attribution": {
+      "author": "Rufus46",
+      "licenseCode": "CC-BY-SA-3.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Vivianne_Miedema_BL_FCB_gg._SGS_Essen_Muenchen-1_(cropped).jpg"
+    },
+    "heightPx": 665,
+    "mimeType": "image/webp",
+    "uri": "photos/vivianne-miedema.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 86,
+    "control": 75,
+    "defence": 65,
+    "overall": 83
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}
