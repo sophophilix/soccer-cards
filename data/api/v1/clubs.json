@@ -1,0 +1,59 @@
+{
+  "clubs": [
+    {
+      "displayName": "AC Milan",
+      "name": "clubs/ac-milan",
+      "updateTime": "2026-11-21T03:57:58Z"
+    },
+    {
+      "displayName": "Al-Nassr",
+      "name": "clubs/al-nassr",
+      "updateTime": "2026-11-21T03:57:58Z"
+    },
+    {
+      "displayName": "Arsenal F.C.",
+      "name": "clubs/arsenal-f-c",
+      "updateTime": "2026-11-21T03:57:58Z"
+    },
+    {
+      "displayName": "Everton F.C.",
+      "name": "clubs/everton-f-c",
+      "updateTime": "2026-11-21T03:57:58Z"
+    },
+    {
+      "displayName": "FC Barcelona",
+      "name": "clubs/fc-barcelona",
+      "updateTime": "2026-11-21T03:57:58Z"
+    },
+    {
+      "displayName": "Inter Miami CF",
+      "name": "clubs/inter-miami-cf",
+      "updateTime": "2026-11-21T03:57:58Z"
+    },
+    {
+      "displayName": "Liverpool F.C.",
+      "name": "clubs/liverpool-f-c",
+      "updateTime": "2026-11-21T03:57:58Z"
+    },
+    {
+      "displayName": "Manchester City F.C.",
+      "name": "clubs/manchester-city-f-c",
+      "updateTime": "2026-11-21T03:57:58Z"
+    },
+    {
+      "displayName": "Manchester United F.C.",
+      "name": "clubs/manchester-united-f-c",
+      "updateTime": "2026-11-21T03:57:58Z"
+    },
+    {
+      "displayName": "Real Madrid Club de Fútbol",
+      "name": "clubs/real-madrid-club-de-futbol",
+      "updateTime": "2026-11-21T03:57:58Z"
+    },
+    {
+      "displayName": "Trabzonspor",
+      "name": "clubs/trabzonspor",
+      "updateTime": "2026-11-21T03:57:58Z"
+    }
+  ]
+}

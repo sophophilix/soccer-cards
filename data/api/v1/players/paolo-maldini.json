@@ -1,0 +1,39 @@
+{
+  "displayName": "Paolo Maldini",
+  "name": "players/paolo-maldini",
+  "nationalTeamCode": "ITA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-18",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q483027&oldid=2558205060",
+    "value": 7
+  },
+  "outfieldRatings": {
+    "defending": 95,
+    "dribbling": 75,
+    "pace": 82,
+    "passing": 75,
+    "physical": 82,
+    "shooting": 65
+  },
+  "photo": {
+    "attribution": {
+      "author": "Foad Ashtari",
+      "licenseCode": "CC-BY-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Paolo_Maldini_press_conference_in_Tehran_(cropped).jpg"
+    },
+    "heightPx": 477,
+    "mimeType": "image/webp",
+    "uri": "photos/paolo-maldini.webp",
+    "widthPx": 367
+  },
+  "playStats": {
+    "attack": 71,
+    "control": 76,
+    "defence": 88,
+    "overall": 88
+  },
+  "position": "DEFENDER",
+  "state": "RETIRED",
+  "tier": "ICON",
+  "updateTime": "2026-11-21T03:57:58Z"
+}

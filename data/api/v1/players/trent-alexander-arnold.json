@@ -1,0 +1,45 @@
+{
+  "club": "clubs/real-madrid-club-de-futbol",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-10",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27569376&oldid=2557274624",
+    "value": 18
+  },
+  "displayName": "Trent Alexander-Arnold",
+  "name": "players/trent-alexander-arnold",
+  "nationalTeamCode": "ENG",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-06",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27569376&oldid=2557274624",
+    "value": 4
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 75,
+    "pace": 75,
+    "passing": 95,
+    "physical": 75,
+    "shooting": 74
+  },
+  "photo": {
+    "attribution": {
+      "author": "Антон Зайцев",
+      "licenseCode": "CC-BY-SA-3.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Trent_Alexander-Arnold_2018_(cropped).jpg"
+    },
+    "heightPx": 414,
+    "mimeType": "image/webp",
+    "uri": "photos/trent-alexander-arnold.webp",
+    "widthPx": 288
+  },
+  "playStats": {
+    "attack": 77,
+    "control": 83,
+    "defence": 72,
+    "overall": 81
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T03:57:58Z"
+}

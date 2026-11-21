@@ -1,0 +1,211 @@
+{
+  "credits": [
+    {
+      "attribution": {
+        "author": "Clément Bucco-Lechat",
+        "licenseCode": "CC-BY-SA-3.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:20150616_-_Portugal_-_Italie_-_Gen%C3%A8ve_-_Andrea_Pirlo_(cropped).jpg"
+      },
+      "player": "players/andrea-pirlo",
+      "uri": "photos/andrea-pirlo.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Bukayo_Saka_England_v_Ghana_23_June_2026-057_(cropped).jpg"
+      },
+      "player": "players/bukayo-saka",
+      "uri": "photos/bukayo-saka.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Cristiano_Ronaldo_Croatia_v_Portugal_2_July_2026-075_(cropped).jpg"
+      },
+      "player": "players/cristiano-ronaldo",
+      "uri": "photos/cristiano-ronaldo.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Declan_Rice_England_v_Ghana_23_June_2026-150_(cropped).jpg"
+      },
+      "player": "players/declan-rice",
+      "uri": "photos/declan-rice.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Erling_Haaland_France_v_Norway_26_June_26-008_(cropped).jpg"
+      },
+      "player": "players/erling-haaland",
+      "uri": "photos/erling-haaland.webp"
+    },
+    {
+      "attribution": {
+        "author": "Panini Group",
+        "licenseCode": "CC-PDM-1.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Franz_Beckenbauer_(1975).jpg"
+      },
+      "player": "players/franz-beckenbauer",
+      "uri": "photos/franz-beckenbauer.webp"
+    },
+    {
+      "attribution": {
+        "author": "Original: Doha Stadium Plus Qatar from Doha, Qatar Derivative work: Alza08 Author:",
+        "licenseCode": "CC-BY-2.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Gianluigi_Buffon_(31784615942)_(cropped).jpg"
+      },
+      "player": "players/gianluigi-buffon",
+      "uri": "photos/gianluigi-buffon.webp"
+    },
+    {
+      "attribution": {
+        "author": "Hameltion",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:ManCity20240722-017_(cropped).jpg"
+      },
+      "player": "players/jack-grealish",
+      "uri": "photos/jack-grealish.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Jordan_Pickford_England_v_Ghana_23_June_2026-049.jpg"
+      },
+      "player": "players/jordan-pickford",
+      "uri": "photos/jordan-pickford.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Jude_Bellingham_England_v_Ghana_23_June_2026-061_(cropped).jpg"
+      },
+      "player": "players/jude-bellingham",
+      "uri": "photos/jude-bellingham.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Kylian_Mbappe_France_v_Senegal_16_June_2026-391_(cropped).jpg"
+      },
+      "player": "players/kylian-mbappe",
+      "uri": "photos/kylian-mbappe.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Leo_Messi_Argentina_v_Egypt_7_July_2026-1.jpg"
+      },
+      "player": "players/lionel-messi",
+      "uri": "photos/lionel-messi.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Luka_Modric_Croatia_v_Portugal_2_July_2026-055.jpg"
+      },
+      "player": "players/luka-modric",
+      "uri": "photos/luka-modric.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Marcus_Rashford_England_v_Panama_27_June_26-047.jpg"
+      },
+      "player": "players/marcus-rashford",
+      "uri": "photos/marcus-rashford.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Mohamed_Salah_Argentina_v_Egypt_7_July_2026-163_(cropped).jpg"
+      },
+      "player": "players/mohamed-salah",
+      "uri": "photos/mohamed-salah.webp"
+    },
+    {
+      "attribution": {
+        "author": "Foad Ashtari",
+        "licenseCode": "CC-BY-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Paolo_Maldini_press_conference_in_Tehran_(cropped).jpg"
+      },
+      "player": "players/paolo-maldini",
+      "uri": "photos/paolo-maldini.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Pedri_France_v_Spain_7.24.26-245.jpg"
+      },
+      "player": "players/pedri",
+      "uri": "photos/pedri.webp"
+    },
+    {
+      "attribution": {
+        "author": "Unknown author",
+        "licenseCode": "CC-PDM-1.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Pele_con_brasil_(cropped).jpg"
+      },
+      "player": "players/pele",
+      "uri": "photos/pele.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Ruben_Dias_Croatia_v_Portugal_2_July_2026-228_(cropped).jpg"
+      },
+      "player": "players/ruben-dias",
+      "uri": "photos/ruben-dias.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Thibaut_Courtois_Belgium_v_USA_6_July_2026-076_(cropped).jpg"
+      },
+      "player": "players/thibaut-courtois",
+      "uri": "photos/thibaut-courtois.webp"
+    },
+    {
+      "attribution": {
+        "author": "Антон Зайцев",
+        "licenseCode": "CC-BY-SA-3.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Trent_Alexander-Arnold_2018_(cropped).jpg"
+      },
+      "player": "players/trent-alexander-arnold",
+      "uri": "photos/trent-alexander-arnold.webp"
+    },
+    {
+      "attribution": {
+        "author": "Ailura",
+        "licenseCode": "CC-BY-SA-3.0-AT",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:20160604_AUT_NED_8876_(cropped).jpg"
+      },
+      "player": "players/virgil-van-dijk",
+      "uri": "photos/virgil-van-dijk.webp"
+    },
+    {
+      "attribution": {
+        "author": "Hadi Abyar",
+        "licenseCode": "CC-BY-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Zinedine_Zidane_by_Tasnim_03.jpg"
+      },
+      "player": "players/zinedine-zidane",
+      "uri": "photos/zinedine-zidane.webp"
+    }
+  ]
+}

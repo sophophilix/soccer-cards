@@ -1,0 +1,40 @@
+{
+  "club": "clubs/fc-barcelona",
+  "displayName": "Pedri",
+  "name": "players/pedri",
+  "nationalTeamCode": "ESP",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-07",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66606355&oldid=2560381004",
+    "value": 6
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 85,
+    "pace": 75,
+    "passing": 85,
+    "physical": 75,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Pedri_France_v_Spain_7.24.26-245.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/pedri.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 78,
+    "control": 83,
+    "defence": 76,
+    "overall": 81
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T03:57:58Z"
+}
