@@ -8,9 +8,9 @@ paths:
   - apps/web/src/routes/match/PickTeam.svelte
   - apps/web/src/routes/match/team-picks.ts
   - apps/web/src/routes/match/team-picks.test.ts
-  - apps/web/tests/match-pick.spec.ts
+  - apps/web/tests/match-team.spec.ts
 dependencies: []
-max_changed_lines: 350
+max_changed_lines: 400
 status: ready
 ---
 
@@ -50,8 +50,10 @@ place can beat a stronger one.
 ## Tests
 
 - `team-picks.test.ts`: add, remove, the cap of 11, best, clear, no duplicates.
-- `match-pick.spec.ts`: tap in and out, the cap message, best and clear,
-  and Kick off enabled only at 11.
+- `match-team.spec.ts`: the default screen now expects Kick off enabled,
+  since the best 11 are picked.
+- The end-to-end spec `match-pick.spec.ts` is T-0119. The first build was
+  477 lines; a saved copy may exist, and the lead says where.
 
 ## Out of scope
 
