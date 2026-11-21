@@ -57,7 +57,7 @@ def test_build_reports_what_it_dropped_and_exits_0(
         main(["build"])
 
     assert exit_info.value.code == 0
-    assert capsys.readouterr().err == "scdata: Q1: avatar, 'no photo'\n"
+    assert capsys.readouterr().err.startswith("scdata: Q1: avatar, 'no photo'\n")
 
 
 @pytest.mark.parametrize(
@@ -79,4 +79,26 @@ def test_a_failed_build_exits_1_and_says_the_output_is_unchanged(
 
     assert exit_info.value.code == 1
     err = capsys.readouterr().err
-    assert err == f"scdata: build failed, output unchanged: {error}\n"
+    assert err.startswith(f"scdata: build failed, output unchanged: {error}\n")
+
+
+@pytest.mark.parametrize("fails", [False, True])
+def test_build_says_how_many_requests_it_made_and_how_long_it_took(
+    capsys: pytest.CaptureFixture[str],
+    monkeypatch: pytest.MonkeyPatch,
+    fails: bool,
+) -> None:
+    def fake(client: PoliteClient, *, now: str) -> tuple[str, ...]:
+        client.requests = 7
+        if fails:
+            raise build.BuildError("no players")
+        return ()
+
+    monkeypatch.setattr(build, "build", fake)
+
+    with pytest.raises(SystemExit) as exit_info:
+        main(["build"])
+
+    assert exit_info.value.code == int(fails)
+    last = capsys.readouterr().err.splitlines()[-1]
+    assert re.fullmatch(r"scdata: 7 requests in \d+\.\d s", last)

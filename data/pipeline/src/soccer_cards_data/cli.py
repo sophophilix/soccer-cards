@@ -7,6 +7,7 @@ status 0 means success, 1 a failed build that left the last good output, and
 
 import argparse
 import sys
+import time
 from collections.abc import Sequence
 from datetime import UTC, datetime
 from importlib.metadata import version
@@ -67,12 +68,17 @@ def main(argv: Sequence[str] | None = None) -> NoReturn:
 
 def _build() -> int:
     now = datetime.now(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
-    try:
-        with PoliteClient() as client:
+    started = time.monotonic()
+    with PoliteClient() as client:
+        try:
             dropped = build.build(client, now=now)
-    except FAILURES as exc:
-        print(f"{PROG}: build failed, output unchanged: {exc}", file=sys.stderr)
-        return 1
-    for line in dropped:
-        print(f"{PROG}: {line}", file=sys.stderr)
-    return 0
+        except FAILURES as exc:
+            print(f"{PROG}: build failed, output unchanged: {exc}", file=sys.stderr)
+            code = 1
+        else:
+            for line in dropped:
+                print(f"{PROG}: {line}", file=sys.stderr)
+            code = 0
+        seconds = time.monotonic() - started
+        print(f"{PROG}: {client.requests} requests in {seconds:.1f} s", file=sys.stderr)
+    return code
