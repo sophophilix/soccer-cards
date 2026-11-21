@@ -1,6 +1,6 @@
 ---
 id: T-0131
-title: Test trading and favourites on the Cards page, and word a refused unstar
+title: Undo a trade that can't be saved, and test trading and favourites
 component: web
 kind: fix
 agent: web-implementer
@@ -8,7 +8,7 @@ paths:
   - apps/web/src/routes/cards/+page.svelte
   - apps/web/tests/cards-trade.spec.ts
 dependencies: []
-max_changed_lines: 250
+max_changed_lines: 300
 status: ready
 ---
 
@@ -27,11 +27,12 @@ The Cards page's trade and favourite wiring has no test, and it says "Star remov
 - Trading the last copy of a favourite is refused with the prototype's words.
 - Starring and unstarring saves and survives a reload.
 - A refused unstar says it was refused, not "Star removed".
+- A trade whose save is refused is undone on screen: the old card stays, the new one isn't shown, and the store's notice says it couldn't be saved (tech lead, 2026-11-21: "yes to all" to the lead's recommendation).
 - `make check COMPONENT=web` passes.
 
 ## Edge cases
 
-- What the screen shows when a trade's save is refused waits for the tech lead; this task tests what happens today.
+- A trade refused in another tab: undone, with that tab's notice.
 
 ## Tests
 
@@ -39,4 +40,4 @@ The Cards page's trade and favourite wiring has no test, and it says "Star remov
 
 ## Out of scope
 
-- Rolling the screen back after a refused save.
+- Changing the trade rules in `packages/game`.
