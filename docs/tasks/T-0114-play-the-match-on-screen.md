@@ -11,7 +11,6 @@ paths:
   - apps/web/tests/match-team.spec.ts
   - apps/web/src/routes/match/commentary.ts
   - apps/web/src/routes/match/commentary.test.ts
-  - apps/web/tests/match-play.spec.ts
 dependencies: []
 max_changed_lines: 400
 status: ready
@@ -29,9 +28,10 @@ division.
   `PickTeam.svelte`: give `PickTeam` an `onKickOff` prop and let
   `MatchView` start the match. Update the "Kick off not ready" check in
   `match-team.spec.ts` to match.
-- `computerSide` needs at least one card of each tier, so the end-to-end
-  spec serves its own card set with all four tiers. Fix the seed by
-  stubbing `crypto.getRandomValues` with `addInitScript`.
+- The first build was 605 lines, 414 without its end-to-end spec. That
+  spec is T-0120. This task trims the rest under 400 (the stage's styles
+  are the likeliest place). The first build is a saved patch; the lead
+  says where.
 - `lib/match` from T-0111: `startMatch` at kick-off, `finishMatchAndSave`
   at full time. The whole result is known at kick-off; the screen only
   reveals it.
@@ -68,8 +68,7 @@ division.
 ## Tests
 
 - `commentary.test.ts`: the line for each outcome and side.
-- `match-play.spec.ts` with a fixed seed: kick off, skip, a win saves the
-  coins and record (read back after reload), a loss counts, Play again.
+- The end-to-end spec `match-play.spec.ts` is T-0120.
 
 ## Out of scope
 
