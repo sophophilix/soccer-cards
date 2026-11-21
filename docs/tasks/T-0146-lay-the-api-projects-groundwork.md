@@ -13,6 +13,7 @@ paths:
   - apps/api/tests/test_project.py
   - apps/api/tests/test_migrations.py
   - apps/api/migrations/**
+  - apps/api/seeds/**
   - apps/api/tests/conftest.py
 dependencies: []
 max_changed_lines: 250
@@ -46,10 +47,19 @@ a test fixture that loads that migration.
   (T-0135 security F3).
 - `.gitignore` leaves out what `pywrangler dev` writes: `pylock.toml`,
   `python_modules/`, `.venv-workers/` and `.wrangler/`.
-- `migrations/0001_create_players.sql` creates `players` and seeds three
-  invented players.
-- `tests/conftest.py` loads the migration into SQLite through the fake D1
-  binding. `tests/test_migrations.py` checks the three seeded players.
+- `migrations/0001_create_players.sql` creates `players` and inserts no
+  rows. A migration may one day run on the production database, and only
+  the pipeline writes player data there (ADR 0008 D4, T-0146 security F2).
+- Its `CHECK` on `id` refuses anything that isn't a whole slug: lowercase
+  letters, digits and hyphens, starting with a letter (ADR 0005 D2,
+  T-0146 security F1).
+- `seeds/local.sql` inserts three invented players for tests and for
+  `pywrangler dev` only. A comment at its top says it must never run on a
+  remote database.
+- `tests/conftest.py` loads the migration, then the seed, into SQLite
+  through the fake D1 binding. `tests/test_migrations.py` checks that the
+  migration alone holds no rows, that the seed adds the three invented
+  players, and that a non-slug id is refused.
 - `make check COMPONENT=data` passes.
 
 ## Edge cases
