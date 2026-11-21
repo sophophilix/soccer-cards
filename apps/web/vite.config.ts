@@ -2,14 +2,17 @@ import adapter from '@sveltejs/adapter-static';
 import type { Adapter } from '@sveltejs/kit';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { playwright } from '@vitest/browser-playwright';
-import { readdir, readFile, writeFile } from 'node:fs/promises';
+import { copyFile, lstat, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { defineConfig } from 'vitest/config';
+import { apiEntryKind, isServedApiEntry } from './src/lib/data/api-files.ts';
+import type { EntryStats } from './src/lib/data/api-files.ts';
 import { readScriptHashes, writeScriptSources } from './src/lib/response-headers/script-hashes.ts';
 
 const BUILD_FOLDER = 'build';
 const HEADERS_FILE = `${BUILD_FOLDER}/_headers`;
 // The static API (ADR 0005), served at /api/v1/ from the site's own origin (ADR 0003 D5).
 // The build copies nothing when the folder is missing, so the site builds before T-0084.
+// It copies after the script hashes are read, so no file in it can widen script-src.
 const API_SOURCE_FOLDER = '../../data/api/v1';
 const API_BUILD_FOLDER = `${BUILD_FOLDER}/api/v1`;
 const LIB_COVERAGE_PERCENT = 80;
@@ -34,6 +37,34 @@ async function writeScriptHashesToHeaders(): Promise<void> {
 	await writeFile(HEADERS_FILE, headers);
 }
 
+/** What `lstat` says about a path, or `undefined` when nothing is there. Any other failure stops the build. */
+async function lstatIfPresent(path: string): Promise<EntryStats | undefined> {
+	try {
+		return await lstat(path);
+	} catch (error) {
+		if (error instanceof Error && 'code' in error && error.code === 'ENOENT') return undefined;
+		throw error;
+	}
+}
+
+/** Copies an API entry into the build when the site serves it, and returns every path it skipped. */
+async function copyApiEntry(source: string, target: string, name: string): Promise<string[]> {
+	const stats = await lstatIfPresent(source);
+	if (stats === undefined) return [];
+	const kind = apiEntryKind(stats);
+	if (!isServedApiEntry(name, kind)) return [source];
+	if (kind === 'file') {
+		await copyFile(source, target);
+		return [];
+	}
+	await mkdir(target, { recursive: true });
+	const skipped: string[] = [];
+	for (const child of await readdir(source)) {
+		skipped.push(...(await copyApiEntry(`${source}/${child}`, `${target}/${child}`, child)));
+	}
+	return skipped;
+}
+
 /** Wraps an adapter so every build finishes the response header and then adds the API files. */
 function withApiAndScriptHashes(inner: Adapter): Adapter {
 	return {
@@ -41,8 +72,9 @@ function withApiAndScriptHashes(inner: Adapter): Adapter {
 		adapt: async (builder) => {
 			await inner.adapt(builder);
 			await writeScriptHashesToHeaders();
-			// After the hashes are read, so no file in the API can widen script-src.
-			builder.copy(API_SOURCE_FOLDER, API_BUILD_FOLDER);
+			for (const path of await copyApiEntry(API_SOURCE_FOLDER, API_BUILD_FOLDER, 'v1')) {
+				builder.log.warn(`Skipped ${path}: the site serves only folders, .json and .webp files.`);
+			}
 		}
 	};
 }

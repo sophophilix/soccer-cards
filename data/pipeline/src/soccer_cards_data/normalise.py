@@ -72,6 +72,14 @@ class PlayerRecord:
     club_qid: str | None = None  # The current club, which the build keys clubs by.
 
 
+def senior_national_teams(facts: PlayerFacts) -> list[Spell]:
+    """Return the national team spells that aren't youth.
+
+    A national team with no label counts as youth, as the record does.
+    """
+    return [s for s in facts.national_teams if not _YOUTH.search(s.team_label or "U21")]
+
+
 def build_player(
     facts: PlayerFacts,
     entry: GradeEntry,
@@ -96,9 +104,7 @@ def build_player(
     problems: list[str] = []
     # Youth teams are left out. A national team with no label counts as youth.
     clubs = [s for s in facts.clubs if not _YOUTH.search(s.team_label or "")]
-    senior = [
-        s for s in facts.national_teams if not _YOUTH.search(s.team_label or "U21")
-    ]
+    senior = senior_national_teams(facts)
     if len({s.team for s in senior}) > 1:
         problems.append(f"{qid}: plays for more than one senior national team")
         senior = []

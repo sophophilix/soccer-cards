@@ -1,6 +1,6 @@
 ---
 id: T-0087
-title: Browse the collection on the Cards screen and flip any card
+title: Browse the collection on the Cards screen
 component: web
 kind: feature
 agent: web-implementer
@@ -9,14 +9,14 @@ paths:
   - apps/web/src/lib/collection/**
   - apps/web/tests/cards.spec.ts
 dependencies: []
-max_changed_lines: 380
+max_changed_lines: 400
 status: ready
 ---
 
 ## Goal
 
-The Cards screen shows every card the child owns, and tapping one shows it
-large with FlipCard so they can see the back.
+The Cards screen shows every card the child owns. Opening a card large to
+flip it is T-0105 (split from this task's first build, 449 lines).
 
 ## Context
 
@@ -29,11 +29,7 @@ large with FlipCard so they can see the back.
 
 - Owned cards in a grid, sorted by tier then overall, with a count of
   duplicates; an empty collection points to Packs.
-- Tapping a card opens a dialog with FlipCard; Escape and a close button
-  close it and return focus.
-- Credits for each photo are on the card back (T-0052) and reachable.
-- `make check COMPONENT=web` passes, including axe on the screen and the
-  dialog.
+- `make check COMPONENT=web` passes, including axe on the screen.
 
 ## Edge cases
 
@@ -43,8 +39,9 @@ large with FlipCard so they can see the back.
 ## Tests
 
 - Unit tests for sorting and counts; an end-to-end test from Packs to
-  Cards to the flipped card.
+  Cards.
 
 ## Out of scope
 
 - Trading and favourites.
+- The card dialog (T-0105).

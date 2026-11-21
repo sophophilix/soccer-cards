@@ -153,7 +153,7 @@ def test_a_qualifier_of_an_unexpected_type_is_skipped_and_reported() -> None:
     assert (club.team_label, facts.birth_date, facts.label) == (None, None, None)
     assert facts.skipped == (
         "P54 Q9 P580: 2 values, kept none",
-        "P54 Q9 P1350: expected quantity, got string",
+        "P54 Q9 P1350: expected quantity, got 'string'",
         "P569: unusable time {'time': '+1900-00-00T00:00:00Z', 'precision': 7}",
     )
 
@@ -220,7 +220,7 @@ def _code(value: object) -> Json:
         ([], "P54 Q9 P3441: no FIFA code"),
         (["Arg"], "P54 Q9 P3441: unusable FIFA code 'Arg'"),
         (["A" * 99], f"P54 Q9 P3441: unusable FIFA code '{'A' * 56}..."),
-        ([{"amount": "+32"}], "P54 Q9 P3441: expected string, got quantity"),
+        ([{"amount": "+32"}], "P54 Q9 P3441: expected string, got 'quantity'"),
         (["ARG", "URU"], "P54 Q9 P3441: 2 values, kept none"),
     ],
 )
@@ -308,7 +308,7 @@ def test_the_photo_is_the_first_p18_file_preferred_rank_first(
 @pytest.mark.parametrize(
     ("value", "reason"),
     [
-        ({"amount": "+1"}, "P18: expected string, got quantity"),
+        ({"amount": "+1"}, "P18: expected string, got 'quantity'"),
         ("", "P18: unusable file name ''"),
         ("File:A.jpg", "P18: unusable file name 'File:A.jpg'"),
         ("A|B.jpg", "P18: unusable file name 'A|B.jpg'"),
@@ -342,3 +342,12 @@ def test_a_bad_photo_after_the_chosen_one_is_still_reported() -> None:
 
     assert facts.photo == "Good.jpg"
     assert facts.skipped == ("P18: unusable file name 'File:Bad.jpg'",)
+
+
+def test_a_datavalue_type_is_escaped_in_the_report() -> None:
+    odd = {"snaktype": "value", "datavalue": {"type": "x\u202ey", "value": "A.jpg"}}
+    claims: Json = {"P18": [{"rank": "normal", "mainsnak": odd}]}
+
+    facts = fetch_player(SavedResponses({"Q1": _player(claims)}), "Q1")
+
+    assert facts.skipped == ("P18: expected string, got 'x\\u202ey'",)

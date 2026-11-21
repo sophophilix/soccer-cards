@@ -273,3 +273,51 @@ def test_a_run_killed_between_the_renames_restores_the_last_good_copy(
 
     assert _tree(tmp_path / "api/v1") == before
     assert [p.name for p in (tmp_path / "api").iterdir()] == ["v1"]
+
+
+def _relabel(net: FakeWikimedia, team: str, label: str, code: str | None) -> None:
+    """Change one saved team entity: its English label and its FIFA code."""
+    for entities in (t["entities"] for t in net.teams):
+        if team in entities:
+            entities[team]["labels"]["en"]["value"] = label
+            if code:
+                datavalue = {"type": "string", "value": code}
+                snak = {"snaktype": "value", "datavalue": datavalue}
+                entities[team]["claims"]["P3441"] = [
+                    {"mainsnak": snak, "rank": "normal"}
+                ]
+
+
+def test_youth_spells_for_another_country_do_not_change_the_code(
+    tmp_path: Path,
+) -> None:
+    net = FakeWikimedia()
+    _relabel(net, "Q1187790", "Spain national under-20 football team", "ESP")
+    _relabel(net, "Q316497", "France national under-20 football team", "FRA")
+
+    _run(tmp_path, net=net)
+
+    assert _json(tmp_path / "api/v1/players/lionel-messi.json")["nationalTeamCode"]
+
+
+def test_two_senior_teams_fail_naming_the_player(tmp_path: Path) -> None:
+    net = FakeWikimedia()
+    _relabel(net, "Q1187790", "Spain national football team", "ESP")
+
+    with pytest.raises(BuildError, match=r"Q615: found \['ARG', 'ESP'\]"):
+        _run(tmp_path, net=net)
+
+
+def test_only_youth_spells_fail_and_every_failing_player_is_named_at_once(
+    tmp_path: Path,
+) -> None:
+    net = FakeWikimedia()
+    _relabel(net, "Q79800", "Argentina national under-21 football team", None)
+    _relabel(net, "Q43310", "Germany national under-21 football team", None)
+
+    with pytest.raises(BuildError) as error:
+        _run(tmp_path, net=net)
+
+    assert "Q615: found" in str(error.value)
+    assert "Q107365: found" in str(error.value)
+    assert not any("upload" in a for a in net.asked)

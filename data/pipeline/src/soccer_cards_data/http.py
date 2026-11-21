@@ -83,6 +83,7 @@ class PoliteClient:
         self._clock = clock
         self._sleep = sleep
         self._last_reply: dict[str, float] = {}
+        self.requests = 0  # Requests sent, retries included; cache hits aren't.
         self._http = httpx.Client(
             headers={"User-Agent": USER_AGENT},
             timeout=TIMEOUT_SECONDS,
@@ -166,6 +167,7 @@ class PoliteClient:
             gap = 0.0 if last is None else MIN_GAP_SECONDS - (self._clock() - last)
             self._sleep_at_least(max(wait, gap))
             wait = BACKOFF_SECONDS * 2**attempt
+            self.requests += 1
             try:
                 response = self._http.send(request, stream=True)
                 try:
