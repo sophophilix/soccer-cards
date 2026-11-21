@@ -95,11 +95,15 @@ def _grades(path: Path, messi_pace: int = 5) -> None:
 
 
 def _run(
-    tmp: Path, now: str = FIRST, net: FakeWikimedia | None = None
+    tmp: Path,
+    now: str = FIRST,
+    net: FakeWikimedia | None = None,
+    photos: str = "",
 ) -> tuple[str, ...]:
     if not (tmp / "players.toml").exists():
         _grades(tmp / "players.toml")
     (tmp / "overrides.toml").touch()
+    (tmp / "photos.toml").write_text(photos, encoding="utf-8")
     fake = httpx.MockTransport(net or FakeWikimedia())
     with PoliteClient(tmp / "cache", transport=fake, sleep=lambda _: None) as client:
         return build.build(
@@ -108,6 +112,7 @@ def _run(
             api_dir=tmp / "api/v1",
             grades_file=tmp / "players.toml",
             overrides_file=tmp / "overrides.toml",
+            photos_file=tmp / "photos.toml",
             ids_file=tmp / "ids.toml",
         )
 
@@ -152,6 +157,31 @@ def test_a_player_without_a_photo_asks_commons_nothing(tmp_path: Path) -> None:
 
     assert not any("Neuer" in asked for asked in net.asked)
     assert "photo" not in _json(tmp_path / "api/v1/players/manuel-neuer.json")
+    assert (tmp_path / "api/v1" / PHOTO).is_file()
+
+
+def test_an_avatar_choice_publishes_no_photo_and_asks_commons_nothing(
+    tmp_path: Path,
+) -> None:
+    net = FakeWikimedia()
+
+    _run(tmp_path, net=net, photos='Q615 = { photo = "avatar", reason = "Promo" }')
+
+    assert not any("Messi" in asked for asked in net.asked)
+    assert "photo" not in _json(tmp_path / "api/v1/players/lionel-messi.json")
+    assert not (tmp_path / "api/v1" / PHOTO).exists()
+
+
+def test_a_named_file_replaces_the_photo_and_is_licence_checked(
+    tmp_path: Path,
+) -> None:
+    net = FakeWikimedia()
+    choice = 'Q615 = { photo = "Chosen Messi.jpg", reason = "Clearer" }'
+
+    _run(tmp_path, net=net, photos=choice)
+
+    assert "File:Chosen Messi.jpg" in net.asked
+    assert not any("File:Leo Messi" in asked for asked in net.asked)
     assert (tmp_path / "api/v1" / PHOTO).is_file()
 
 
