@@ -1,0 +1,45 @@
+{
+  "club": "clubs/orlando-city-sc",
+  "clubGoalCount": {
+    "retrieveDate": "2026-07-23",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q455462&oldid=2573159952",
+    "value": 212
+  },
+  "displayName": "Antoine Griezmann",
+  "name": "players/antoine-griezmann",
+  "nationalTeamCode": "FRA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-21",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q455462&oldid=2573159952",
+    "value": 44
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 75,
+    "pace": 72,
+    "passing": 75,
+    "physical": 73,
+    "shooting": 84
+  },
+  "photo": {
+    "attribution": {
+      "author": "Biser Todorov (User:Biso) from Sofia, Bulgaria",
+      "licenseCode": "CC-BY-SA-2.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Antoine_Griezmann_(51100409504)_(cropped).jpg"
+    },
+    "heightPx": 640,
+    "mimeType": "image/webp",
+    "uri": "photos/antoine-griezmann.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 79,
+    "control": 75,
+    "defence": 74,
+    "overall": 80
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

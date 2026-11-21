@@ -1,0 +1,35 @@
+{
+  "club": "clubs/perth-glory-fc",
+  "displayName": "Mackenzie Arnold",
+  "goalkeeperRatings": {
+    "diving": 75,
+    "handling": 75,
+    "kicking": 75,
+    "positioning": 85,
+    "reflexes": 75,
+    "speed": 75
+  },
+  "name": "players/mackenzie-arnold",
+  "nationalTeamCode": "AUS",
+  "photo": {
+    "attribution": {
+      "author": "Thewomensgame",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Mackenzie_Arnold_in_action_at_2017_Algarve_Cup_(cropped).jpeg"
+    },
+    "heightPx": 680,
+    "mimeType": "image/webp",
+    "uri": "photos/mackenzie-arnold.webp",
+    "widthPx": 452
+  },
+  "playStats": {
+    "attack": 75,
+    "control": 76,
+    "defence": 77,
+    "overall": 77
+  },
+  "position": "GOALKEEPER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

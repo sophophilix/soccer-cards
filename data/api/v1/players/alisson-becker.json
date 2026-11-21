@@ -1,0 +1,45 @@
+{
+  "club": "clubs/liverpool-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-11",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q18237361&oldid=2559543711",
+    "value": 1
+  },
+  "displayName": "Alisson Becker",
+  "goalkeeperRatings": {
+    "diving": 75,
+    "handling": 85,
+    "kicking": 85,
+    "positioning": 85,
+    "reflexes": 95,
+    "speed": 85
+  },
+  "name": "players/alisson-becker",
+  "nationalTeamCode": "BRA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-07-05",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q18237361&oldid=2559543711",
+    "value": 0
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Alisson_Becker_Brazil_V_Morocco_13_June_2026-117_(cropped).jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/alisson-becker.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 85,
+    "control": 85,
+    "defence": 85,
+    "overall": 88
+  },
+  "position": "GOALKEEPER",
+  "state": "ACTIVE",
+  "tier": "LEGEND",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

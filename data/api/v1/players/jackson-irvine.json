@@ -1,0 +1,45 @@
+{
+  "club": "clubs/cerezo-osaka",
+  "clubGoalCount": {
+    "retrieveDate": "2025-11-29",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+    "value": 42
+  },
+  "displayName": "Jackson Irvine",
+  "name": "players/jackson-irvine",
+  "nationalTeamCode": "AUS",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-07-03",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+    "value": 14
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 75,
+    "pace": 73,
+    "passing": 75,
+    "physical": 84,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Jackson_Irvine_Australia_v_USA_19_June_2026-118.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/jackson-irvine.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 75,
+    "control": 76,
+    "defence": 78,
+    "overall": 79
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

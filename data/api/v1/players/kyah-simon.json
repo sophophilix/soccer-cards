@@ -1,0 +1,40 @@
+{
+  "club": "clubs/boston-breakers",
+  "displayName": "Kyah Simon",
+  "name": "players/kyah-simon",
+  "nationalTeamCode": "AUS",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-16",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q467028&oldid=2570202778",
+    "value": 14
+  },
+  "outfieldRatings": {
+    "defending": 55,
+    "dribbling": 75,
+    "pace": 72,
+    "passing": 75,
+    "physical": 73,
+    "shooting": 83
+  },
+  "photo": {
+    "attribution": {
+      "author": "Thewomensgame at English Wikipedia",
+      "licenseCode": "CC0-1.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Kyah-simon-2017-algarve_(cropped).jpg"
+    },
+    "heightPx": 693,
+    "mimeType": "image/webp",
+    "uri": "photos/kyah-simon.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 78,
+    "control": 75,
+    "defence": 64,
+    "overall": 76
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

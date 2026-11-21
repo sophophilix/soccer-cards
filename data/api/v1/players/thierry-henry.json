@@ -1,0 +1,44 @@
+{
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-19",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2572317739",
+    "value": 338
+  },
+  "displayName": "Thierry Henry",
+  "name": "players/thierry-henry",
+  "nationalTeamCode": "FRA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-19",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2572317739",
+    "value": 51
+  },
+  "outfieldRatings": {
+    "defending": 55,
+    "dribbling": 85,
+    "pace": 92,
+    "passing": 85,
+    "physical": 72,
+    "shooting": 96
+  },
+  "photo": {
+    "attribution": {
+      "author": "Web Summit",
+      "licenseCode": "CC-BY-2.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Thierry_Henry_(51649035951)_(cropped).jpg"
+    },
+    "heightPx": 640,
+    "mimeType": "image/webp",
+    "uri": "photos/thierry-henry.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 92,
+    "control": 84,
+    "defence": 67,
+    "overall": 88
+  },
+  "position": "FORWARD",
+  "state": "RETIRED",
+  "tier": "LEGEND",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

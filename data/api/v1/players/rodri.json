@@ -1,0 +1,40 @@
+{
+  "club": "clubs/fc-barcelona",
+  "displayName": "Rodri",
+  "name": "players/rodri",
+  "nationalTeamCode": "ESP",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-07",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20994118&oldid=2557272400",
+    "value": 5
+  },
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 75,
+    "pace": 64,
+    "passing": 85,
+    "physical": 75,
+    "shooting": 74
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Rodri_France_v_Spain_7.24.26-096.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/rodri.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 73,
+    "control": 78,
+    "defence": 80,
+    "overall": 80
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

@@ -1,0 +1,44 @@
+{
+  "clubGoalCount": {
+    "retrieveDate": "2026-09-15",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q321330&oldid=2546234847",
+    "value": 48
+  },
+  "displayName": "Mile Jedinak",
+  "name": "players/mile-jedinak",
+  "nationalTeamCode": "AUS",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-09-15",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q321330&oldid=2546234847",
+    "value": 20
+  },
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 75,
+    "pace": 72,
+    "passing": 75,
+    "physical": 82,
+    "shooting": 85
+  },
+  "photo": {
+    "attribution": {
+      "author": "AntalyasporFC",
+      "licenseCode": "CC-BY-SA-3.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Mile_Jedinak_Antalyaspor.JPG"
+    },
+    "heightPx": 723,
+    "mimeType": "image/webp",
+    "uri": "photos/mile-jedinak.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 79,
+    "control": 75,
+    "defence": 82,
+    "overall": 81
+  },
+  "position": "MIDFIELDER",
+  "state": "RETIRED",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

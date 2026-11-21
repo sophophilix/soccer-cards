@@ -16,9 +16,29 @@
       "updateTime": "2026-11-21T03:57:58Z"
     },
     {
+      "displayName": "Arsenal W.F.C.",
+      "name": "clubs/arsenal-w-f-c",
+      "updateTime": "2026-11-21T22:00:18Z"
+    },
+    {
+      "displayName": "Boston Breakers",
+      "name": "clubs/boston-breakers",
+      "updateTime": "2026-11-21T22:00:18Z"
+    },
+    {
+      "displayName": "Cerezo Osaka",
+      "name": "clubs/cerezo-osaka",
+      "updateTime": "2026-11-21T22:00:18Z"
+    },
+    {
       "displayName": "Everton F.C.",
       "name": "clubs/everton-f-c",
       "updateTime": "2026-11-21T03:57:58Z"
+    },
+    {
+      "displayName": "Everton F.C. Women",
+      "name": "clubs/everton-f-c-women",
+      "updateTime": "2026-11-21T22:00:18Z"
     },
     {
       "displayName": "FC Barcelona",
@@ -26,9 +46,29 @@
       "updateTime": "2026-11-21T03:57:58Z"
     },
     {
+      "displayName": "FC Bayern Munich",
+      "name": "clubs/fc-bayern-munich",
+      "updateTime": "2026-11-21T22:00:18Z"
+    },
+    {
+      "displayName": "FC Luzern",
+      "name": "clubs/fc-luzern",
+      "updateTime": "2026-11-21T22:00:18Z"
+    },
+    {
       "displayName": "Inter Miami CF",
       "name": "clubs/inter-miami-cf",
       "updateTime": "2026-11-21T03:57:58Z"
+    },
+    {
+      "displayName": "Leicester City F.C.",
+      "name": "clubs/leicester-city-f-c",
+      "updateTime": "2026-11-21T22:00:18Z"
+    },
+    {
+      "displayName": "Levante UD",
+      "name": "clubs/levante-ud",
+      "updateTime": "2026-11-21T22:00:18Z"
     },
     {
       "displayName": "Liverpool F.C.",
@@ -46,6 +86,31 @@
       "updateTime": "2026-11-21T03:57:58Z"
     },
     {
+      "displayName": "Melbourne City FC",
+      "name": "clubs/melbourne-city-fc",
+      "updateTime": "2026-11-21T22:00:18Z"
+    },
+    {
+      "displayName": "OL Lyonnes",
+      "name": "clubs/ol-lyonnes",
+      "updateTime": "2026-11-21T22:00:18Z"
+    },
+    {
+      "displayName": "Orlando City SC",
+      "name": "clubs/orlando-city-sc",
+      "updateTime": "2026-11-21T22:00:18Z"
+    },
+    {
+      "displayName": "Perth Glory FC",
+      "name": "clubs/perth-glory-fc",
+      "updateTime": "2026-11-21T22:00:18Z"
+    },
+    {
+      "displayName": "Portland Thorns FC",
+      "name": "clubs/portland-thorns-fc",
+      "updateTime": "2026-11-21T22:00:18Z"
+    },
+    {
       "displayName": "Real Madrid Club de Fútbol",
       "name": "clubs/real-madrid-club-de-futbol",
       "updateTime": "2026-11-21T03:57:58Z"
@@ -54,6 +119,11 @@
       "displayName": "Trabzonspor",
       "name": "clubs/trabzonspor",
       "updateTime": "2026-11-21T03:57:58Z"
+    },
+    {
+      "displayName": "Western New York Flash",
+      "name": "clubs/western-new-york-flash",
+      "updateTime": "2026-11-21T22:00:18Z"
     }
   ]
 }

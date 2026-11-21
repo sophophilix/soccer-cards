@@ -1,0 +1,44 @@
+{
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-17",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q204429&oldid=2570834175",
+    "value": 90
+  },
+  "displayName": "Harry Kewell",
+  "name": "players/harry-kewell",
+  "nationalTeamCode": "AUS",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-17",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q204429&oldid=2570834175",
+    "value": 17
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 85,
+    "pace": 82,
+    "passing": 75,
+    "physical": 72,
+    "shooting": 76
+  },
+  "photo": {
+    "attribution": {
+      "author": "Kevin Airs",
+      "licenseCode": "CC-BY-SA-3.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:HarryKewell.jpg"
+    },
+    "heightPx": 566,
+    "mimeType": "image/webp",
+    "uri": "photos/harry-kewell.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 79,
+    "control": 79,
+    "defence": 70,
+    "overall": 79
+  },
+  "position": "MIDFIELDER",
+  "state": "RETIRED",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

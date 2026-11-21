@@ -1,0 +1,35 @@
+{
+  "club": "clubs/arsenal-w-f-c",
+  "displayName": "Lydia Williams",
+  "goalkeeperRatings": {
+    "diving": 75,
+    "handling": 75,
+    "kicking": 75,
+    "positioning": 75,
+    "reflexes": 75,
+    "speed": 75
+  },
+  "name": "players/lydia-williams",
+  "nationalTeamCode": "AUS",
+  "photo": {
+    "attribution": {
+      "author": "James Boyes from UK",
+      "licenseCode": "CC-BY-2.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Brighton_%26_Hove_Albion_Women_v_Manchester_United_Women_01_04_2023-763_(52787583260).jpg"
+    },
+    "heightPx": 303,
+    "mimeType": "image/webp",
+    "uri": "photos/lydia-williams.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 75,
+    "control": 75,
+    "defence": 75,
+    "overall": 75
+  },
+  "position": "GOALKEEPER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

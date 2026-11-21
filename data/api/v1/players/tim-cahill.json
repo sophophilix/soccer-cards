@@ -1,0 +1,39 @@
+{
+  "displayName": "Tim Cahill",
+  "name": "players/tim-cahill",
+  "nationalTeamCode": "AUS",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-13",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q187238&oldid=2568700754",
+    "value": 50
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 75,
+    "pace": 72,
+    "passing": 75,
+    "physical": 82,
+    "shooting": 88
+  },
+  "photo": {
+    "attribution": {
+      "author": "billtnj",
+      "licenseCode": "CC-BY-SA-2.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Tim_Cahill,_New_York_Red_Bulls_vs_CD_FAS_2014.jpg"
+    },
+    "heightPx": 727,
+    "mimeType": "image/webp",
+    "uri": "photos/tim-cahill.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 81,
+    "control": 75,
+    "defence": 72,
+    "overall": 77
+  },
+  "position": "MIDFIELDER",
+  "state": "RETIRED",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

@@ -1,0 +1,35 @@
+{
+  "club": "clubs/ol-lyonnes",
+  "displayName": "Wendie Renard",
+  "name": "players/wendie-renard",
+  "nationalTeamCode": "FRA",
+  "outfieldRatings": {
+    "defending": 95,
+    "dribbling": 65,
+    "pace": 72,
+    "passing": 75,
+    "physical": 93,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "Steffen Prößdorf",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:2019-05-18_Fu%C3%9Fball,_Frauen,_UEFA_Women%27s_Champions_League,_Olympique_Lyonnais_-_FC_Barcelona_StP_0143_LR10_by_Stepro.jpg"
+    },
+    "heightPx": 320,
+    "mimeType": "image/webp",
+    "uri": "photos/wendie-renard.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 72,
+    "control": 73,
+    "defence": 90,
+    "overall": 84
+  },
+  "position": "DEFENDER",
+  "state": "ACTIVE",
+  "tier": "RARE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

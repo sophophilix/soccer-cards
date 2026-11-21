@@ -1,0 +1,34 @@
+{
+  "displayName": "Stephanie Catley",
+  "name": "players/stephanie-catley",
+  "nationalTeamCode": "AUS",
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 75,
+    "pace": 73,
+    "passing": 85,
+    "physical": 75,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "Layles",
+      "licenseCode": "CC-BY-SA-3.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Stephanie_Catley_of_Melbourne_Victory_Women.jpg"
+    },
+    "heightPx": 593,
+    "mimeType": "image/webp",
+    "uri": "photos/stephanie-catley.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 76,
+    "control": 79,
+    "defence": 81,
+    "overall": 80
+  },
+  "position": "DEFENDER",
+  "state": "RETIRED",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

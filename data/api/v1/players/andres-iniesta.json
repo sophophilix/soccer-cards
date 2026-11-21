@@ -1,0 +1,44 @@
+{
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-01",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
+    "value": 66
+  },
+  "displayName": "Andrés Iniesta",
+  "name": "players/andres-iniesta",
+  "nationalTeamCode": "ESP",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-01",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
+    "value": 13
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 95,
+    "pace": 72,
+    "passing": 95,
+    "physical": 72,
+    "shooting": 85
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Andr%C3%A9s_Iniesta_Argentina_v_Spain_19_July_2026-034_(cropped).jpg"
+    },
+    "heightPx": 608,
+    "mimeType": "image/webp",
+    "uri": "photos/andres-iniesta.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 85,
+    "control": 90,
+    "defence": 76,
+    "overall": 88
+  },
+  "position": "MIDFIELDER",
+  "state": "RETIRED",
+  "tier": "LEGEND",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

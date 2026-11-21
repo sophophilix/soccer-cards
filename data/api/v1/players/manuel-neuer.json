@@ -1,0 +1,45 @@
+{
+  "club": "clubs/fc-bayern-munich",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-10",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q107365&oldid=2567968563",
+    "value": 0
+  },
+  "displayName": "Manuel Neuer",
+  "goalkeeperRatings": {
+    "diving": 85,
+    "handling": 85,
+    "kicking": 75,
+    "positioning": 95,
+    "reflexes": 95,
+    "speed": 95
+  },
+  "name": "players/manuel-neuer",
+  "nationalTeamCode": "GER",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-11",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q107365&oldid=2567968563",
+    "value": 0
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Manuel_Neuer_Ecuador_v_Germany_25_June_2026-148.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/manuel-neuer.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 79,
+    "control": 84,
+    "defence": 90,
+    "overall": 93
+  },
+  "position": "GOALKEEPER",
+  "state": "ACTIVE",
+  "tier": "LEGEND",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

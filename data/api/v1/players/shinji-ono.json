@@ -1,0 +1,39 @@
+{
+  "displayName": "Shinji Ono",
+  "name": "players/shinji-ono",
+  "nationalTeamCode": "JPN",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-04",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q360580&oldid=2553018907",
+    "value": 6
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 75,
+    "pace": 72,
+    "passing": 85,
+    "physical": 72,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "norio nakayama",
+      "licenseCode": "CC-BY-SA-2.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Shinji_Ono_Omiya_Ardija_vs_Shimizu_S-Pulse_@_NACK5_Stadium.jpg"
+    },
+    "heightPx": 964,
+    "mimeType": "image/webp",
+    "uri": "photos/shinji-ono.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 75,
+    "control": 78,
+    "defence": 70,
+    "overall": 76
+  },
+  "position": "MIDFIELDER",
+  "state": "RETIRED",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

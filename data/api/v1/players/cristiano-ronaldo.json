@@ -4,8 +4,8 @@
   "name": "players/cristiano-ronaldo",
   "nationalTeamCode": "POR",
   "nationalTeamGoalCount": {
-    "retrieveDate": "2026-11-20",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2572858333",
+    "retrieveDate": "2026-11-21",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2573368578",
     "value": 146
   },
   "outfieldRatings": {
@@ -36,5 +36,5 @@
   "position": "FORWARD",
   "state": "ACTIVE",
   "tier": "ICON",
-  "updateTime": "2026-11-21T14:18:36Z"
+  "updateTime": "2026-11-21T22:00:18Z"
 }

@@ -1,0 +1,35 @@
+{
+  "club": "clubs/arsenal-w-f-c",
+  "displayName": "Caitlin Foord",
+  "name": "players/caitlin-foord",
+  "nationalTeamCode": "AUS",
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 85,
+    "pace": 83,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "EL Loko",
+      "licenseCode": "CC-BY-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Caitlin_Foord_20181009.jpg"
+    },
+    "heightPx": 320,
+    "mimeType": "image/webp",
+    "uri": "photos/caitlin-foord.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 79,
+    "control": 80,
+    "defence": 71,
+    "overall": 76
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

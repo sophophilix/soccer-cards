@@ -1,0 +1,44 @@
+{
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-14",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1912&oldid=2569263961",
+    "value": 329
+  },
+  "displayName": "Karim Benzema",
+  "name": "players/karim-benzema",
+  "nationalTeamCode": "FRA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-14",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1912&oldid=2569263961",
+    "value": 37
+  },
+  "outfieldRatings": {
+    "defending": 55,
+    "dribbling": 75,
+    "pace": 72,
+    "passing": 85,
+    "physical": 72,
+    "shooting": 96
+  },
+  "photo": {
+    "attribution": {
+      "author": "Real Madrid YouTube channel",
+      "licenseCode": "CC-BY-3.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Karim_Benzema_during_an_interview_in_2021_(2)_(cropped).jpg"
+    },
+    "heightPx": 584,
+    "mimeType": "image/webp",
+    "uri": "photos/karim-benzema.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 86,
+    "control": 78,
+    "defence": 65,
+    "overall": 82
+  },
+  "position": "FORWARD",
+  "state": "RETIRED",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

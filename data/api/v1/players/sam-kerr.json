@@ -1,0 +1,44 @@
+{
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-16",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
+    "value": 161
+  },
+  "displayName": "Sam Kerr",
+  "name": "players/sam-kerr",
+  "nationalTeamCode": "AUS",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-16",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
+    "value": 42
+  },
+  "outfieldRatings": {
+    "defending": 55,
+    "dribbling": 75,
+    "pace": 83,
+    "passing": 75,
+    "physical": 84,
+    "shooting": 97
+  },
+  "photo": {
+    "attribution": {
+      "author": "Katie Chan",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Chelsea_FC_Women_v_Everton_FC_Women,_12_September_2021_(10)_(cropped).jpg"
+    },
+    "heightPx": 718,
+    "mimeType": "image/webp",
+    "uri": "photos/sam-kerr.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 88,
+    "control": 77,
+    "defence": 69,
+    "overall": 85
+  },
+  "position": "FORWARD",
+  "state": "RETIRED",
+  "tier": "RARE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}

@@ -1,0 +1,44 @@
+{
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-12",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q131234&oldid=2568151500",
+    "value": 45
+  },
+  "displayName": "Toni Kroos",
+  "name": "players/toni-kroos",
+  "nationalTeamCode": "GER",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-12",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q131234&oldid=2568151500",
+    "value": 17
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 75,
+    "pace": 62,
+    "passing": 95,
+    "physical": 73,
+    "shooting": 85
+  },
+  "photo": {
+    "attribution": {
+      "author": "https://www.youtube.com/@realmadrid",
+      "licenseCode": "CC-BY-3.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Toni_Kroos_Real_Madrid_2021.jpg"
+    },
+    "heightPx": 655,
+    "mimeType": "image/webp",
+    "uri": "photos/toni-kroos.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 79,
+    "control": 82,
+    "defence": 75,
+    "overall": 84
+  },
+  "position": "MIDFIELDER",
+  "state": "RETIRED",
+  "tier": "RARE",
+  "updateTime": "2026-11-21T22:00:18Z"
+}
