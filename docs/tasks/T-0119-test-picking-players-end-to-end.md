@@ -33,6 +33,8 @@ first build was 477 lines, so its end-to-end spec moved here.
   Pick my best team fills it again.
 - A new formation keeps the picked players.
 - A double tap on one player never holds them twice.
+- Axe scans the screen after Clear, with every player unpicked, in light
+  and dark mode, with no violations (T-0113 review F1 and F3).
 - `make check COMPONENT=web` passes.
 
 ## Edge cases
