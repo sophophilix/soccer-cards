@@ -241,3 +241,14 @@ def test_a_download_off_the_allow_list_fails_unsent(tmp_path: Path) -> None:
     ):
         client.get_bytes("https://example.org/a.jpg", max_bytes=10)
     assert seen == []
+
+
+def test_the_client_counts_each_request_sent_but_not_a_cached_reply(
+    tmp_path: Path,
+) -> None:
+    handler, _ = _replies(httpx.Response(503), httpx.Response(200, json={"n": 1}))
+    with _client(tmp_path, handler, FakeTime()) as client:
+        assert client.requests == 0
+        client.get_json(URL, {})
+        client.get_json(URL, {})
+        assert client.requests == 2

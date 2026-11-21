@@ -275,7 +275,7 @@ def _snak(snak: object, kind: str, where: str, skipped: list[str]) -> str | None
     raw = datavalue.get("value")
     value = _dict(raw)
     if datavalue.get("type") != kind:
-        skipped.append(f"{where}: expected {kind}, got {datavalue.get('type')}")
+        skipped.append(f"{where}: expected {kind}, got {datavalue.get('type')!a}")
         return None
     if kind == "string":
         text = raw if isinstance(raw, str) else None
