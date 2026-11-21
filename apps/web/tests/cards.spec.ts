@@ -25,7 +25,7 @@ async function ownCards(page: Page): Promise<void> {
 	);
 }
 
-test('Packs to Cards to a flipped card with its credit, then Escape returns focus', async ({
+test('Packs to Cards lists the highest tier first, with copies and an unknown card', async ({
 	page
 }) => {
 	await ownCards(page);
@@ -35,18 +35,10 @@ test('Packs to Cards to a flipped card with its credit, then Escape returns focu
 		.getByRole('link', { name: 'Cards' })
 		.click();
 
-	const tile = page.getByRole('button', { name: /Tavi Brightwell.*2 copies/ });
-	const first = page.getByRole('listitem').first().getByRole('button');
-	await expect(first).toHaveAccessibleName(/Juno Marshwick/);
-	await expect(page.getByText('Unknown card')).toBeVisible();
-	await tile.click();
-	const dialog = page.getByRole('dialog');
-	await dialog.getByRole('button', { name: /Press to see the back/ }).click();
-	await expect(dialog.getByText(/Ina Vented/)).toBeVisible();
-	await page.keyboard.press('Escape');
-
-	await expect(dialog).toBeHidden();
-	await expect(tile).toBeFocused();
+	const items = page.getByRole('listitem');
+	await expect(items.first().getByRole('img')).toHaveAccessibleName(/Juno Marshwick/);
+	await expect(items.nth(1)).toContainText(/×2\s*copies/);
+	await expect(items.nth(2)).toContainText('Unknown card');
 });
 
 test('an empty collection points to Packs', async ({ page }) => {
@@ -55,20 +47,10 @@ test('an empty collection points to Packs', async ({ page }) => {
 	await expect(page.getByRole('main').getByRole('link', { name: 'Packs' })).toBeVisible();
 });
 
-test('the screen and its dialog have no accessibility violation, and Close closes it', async ({
-	page
-}) => {
+test('the screen has no accessibility violation', async ({ page }) => {
 	await ownCards(page);
 	await page.goto('/cards');
-	await expect(page.getByRole('button', { name: /Tavi Brightwell/ })).toBeVisible();
-	expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
-
-	await page.getByRole('button', { name: /Tavi Brightwell/ }).click();
-	await expect(page.getByRole('dialog')).toBeVisible();
+	await expect(page.getByRole('listitem')).toHaveCount(3);
 
 	expect((await new AxeBuilder({ page }).analyze()).violations).toEqual([]);
-
-	await page.getByRole('button', { name: 'Close' }).click();
-
-	await expect(page.getByRole('dialog')).toBeHidden();
 });
