@@ -489,6 +489,85 @@ class VerifyTest(unittest.TestCase):
         self.assertTrue(any("gate 'make check COMPONENT=game' failed" in f for f in failures))
 
 
+class ChangesTest(unittest.TestCase):
+    """Which gates a change needs (ADR 0004 D14)."""
+
+    def test_docs_only_needs_no_component_gate(self) -> None:
+        self.assertEqual(sdlc.components_for(["docs/explanation/player-api.md", "README.md", ".claude/skills/x/SKILL.md"]), set())
+
+    def test_a_task_brief_needs_the_docs_gate(self) -> None:
+        self.assertEqual(sdlc.components_for(["docs/tasks/T-0140-x.md"]), {"docs"})
+
+    def test_the_api_needs_only_the_data_gate(self) -> None:
+        self.assertEqual(sdlc.components_for(["apps/api/src/soccer_cards_api/app.py"]), {"data"})
+
+    def test_the_published_api_also_needs_the_web_gate(self) -> None:
+        self.assertEqual(sdlc.components_for(["data/api/v1/players/pele.json"]), {"data", "web"})
+
+    def test_the_schema_reaches_the_game_and_the_site(self) -> None:
+        self.assertEqual(sdlc.components_for(["packages/schema/schemas/v1/player.schema.json"]), {"schema", "game", "web"})
+
+    def test_the_game_reaches_the_site(self) -> None:
+        self.assertEqual(sdlc.components_for(["packages/game/src/packs.ts"]), {"game", "web"})
+
+    def test_a_workflow_needs_the_ci_and_schema_gates(self) -> None:
+        self.assertEqual(sdlc.components_for([".github/workflows/deploy.yml"]), {"ci", "schema"})
+
+    def test_the_checks_workflow_needs_every_gate(self) -> None:
+        self.assertEqual(sdlc.components_for([".github/workflows/checks.yml"]), set(sdlc.COMPONENTS))
+
+    def test_a_path_no_rule_places_needs_every_gate(self) -> None:
+        for path in ("Makefile", "pnpm-lock.yaml", "package.json", "eslint.config.js"):
+            with self.subTest(path=path):
+                self.assertEqual(sdlc.components_for([path]), set(sdlc.COMPONENTS))
+
+    def test_the_kit_needs_the_sdlc_gate(self) -> None:
+        self.assertEqual(sdlc.components_for(["tools/sdlc/sdlc.py", "bin/sdlc"]), {"sdlc"})
+
+    def test_paths_add_up(self) -> None:
+        self.assertEqual(sdlc.components_for(["infra/main.tf", "apps/web/src/app.css"]), {"infra", "web"})
+
+    def test_the_command_reads_a_real_diff(self) -> None:
+        repo = Repo()
+        self.addCleanup(repo.close)
+        root = repo.root
+
+        def git(*args: str) -> None:
+            subprocess.run(["git", "-C", str(root), "-c", "user.name=t", "-c", "user.email=t@example.org", *args], check=True, capture_output=True)
+
+        git("init", "-q", "-b", "main")
+        git("add", "-A")
+        git("commit", "-q", "-m", "chore: start")
+        (root / "apps" / "api").mkdir(parents=True)
+        (root / "apps" / "api" / "app.py").write_text("x = 1\n")
+        git("add", "-A")
+        git("commit", "-q", "-m", "feat: api")
+        out = io.StringIO()
+        cwd = os.getcwd()
+        os.chdir(root)
+        try:
+            with contextlib.redirect_stdout(out):
+                status = sdlc.main(["sdlc", "changes", "HEAD~1", "HEAD"])
+        finally:
+            os.chdir(cwd)
+        self.assertEqual(status, 0)
+        self.assertEqual(out.getvalue().split(), ["infra=false", "schema=false", "game=false", "web=false", "data=true"])
+
+    def test_an_unknown_base_runs_every_gate(self) -> None:
+        repo = Repo()
+        self.addCleanup(repo.close)
+        subprocess.run(["git", "-C", str(repo.root), "init", "-q", "-b", "main"], check=True, capture_output=True)
+        out = io.StringIO()
+        cwd = os.getcwd()
+        os.chdir(repo.root)
+        try:
+            with contextlib.redirect_stdout(out):
+                sdlc.main(["sdlc", "changes", "no-such-ref"])
+        finally:
+            os.chdir(cwd)
+        self.assertEqual(out.getvalue().split(), [f"{c}=true" for c in sdlc.CI_COMPONENTS])
+
+
 class HookTest(unittest.TestCase):
     def run_hook(self, event: object) -> subprocess.CompletedProcess[str]:
         script = Path(__file__).resolve().parents[1] / "sdlc.py"
