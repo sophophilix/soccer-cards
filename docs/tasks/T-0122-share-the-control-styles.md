@@ -12,7 +12,7 @@ paths:
   - apps/web/src/routes/match/Penalties.svelte
 dependencies: []
 max_changed_lines: 250
-status: ready
+status: superseded
 ---
 
 ## Goal
