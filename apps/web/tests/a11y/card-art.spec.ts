@@ -53,7 +53,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
 		test.use({ colorScheme });
 
 		for (const tier of TIERS) {
-			test(`a large ${tier.toLowerCase()} card front has enough contrast`, async ({
+			test(`axe finds no contrast violation on a large ${tier.toLowerCase()} card front (most text is unmeasured)`, async ({
 				page
 			}, testInfo) => {
 				await ownOneOfEachTier(page);
@@ -68,7 +68,9 @@ for (const colorScheme of ['light', 'dark'] as const) {
 					.analyze();
 
 				expect(describeFindings(results.violations)).toEqual([]);
-				// Axe can't measure text over a gradient or an overlap. It is listed, not failed (T-0132).
+				// Axe can't measure text over a gradient or an overlap, so it lists that text as incomplete.
+				// If it ever measures the art, this fails and the test should assert real ratios (T-0132).
+				expect(results.incomplete).not.toEqual([]);
 				testInfo.annotations.push({
 					type: 'unmeasured',
 					description: describeFindings(results.incomplete).join('\n')
@@ -76,7 +78,9 @@ for (const colorScheme of ['light', 'dark'] as const) {
 			});
 		}
 
-		test('the sealed pack shelf has enough contrast', async ({ page }, testInfo) => {
+		test('axe finds no contrast violation on the sealed pack shelf (most text is unmeasured)', async ({
+			page
+		}, testInfo) => {
 			await ownOneOfEachTier(page);
 			await page.goto('/packs');
 			await expect(page.getByRole('heading', { name: 'Open a pack' })).toBeVisible();
@@ -88,7 +92,9 @@ for (const colorScheme of ['light', 'dark'] as const) {
 				.analyze();
 
 			expect(describeFindings(results.violations)).toEqual([]);
-			// Axe can't measure text over a gradient or an overlap. It is listed, not failed (T-0132).
+			// Axe can't measure text over a gradient or an overlap, so it lists that text as incomplete.
+			// If it ever measures the art, this fails and the test should assert real ratios (T-0132).
+			expect(results.incomplete).not.toEqual([]);
 			testInfo.annotations.push({
 				type: 'unmeasured',
 				description: describeFindings(results.incomplete).join('\n')
