@@ -75,25 +75,28 @@ test.beforeEach(async ({ page }) => {
 test('lists every player once, by line then highest rating', async ({ page }) => {
 	const buttons = page.getByRole('button', { name: /^(Pick|Take out) Name /, exact: false });
 
-	const names = await buttons.evaluateAll((all) =>
-		all.map((each) => (each.getAttribute('aria-label') ?? '').replace(/^(Pick|Take out) /, ''))
-	);
+	const names = (): Promise<string[]> =>
+		buttons.evaluateAll((all) =>
+			all.map((each) => (each.getAttribute('aria-label') ?? '').replace(/^(Pick|Take out) /, ''))
+		);
 
-	expect(names).toEqual([
-		'Name p-fw-3, Forward, rating 63',
-		'Name p-fw-2, Forward, rating 62',
-		'Name p-fw-1, Forward, rating 61',
-		'Name p-mf-5, Midfielder, rating 65',
-		'Name p-mf-4, Midfielder, rating 64',
-		'Name p-mf-3, Midfielder, rating 63',
-		'Name p-mf-2, Midfielder, rating 62',
-		'Name p-mf-1, Midfielder, rating 61',
-		'Name p-df-4, Defender, rating 64',
-		'Name p-df-3, Defender, rating 63',
-		'Name p-df-2, Defender, rating 62',
-		'Name p-df-1, Defender, rating 61',
-		'Name p-gk-1, Goalkeeper, rating 61'
-	]);
+	await expect
+		.poll(names)
+		.toEqual([
+			'Name p-fw-3, Forward, rating 63',
+			'Name p-fw-2, Forward, rating 62',
+			'Name p-fw-1, Forward, rating 61',
+			'Name p-mf-5, Midfielder, rating 65',
+			'Name p-mf-4, Midfielder, rating 64',
+			'Name p-mf-3, Midfielder, rating 63',
+			'Name p-mf-2, Midfielder, rating 62',
+			'Name p-mf-1, Midfielder, rating 61',
+			'Name p-df-4, Defender, rating 64',
+			'Name p-df-3, Defender, rating 63',
+			'Name p-df-2, Defender, rating 62',
+			'Name p-df-1, Defender, rating 61',
+			'Name p-gk-1, Goalkeeper, rating 61'
+		]);
 });
 
 test('starts with the best 11 and a Kick off that is ready', async ({ page }) => {
