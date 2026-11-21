@@ -29,6 +29,11 @@ class ApiError(Exception):
         self.message = message
 
 
+def internal_error() -> JSONResponse:
+    """Build the only 500 response. Its message is fixed, so no detail leaks."""
+    return error_response(500, "INTERNAL", "Something went wrong. Try again later.")
+
+
 def error_response(code: int, status: str, message: str) -> JSONResponse:
     """Build the AIP-193 response for a failure."""
     body = ErrorResponse(error=ErrorBody(code=code, message=message, status=status))
