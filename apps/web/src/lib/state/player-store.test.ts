@@ -4,6 +4,7 @@ import fc from 'fast-check';
 import { describe, expect, onTestFinished, test, vi } from 'vitest';
 import {
 	BACKUP_KEY,
+	SAVED_EVENT,
 	STATE_KEY,
 	browserStorage,
 	clearPlayerStorage,
@@ -102,6 +103,23 @@ describe('the player store', () => {
 		store.load();
 
 		expect(store.save(fresh)).toEqual(result);
+	});
+
+	test('fires the saved event with no state in it after a save', () => {
+		const { storage } = aStorage();
+		const store = createPlayerStore(() => storage);
+		store.load();
+		const heard = vi.fn<(event: Event) => void>();
+		window.addEventListener(SAVED_EVENT, heard);
+		onTestFinished(() => {
+			window.removeEventListener(SAVED_EVENT, heard);
+		});
+
+		store.save(aState({ coins: 9 }));
+
+		expect(heard).toHaveBeenCalledOnce();
+		expect(heard.mock.calls[0]?.[0]).not.toBeInstanceOf(CustomEvent);
+		expect(heard.mock.calls[0]?.[0]).not.toHaveProperty('detail');
 	});
 
 	test('refuses to overwrite progress another tab saved since this tab loaded', () => {
