@@ -46,3 +46,9 @@ def test_the_tier_spread_lets_a_pack_be_drawn() -> None:
     assert tiers["BASE"] >= 8
     for tier in ("RARE", "LEGEND", "ICON"):
         assert tiers[tier] >= 1
+
+
+def test_messi_and_ronaldo_are_icons() -> None:
+    tiers = {p["name"]: p["tier"] for p in _json("players.json")["players"]}
+    assert tiers["players/lionel-messi"] == "ICON"
+    assert tiers["players/cristiano-ronaldo"] == "ICON"
