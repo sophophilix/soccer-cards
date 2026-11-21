@@ -260,13 +260,44 @@ def test_youth_national_team_is_left_out() -> None:
     assert record.problems == ()
 
 
-def test_more_than_one_senior_national_team_drops_the_counts() -> None:
-    teams = _facts().national_teams
-    other = replace(teams[-1], team="Q999003", team_label="Rivertown national team")
-    record = _build(replace(_facts(), national_teams=(*teams, other)))
-    assert "nationalTeamGoalCount" not in record.player
-    assert record.problems == ("Q615: plays for more than one senior national team",)
+def _two_senior(old_end: str | None, new_end: str | None) -> PlayerFacts:
+    """Q615 with an old senior team and a new one, both invented."""
+    base = _facts().national_teams[-1]
+    old = replace(
+        base,
+        team="Q999003",
+        team_label="Rivertown national team",
+        goals=5,
+        appearances=9,
+        end=old_end,
+    )
+    new = replace(base, goals=7, appearances=11, end=new_end)
+    return replace(_facts(), national_teams=(old, new))
+
+
+def test_current_senior_national_team_is_the_one_with_no_end_date() -> None:
+    record: Any = _build(_two_senior("2021", None))
+    assert record.player["nationalTeamGoalCount"]["value"] == 7
+    assert record.problems == (
+        "Q615: dropped senior national team Rivertown national team",
+    )
     _assert_structure(record)
+
+
+def test_current_senior_national_team_is_the_one_that_ended_last() -> None:
+    record: Any = _build(_two_senior("2021", "2023"))
+    assert record.player["nationalTeamGoalCount"]["value"] == 7
+    assert len(record.problems) == 1
+
+
+def test_two_senior_teams_without_an_end_date_fail_naming_the_player() -> None:
+    with pytest.raises(normalise.NormaliseError, match="Q615: can't tell"):
+        _build(_two_senior(None, None))
+
+
+def test_two_senior_teams_ending_together_fail_naming_the_player() -> None:
+    with pytest.raises(normalise.NormaliseError, match="Q615: can't tell"):
+        _build(_two_senior("2021", "2021"))
 
 
 def test_photo_record_holds_size_type_and_credit() -> None:
