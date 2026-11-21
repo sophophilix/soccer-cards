@@ -16,6 +16,11 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import sdlc  # noqa: E402
 
+# A git hook runs these tests with GIT_DIR, GIT_INDEX_FILE and the like set,
+# which would point every temporary repository at the real one.
+for _name in [name for name in os.environ if name.startswith("GIT_")]:
+    del os.environ[_name]
+
 BRIEF = """---
 id: T-0007
 title: Add the jumbo pack
@@ -141,6 +146,7 @@ class WriteTest(unittest.TestCase):
             self.assertEqual(self.repo.write(".env", agent)[0], "deny")
             self.assertEqual(self.repo.write("pnpm-lock.yaml", agent)[0], "deny")
             self.assertEqual(self.repo.write("data/pipeline/uv.lock", agent)[0], "deny")
+            self.assertEqual(self.repo.write("data/api/v1/players.json", agent)[0], "deny")
 
     def test_the_kit_is_closed_to_agents_and_logged_in_the_main_session(self) -> None:
         for rel in (".claude/settings.json", "tools/sdlc/sdlc.py", "AGENTS.md", "docs/decisions/0001-x.md", "Makefile"):

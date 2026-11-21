@@ -37,7 +37,8 @@ KIT_PATHS = [
     "docs/decisions/**",
     ".pre-commit-config.yaml",
 ]
-GENERATED_PATHS = ["**/pnpm-lock.yaml", "**/uv.lock", "**/node_modules/**", "**/.svelte-kit/**"]
+# data/api/ is written only by `scdata build` (ADR 0006 D6), like a lockfile by its tool.
+GENERATED_PATHS = ["**/pnpm-lock.yaml", "**/uv.lock", "**/node_modules/**", "**/.svelte-kit/**", "data/api/**"]
 BUILD_OUTPUT = [f"**/{name}{tail}" for name in ("node_modules", ".svelte-kit", "dist", "build", "coverage", ".wrangler", ".venv") for tail in ("", "/**")]
 SECRET_PATHS = ["**/.env", "**/.env.*", "**/*.pem", "**/*.key", "**/.dev.vars"]
 SECRET_EXCEPTIONS = ["**/.env.example"]
