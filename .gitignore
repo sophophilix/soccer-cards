@@ -54,3 +54,6 @@ tfplan
 
 # Hypothesis example database, written when the data tests run.
 data/pipeline/.hypothesis/
+
+# A build that stopped part way
+data/api/.v1-*

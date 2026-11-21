@@ -2,7 +2,7 @@
 name: web-implementer
 description: Builds one task in the TypeScript packages or the SvelteKit app (components web, game, schema) from its brief in docs/tasks. Started only by the lead.
 disallowedTools: Agent
-model: inherit
+model: sonnet
 isolation: worktree
 maxTurns: 150
 skills:
@@ -10,6 +10,8 @@ skills:
   - ts-style-guide
   - ts-testing
   - sveltekit-web
+  - svelte:svelte-core-bestpractices
+  - svelte:svelte-code-writer
   - child-safety-privacy
 ---
 

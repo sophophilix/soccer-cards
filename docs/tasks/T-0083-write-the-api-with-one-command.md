@@ -1,54 +1,40 @@
 ---
 id: T-0083
-title: Write and validate the static API with one command
+title: Validate the API files against their schemas
 component: data
 kind: feature
 agent: data-implementer
 paths:
-  - data/pipeline/src/soccer_cards_data/build.py
-  - data/pipeline/src/soccer_cards_data/cli.py
-  - data/pipeline/tests/test_build.py
-  - data/pipeline/tests/test_cli.py
+  - data/pipeline/src/soccer_cards_data/validate.py
+  - data/pipeline/tests/test_validate.py
   - data/pipeline/pyproject.toml
   - data/pipeline/uv.lock
 dependencies:
   - jsonschema
-max_changed_lines: 380
+max_changed_lines: 200
 status: ready
 ---
 
 ## Goal
 
-`scdata build` runs fetch, licence check, rate, validate and write, and
-replaces `data/api/v1/` in one step (the `game-data-api` skill).
-
-## Context
-
-- The `game-data-api` skill sections "The API" and "Pipeline stages", ADR
-  0006, `packages/schema/schemas/v1/`.
+A validate stage checks every API file against its schema in
+`packages/schema/schemas/v1` before anything is written, and fails the run
+for a photo without a complete credit. Split from the first T-0083 build
+(626 lines); T-0098 builds and swaps, T-0099 adds the registry and command.
 
 ## Acceptance criteria
 
-- Writes `index.json` (with `FORMULA_VERSION`), `players.json`,
-  `players/{id}.json`, `clubs.json`, `credits.json` and `photos/`. Sorted
-  keys and lists, fixed formatting, so a rerun with no change gives no diff.
-- Every file is validated against its schema before anything is replaced.
-  A failed stage leaves the last good output untouched (write to a temp
-  folder, then swap).
-- A photo file without a complete credit fails the run.
-- `jsonschema` is added with `uv add` and named in `no-build-package` with
-  new transitive packages.
-- `make check COMPONENT=data` passes. No test reaches the network.
-
-## Edge cases
-
-- An empty grades file, a schema failure, and an interrupted write.
+- `validate.py` loads the schemas into a jsonschema registry and validates
+  each file; a failure names the file and the field.
+- A photo file with no complete credit fails validation.
+- `jsonschema` is added with `uv add` and named, with its new packages, in
+  `no-build-package`.
+- `make check COMPONENT=data` passes.
 
 ## Tests
 
-- A build from fakes into a temp folder: valid, deterministic bytes on a
-  second run, and the old output kept when validation fails.
+- A valid set, a schema failure, and a stray photo.
 
 ## Out of scope
 
-- Running against live sources (T-0084).
+- Writing files (T-0098), the registry and command (T-0099).
