@@ -1,8 +1,5 @@
-<svelte:head>
-	<title>Match · Soccer Cards</title>
-</svelte:head>
+<script lang="ts">
+	import MatchView from './MatchView.svelte';
+</script>
 
-<main>
-	<h1>Match</h1>
-	<p>Pick your team and play a match here. Coming soon.</p>
-</main>
+<MatchView />
