@@ -29,3 +29,15 @@ def test_a_non_slug_id_is_refused(d1_migrated: FakeD1, bad_id: str) -> None:
         d1_migrated.conn.execute(
             "INSERT INTO players VALUES (?, 'X', 'FORWARD', 'BASE', 50)", (bad_id,)
         )
+
+
+@pytest.mark.parametrize(
+    "bad_id", ["\x00ab", "a\x00<script>/../x", "ab\x00"], ids=["start", "middle", "end"]
+)
+def test_an_id_with_an_embedded_nul_is_refused(
+    d1_migrated: FakeD1, bad_id: str
+) -> None:
+    with pytest.raises(sqlite3.IntegrityError):
+        d1_migrated.conn.execute(
+            "INSERT INTO players VALUES (?, 'X', 'FORWARD', 'BASE', 50)", (bad_id,)
+        )

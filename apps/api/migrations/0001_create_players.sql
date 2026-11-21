@@ -3,6 +3,7 @@
 CREATE TABLE players (
     id           TEXT PRIMARY KEY CHECK (
         id GLOB '[a-z]*' AND id NOT GLOB '*[^a-z0-9-]*' AND length(id) <= 63
+        AND length(CAST(id AS BLOB)) = length(id)
     ),
     display_name TEXT NOT NULL,
     position     TEXT NOT NULL
