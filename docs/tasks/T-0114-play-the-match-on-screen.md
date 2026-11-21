@@ -7,6 +7,8 @@ agent: web-implementer
 paths:
   - apps/web/src/routes/match/MatchStage.svelte
   - apps/web/src/routes/match/MatchView.svelte
+  - apps/web/src/routes/match/PickTeam.svelte
+  - apps/web/tests/match-team.spec.ts
   - apps/web/src/routes/match/commentary.ts
   - apps/web/src/routes/match/commentary.test.ts
   - apps/web/tests/match-play.spec.ts
@@ -23,9 +25,13 @@ division.
 
 ## Context
 
-- Merge T-0116 first. If the top component is not `MatchView.svelte`, stop
-  and tell the lead so the brief's paths are fixed. T-0113 may run at the
-  same time; it does not touch these files.
+- Merge T-0113 first. Kick off is the button at the end of
+  `PickTeam.svelte`: give `PickTeam` an `onKickOff` prop and let
+  `MatchView` start the match. Update the "Kick off not ready" check in
+  `match-team.spec.ts` to match.
+- `computerSide` needs at least one card of each tier, so the end-to-end
+  spec serves its own card set with all four tiers. Fix the seed by
+  stubbing `crypto.getRandomValues` with `addInitScript`.
 - `lib/match` from T-0111: `startMatch` at kick-off, `finishMatchAndSave`
   at full time. The whole result is known at kick-off; the screen only
   reveals it.
