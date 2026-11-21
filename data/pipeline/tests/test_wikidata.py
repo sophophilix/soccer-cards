@@ -70,7 +70,7 @@ def test_outfield_player_facts_from_saved_responses() -> None:
         "action": "wbgetentities",
         "ids": "Q615",
         "props": "info|labels|claims",
-        "languages": "en",
+        "languages": "en|mul",
         "format": "json",
         "formatversion": "2",
     }
@@ -351,3 +351,37 @@ def test_a_datavalue_type_is_escaped_in_the_report() -> None:
     facts = fetch_player(SavedResponses({"Q1": _player(claims)}), "Q1")
 
     assert facts.skipped == ("P18: expected string, got 'x\\u202ey'",)
+
+
+def _labels(**by_language: str) -> Json:
+    return {
+        code: {"language": code, "value": value} for code, value in by_language.items()
+    }
+
+
+@pytest.mark.parametrize(
+    ("labels", "expected"),
+    [
+        (_labels(en="Sergio Ramos"), "Sergio Ramos"),
+        (_labels(mul="Sergio Ramos"), "Sergio Ramos"),
+        (_labels(en="Ramos", mul="Sergio Ramos"), "Ramos"),
+        (_labels(mul="\u30e9\u30e2\u30b9"), "\u30e9\u30e2\u30b9"),
+        (_labels(en="", mul="Sergio Ramos"), "Sergio Ramos"),
+        (_labels(en="  ", mul="Sergio Ramos"), "Sergio Ramos"),
+        ({}, None),
+        (_labels(de="Sergio Ramos"), None),
+    ],
+)
+def test_the_label_is_english_else_multilingual_for_player_and_team(
+    labels: Json, expected: str | None
+) -> None:
+    spell = {"rank": "normal", "mainsnak": _item("Q9")}
+    reply = _player({"P54": [spell]})
+    reply["entities"]["Q1"]["labels"] = labels  # type: ignore[index]
+    team = {"entities": {"Q9": {"id": "Q9", "labels": labels, "claims": {}}}}
+    source = SavedResponses({"Q1": reply, "Q9": team})
+
+    facts = fetch_player(source, "Q1")
+
+    assert facts.label == expected
+    assert facts.clubs[0].team_label == expected
