@@ -59,10 +59,15 @@
 		color: var(--bg);
 	}
 
-	/* On the narrowest phones the tabs tighten to fit. */
+	/* On the narrowest phones the tabs tighten, and their text shrinks with the screen so the bar
+	   fits at 320 pixels even in a wide fallback font, with "Cards (N)" on the Cards tab. */
 	@media (max-width: 400px) {
+		nav {
+			max-width: 100%;
+		}
 		a {
 			padding-inline: 4px;
+			font-size: clamp(11px, 3.6vw, 16px);
 			letter-spacing: 0.02em;
 		}
 	}
