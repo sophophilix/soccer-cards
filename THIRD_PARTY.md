@@ -17,8 +17,8 @@ checked each Commons page by hand.
 
 ## Player facts
 
-| Source   | Terms | Terms page                                     | Read on    |
-| -------- | ----- | ---------------------------------------------- | ---------- |
+| Source   | Terms | Terms page                                       | Read on    |
+| -------- | ----- | ------------------------------------------------ | ---------- |
 | Wikidata | CC0   | https://www.wikidata.org/wiki/Wikidata:Licensing | 2026-11-21 |
 
 ## Prototype data
@@ -46,6 +46,26 @@ reserved font names, so a changed copy of those fonts must take another
 name. The site ships the files unchanged. No person has checked the
 licences by hand.
 
+## JavaScript packages
+
+The site's runtime and build packages beyond the fonts above. The licence is
+the `license` field the npm registry returns for that exact version, read on
+2026-11-21T14:12:31Z. A licence that only links to its terms says so.
+
+| Package             | Version | Licence                                          | Licence terms                                                 | Terms read                    |
+| ------------------- | ------- | ------------------------------------------------ | ------------------------------------------------------------- | ----------------------------- |
+| `gsap`              | 3.15.1  | GSAP Standard no-charge licence, not open source | https://gsap.com/standard-license                             | 2026-11-21T13:50:05Z          |
+| `tailwindcss`       | 4.3.5   | MIT                                              | https://github.com/tailwindlabs/tailwindcss/blob/main/LICENSE | Not read, registry field only |
+| `@tailwindcss/vite` | 4.3.5   | MIT                                              | https://github.com/tailwindlabs/tailwindcss/blob/main/LICENSE | Not read, registry field only |
+
+The registry field for `gsap` only links to its terms. The terms, read on
+2026-11-21T13:50:05Z and recorded in ADR 0007 D3, are effective 2025-04-30
+and last modified 2025-05-30. They allow any website or app, commercial use
+included. They forbid a no-code animation builder that competes with Webflow
+and the removal of proprietary notices. Webflow may revise them, so a version
+released later needs a new read. No person has checked the Tailwind licence
+files by hand.
+
 ## Agent plugins proposed, not installed
 
 | Plugin                                                   | Source              | Licence    | Status                                           |
@@ -55,6 +75,16 @@ licences by hand.
 
 Before installing one, the tech lead reads its skills, hooks and MCP
 configuration, and records the version and the date here.
+
+## Agent plugin skill in use
+
+| Plugin skill                      | Source                                                               | Licence as published | Version | Read on              |
+| --------------------------------- | -------------------------------------------------------------------- | -------------------- | ------- | -------------------- |
+| `frontend-design:frontend-design` | Anthropic, the `frontend-design` plugin in `claude-plugins-official` | Apache-2.0           | 1.1.1   | 2026-11-21T14:12:28Z |
+
+The licence is from the `LICENSE` file in the installed plugin. The web
+implementer loads the skill. It guides design work and adds no package to the
+site.
 
 ## Agent skills in use
 
