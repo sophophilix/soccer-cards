@@ -15,6 +15,9 @@ export type OwnedCard =
 	  }
 	| { readonly kind: 'unknown'; readonly id: CardId; readonly count: number };
 
+/** A card the player owns that is in the set, with its face. */
+export type KnownCard = Extract<OwnedCard, { readonly kind: 'known' }>;
+
 /** What the card dialog shows. A card with no ratings has no back to turn to. */
 export interface CardViewProps {
 	readonly front: CardFrontProps;
