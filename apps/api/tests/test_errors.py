@@ -2,7 +2,7 @@ import json
 
 import pytest
 
-from soccer_cards_api.errors import ApiError, error_response
+from soccer_cards_api.errors import ApiError, error_response, internal_error
 
 
 @pytest.mark.parametrize(
@@ -27,3 +27,16 @@ def test_api_error_carries_its_code_status_and_message() -> None:
         "Nobody here.",
     )
     assert str(error) == "Nobody here."
+
+
+def test_internal_error_has_one_fixed_body() -> None:
+    response = internal_error()
+
+    assert response.status_code == 500
+    assert json.loads(bytes(response.body)) == {
+        "error": {
+            "code": 500,
+            "message": "Something went wrong. Try again later.",
+            "status": "INTERNAL",
+        }
+    }

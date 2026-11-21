@@ -1,2 +1,5 @@
 src/vendor/
 python_modules/
+.wrangler/
+.venv-workers/
+pylock.toml
