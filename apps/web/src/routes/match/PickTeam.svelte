@@ -19,16 +19,28 @@
 		readonly owned: readonly CardId[];
 		readonly formation: Formation;
 		readonly tactic: Tactic;
+		readonly initialTeam: readonly CardId[] | undefined;
+		readonly onKickOff: (team: readonly CardId[]) => void;
 		readonly onFormation: (formation: Formation) => void;
 		readonly onTactic: (tactic: Tactic) => void;
 	}
-	const { cardSet, faces, owned, formation, tactic, onFormation, onTactic }: Props = $props();
+	const {
+		cardSet,
+		faces,
+		owned,
+		formation,
+		tactic,
+		initialTeam,
+		onKickOff,
+		onFormation,
+		onTactic
+	}: Props = $props();
 
 	const FORMATION_NAMES = Object.keys(FORMATIONS) as Formation[];
 	// The team is the player's own choice. It starts as the best one and keeps its players when
 	// the formation changes.
 	// svelte-ignore state_referenced_locally
-	let team = $state.raw<readonly CardId[]>(pickBest(cardSet, owned, formation));
+	let team = $state.raw<readonly CardId[]>(initialTeam ?? pickBest(cardSet, owned, formation));
 	let message = $state('');
 	const placed = $derived(arrangeTeam(team, cardSet, formation));
 	const cardOf = $derived(new Map(cardSet.map((card) => [card.id, card])));
@@ -112,7 +124,14 @@
 	{isFull ? lineUpHint(outOfPosition.length) : 'Tap players below to fill the team.'}
 </p>
 <div class="row">
-	<button type="button" class="btn primary" disabled={!isFull}>Kick off</button>
+	<button
+		type="button"
+		class="btn primary"
+		disabled={!isFull}
+		onclick={() => {
+			onKickOff(team);
+		}}>Kick off</button
+	>
 	<button
 		type="button"
 		class="btn small"

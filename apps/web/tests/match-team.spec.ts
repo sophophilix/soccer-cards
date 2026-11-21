@@ -22,7 +22,14 @@ const IDS = SQUAD.flatMap(([, code, count]) =>
 	Array.from({ length: count }, (_, index) => `p-${code}-${String(index + 1)}`)
 );
 
-function aSummary(position: string, id: string, overall: number): unknown {
+// Cards the player doesn't own: the computer's side needs one of each lucky tier to be fielded.
+const EXTRA = [
+	['GOALKEEPER', 'rare-gk', 'RARE'],
+	['MIDFIELDER', 'legend-mf', 'LEGEND'],
+	['FORWARD', 'icon-fw', 'ICON']
+] as const;
+
+function aSummary(position: string, id: string, overall: number, tier = 'BASE'): unknown {
 	return {
 		name: `players/${id}`,
 		displayName: `Name ${id}`,
@@ -30,7 +37,7 @@ function aSummary(position: string, id: string, overall: number): unknown {
 		club: 'clubs/test-club',
 		nationalTeamCode: 'ENG',
 		position,
-		tier: 'BASE',
+		tier,
 		cardNumber: overall,
 		outfieldRatings: OUTFIELD_RATINGS,
 		playStats: { attack: overall, defence: 50, control: 60, overall }
@@ -43,7 +50,7 @@ async function serveCards(page: Page): Promise<void> {
 		Array.from({ length: count }, (_, index) =>
 			aSummary(position, `p-${code}-${String(index + 1)}`, 60 + index)
 		)
-	);
+	).concat(EXTRA.map(([position, code, tier]) => aSummary(position, `p-${code}`, 80, tier)));
 	const club = { name: 'clubs/test-club', displayName: 'Test Club' };
 	await page.route('**/api/v1/players.json', (route) => route.fulfill({ json: { players } }));
 	await page.route('**/api/v1/clubs.json', (route) => route.fulfill({ json: { clubs: [club] } }));
@@ -95,6 +102,8 @@ test.describe('with 11 different cards', () => {
 		await expect(page.getByText('Everyone is in their own position.')).toBeVisible();
 		await expect(page.getByText('Name p-gk-1').first()).toBeVisible();
 		await expect(page.getByText('Goalkeeper · 60')).toBeVisible();
+		await page.getByRole('button', { name: 'Kick off' }).click();
+		await expect(page.getByRole('heading', { name: 'The match' })).toBeVisible();
 	});
 
 	test('changing the tactic moves the choice, the hint and the totals', async ({ page }) => {

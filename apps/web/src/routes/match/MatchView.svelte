@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import {
 		DIVISIONS,
+		createRandom,
 		STANDARD_PACK_COST_COINS,
 		TEAM_SIZE,
 		WINS_TO_GO_UP
@@ -11,10 +12,13 @@
 	import { resolve } from '$app/paths';
 	import type { CardFace } from '../../lib/data/card-face-from-summary.ts';
 	import { loadCardSet } from '../../lib/data/load-card-set.ts';
-	import { ownedCardIds } from '../../lib/match/play-match.ts';
+	import { finishMatchAndSave, ownedCardIds, startMatch } from '../../lib/match/play-match.ts';
+	import type { FinishedMatch, PlayedMatch } from '../../lib/match/play-match.ts';
+	import { randomSeed } from '../../lib/packs/pack-session.ts';
 	import { browserStorage, createPlayerStore } from '../../lib/state/player-store.ts';
 	import type { LoadOutcome } from '../../lib/state/player-store.ts';
 	import { DIVISION_NAMES, lockedText } from './match-words.ts';
+	import MatchStage from './MatchStage.svelte';
 	import PickTeam from './PickTeam.svelte';
 
 	const NOT_SAVING = "Your progress can't be saved on this device. You can still play.";
@@ -38,6 +42,9 @@
 	let notice = $state('');
 	let formation = $state<Formation>('4-4-2');
 	let tactic = $state<Tactic>('attack');
+	let team = $state.raw<readonly CardId[]>();
+	let match = $state.raw<PlayedMatch>();
+	let finished = $state.raw<FinishedMatch>();
 	const store = createPlayerStore(browserStorage);
 
 	// A card the set no longer has is not counted and not shown.
@@ -62,6 +69,37 @@
 
 	function chooseTactic(next: Tactic): void {
 		tactic = next;
+	}
+
+	function kickOff(picked: readonly CardId[]): void {
+		// A second tap starts nothing.
+		if (match !== undefined || data.status !== 'ready' || player === undefined) return;
+		team = picked;
+		const started = startMatch(
+			player,
+			data.cardSet,
+			{ formation, tactic, team: picked },
+			createRandom(randomSeed())
+		);
+		if (started.ok) {
+			match = started.value;
+			finished = undefined;
+		} else {
+			notice = "We couldn't start the match. Check your team and try again.";
+		}
+	}
+
+	// The whole result was known at kick-off. This saves it once, at full time.
+	function fullTime(won: boolean): void {
+		if (player === undefined || finished !== undefined) return;
+		finished = finishMatchAndSave(store, player, won);
+		player = finished.state;
+		if (!finished.saved.ok) notice = NOT_SAVING;
+	}
+
+	function playAgain(): void {
+		match = undefined;
+		finished = undefined;
 	}
 
 	async function fetchCards(): Promise<void> {
@@ -93,6 +131,16 @@
 				? 'Open packs'
 				: 'Go to packs'}</a
 		>
+	{:else if match !== undefined}
+		<h2>The match</h2>
+		<MatchStage
+			{match}
+			faces={data.faces}
+			coins={player.coins}
+			{finished}
+			onFullTime={fullTime}
+			onAgain={playAgain}
+		/>
 	{:else}
 		<h2>Pick your team</h2>
 		<div class="row">
@@ -110,6 +158,8 @@
 			{owned}
 			{formation}
 			{tactic}
+			initialTeam={team}
+			onKickOff={kickOff}
 			onFormation={chooseFormation}
 			onTactic={chooseTactic}
 		/>
