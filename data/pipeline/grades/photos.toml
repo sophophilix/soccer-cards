@@ -1,0 +1,3 @@
+# Photo choices: Q-id, then photo = "avatar" or a Commons file name, and a reason.
+# A named file still goes through the Commons licence check.
+Q182314 = { photo = "avatar", reason = "Wikidata's photo is a promotional shot for an alcohol brand" } # Peter Schmeichel

@@ -2,7 +2,12 @@ from pathlib import Path
 
 import pytest
 
-from soccer_cards_data.grades import GradeFileError, load_grades, load_overrides
+from soccer_cards_data.grades import (
+    GradeFileError,
+    load_grades,
+    load_overrides,
+    load_photo_choices,
+)
 from soccer_cards_data.ratings import (
     GOALKEEPER_RATINGS,
     OUTFIELD_RATINGS,
@@ -85,3 +90,37 @@ def test_fifa_as_the_governing_body_is_allowed(tmp_path: Path, reason: str) -> N
     players = load_grades(write(tmp_path, "p.toml", player()))
     path = write(tmp_path, "o.toml", f'Q1 = {{ tier = "ICON", reason = "{reason}" }}')
     assert load_overrides(players, path)["Q1"].tier == "ICON"
+
+
+def test_a_photo_entry_is_an_avatar_or_a_named_file(tmp_path: Path) -> None:
+    players = load_grades(write(tmp_path, "p.toml", player() + player("Q3")))
+    path = write(
+        tmp_path,
+        "ph.toml",
+        'Q1 = { photo = "avatar", reason = "A promotional shot" }\n'
+        'Q3 = { photo = "Some Player 2020.jpg", reason = "A clearer shot" }\n',
+    )
+    choices = load_photo_choices(players, path)
+    assert choices["Q1"].file is None
+    assert choices["Q3"].file == "Some Player 2020.jpg"
+
+
+@pytest.mark.parametrize(
+    ("text", "error"),
+    [
+        ('Q1 = { photo = "avatar" }', "Q1: must be { photo = ..., reason = ... }"),
+        ('Q1 = { photo = "avatar", reason = " " }', "Q1: needs a reason"),
+        ('Q2 = { photo = "avatar", reason = "Bad" }', "Q2: is not in the grade file"),
+        ('Q1 = { photo = "File:A.jpg", reason = "Bad" }', "Q1: must be avatar or"),
+        ('Q1 = { photo = "A|B.jpg", reason = "Bad" }', "Q1: must be avatar or"),
+    ],
+)
+def test_a_bad_photo_entry_is_refused(tmp_path: Path, text: str, error: str) -> None:
+    players = load_grades(write(tmp_path, "p.toml", player()))
+    with pytest.raises(GradeFileError, match=error):
+        load_photo_choices(players, write(tmp_path, "ph.toml", text))
+
+
+def test_the_real_photo_file_removes_schmeichels_photo() -> None:
+    choices = load_photo_choices(load_grades())
+    assert choices["Q182314"].file is None

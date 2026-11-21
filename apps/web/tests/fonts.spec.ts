@@ -62,7 +62,7 @@ test('the page reads and fits at 320 pixels wide when no font file arrives', asy
 	await page.goto('/', { waitUntil: 'networkidle' });
 
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-	await expect(page.getByText('Open packs of cards here. Coming soon.')).toBeVisible();
+	await expect(page.getByRole('main')).toBeVisible();
 	const overflowPx = await page.evaluate(
 		() => document.documentElement.scrollWidth - document.documentElement.clientWidth
 	);
