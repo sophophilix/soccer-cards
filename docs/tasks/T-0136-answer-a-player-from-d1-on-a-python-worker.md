@@ -61,8 +61,10 @@ Workers runtime, to prove the parts fit before the rest of the API is built.
 - `wrangler.jsonc` binds D1 as `DB` for local development, using T-0146's
   migration.
 - The Worker runs locally on the Workers runtime (`pywrangler dev`, after
-  applying the migration locally), and the report pastes one real request and
-  response for a known player and one for an unknown player.
+  applying the migration and T-0146's `seeds/local.sql` to the local
+  database only), and the report pastes one real request and response for a
+  known player and one for an unknown player. Never apply the seed with
+  `--remote`.
 - `make check COMPONENT=data` passes.
 
 ## Edge cases
@@ -72,8 +74,8 @@ Workers runtime, to prove the parts fit before the rest of the API is built.
 
 ## Tests
 
-- `test_players.py` with FastAPI's test client over the real migration loaded
-  into SQLite through the fake binding.
+- `test_players.py` with FastAPI's test client over the real migration and
+  the local seed, loaded into SQLite through T-0146's `conftest.py`.
 
 ## Out of scope
 
