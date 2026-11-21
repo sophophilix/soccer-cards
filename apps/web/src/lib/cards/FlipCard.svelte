@@ -3,6 +3,7 @@
 	import CardFront from './CardFront.svelte';
 	import type { CardBackProps } from './card-back.ts';
 	import { TIER_NAMES, type CardFrontProps } from './card-front.ts';
+	import { turnCard } from '../ui/motion.ts';
 
 	interface Props {
 		front: CardFrontProps;
@@ -18,6 +19,11 @@
 			(isBackShowing ? 'back. Press to see the front.' : 'front. Press to see the back.')
 	);
 
+	// GSAP turns the card whenever the side changes; the first run sets the front without motion.
+	function turning(inner: HTMLElement): void {
+		turnCard(inner, isBackShowing ? 180 : 0);
+	}
+
 	function turn(): void {
 		side = isBackShowing ? 'front' : 'back';
 	}
@@ -25,7 +31,7 @@
 
 <!-- The faces sit outside the button, so a screen reader reads the side that shows. -->
 <div class={['flip', isBackShowing && 'flipped']}>
-	<div class="inner" data-testid="turning">
+	<div class="inner" data-testid="turning" {@attach turning}>
 		<div
 			class="side front"
 			data-testid="front"
@@ -60,10 +66,6 @@
 		width: 100%;
 		height: 100%;
 		transform-style: preserve-3d;
-		transition: transform 0.55s cubic-bezier(0.3, 1.3, 0.5, 1);
-	}
-	.flipped .inner {
-		transform: rotateY(180deg);
 	}
 	.side {
 		position: absolute;
@@ -88,10 +90,5 @@
 	.turn:focus-visible {
 		outline: 3px solid var(--focus);
 		outline-offset: 3px;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		.inner {
-			transition: none;
-		}
 	}
 </style>

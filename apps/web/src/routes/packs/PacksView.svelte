@@ -6,6 +6,7 @@
 	import { LUCKY_ODDS, PACK_CONTENTS, createRandom, packCostCoins } from '@soccer-cards/game';
 	import type { CardId, CheckedCardSet, PackKind, PlayerState } from '@soccer-cards/game';
 	import BigCard from '../../lib/cards/BigCard.svelte';
+	import { tearPack } from '../../lib/ui/motion.ts';
 	import CardSlot from '../../lib/cards/CardSlot.svelte';
 	import { TIER_NAMES } from '../../lib/cards/card-front.ts';
 	import type { CardFace } from '../../lib/data/card-face-from-summary.ts';
@@ -24,8 +25,6 @@
 	const KINDS: readonly PackKind[] = ['standard', 'jumbo'];
 	// The words on the pack art, two lines each, as in the prototype.
 	const PACK_ART = { standard: ['Soccer', 'Cards'], jumbo: ['Jumbo', 'Pack'] } as const;
-	// How long the pack shakes, rips and drops before the first card shows.
-	const TEAR_MS = 1000;
 	const NOT_SAVING = "Your cards can't be saved on this device. You can still open packs.";
 	const LOAD_NOTICES: Record<LoadOutcome, string> = {
 		loaded: '',
@@ -63,6 +62,8 @@
 	let isBusy = $state(false);
 	// The pack that is tearing open. The shelf stays up until the tear has played.
 	let tearing = $state<PackKind>();
+	// The pack art, so GSAP can tear the one the player opened.
+	const packArt: Partial<Record<PackKind, HTMLButtonElement>> = {};
 	// The summary card shown large, if any.
 	let detail = $state<CardProps>();
 	// The next step's main control or heading, so focus never falls to the page.
@@ -161,15 +162,12 @@
 		player = result.value;
 		shown = 0;
 		notice = noticeAfter(result.saved);
-		const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 		tearing = kind;
-		setTimeout(
-			() => {
-				tearing = undefined;
-				void focusAfterStep(() => nextButton);
-			},
-			still ? 0 : TEAR_MS
-		);
+		const art = packArt[kind];
+		void (art ? tearPack(art) : Promise.resolve()).then(() => {
+			tearing = undefined;
+			void focusAfterStep(() => nextButton);
+		});
 	}
 
 	function show(index: number): void {
@@ -214,7 +212,8 @@
 					<div class="offer">
 						<button
 							type="button"
-							class={['pack', kind === 'jumbo' && 'jumbo', tearing === kind && 'tearing']}
+							class={['pack', kind === 'jumbo' && 'jumbo']}
+							bind:this={packArt[kind]}
 							aria-label={packLabel(kind)}
 							disabled={!canOpen(player, kind) || tearing !== undefined}
 							onclick={() =>
@@ -222,6 +221,7 @@
 									open(kind);
 								})}
 						>
+							<span class="strip" aria-hidden="true"></span>
 							<span class="name" aria-hidden="true"
 								>{PACK_ART[kind][0]}<br />{PACK_ART[kind][1]}</span
 							>
