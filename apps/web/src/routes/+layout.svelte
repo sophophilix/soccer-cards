@@ -24,8 +24,9 @@
 	onMount(() => {
 		const store = createPlayerStore(browserStorage);
 		player = store.load().state;
-		const onSaved = (event: Event): void => {
-			if (event instanceof CustomEvent) player = event.detail as PlayerState;
+		// The event carries nothing, so a forged one can only make the store read what it validates.
+		const onSaved = (): void => {
+			player = store.load().state;
 		};
 		window.addEventListener(SAVED_EVENT, onSaved);
 		const stop = store.subscribe((change) => {

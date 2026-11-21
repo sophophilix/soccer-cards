@@ -39,12 +39,12 @@ export type ClearableStorage = Pick<Storage, 'length' | 'key' | 'removeItem'>;
 export type ClearResult =
 	{ readonly ok: true } | { readonly ok: false; readonly reason: 'not-cleared' };
 
-/** The event this tab fires after each save, so the masthead's coins and card count follow. */
+/** The event this tab fires after each save. It carries no state: a listener reads it through `load()`. */
 export const SAVED_EVENT = 'soccer-cards:saved';
 
-function announceSaved(state: PlayerState): void {
+function announceSaved(): void {
 	if (typeof window === 'undefined') return;
-	window.dispatchEvent(new CustomEvent<PlayerState>(SAVED_EVENT, { detail: state }));
+	window.dispatchEvent(new Event(SAVED_EVENT));
 }
 
 /** Returns the browser's storage, or nothing while prerendering or when the browser refuses it. */
@@ -133,7 +133,7 @@ export function createPlayerStore(getStorage: () => ItemStorage | undefined): Pl
 			const text = JSON.stringify(state);
 			storage.setItem(STATE_KEY, text);
 			knownText = text;
-			announceSaved(state);
+			announceSaved();
 			return { ok: true };
 		} catch (error) {
 			const isFull = error instanceof DOMException && error.name === 'QuotaExceededError';
