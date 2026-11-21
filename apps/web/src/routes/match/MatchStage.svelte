@@ -2,31 +2,35 @@
 <script lang="ts">
 	import { tick } from 'svelte';
 	import { STANDARD_PACK_COST_COINS, createRandom, takeKick } from '@soccer-cards/game';
-	import type { CardId, Corner, Random, ShootOut } from '@soccer-cards/game';
+	import type { CardId, CheckedCardSet, Corner, Random, ShootOut } from '@soccer-cards/game';
 	import { resolve } from '$app/paths';
+	import CardFront from '../../lib/cards/CardFront.svelte';
 	import type { CardFace } from '../../lib/data/card-face-from-summary.ts';
 	import { startPenalties } from '../../lib/match/play-match.ts';
 	import type { FinishedMatch, PlayedMatch } from '../../lib/match/play-match.ts';
 	import { randomSeed } from '../../lib/packs/pack-session.ts';
+	import { cardPropsOf } from '../packs/card-props.ts';
 	import { edgeBanner, kickLine, momentLine } from './commentary.ts';
 	import { DIVISION_NAMES, LINES, LINE_NAMES, TACTIC_WORDS } from './match-words.ts';
 	import Penalties from './Penalties.svelte';
 
 	interface Props {
 		readonly match: PlayedMatch;
+		readonly cardSet: CheckedCardSet;
 		readonly faces: ReadonlyMap<CardId, CardFace>;
 		readonly coins: number;
 		readonly finished: FinishedMatch | undefined;
 		readonly onFullTime: (won: boolean) => void;
 		readonly onAgain: () => void;
 	}
-	const { match, faces, coins, finished, onFullTime, onAgain }: Props = $props();
+	const { match, cardSet, faces, coins, finished, onFullTime, onAgain }: Props = $props();
 
 	const MOMENT_MS = 1100;
 	const REDUCED_MOTION_MOMENT_MS = 150;
 	const moments = $derived(match.result.moments);
 	const home = $derived(match.home);
 	const away = $derived(match.away);
+	const cardOf = $derived(new Map(cardSet.map((card) => [card.id, card])));
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 	const nameOf = (id: CardId): string => faces.get(id)?.displayName ?? id;
 
@@ -116,20 +120,30 @@
 {#snippet team(side: typeof home)}
 	<div class="lines">
 		{#each LINES as line (line)}
-			<p class="teamline">
+			<div class="line">
 				<b>{LINE_NAMES[line]}</b>
-				{side.lineUp.lines[line].map(nameOf).join(', ')}
-			</p>
+				<div class="grid">
+					{#each side.lineUp.lines[line] as id (id)}
+						{@const card = cardOf.get(id)}
+						{@const face = faces.get(id)}
+						{#if card !== undefined && face !== undefined}
+							<div class={['slot', 'still', side.lineUp.outOfPosition.includes(id) && 'oop']}>
+								<CardFront {...cardPropsOf(card, face).front} />
+							</div>
+						{/if}
+					{/each}
+				</div>
+			</div>
 		{/each}
 	</div>
 {/snippet}
 
 <div class="board" role="group" aria-label="Score and clock">
-	<div class:lead={score.home > score.away}>
+	<div class={['side', score.home > score.away && 'lead']}>
 		<span class="who">You</span><span class="pts" data-testid="score-you">{score.home}</span>
 	</div>
 	<span class="vs" data-testid="clock">{clock}</span>
-	<div class:lead={score.away > score.home}>
+	<div class={['side', score.away > score.home && 'lead']}>
 		<span class="who">AI</span><span class="pts" data-testid="score-ai">{score.away}</span>
 	</div>
 </div>
@@ -186,68 +200,19 @@
 	<li>Kick-off!</li>
 </ol>
 <div class="teams">
-	<div>
+	<div class="teambox">
 		<h3>Your team</h3>
 		{@render team(home)}
 	</div>
-	<div>
+	<div class="teambox">
 		<h3>AI team</h3>
 		{@render team(away)}
 	</div>
 </div>
 
 <style>
-	.board {
-		display: grid;
-		grid-template-columns: 1fr auto 1fr;
-		border-radius: 14px;
-		background: var(--card-ink);
-		color: var(--card-paper);
-		text-align: center;
-	}
-	.who {
-		display: block;
-		font: 800 15px/1 var(--font-data);
-	}
-	.pts {
-		font: 800 italic clamp(34px, 10vw, 52px) / 1 var(--font-data);
-	}
-	.vs,
-	.lead .pts {
-		color: var(--booking);
-	}
-	.vs {
-		font: 400 18px/1 var(--font-display);
-	}
-	.center {
-		justify-content: center;
-	}
-	.banner {
-		margin: 0;
-		padding: 10px 14px;
-		background: var(--booking);
-		color: var(--booking-ink);
-	}
-	.result {
-		display: grid;
-		gap: 12px;
-	}
-	.log {
-		display: grid;
-		gap: 6px;
-		padding: 0;
-		list-style: none;
-	}
-	.log li {
-		padding: 8px 10px;
-		border-left: 4px solid var(--muted);
-	}
-	.log li.goal {
-		border-left-color: var(--accent);
-		font-weight: 700;
-	}
-	.teams {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	/* A card in a line-up during the match is only shown, not tapped. */
+	.still {
+		cursor: default;
 	}
 </style>
