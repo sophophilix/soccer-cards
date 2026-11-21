@@ -2,6 +2,7 @@
      and a scorer celebrates. The commentary says the same in words, so the scene is hidden from
      screen readers; only its Replay button is a control. -->
 <script lang="ts">
+	import { untrack } from 'svelte';
 	import CardFront from '../../lib/cards/CardFront.svelte';
 	import { celebrate, celebrationOf, playShot, replay } from '../../lib/ui/motion.ts';
 	import type { SceneShot } from './scene-shot.ts';
@@ -29,6 +30,7 @@
 	$effect(() => {
 		if (shot === undefined || !ball || !keeper || !net || !word || !armLeft || !armRight) return;
 		timeline?.kill();
+		endReplay();
 		timeline = playShot({ ball, keeper, arms: [armLeft, armRight], net, word }, shot);
 	});
 
@@ -39,13 +41,19 @@
 		if (card) celebrate(card, [...node.querySelectorAll<HTMLElement>('.bit')], celebration);
 	}
 
+	// A new shot kills the timeline a replay waits on, so the replay ends here instead.
+	function endReplay(): void {
+		if (!untrack(() => isReplaying)) return;
+		isReplaying = false;
+		onReplay?.(false);
+	}
+
 	async function playAgain(): Promise<void> {
 		if (timeline === undefined || isReplaying) return;
 		isReplaying = true;
 		onReplay?.(true);
 		await replay(timeline);
-		isReplaying = false;
-		onReplay?.(false);
+		endReplay();
 	}
 </script>
 
