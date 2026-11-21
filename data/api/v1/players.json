@@ -99,7 +99,7 @@
       },
       "position": "FORWARD",
       "state": "ACTIVE",
-      "tier": "LEGEND"
+      "tier": "ICON"
     },
     {
       "club": "clubs/arsenal-f-c",
@@ -403,7 +403,7 @@
       },
       "position": "FORWARD",
       "state": "ACTIVE",
-      "tier": "LEGEND"
+      "tier": "ICON"
     },
     {
       "club": "clubs/ac-milan",
