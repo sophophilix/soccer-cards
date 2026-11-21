@@ -44,19 +44,21 @@ test.describe('with the cards served', () => {
 	test('shows both packs with their price and contents', async ({ page }) => {
 		await page.goto('/packs');
 
-		await expect(page.getByRole('heading', { name: 'Pack', exact: true })).toBeVisible();
-		await expect(page.getByText('Free (2 left)')).toBeVisible();
-		await expect(page.getByText('20 coins')).toBeVisible();
-		await expect(page.getByText('40 base cards and 10 lucky cards')).toBeVisible();
+		await expect(page.getByRole('heading', { name: 'Open a pack' })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Open free pack (2 left)' })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Need 20 coins' })).toBeDisabled();
+		await expect(
+			page.getByRole('button', { name: 'Jumbo pack of 50 cards: 40 base and 10 lucky cards' })
+		).toBeVisible();
 		await expect(page.getByText('Rare 85 in 100')).toBeVisible();
 	});
 
 	test('reveals the cards one at a time with the best last, and adds them', async ({ page }) => {
 		await page.goto('/');
 
-		await page.getByRole('button', { name: 'Open pack' }).click();
+		await page.getByRole('button', { name: 'Open free pack (2 left)' }).click();
 		await expect(
-			page.getByTestId('spot').getByRole('button', { name: /card, showing the front/ })
+			page.getByTestId('spot').getByRole('button', { name: /card\. Press for the next card\./ })
 		).toBeVisible();
 		await page.getByRole('button', { name: 'Skip to all cards' }).click();
 		await expect(
@@ -64,31 +66,30 @@ test.describe('with the cards served', () => {
 		).toBeVisible();
 		await page.getByRole('button', { name: 'Add to my collection' }).click();
 
-		await expect(page.getByRole('status')).toHaveText('10 cards added to your collection.');
-		await expect(page.getByText('Free (1 left)')).toBeVisible();
-		await expect(page.getByText('Cards in your collection: 10')).toBeVisible();
+		await expect(page).toHaveURL(/\/cards$/);
+		await page.goto('/packs');
+		await expect(page.getByRole('button', { name: 'Open free pack (1 left)' })).toBeVisible();
 	});
 
 	test('shows the best card last', async ({ page }) => {
 		await page.goto('/');
-		await page.getByRole('button', { name: 'Open pack' }).click();
+		await page.getByRole('button', { name: 'Open free pack (2 left)' }).click();
 
 		for (let step = 0; step < CARDS_IN_PACK - 1; step += 1) {
 			await page.getByRole('button', { name: 'Next card' }).click();
 		}
 
-		await expect(page.getByRole('heading', { name: 'Card 10 of 10' })).toBeVisible();
-		await expect(page.getByText(/^(Rare|Legend|Icon) · /)).toBeVisible();
+		await expect(page.getByText('Card 10 of 10')).toBeVisible();
+		await expect(page.getByText(/^(Rare|Legend|Icon)$/)).toBeVisible();
 	});
 
 	test('shows the cards without animation when reduced motion is asked for', async ({ page }) => {
 		await page.emulateMedia({ reducedMotion: 'reduce' });
 		await page.goto('/');
 
-		await page.getByRole('button', { name: 'Open pack' }).click();
+		await page.getByRole('button', { name: 'Open free pack (2 left)' }).click();
 
-		await expect(page.getByTestId('spot')).toHaveCSS('animation-name', 'none');
-		await expect(page.getByTestId('turning')).toHaveCSS('transition-duration', '0s');
+		await expect(page.getByTestId('spot').locator('.big')).toHaveCSS('animation-name', 'none');
 	});
 });
 
@@ -105,6 +106,6 @@ test.describe('when the cards cannot be loaded', () => {
 		isServing = true;
 		await page.getByRole('button', { name: 'Try again' }).click();
 
-		await expect(page.getByRole('button', { name: 'Open pack' })).toBeVisible();
+		await expect(page.getByRole('button', { name: 'Open free pack (2 left)' })).toBeVisible();
 	});
 });

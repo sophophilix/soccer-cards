@@ -1,10 +1,12 @@
 <!-- The Packs view. The start page shows it too, so a first visit lands here with no redirect. -->
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { resolve } from '$app/paths';
 	import { LUCKY_ODDS, PACK_CONTENTS, createRandom, packCostCoins } from '@soccer-cards/game';
 	import type { CardId, CheckedCardSet, PackKind, PlayerState } from '@soccer-cards/game';
-	import CardFront from '../../lib/cards/CardFront.svelte';
-	import FlipCard from '../../lib/cards/FlipCard.svelte';
+	import BigCard from '../../lib/cards/BigCard.svelte';
+	import CardSlot from '../../lib/cards/CardSlot.svelte';
 	import { TIER_NAMES } from '../../lib/cards/card-front.ts';
 	import type { CardFace } from '../../lib/data/card-face-from-summary.ts';
 	import { loadCardSet } from '../../lib/data/load-card-set.ts';
@@ -16,10 +18,14 @@
 	} from '../../lib/packs/pack-session.ts';
 	import { browserStorage, createPlayerStore } from '../../lib/state/player-store.ts';
 	import type { LoadOutcome, SaveResult } from '../../lib/state/player-store.ts';
-	import { cardPropsOf } from './card-props.ts';
+	import PackCardDialog from './PackCardDialog.svelte';
+	import { cardPropsOf, type CardProps } from './card-props.ts';
 
 	const KINDS: readonly PackKind[] = ['standard', 'jumbo'];
-	const PACK_NAMES = { standard: 'Pack', jumbo: 'Jumbo pack' } as const;
+	// The words on the pack art, two lines each, as in the prototype.
+	const PACK_ART = { standard: ['Soccer', 'Cards'], jumbo: ['Jumbo', 'Pack'] } as const;
+	// How long the pack shakes, rips and drops before the first card shows.
+	const TEAR_MS = 1000;
 	const NOT_SAVING = "Your cards can't be saved on this device. You can still open packs.";
 	const LOAD_NOTICES: Record<LoadOutcome, string> = {
 		loaded: '',
@@ -55,6 +61,10 @@
 	let announcement = $state('');
 	// True while a step runs, so a second tap can't start another on an old state.
 	let isBusy = $state(false);
+	// The pack that is tearing open. The shelf stays up until the tear has played.
+	let tearing = $state<PackKind>();
+	// The summary card shown large, if any.
+	let detail = $state<CardProps>();
 	// The next step's main control or heading, so focus never falls to the page.
 	let nextButton = $state<HTMLButtonElement>();
 	let addButton = $state<HTMLButtonElement>();
@@ -72,7 +82,7 @@
 	});
 	const current = $derived(pack[shown]);
 	const isLast = $derived(shown >= pack.length - 1);
-	const total = $derived(Object.values(player?.collection ?? {}).reduce((sum, n) => sum + n, 0));
+	const isSealed = $derived(player?.pendingPack === null || tearing !== undefined);
 
 	onMount(() => {
 		const loaded = store.load();
@@ -99,7 +109,7 @@
 
 	/** Runs one step, and holds the buttons until the screen shows its result. */
 	async function runStep(step: () => void): Promise<void> {
-		if (isBusy) return;
+		if (isBusy || tearing !== undefined) return;
 		isBusy = true;
 		announcement = '';
 		try {
@@ -118,24 +128,48 @@
 		return kind === 'standard' && state.freePacks > 0;
 	}
 
-	function priceOf(state: PlayerState, kind: PackKind): string {
-		return isFree(state, kind)
-			? `Free (${String(state.freePacks)} left)`
-			: `${String(packCostCoins(kind))} coins`;
+	function canOpen(state: PlayerState, kind: PackKind): boolean {
+		return isFree(state, kind) || state.coins >= packCostCoins(kind);
+	}
+
+	function buyLabel(state: PlayerState, kind: PackKind): string {
+		const cost = String(packCostCoins(kind));
+		if (isFree(state, kind)) return `Open free pack (${String(state.freePacks)} left)`;
+		if (state.coins < packCostCoins(kind)) return `Need ${cost} coins`;
+		return kind === 'jumbo' ? `Open jumbo · ${cost} coins` : `Open pack · ${cost} coins`;
+	}
+
+	function packLabel(kind: PackKind): string {
+		const { base, lucky } = PACK_CONTENTS[kind];
+		const name = kind === 'jumbo' ? 'Jumbo pack' : 'Pack';
+		return `${name} of ${String(base + lucky)} cards: ${String(base)} base and ${String(lucky)} lucky cards`;
 	}
 
 	function open(kind: PackKind): void {
 		if (player === undefined || data.status !== 'ready') return;
+		if (!canOpen(player, kind)) {
+			announcement = `You need ${String(packCostCoins(kind))} coins. Win matches to earn them.`;
+			return;
+		}
 		const random = createRandom(randomSeed());
 		const result = openPackAndSave(store, player, { kind, cardSet: data.cardSet, random });
 		if (!result.ok) {
 			announcement = REFUSALS[result.reason];
 			return;
 		}
+		// Saved before the tear, so a reload mid-tear still keeps the cards.
 		player = result.value;
 		shown = 0;
 		notice = noticeAfter(result.saved);
-		void focusAfterStep(() => nextButton);
+		const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		tearing = kind;
+		setTimeout(
+			() => {
+				tearing = undefined;
+				void focusAfterStep(() => nextButton);
+			},
+			still ? 0 : TEAR_MS
+		);
 	}
 
 	function show(index: number): void {
@@ -144,7 +178,7 @@
 		if (index >= pack.length) void focusAfterStep(() => addButton);
 	}
 
-	function add(): void {
+	async function add(): Promise<void> {
 		if (player === undefined) return;
 		const count = player.pendingPack?.cardIds.length ?? 0;
 		const result = addPackAndSave(store, player);
@@ -152,7 +186,7 @@
 		player = result.value;
 		notice = noticeAfter(result.saved);
 		announcement = `${String(count)} cards added to your collection.`;
-		void focusAfterStep(() => shelfHeading);
+		await goto(resolve('/cards'));
 	}
 </script>
 
@@ -160,162 +194,174 @@
 	<title>Packs · Soccer Cards</title>
 </svelte:head>
 
-<main>
-	<h1>Packs</h1>
-	{#if notice}<p class="notice">{notice}</p>{/if}
-	<p role="status">{announcement}</p>
+<main class="view">
+	<h1 class="visually-hidden">Packs</h1>
+	{#if notice}<p class="banner">{notice}</p>{/if}
+	<p role="status" class="visually-hidden">{announcement}</p>
 	{#if data.status === 'failed'}
-		<p>We can't get the cards right now. Check you are online, then try again.</p>
-		<button type="button" class="btn primary" onclick={() => void fetchCards()}>Try again</button>
-	{:else if data.status === 'loading' || player === undefined}
-		<p>Getting the cards ready…</p>
-	{:else if player.pendingPack === null}
-		<h2 tabindex="-1" bind:this={shelfHeading}>Open a pack</h2>
-		<p>Coins: {player.coins} · Cards in your collection: {total}</p>
-		<div class="shelf">
-			{#each KINDS as kind (kind)}
-				<section class="offer">
-					<h3>{PACK_NAMES[kind]}</h3>
-					<p>{PACK_CONTENTS[kind].base} base cards and {PACK_CONTENTS[kind].lucky} lucky cards</p>
-					<p>{priceOf(player, kind)}</p>
-					<button
-						type="button"
-						class="btn primary"
-						disabled={isBusy || (!isFree(player, kind) && player.coins < packCostCoins(kind))}
-						onclick={() =>
-							void runStep(() => {
-								open(kind);
-							})}>Open {PACK_NAMES[kind].toLowerCase()}</button
-					>
-				</section>
-			{/each}
+		<div class="empty">
+			<p>We can't get the cards right now. Check you are online, then try again.</p>
+			<button type="button" class="btn primary" onclick={() => void fetchCards()}>Try again</button>
 		</div>
-		<p class="odds">{ODDS}</p>
+	{:else if data.status === 'loading' || player === undefined}
+		<p class="muted">Getting the cards ready…</p>
+	{:else if isSealed}
+		<div class="packzone">
+			<h2 tabindex="-1" bind:this={shelfHeading}>Open a pack</h2>
+			<div class="shelf">
+				{#each KINDS as kind (kind)}
+					{@const contents = PACK_CONTENTS[kind]}
+					<div class="offer">
+						<button
+							type="button"
+							class={['pack', kind === 'jumbo' && 'jumbo', tearing === kind && 'tearing']}
+							aria-label={packLabel(kind)}
+							disabled={!canOpen(player, kind) || tearing !== undefined}
+							onclick={() =>
+								void runStep(() => {
+									open(kind);
+								})}
+						>
+							<span class="name" aria-hidden="true"
+								>{PACK_ART[kind][0]}<br />{PACK_ART[kind][1]}</span
+							>
+							<span class="ten" aria-hidden="true">{contents.base + contents.lucky} CARDS</span>
+							<span class="mix" aria-hidden="true"
+								>{contents.base} BASE<br />{contents.lucky} LUCKY</span
+							>
+						</button>
+						<button
+							type="button"
+							class="btn primary"
+							disabled={isBusy || tearing !== undefined || !canOpen(player, kind)}
+							onclick={() =>
+								void runStep(() => {
+									open(kind);
+								})}>{buyLabel(player, kind)}</button
+						>
+					</div>
+				{/each}
+			</div>
+			<p class="odds">{ODDS}</p>
+			<p class="muted">
+				{player.freePacks > 0
+					? 'You start with 2 free packs. After that, win matches to earn coins.'
+					: 'Win matches to earn coins. Higher divisions pay more.'}
+			</p>
+		</div>
 	{:else if current !== undefined}
 		{@const copies = player.collection[current.id] ?? 0}
-		<h2>Card {shown + 1} of {pack.length}</h2>
-		<p>
-			{TIER_NAMES[current.props.front.tier]} · {copies > 0 ? `You have ${String(copies)}` : 'New!'}
-		</p>
-		{#key shown}
-			<div class="spot" data-testid="spot">
-				{#if current.props.back !== undefined}
-					<FlipCard front={current.props.front} back={current.props.back} />
+		{@const tier = current.props.front.tier}
+		{@const isStar = tier === 'LEGEND' || tier === 'ICON'}
+		<div class="reveal">
+			<div class="row center">
+				<span class="chip">Card {shown + 1} of {pack.length}</span>
+				<span class={['chip', isStar && tier.toLowerCase()]}>{TIER_NAMES[tier]}</span>
+				{#if copies > 0}
+					<span class="chip">You have {copies}</span>
 				{:else}
-					<CardFront {...current.props.front} />
+					<span class="chip new">New!</span>
 				{/if}
 			</div>
-		{/key}
-		<div class="row">
+			{#key shown}
+				<div class={['spot', isStar && tier.toLowerCase()]} data-testid="spot">
+					<button
+						type="button"
+						class="cardtap"
+						aria-label={`${current.props.front.displayName}, ${TIER_NAMES[tier]} card. Press for the next card.`}
+						onclick={() => {
+							show(shown + 1);
+						}}
+					>
+						<BigCard front={current.props.front} arrive />
+					</button>
+				</div>
+			{/key}
+			<div class="row center">
+				<button
+					type="button"
+					class="btn primary"
+					bind:this={nextButton}
+					onclick={() => {
+						show(shown + 1);
+					}}
+				>
+					{isLast ? `See all ${String(pack.length)}` : 'Next card'}
+				</button>
+				{#if !isLast}
+					<button
+						type="button"
+						class="btn"
+						onclick={() => {
+							show(pack.length);
+						}}
+					>
+						Skip to all cards
+					</button>
+				{/if}
+			</div>
+		</div>
+	{:else}
+		<div class="reveal">
+			<h2>Your {pack.length} cards</h2>
+			<div class="grid summary">
+				{#each pack as card, index (index)}
+					<CardSlot
+						front={card.props.front}
+						label={`Look at ${card.props.front.displayName}`}
+						onclick={() => {
+							detail = card.props;
+						}}
+					/>
+				{/each}
+			</div>
 			<button
 				type="button"
 				class="btn primary"
-				bind:this={nextButton}
-				onclick={() => {
-					show(shown + 1);
-				}}
+				bind:this={addButton}
+				disabled={isBusy}
+				onclick={() =>
+					void runStep(() => {
+						void add();
+					})}
 			>
-				{isLast ? `See all ${String(pack.length)}` : 'Next card'}
+				Add to my collection
 			</button>
-			{#if !isLast}
-				<button
-					type="button"
-					class="btn"
-					onclick={() => {
-						show(pack.length);
-					}}
-				>
-					Skip to all cards
-				</button>
-			{/if}
 		</div>
-	{:else}
-		<h2>Your {pack.length} cards</h2>
-		<ul class="grid">
-			{#each pack as card, index (index)}<li><CardFront {...card.props.front} /></li>{/each}
-		</ul>
-		<button
-			type="button"
-			class="btn primary"
-			bind:this={addButton}
-			disabled={isBusy}
-			onclick={() => void runStep(add)}
-		>
-			Add to my collection
-		</button>
 	{/if}
 </main>
 
+{#if detail !== undefined}
+	<PackCardDialog
+		card={detail}
+		onclose={() => {
+			detail = undefined;
+		}}
+	/>
+{/if}
+
 <style>
-	.shelf,
-	.row {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 12px;
+	.visually-hidden {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		overflow: hidden;
+		clip-path: inset(50%);
+		white-space: nowrap;
 	}
-	.offer {
+	.cardtap {
+		all: unset;
 		display: grid;
-		gap: 8px;
-		justify-items: start;
-	}
-	h2,
-	h3 {
-		margin: 0;
-		font: 800 18px/1.2 var(--font-data);
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-	}
-	.notice {
-		font-weight: 700;
-	}
-	.odds {
-		font: 800 15px/1.3 var(--font-data);
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-	}
-	.btn {
-		min-height: 44px;
-		padding: 12px 18px 11px;
-		border: 2px solid var(--fg);
-		border-radius: 999px;
-		background: var(--surface);
-		color: var(--fg);
-		box-shadow: 0 3px 0 var(--fg);
-		font: 800 17px/1 var(--font-data);
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
+		justify-items: center;
+		width: min(100%, 320px, 52vh);
+		border-radius: 5cqw;
 		cursor: pointer;
 	}
-	.btn.primary {
-		background: var(--accent);
-		color: var(--accent-ink);
+	.cardtap:focus-visible {
+		outline: 3px solid var(--focus);
+		outline-offset: 3px;
 	}
-	.btn:disabled {
-		opacity: 0.5;
-		box-shadow: none;
-		cursor: not-allowed;
-	}
-	.spot {
-		width: min(100%, 300px);
-		animation: arrive 0.45s cubic-bezier(0.3, 1.3, 0.5, 1) both;
-	}
-	@keyframes arrive {
-		from {
-			transform: translateY(40px) rotate(-8deg) scale(0.7);
-			opacity: 0;
-		}
-	}
-	.grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
-		gap: 10px;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-	@media (prefers-reduced-motion: reduce) {
-		.spot {
-			animation: none;
-		}
+	.cardtap :global(.big) {
+		width: 100%;
 	}
 </style>
