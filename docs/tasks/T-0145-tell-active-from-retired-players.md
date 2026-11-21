@@ -28,7 +28,7 @@ or with a stale end. A child shouldn't read that a playing star has retired.
 - `normalise.py` line 170: `"state": "ACTIVE" if current else "RETIRED"`.
 - ADR 0005 D3 (`state` is `ACTIVE` or `RETIRED`) and D7 (unknown is
   absent).
-- Wikidata's "work period (end)" (P2032) records when a sportsperson's
+- Wikidata's "end of work period" (P2032) records when a sportsperson's
   career ended. Check the property on Wikidata and record its label in a
   comment.
 - `.sdlc/reviews/T-0140.reviewer.json` in the main checkout.
