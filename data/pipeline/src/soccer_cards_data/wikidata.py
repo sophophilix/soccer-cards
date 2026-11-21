@@ -232,8 +232,8 @@ def _label(entity: Json) -> str | None:
     """Return the English label, else the multilingual one.
 
     Wikidata keeps many people's names under `mul` and leaves `en` empty. See
-    https://www.wikidata.org/wiki/Help:Default_values_for_labels_and_aliases,
-    read 2026-11-21T22:13Z. Whether the text is plain is for `names.py` to say.
+    https://www.wikidata.org/wiki/Help:Default_values_for_labels_and_aliases
+    (not read; the lead will confirm). Whether the text is plain is for `names.py` to say.
     """
     labels = _dict(entity.get("labels"))
     for language in ("en", "mul"):
