@@ -15,6 +15,7 @@ paths:
   - apps/api/src/worker.py
   - apps/api/wrangler.jsonc
   - apps/api/migrations/**
+  - apps/api/tests/test_project.py
   - apps/api/tests/conftest.py
   - apps/api/tests/test_players.py
 dependencies:
@@ -53,7 +54,15 @@ Workers runtime, to prove the parts fit before the rest of the API is built.
 - A 500 body comes only from one fixed-message helper in `errors.py` (for
   example `internal_error()`), and the app maps every `DatabaseError` and
   unexpected exception to it, so no internal detail reaches a response
-  (T-0135 review F1).
+  (T-0135 review F1). The cause of a 500 is never shown or logged (T-0135
+  security F5).
+- Every SQL statement is a constant string in the code; no request text is
+  joined into SQL (T-0135 security F4).
+- FastAPI's built-in OpenTelemetry is off, set explicitly, and a test proves
+  no telemetry is configured (T-0135 security F2, ADR 0003).
+- `[tool.uv]` has a `no-build-package` list like `data/pipeline`'s, and
+  `tests/test_project.py` fails if a locked package is missing from it
+  (T-0135 security F3).
 - `wrangler.jsonc` binds D1 as `DB` for local development, and a migration
   creates `players` and seeds the three invented players.
 - The Worker runs locally on the Workers runtime (`pywrangler dev`, after
