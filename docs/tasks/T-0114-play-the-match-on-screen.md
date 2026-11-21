@@ -23,7 +23,7 @@ division.
 
 ## Context
 
-- Merge T-0112 first. If its top component is not `MatchView.svelte`, stop
+- Merge T-0116 first. If the top component is not `MatchView.svelte`, stop
   and tell the lead so the brief's paths are fixed. T-0113 may run at the
   same time; it does not touch these files.
 - `lib/match` from T-0111: `startMatch` at kick-off, `finishMatchAndSave`
