@@ -35,7 +35,9 @@
 		away: revealed.filter((each) => each.outcome === 'goal' && each.side === 'away').length
 	});
 	const clock = $derived(isOver ? 'FT' : `${String(revealed.at(-1)?.minute ?? 0)}'`);
-	const lines = $derived(revealed.map((each) => momentLine(each, nameOf)).toReversed());
+	const lines = $derived(
+		revealed.map((each, id) => ({ id, ...momentLine(each, nameOf) })).toReversed()
+	);
 	const isLevel = $derived(isOver && score.home === score.away);
 	const banner = $derived(edgeBanner(match.result.tacticalEdge, home.tactic, away.tactic));
 	const plan = (side: typeof home): string =>
@@ -88,13 +90,13 @@
 </div>
 {#if banner !== undefined}<p class="banner">{banner}</p>{/if}
 {#if isLevel}
-	<div class="result">
+	<div class="result" role="status">
 		<h2>Full time</h2>
 		<p>It is level, so it goes to penalties!</p>
 	</div>
 {:else if finished !== undefined}
 	{@const won = score.home > score.away}
-	<div class="result">
+	<div class="result" role="status">
 		<h2>{won ? 'You win!' : 'The AI wins'}</h2>
 		<p>
 			{score.home} – {score.away}.
@@ -126,7 +128,7 @@
 	</div>
 {/if}
 <ol class="log" aria-live="polite" aria-label="Commentary">
-	{#each lines as line, index (index)}
+	{#each lines as line (line.id)}
 		<li class:goal={line.isGoal}>{line.text}</li>
 	{/each}
 	<li>Kick-off!</li>
@@ -173,12 +175,10 @@
 		padding: 10px 14px;
 		background: var(--booking);
 		color: var(--booking-ink);
-		font-weight: 700;
 	}
 	.result {
 		display: grid;
 		gap: 12px;
-		justify-items: center;
 	}
 	.log {
 		display: grid;
