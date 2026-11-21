@@ -34,6 +34,13 @@ def test_every_photo_has_a_credit_and_every_credit_a_file() -> None:
     assert on_players <= credited
 
 
+def test_it_holds_23_photos_and_one_avatar() -> None:
+    players = _json("players.json")["players"]
+    avatars = [p["displayName"] for p in players if "photo" not in p]
+    assert avatars == ["Peter Schmeichel"]
+    assert len(list((API / "photos").glob("*.webp"))) == PLAYER_COUNT - 1
+
+
 def test_the_tier_spread_lets_a_pack_be_drawn() -> None:
     tiers = Counter(p["tier"] for p in _json("players.json")["players"])
     assert tiers["BASE"] >= 8

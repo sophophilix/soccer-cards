@@ -20,17 +20,6 @@
     "sourceUri": "https://www.wikidata.org/w/index.php?title=Q182314&oldid=2563448129",
     "value": 1
   },
-  "photo": {
-    "attribution": {
-      "author": "Carlsberg",
-      "licenseCode": "CC-BY-3.0",
-      "sourceUri": "https://commons.wikimedia.org/wiki/File:Peter_Schmeichel_2012-01-25_001.jpg"
-    },
-    "heightPx": 663,
-    "mimeType": "image/webp",
-    "uri": "photos/peter-schmeichel.webp",
-    "widthPx": 480
-  },
   "playStats": {
     "attack": 83,
     "control": 80,
@@ -40,5 +29,5 @@
   "position": "GOALKEEPER",
   "state": "RETIRED",
   "tier": "LEGEND",
-  "updateTime": "2026-11-21T03:57:58Z"
+  "updateTime": "2026-11-21T04:09:53Z"
 }

@@ -8,7 +8,7 @@
     },
     {
       "collectionId": "credits",
-      "itemCount": 24,
+      "itemCount": 23,
       "schemaId": "credits.schema.json",
       "uri": "credits.json"
     },
@@ -19,7 +19,7 @@
       "uri": "players.json"
     }
   ],
-  "dataVersion": 1,
+  "dataVersion": 2,
   "formulaVersion": 1,
-  "generateTime": "2026-11-21T03:57:58Z"
+  "generateTime": "2026-11-21T04:09:53Z"
 }

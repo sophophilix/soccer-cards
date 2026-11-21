@@ -619,17 +619,6 @@
       },
       "name": "players/peter-schmeichel",
       "nationalTeamCode": "DEN",
-      "photo": {
-        "attribution": {
-          "author": "Carlsberg",
-          "licenseCode": "CC-BY-3.0",
-          "sourceUri": "https://commons.wikimedia.org/wiki/File:Peter_Schmeichel_2012-01-25_001.jpg"
-        },
-        "heightPx": 663,
-        "mimeType": "image/webp",
-        "uri": "photos/peter-schmeichel.webp",
-        "widthPx": 480
-      },
       "playStats": {
         "attack": 83,
         "control": 80,
