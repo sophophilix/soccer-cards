@@ -109,7 +109,7 @@ test('starts with the best 11 and a Kick off that is ready', async ({ page }) =>
 test('taking a player out and putting them back changes the count and Kick off', async ({
 	page
 }) => {
-	const forwards = page.locator('.line').filter({ hasText: 'Forward' });
+	const forwards = page.getByTestId('line-FW');
 	await expect(forwards).toContainText('Name p-fw-3');
 
 	await pick(page, 'p-fw-3').click();

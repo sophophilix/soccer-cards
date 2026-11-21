@@ -114,11 +114,13 @@ test.describe('with more than 11 cards', () => {
 	});
 
 	test('shows the 11 that bestTeam picks and not the others', async ({ page }) => {
+		// Every owned card is also in "Your players", so look only in the line-up.
+		const lineUp = page.getByTestId('lineup');
 		for (const card of STARTERS) {
-			await expect(page.getByText(`Name ${card.id}`, { exact: true })).toBeVisible();
+			await expect(lineUp.getByText(`Name ${card.id}`, { exact: true })).toBeVisible();
 		}
 		for (const card of EXTRAS) {
-			await expect(page.getByText(`Name ${card.id}`, { exact: true })).toHaveCount(0);
+			await expect(lineUp.getByText(`Name ${card.id}`, { exact: true })).toHaveCount(0);
 		}
 		await expect(page.getByTestId('totals')).toHaveText('ATT 67 · MID 60 · DEF 45 · GK 50');
 	});
