@@ -1,0 +1,44 @@
+{
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-01",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q182314&oldid=2563448129",
+    "value": 9
+  },
+  "displayName": "Peter Schmeichel",
+  "goalkeeperRatings": {
+    "diving": 85,
+    "handling": 75,
+    "kicking": 85,
+    "positioning": 85,
+    "reflexes": 95,
+    "speed": 75
+  },
+  "name": "players/peter-schmeichel",
+  "nationalTeamCode": "DEN",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-01",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q182314&oldid=2563448129",
+    "value": 1
+  },
+  "photo": {
+    "attribution": {
+      "author": "Carlsberg",
+      "licenseCode": "CC-BY-3.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Peter_Schmeichel_2012-01-25_001.jpg"
+    },
+    "heightPx": 663,
+    "mimeType": "image/webp",
+    "uri": "photos/peter-schmeichel.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 83,
+    "control": 80,
+    "defence": 86,
+    "overall": 88
+  },
+  "position": "GOALKEEPER",
+  "state": "RETIRED",
+  "tier": "LEGEND",
+  "updateTime": "2026-11-21T03:57:58Z"
+}

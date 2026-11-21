@@ -1,0 +1,45 @@
+{
+  "club": "clubs/arsenal-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-10",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q59306386&oldid=2556672659",
+    "value": 63
+  },
+  "displayName": "Bukayo Saka",
+  "name": "players/bukayo-saka",
+  "nationalTeamCode": "ENG",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-03",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q59306386&oldid=2556672659",
+    "value": 19
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 85,
+    "pace": 85,
+    "passing": 85,
+    "physical": 75,
+    "shooting": 74
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Bukayo_Saka_England_v_Ghana_23_June_2026-057_(cropped).jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/bukayo-saka.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 80,
+    "control": 84,
+    "defence": 77,
+    "overall": 82
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T03:57:58Z"
+}

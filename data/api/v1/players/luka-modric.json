@@ -1,0 +1,45 @@
+{
+  "club": "clubs/ac-milan",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-11",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q483837&oldid=2558141293",
+    "value": 84
+  },
+  "displayName": "Luka Modrić",
+  "name": "players/luka-modric",
+  "nationalTeamCode": "CRO",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-06",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q483837&oldid=2558141293",
+    "value": 30
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 85,
+    "pace": 72,
+    "passing": 95,
+    "physical": 82,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Luka_Modric_Croatia_v_Portugal_2_July_2026-055.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/luka-modric.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 78,
+    "control": 87,
+    "defence": 79,
+    "overall": 86
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "RARE",
+  "updateTime": "2026-11-21T03:57:58Z"
+}

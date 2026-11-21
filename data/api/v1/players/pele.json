@@ -1,0 +1,39 @@
+{
+  "displayName": "Pelé",
+  "name": "players/pele",
+  "nationalTeamCode": "BRA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-11",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q12897&oldid=2568022319",
+    "value": 77
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 95,
+    "pace": 92,
+    "passing": 85,
+    "physical": 82,
+    "shooting": 98
+  },
+  "photo": {
+    "attribution": {
+      "author": "Unknown author",
+      "licenseCode": "CC-PDM-1.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Pele_con_brasil_(cropped).jpg"
+    },
+    "heightPx": 526,
+    "mimeType": "image/webp",
+    "uri": "photos/pele.webp",
+    "widthPx": 388
+  },
+  "playStats": {
+    "attack": 95,
+    "control": 89,
+    "defence": 75,
+    "overall": 91
+  },
+  "position": "FORWARD",
+  "state": "RETIRED",
+  "tier": "ICON",
+  "updateTime": "2026-11-21T03:57:58Z"
+}

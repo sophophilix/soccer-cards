@@ -1,0 +1,25 @@
+{
+  "collections": [
+    {
+      "collectionId": "clubs",
+      "itemCount": 11,
+      "schemaId": "clubs.schema.json",
+      "uri": "clubs.json"
+    },
+    {
+      "collectionId": "credits",
+      "itemCount": 24,
+      "schemaId": "credits.schema.json",
+      "uri": "credits.json"
+    },
+    {
+      "collectionId": "players",
+      "itemCount": 24,
+      "schemaId": "players.schema.json",
+      "uri": "players.json"
+    }
+  ],
+  "dataVersion": 1,
+  "formulaVersion": 1,
+  "generateTime": "2026-11-21T03:57:58Z"
+}

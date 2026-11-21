@@ -1,0 +1,813 @@
+{
+  "players": [
+    {
+      "displayName": "Andrea Pirlo",
+      "name": "players/andrea-pirlo",
+      "nationalTeamCode": "ITA",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 75,
+        "pace": 62,
+        "passing": 95,
+        "physical": 62,
+        "shooting": 85
+      },
+      "photo": {
+        "attribution": {
+          "author": "Clément Bucco-Lechat",
+          "licenseCode": "CC-BY-SA-3.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:20150616_-_Portugal_-_Italie_-_Gen%C3%A8ve_-_Andrea_Pirlo_(cropped).jpg"
+        },
+        "heightPx": 523,
+        "mimeType": "image/webp",
+        "uri": "photos/andrea-pirlo.webp",
+        "widthPx": 349
+      },
+      "playStats": {
+        "attack": 79,
+        "control": 80,
+        "defence": 67,
+        "overall": 80
+      },
+      "position": "MIDFIELDER",
+      "state": "RETIRED",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/arsenal-f-c",
+      "displayName": "Bukayo Saka",
+      "name": "players/bukayo-saka",
+      "nationalTeamCode": "ENG",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 85,
+        "pace": 85,
+        "passing": 85,
+        "physical": 75,
+        "shooting": 74
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Bukayo_Saka_England_v_Ghana_23_June_2026-057_(cropped).jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/bukayo-saka.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 80,
+        "control": 84,
+        "defence": 77,
+        "overall": 82
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/al-nassr",
+      "displayName": "Cristiano Ronaldo",
+      "name": "players/cristiano-ronaldo",
+      "nationalTeamCode": "POR",
+      "outfieldRatings": {
+        "defending": 55,
+        "dribbling": 85,
+        "pace": 82,
+        "passing": 75,
+        "physical": 92,
+        "shooting": 97
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Cristiano_Ronaldo_Croatia_v_Portugal_2_July_2026-075_(cropped).jpg"
+        },
+        "heightPx": 719,
+        "mimeType": "image/webp",
+        "uri": "photos/cristiano-ronaldo.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 89,
+        "control": 81,
+        "defence": 71,
+        "overall": 88
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "LEGEND"
+    },
+    {
+      "club": "clubs/arsenal-f-c",
+      "displayName": "Declan Rice",
+      "name": "players/declan-rice",
+      "nationalTeamCode": "ENG",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 75,
+        "pace": 75,
+        "passing": 75,
+        "physical": 85,
+        "shooting": 74
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Declan_Rice_England_v_Ghana_23_June_2026-150_(cropped).jpg"
+        },
+        "heightPx": 652,
+        "mimeType": "image/webp",
+        "uri": "photos/declan-rice.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 75,
+        "control": 76,
+        "defence": 83,
+        "overall": 81
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/manchester-city-f-c",
+      "displayName": "Erling Haaland",
+      "name": "players/erling-haaland",
+      "nationalTeamCode": "NOR",
+      "outfieldRatings": {
+        "defending": 55,
+        "dribbling": 75,
+        "pace": 85,
+        "passing": 65,
+        "physical": 95,
+        "shooting": 98
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Erling_Haaland_France_v_Norway_26_June_26-008_(cropped).jpg"
+        },
+        "heightPx": 642,
+        "mimeType": "image/webp",
+        "uri": "photos/erling-haaland.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 88,
+        "control": 74,
+        "defence": 71,
+        "overall": 86
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "RARE"
+    },
+    {
+      "displayName": "Franz Beckenbauer",
+      "name": "players/franz-beckenbauer",
+      "nationalTeamCode": "GER",
+      "outfieldRatings": {
+        "defending": 95,
+        "dribbling": 85,
+        "pace": 82,
+        "passing": 95,
+        "physical": 82,
+        "shooting": 76
+      },
+      "photo": {
+        "attribution": {
+          "author": "Panini Group",
+          "licenseCode": "CC-PDM-1.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Franz_Beckenbauer_(1975).jpg"
+        },
+        "heightPx": 657,
+        "mimeType": "image/webp",
+        "uri": "photos/franz-beckenbauer.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 81,
+        "control": 88,
+        "defence": 90,
+        "overall": 92
+      },
+      "position": "DEFENDER",
+      "state": "RETIRED",
+      "tier": "ICON"
+    },
+    {
+      "displayName": "Gianluigi Buffon",
+      "goalkeeperRatings": {
+        "diving": 95,
+        "handling": 95,
+        "kicking": 75,
+        "positioning": 95,
+        "reflexes": 95,
+        "speed": 75
+      },
+      "name": "players/gianluigi-buffon",
+      "nationalTeamCode": "ITA",
+      "photo": {
+        "attribution": {
+          "author": "Original: Doha Stadium Plus Qatar from Doha, Qatar Derivative work: Alza08 Author:",
+          "licenseCode": "CC-BY-2.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Gianluigi_Buffon_(31784615942)_(cropped).jpg"
+        },
+        "heightPx": 686,
+        "mimeType": "image/webp",
+        "uri": "photos/gianluigi-buffon.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 75,
+        "control": 85,
+        "defence": 95,
+        "overall": 95
+      },
+      "position": "GOALKEEPER",
+      "state": "RETIRED",
+      "tier": "LEGEND"
+    },
+    {
+      "club": "clubs/everton-f-c",
+      "displayName": "Jack Grealish",
+      "name": "players/jack-grealish",
+      "nationalTeamCode": "ENG",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 74,
+        "passing": 85,
+        "physical": 75,
+        "shooting": 72
+      },
+      "photo": {
+        "attribution": {
+          "author": "Hameltion",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:ManCity20240722-017_(cropped).jpg"
+        },
+        "heightPx": 645,
+        "mimeType": "image/webp",
+        "uri": "photos/jack-grealish.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 76,
+        "control": 83,
+        "defence": 71,
+        "overall": 79
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/everton-f-c",
+      "displayName": "Jordan Pickford",
+      "goalkeeperRatings": {
+        "diving": 85,
+        "handling": 75,
+        "kicking": 85,
+        "positioning": 75,
+        "reflexes": 85,
+        "speed": 75
+      },
+      "name": "players/jordan-pickford",
+      "nationalTeamCode": "ENG",
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Jordan_Pickford_England_v_Ghana_23_June_2026-049.jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/jordan-pickford.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 83,
+        "control": 79,
+        "defence": 81,
+        "overall": 83
+      },
+      "position": "GOALKEEPER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/real-madrid-club-de-futbol",
+      "displayName": "Jude Bellingham",
+      "name": "players/jude-bellingham",
+      "nationalTeamCode": "ENG",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 85,
+        "pace": 75,
+        "passing": 75,
+        "physical": 85,
+        "shooting": 86
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Jude_Bellingham_England_v_Ghana_23_June_2026-061_(cropped).jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/jude-bellingham.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 83,
+        "control": 80,
+        "defence": 78,
+        "overall": 81
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/real-madrid-club-de-futbol",
+      "displayName": "Kylian Mbappé",
+      "name": "players/kylian-mbappe",
+      "nationalTeamCode": "FRA",
+      "outfieldRatings": {
+        "defending": 55,
+        "dribbling": 85,
+        "pace": 95,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 98
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Kylian_Mbappe_France_v_Senegal_16_June_2026-391_(cropped).jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/kylian-mbappe.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 93,
+        "control": 81,
+        "defence": 67,
+        "overall": 89
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "LEGEND"
+    },
+    {
+      "club": "clubs/inter-miami-cf",
+      "displayName": "Lionel Messi",
+      "name": "players/lionel-messi",
+      "nationalTeamCode": "ARG",
+      "outfieldRatings": {
+        "defending": 55,
+        "dribbling": 95,
+        "pace": 82,
+        "passing": 95,
+        "physical": 72,
+        "shooting": 98
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Leo_Messi_Argentina_v_Egypt_7_July_2026-1.jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/lionel-messi.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 94,
+        "control": 91,
+        "defence": 67,
+        "overall": 90
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "LEGEND"
+    },
+    {
+      "club": "clubs/ac-milan",
+      "displayName": "Luka Modrić",
+      "name": "players/luka-modric",
+      "nationalTeamCode": "CRO",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 85,
+        "pace": 72,
+        "passing": 95,
+        "physical": 82,
+        "shooting": 75
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Luka_Modric_Croatia_v_Portugal_2_July_2026-055.jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/luka-modric.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 78,
+        "control": 87,
+        "defence": 79,
+        "overall": 86
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "RARE"
+    },
+    {
+      "club": "clubs/manchester-united-f-c",
+      "displayName": "Marcus Rashford",
+      "name": "players/marcus-rashford",
+      "nationalTeamCode": "ENG",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 85,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 74
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Marcus_Rashford_England_v_Panama_27_June_26-047.jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/marcus-rashford.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 79,
+        "control": 80,
+        "defence": 71,
+        "overall": 81
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/trabzonspor",
+      "displayName": "Mohamed Salah",
+      "name": "players/mohamed-salah",
+      "nationalTeamCode": "EGY",
+      "outfieldRatings": {
+        "defending": 55,
+        "dribbling": 85,
+        "pace": 92,
+        "passing": 85,
+        "physical": 74,
+        "shooting": 86
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Mohamed_Salah_Argentina_v_Egypt_7_July_2026-163_(cropped).jpg"
+        },
+        "heightPx": 695,
+        "mimeType": "image/webp",
+        "uri": "photos/mohamed-salah.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 87,
+        "control": 85,
+        "defence": 67,
+        "overall": 86
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "RARE"
+    },
+    {
+      "displayName": "Paolo Maldini",
+      "name": "players/paolo-maldini",
+      "nationalTeamCode": "ITA",
+      "outfieldRatings": {
+        "defending": 95,
+        "dribbling": 75,
+        "pace": 82,
+        "passing": 75,
+        "physical": 82,
+        "shooting": 65
+      },
+      "photo": {
+        "attribution": {
+          "author": "Foad Ashtari",
+          "licenseCode": "CC-BY-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Paolo_Maldini_press_conference_in_Tehran_(cropped).jpg"
+        },
+        "heightPx": 477,
+        "mimeType": "image/webp",
+        "uri": "photos/paolo-maldini.webp",
+        "widthPx": 367
+      },
+      "playStats": {
+        "attack": 71,
+        "control": 76,
+        "defence": 88,
+        "overall": 88
+      },
+      "position": "DEFENDER",
+      "state": "RETIRED",
+      "tier": "ICON"
+    },
+    {
+      "club": "clubs/fc-barcelona",
+      "displayName": "Pedri",
+      "name": "players/pedri",
+      "nationalTeamCode": "ESP",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 85,
+        "pace": 75,
+        "passing": 85,
+        "physical": 75,
+        "shooting": 75
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Pedri_France_v_Spain_7.24.26-245.jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/pedri.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 78,
+        "control": 83,
+        "defence": 76,
+        "overall": 81
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "displayName": "Pelé",
+      "name": "players/pele",
+      "nationalTeamCode": "BRA",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 95,
+        "pace": 92,
+        "passing": 85,
+        "physical": 82,
+        "shooting": 98
+      },
+      "photo": {
+        "attribution": {
+          "author": "Unknown author",
+          "licenseCode": "CC-PDM-1.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Pele_con_brasil_(cropped).jpg"
+        },
+        "heightPx": 526,
+        "mimeType": "image/webp",
+        "uri": "photos/pele.webp",
+        "widthPx": 388
+      },
+      "playStats": {
+        "attack": 95,
+        "control": 89,
+        "defence": 75,
+        "overall": 91
+      },
+      "position": "FORWARD",
+      "state": "RETIRED",
+      "tier": "ICON"
+    },
+    {
+      "displayName": "Peter Schmeichel",
+      "goalkeeperRatings": {
+        "diving": 85,
+        "handling": 75,
+        "kicking": 85,
+        "positioning": 85,
+        "reflexes": 95,
+        "speed": 75
+      },
+      "name": "players/peter-schmeichel",
+      "nationalTeamCode": "DEN",
+      "photo": {
+        "attribution": {
+          "author": "Carlsberg",
+          "licenseCode": "CC-BY-3.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Peter_Schmeichel_2012-01-25_001.jpg"
+        },
+        "heightPx": 663,
+        "mimeType": "image/webp",
+        "uri": "photos/peter-schmeichel.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 83,
+        "control": 80,
+        "defence": 86,
+        "overall": 88
+      },
+      "position": "GOALKEEPER",
+      "state": "RETIRED",
+      "tier": "LEGEND"
+    },
+    {
+      "club": "clubs/manchester-city-f-c",
+      "displayName": "Rúben Dias",
+      "name": "players/ruben-dias",
+      "nationalTeamCode": "POR",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 65,
+        "pace": 75,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 65
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Ruben_Dias_Croatia_v_Portugal_2_July_2026-228_(cropped).jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/ruben-dias.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 68,
+        "control": 71,
+        "defence": 80,
+        "overall": 81
+      },
+      "position": "DEFENDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/real-madrid-club-de-futbol",
+      "displayName": "Thibaut Courtois",
+      "goalkeeperRatings": {
+        "diving": 95,
+        "handling": 85,
+        "kicking": 75,
+        "positioning": 95,
+        "reflexes": 95,
+        "speed": 75
+      },
+      "name": "players/thibaut-courtois",
+      "nationalTeamCode": "BEL",
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Thibaut_Courtois_Belgium_v_USA_6_July_2026-076_(cropped).jpg"
+        },
+        "heightPx": 632,
+        "mimeType": "image/webp",
+        "uri": "photos/thibaut-courtois.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 75,
+        "control": 81,
+        "defence": 93,
+        "overall": 93
+      },
+      "position": "GOALKEEPER",
+      "state": "ACTIVE",
+      "tier": "LEGEND"
+    },
+    {
+      "club": "clubs/real-madrid-club-de-futbol",
+      "displayName": "Trent Alexander-Arnold",
+      "name": "players/trent-alexander-arnold",
+      "nationalTeamCode": "ENG",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 75,
+        "pace": 75,
+        "passing": 95,
+        "physical": 75,
+        "shooting": 74
+      },
+      "photo": {
+        "attribution": {
+          "author": "Антон Зайцев",
+          "licenseCode": "CC-BY-SA-3.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Trent_Alexander-Arnold_2018_(cropped).jpg"
+        },
+        "heightPx": 414,
+        "mimeType": "image/webp",
+        "uri": "photos/trent-alexander-arnold.webp",
+        "widthPx": 288
+      },
+      "playStats": {
+        "attack": 77,
+        "control": 83,
+        "defence": 72,
+        "overall": 81
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/liverpool-f-c",
+      "displayName": "Virgil van Dijk",
+      "name": "players/virgil-van-dijk",
+      "nationalTeamCode": "NED",
+      "outfieldRatings": {
+        "defending": 95,
+        "dribbling": 65,
+        "pace": 82,
+        "passing": 85,
+        "physical": 93,
+        "shooting": 66
+      },
+      "photo": {
+        "attribution": {
+          "author": "Ailura",
+          "licenseCode": "CC-BY-SA-3.0-AT",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:20160604_AUT_NED_8876_(cropped).jpg"
+        },
+        "heightPx": 583,
+        "mimeType": "image/webp",
+        "uri": "photos/virgil-van-dijk.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 71,
+        "control": 78,
+        "defence": 92,
+        "overall": 91
+      },
+      "position": "DEFENDER",
+      "state": "ACTIVE",
+      "tier": "LEGEND"
+    },
+    {
+      "displayName": "Zinedine Zidane",
+      "name": "players/zinedine-zidane",
+      "nationalTeamCode": "FRA",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 95,
+        "pace": 72,
+        "passing": 95,
+        "physical": 82,
+        "shooting": 86
+      },
+      "photo": {
+        "attribution": {
+          "author": "Hadi Abyar",
+          "licenseCode": "CC-BY-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Zinedine_Zidane_by_Tasnim_03.jpg"
+        },
+        "heightPx": 544,
+        "mimeType": "image/webp",
+        "uri": "photos/zinedine-zidane.webp",
+        "widthPx": 410
+      },
+      "playStats": {
+        "attack": 86,
+        "control": 91,
+        "defence": 79,
+        "overall": 90
+      },
+      "position": "MIDFIELDER",
+      "state": "RETIRED",
+      "tier": "ICON"
+    }
+  ]
+}

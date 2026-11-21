@@ -1,0 +1,45 @@
+{
+  "club": "clubs/trabzonspor",
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-13",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1354960&oldid=2568934524",
+    "value": 248
+  },
+  "displayName": "Mohamed Salah",
+  "name": "players/mohamed-salah",
+  "nationalTeamCode": "EGY",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-01-17",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1354960&oldid=2568934524",
+    "value": 67
+  },
+  "outfieldRatings": {
+    "defending": 55,
+    "dribbling": 85,
+    "pace": 92,
+    "passing": 85,
+    "physical": 74,
+    "shooting": 86
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Mohamed_Salah_Argentina_v_Egypt_7_July_2026-163_(cropped).jpg"
+    },
+    "heightPx": 695,
+    "mimeType": "image/webp",
+    "uri": "photos/mohamed-salah.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 87,
+    "control": 85,
+    "defence": 67,
+    "overall": 86
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "RARE",
+  "updateTime": "2026-11-21T03:57:58Z"
+}

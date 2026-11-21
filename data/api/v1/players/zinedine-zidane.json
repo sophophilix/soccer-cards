@@ -1,0 +1,44 @@
+{
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-17",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2570941280",
+    "value": 95
+  },
+  "displayName": "Zinedine Zidane",
+  "name": "players/zinedine-zidane",
+  "nationalTeamCode": "FRA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-17",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2570941280",
+    "value": 31
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 95,
+    "pace": 72,
+    "passing": 95,
+    "physical": 82,
+    "shooting": 86
+  },
+  "photo": {
+    "attribution": {
+      "author": "Hadi Abyar",
+      "licenseCode": "CC-BY-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Zinedine_Zidane_by_Tasnim_03.jpg"
+    },
+    "heightPx": 544,
+    "mimeType": "image/webp",
+    "uri": "photos/zinedine-zidane.webp",
+    "widthPx": 410
+  },
+  "playStats": {
+    "attack": 86,
+    "control": 91,
+    "defence": 79,
+    "overall": 90
+  },
+  "position": "MIDFIELDER",
+  "state": "RETIRED",
+  "tier": "ICON",
+  "updateTime": "2026-11-21T03:57:58Z"
+}

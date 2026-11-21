@@ -1,0 +1,40 @@
+{
+  "club": "clubs/al-nassr",
+  "displayName": "Cristiano Ronaldo",
+  "name": "players/cristiano-ronaldo",
+  "nationalTeamCode": "POR",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-20",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2572858333",
+    "value": 146
+  },
+  "outfieldRatings": {
+    "defending": 55,
+    "dribbling": 85,
+    "pace": 82,
+    "passing": 75,
+    "physical": 92,
+    "shooting": 97
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Cristiano_Ronaldo_Croatia_v_Portugal_2_July_2026-075_(cropped).jpg"
+    },
+    "heightPx": 719,
+    "mimeType": "image/webp",
+    "uri": "photos/cristiano-ronaldo.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 89,
+    "control": 81,
+    "defence": 71,
+    "overall": 88
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "LEGEND",
+  "updateTime": "2026-11-21T03:57:58Z"
+}

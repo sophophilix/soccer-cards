@@ -1,0 +1,45 @@
+{
+  "club": "clubs/everton-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2025-05-21",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16056053&oldid=2556683035",
+    "value": 48
+  },
+  "displayName": "Jack Grealish",
+  "name": "players/jack-grealish",
+  "nationalTeamCode": "ENG",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2024-10-13",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16056053&oldid=2556683035",
+    "value": 4
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 85,
+    "pace": 74,
+    "passing": 85,
+    "physical": 75,
+    "shooting": 72
+  },
+  "photo": {
+    "attribution": {
+      "author": "Hameltion",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:ManCity20240722-017_(cropped).jpg"
+    },
+    "heightPx": 645,
+    "mimeType": "image/webp",
+    "uri": "photos/jack-grealish.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 76,
+    "control": 83,
+    "defence": 71,
+    "overall": 79
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T03:57:58Z"
+}

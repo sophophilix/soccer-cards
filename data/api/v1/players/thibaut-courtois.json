@@ -1,0 +1,45 @@
+{
+  "club": "clubs/real-madrid-club-de-futbol",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-10",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q73360&oldid=2566353481",
+    "value": 0
+  },
+  "displayName": "Thibaut Courtois",
+  "goalkeeperRatings": {
+    "diving": 95,
+    "handling": 85,
+    "kicking": 75,
+    "positioning": 95,
+    "reflexes": 95,
+    "speed": 75
+  },
+  "name": "players/thibaut-courtois",
+  "nationalTeamCode": "BEL",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-07-18",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q73360&oldid=2566353481",
+    "value": 0
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Thibaut_Courtois_Belgium_v_USA_6_July_2026-076_(cropped).jpg"
+    },
+    "heightPx": 632,
+    "mimeType": "image/webp",
+    "uri": "photos/thibaut-courtois.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 75,
+    "control": 81,
+    "defence": 93,
+    "overall": 93
+  },
+  "position": "GOALKEEPER",
+  "state": "ACTIVE",
+  "tier": "LEGEND",
+  "updateTime": "2026-11-21T03:57:58Z"
+}

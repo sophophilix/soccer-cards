@@ -1,0 +1,45 @@
+{
+  "club": "clubs/everton-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-11",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q13014035&oldid=2556682940",
+    "value": 0
+  },
+  "displayName": "Jordan Pickford",
+  "goalkeeperRatings": {
+    "diving": 85,
+    "handling": 75,
+    "kicking": 85,
+    "positioning": 75,
+    "reflexes": 85,
+    "speed": 75
+  },
+  "name": "players/jordan-pickford",
+  "nationalTeamCode": "ENG",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-06",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q13014035&oldid=2556682940",
+    "value": 0
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Jordan_Pickford_England_v_Ghana_23_June_2026-049.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/jordan-pickford.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 83,
+    "control": 79,
+    "defence": 81,
+    "overall": 83
+  },
+  "position": "GOALKEEPER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-21T03:57:58Z"
+}

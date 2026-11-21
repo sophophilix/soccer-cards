@@ -1,0 +1,45 @@
+{
+  "club": "clubs/real-madrid-club-de-futbol",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-18",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21621995&oldid=2568603283",
+    "value": 256
+  },
+  "displayName": "Kylian Mbappé",
+  "name": "players/kylian-mbappe",
+  "nationalTeamCode": "FRA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-09-25",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21621995&oldid=2568603283",
+    "value": 67
+  },
+  "outfieldRatings": {
+    "defending": 55,
+    "dribbling": 85,
+    "pace": 95,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 98
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Kylian_Mbappe_France_v_Senegal_16_June_2026-391_(cropped).jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/kylian-mbappe.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 93,
+    "control": 81,
+    "defence": 67,
+    "overall": 89
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "LEGEND",
+  "updateTime": "2026-11-21T03:57:58Z"
+}
