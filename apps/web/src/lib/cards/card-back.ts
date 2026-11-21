@@ -33,8 +33,8 @@ interface CardAbout {
 export interface CardBackProps {
 	readonly ratings: CardRatings;
 	readonly about?: CardAbout | undefined;
-	/** The player's own record on the site, read when the back shows, for its goal counts. */
-	readonly detailUri?: string | undefined;
+	/** The player's id, so the back can load the record that holds the goal counts. */
+	readonly playerId?: string | undefined;
 	readonly careerStartYear?: number | undefined;
 	readonly careerEndYear?: number | undefined;
 	readonly clubGoalCount?: number | undefined;
@@ -120,26 +120,6 @@ export function formatCardNumber(cardNumber: number): string {
 	return `#${String(cardNumber).padStart(3, '0')}`;
 }
 
-/** The goal counts in a player's record, each only when it's a whole number. */
-export function goalCountsFrom(body: unknown): {
-	readonly clubGoalCount?: number;
-	readonly nationalTeamGoalCount?: number;
-} {
-	const valueOf = (field: unknown): number | undefined => {
-		if (typeof field !== 'object' || field === null || !('value' in field)) return undefined;
-		const { value } = field;
-		return typeof value === 'number' && Number.isInteger(value) && value >= 0 ? value : undefined;
-	};
-	if (typeof body !== 'object' || body === null) return {};
-	const record = body as Readonly<Record<string, unknown>>;
-	const club = valueOf(record.clubGoalCount);
-	const country = valueOf(record.nationalTeamGoalCount);
-	return {
-		...(club !== undefined && { clubGoalCount: club }),
-		...(country !== undefined && { nationalTeamGoalCount: country })
-	};
-}
-
 /** The back for a card: its ratings and photo credit, who it is from its front, and its record. */
 export function backFor(
 	front: CardFrontProps,
@@ -159,6 +139,6 @@ export function backFor(
 			tierName: TIER_NAMES[front.tier],
 			overall: front.overall
 		},
-		detailUri: `/api/v1/players/${encodeURIComponent(cardId)}.json`
+		playerId: cardId
 	};
 }
