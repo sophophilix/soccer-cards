@@ -45,7 +45,7 @@
 	<h2>Penalty shoot-out</h2>
 	<p class="score" data-testid="pens-score">{shootOut.score.player} – {shootOut.score.opponent}</p>
 	{#if !isOver}<p>{ask}</p>{/if}
-	<div class="row">
+	<div class="row center">
 		{#each CORNERS as corner (corner)}
 			<button
 				type="button"
@@ -60,17 +60,9 @@
 </div>
 
 <style>
-	.pens {
-		display: grid;
-		gap: 10px;
-		justify-items: center;
-		text-align: center;
-	}
 	.score {
 		margin: 0;
 		font: 800 italic clamp(34px, 10vw, 52px) / 1 var(--font-data);
-	}
-	.row {
-		justify-content: center;
+		font-variant-numeric: tabular-nums;
 	}
 </style>

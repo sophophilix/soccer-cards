@@ -2,7 +2,9 @@
 <script lang="ts">
 	import { FORMATIONS, TACTIC_IDS, TEAM_SIZE, sideStrength } from '@soccer-cards/game';
 	import type { CardId, CheckedCardSet, Formation, Tactic } from '@soccer-cards/game';
+	import CardSlot from '../../lib/cards/CardSlot.svelte';
 	import type { CardFace } from '../../lib/data/card-face-from-summary.ts';
+	import { cardPropsOf } from '../packs/card-props.ts';
 	import {
 		LINES,
 		LINE_NAMES,
@@ -63,8 +65,8 @@
 </script>
 
 <p>
-	You are the manager. Choose a formation and a tactic. A weaker team with the right plan can beat a
-	stronger one.
+	You are the manager. Choose a formation, put players in their own positions and pick a tactic. A
+	weaker team with the right plan can beat a stronger one.
 </p>
 <h3>Formation</h3>
 <div class="row">
@@ -100,23 +102,29 @@
 		{total(strength.goalkeeper)}</span
 	>
 </div>
-<div class="lines">
+<div class="lines" data-testid="lineup">
 	{#each LINES as line (line)}
-		<div class="line">
+		<div class="line" data-testid="line-{line}">
 			<b>{LINE_NAMES[line]}</b>
-			<ul>
+			<div class="grid">
 				{#each placed.lines[line] as id (id)}
 					{@const card = cardOf.get(id)}
-					{#if card !== undefined}
+					{@const face = faces.get(id)}
+					{#if card !== undefined && face !== undefined}
 						{@const isOut = outOfPosition.includes(id)}
-						<li class="slot" class:oop={isOut}>
-							<span class="name">{faces.get(card.id)?.displayName ?? card.id}</span>
-							<span class="detail">{POSITION_NAMES[card.position]} · {card.overall}</span>
-							{#if isOut}<span class="sr-only">, out of position</span>{/if}
-						</li>
+						<CardSlot
+							front={cardPropsOf(card, face).front}
+							label="{face.displayName}, {POSITION_NAMES[card.position]}{isOut
+								? ', out of position'
+								: ''}"
+							outOfPosition={isOut}
+							onclick={() => {
+								tap(id);
+							}}
+						/>
 					{/if}
 				{/each}
-			</ul>
+			</div>
 		</div>
 	{/each}
 </div>
@@ -151,85 +159,32 @@
 </div>
 <p class="muted" role="status">{message}</p>
 <h3>Your players</h3>
-<ul class="pickgrid">
+<div class="grid deck pickgrid" data-testid="your-players">
 	{#each players as card (card.id)}
-		{@const isIn = team.includes(card.id)}
-		{@const name = faces.get(card.id)?.displayName ?? card.id}
-		<li>
-			<button
-				type="button"
-				class="slot pick"
-				aria-pressed={isIn}
-				aria-label="{isIn ? 'Take out' : 'Pick'} {name}, {POSITION_NAMES[
+		{@const face = faces.get(card.id)}
+		{#if face !== undefined}
+			{@const isIn = team.includes(card.id)}
+			<CardSlot
+				front={cardPropsOf(card, face).front}
+				label="{isIn ? 'Take out' : 'Pick'} {face.displayName}, {POSITION_NAMES[
 					card.position
 				]}, rating {card.overall}"
+				pressed={isIn}
+				dim={!isIn}
 				onclick={() => {
 					tap(card.id);
 				}}
 			>
-				<span class="name">{name},</span>
-				<span class="detail">{POSITION_NAMES[card.position]}, rating {card.overall}</span>
-			</button>
-		</li>
+				{#if isIn}<span class="badge tick" aria-hidden="true" data-art>✓</span>{/if}
+			</CardSlot>
+		{/if}
 	{/each}
-</ul>
+</div>
 
 <style>
-	.lines {
-		display: grid;
-		gap: 8px;
-	}
-	.line {
-		display: grid;
-		grid-template-columns: 3.4em minmax(0, 1fr);
-		gap: 8px;
-		align-items: center;
-	}
-	ul {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
-		gap: 6px;
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-	.pickgrid {
-		grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
-	}
-	.slot {
-		display: grid;
-		padding: 6px;
-		border: 2px solid var(--line);
-		border-radius: 8px;
-		overflow-wrap: anywhere;
-	}
-	.pick {
-		width: 100%;
-		min-height: 44px;
-		background: var(--surface);
-		color: var(--fg);
-		font: inherit;
-		text-align: left;
-		cursor: pointer;
-	}
-	.pick[aria-pressed='true']::after {
-		content: '✓';
-	}
-	.pick[aria-pressed='true'] {
-		border-color: var(--fg);
-	}
-	.slot.oop {
-		outline: 3px dashed var(--fg);
-		outline-offset: 2px;
-	}
-	.detail {
-		color: var(--muted);
-	}
-	.sr-only {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		overflow: hidden;
-		clip-path: inset(50%);
+	/* The prototype dims a player who is not picked. Grey keeps the card's text readable. */
+	.pickgrid :global(.slot.dim) {
+		opacity: 1;
+		filter: grayscale(0.85);
 	}
 </style>

@@ -121,25 +121,28 @@
 </svelte:head>
 
 <main>
-	<h1>Match</h1>
-	{#if notice}<p class="notice">{notice}</p>{/if}
+	<h1 class="sr-only">Match</h1>
+	{#if notice}<p class="banner">{notice}</p>{/if}
 	{#if data.status === 'failed'}
 		<p>We can't get the cards right now. Check you are online, then try again.</p>
 		<button type="button" class="btn primary" onclick={() => void fetchCards()}>Try again</button>
 	{:else if data.status === 'loading' || player === undefined}
 		<p>Getting the cards ready…</p>
 	{:else if owned.length < TEAM_SIZE}
-		<h2>Match is locked</h2>
-		<p>{lockedText(owned.length, player.freePacks)}</p>
-		<a class="btn primary" href={resolve('/packs')}
-			>{player.freePacks > 0 || player.coins >= STANDARD_PACK_COST_COINS
-				? 'Open packs'
-				: 'Go to packs'}</a
-		>
+		<div class="empty">
+			<h2>Match is locked</h2>
+			<p>{lockedText(owned.length, player.freePacks)}</p>
+			<a class="btn primary" href={resolve('/packs')}
+				>{player.freePacks > 0 || player.coins >= STANDARD_PACK_COST_COINS
+					? 'Open packs'
+					: 'Go to packs'}</a
+			>
+		</div>
 	{:else if match !== undefined}
 		<h2>The match</h2>
 		<MatchStage
 			{match}
+			cardSet={data.cardSet}
 			faces={data.faces}
 			coins={player.coins}
 			{finished}
@@ -170,60 +173,3 @@
 		/>
 	{/if}
 </main>
-
-<style>
-	/* The pick screen is a child, so these rules reach it through main. */
-	main :global(h2),
-	main :global(h3) {
-		margin: 0;
-		font: 800 18px/1.2 var(--font-data);
-		letter-spacing: 0.1em;
-		text-transform: uppercase;
-	}
-	main :global(.row) {
-		display: flex;
-		flex-wrap: wrap;
-		align-items: center;
-		gap: 10px;
-	}
-	main :global(.muted) {
-		color: var(--muted);
-	}
-	main :global(.chip) {
-		padding: 6px 9px 5px;
-		border-radius: 4px;
-		background: var(--fg);
-		color: var(--bg);
-		font: 800 15px/1.2 var(--font-data);
-		letter-spacing: 0.12em;
-		text-transform: uppercase;
-	}
-	main :global(.chip.legend),
-	main :global(.btn[aria-pressed='true']) {
-		background: var(--booking);
-		color: var(--booking-ink);
-	}
-	main :global(.btn) {
-		padding: 12px 18px 11px;
-		border: 2px solid var(--fg);
-		border-radius: 999px;
-		background: var(--surface);
-		color: var(--fg);
-		box-shadow: 0 3px 0 var(--fg);
-		font: 800 17px/1 var(--font-data);
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		text-decoration: none;
-		cursor: pointer;
-	}
-	main :global(.btn.primary) {
-		background: var(--accent);
-		color: var(--accent-ink);
-	}
-	main :global(.btn:disabled),
-	main :global(.btn[aria-disabled='true']) {
-		opacity: 0.5;
-		box-shadow: none;
-		cursor: not-allowed;
-	}
-</style>

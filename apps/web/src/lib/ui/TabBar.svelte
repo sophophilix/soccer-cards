@@ -3,9 +3,11 @@
 
 	interface Props {
 		pathname: string;
+		/** How many cards the player holds, shown on the Cards tab once known. */
+		cardCount?: number | undefined;
 	}
 
-	const { pathname }: Props = $props();
+	const { pathname, cardCount }: Props = $props();
 
 	const VIEWS = [
 		{ name: 'Packs', path: '/packs' },
@@ -24,7 +26,9 @@
 <nav aria-label="Views">
 	{#each VIEWS as view (view.path)}
 		{@const href = resolve(view.path)}
-		<a {href} aria-current={href === currentPath ? 'page' : undefined}>{view.name}</a>
+		<a {href} aria-current={href === currentPath ? 'page' : undefined}
+			>{view.name}{#if view.name === 'Cards' && cardCount !== undefined}&nbsp;({cardCount}){/if}</a
+		>
 	{/each}
 </nav>
 
@@ -55,10 +59,15 @@
 		color: var(--bg);
 	}
 
-	/* On the narrowest phones the tabs tighten to fit. */
+	/* On the narrowest phones the tabs tighten, and their text shrinks with the screen so the bar
+	   fits at 320 pixels even in a wide fallback font, with "Cards (N)" on the Cards tab. */
 	@media (max-width: 400px) {
+		nav {
+			max-width: 100%;
+		}
 		a {
 			padding-inline: 4px;
+			font-size: clamp(11px, 3.6vw, 16px);
 			letter-spacing: 0.02em;
 		}
 	}

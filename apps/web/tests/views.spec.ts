@@ -10,7 +10,8 @@ async function expectView(page: Page, name: string): Promise<void> {
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText(name);
 	await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
 	const current = page.getByRole('navigation', { name: 'Views' }).locator('[aria-current="page"]');
-	await expect(current).toHaveText(name);
+	// The Cards tab adds the number of cards held, as in the prototype: "Cards (10)".
+	await expect(current).toHaveText(new RegExp(`^${name}(\\s\\(\\d+\\))?$`));
 }
 
 /** Finds a tab in the bar by its view's name. */

@@ -33,9 +33,10 @@ test('every font comes from the site as WOFF2 and answers 200', async ({ page, b
 	await openHomeWithFonts(page);
 
 	const fromTheSite = { origin: new URL(baseURL ?? '').origin, isWoff2: true, status: OK_STATUS };
-	// The home page needs three files: Bowlby One, and the Latin parts of Figtree and of Saira
-	// Condensed, which draws the tabs.
-	expect(fonts).toEqual([fromTheSite, fromTheSite, fromTheSite]);
+	// Bowlby One, the Latin part of Figtree, and Saira Condensed at 800, and at 600 where the
+	// page uses it. Each comes from the site as WOFF2.
+	expect(fonts.length).toBeGreaterThanOrEqual(3);
+	expect(fonts).toEqual(fonts.map(() => fromTheSite));
 });
 
 test('the heading is in Bowlby One and the body text in Figtree', async ({ page }) => {

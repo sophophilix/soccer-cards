@@ -1,7 +1,10 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import { onMount } from 'svelte';
+	import type { PlayerState } from '@soccer-cards/game';
 	import { page } from '$app/state';
 	import TabBar from '../lib/ui/TabBar.svelte';
+	import { SAVED_EVENT, browserStorage, createPlayerStore } from '../lib/state/player-store.ts';
 	import '../app.css';
 
 	interface Props {
@@ -9,12 +12,44 @@
 	}
 
 	const { children }: Props = $props();
+	// Unknown until the browser has read storage, so the prerendered page shows no number.
+	let player = $state<PlayerState | undefined>();
+	const coins = $derived(player?.coins);
+	const cardCount = $derived(
+		player === undefined
+			? undefined
+			: Object.values(player.collection).reduce((sum, copies) => sum + copies, 0)
+	);
+
+	onMount(() => {
+		const store = createPlayerStore(browserStorage);
+		player = store.load().state;
+		const onSaved = (event: Event): void => {
+			if (event instanceof CustomEvent) player = event.detail as PlayerState;
+		};
+		window.addEventListener(SAVED_EVENT, onSaved);
+		const stop = store.subscribe((change) => {
+			if (change.outcome !== 'not-saving') player = change.state;
+		});
+		return () => {
+			window.removeEventListener(SAVED_EVENT, onSaved);
+			stop();
+		};
+	});
 </script>
 
 <div class="page">
-	<header>
-		<p class="game-name">Soccer Cards</p>
-		<TabBar pathname={page.url.pathname} />
+	<header class="masthead">
+		<div class="titlerow">
+			<p class="game-name">Soccer Cards</p>
+			{#if coins !== undefined}
+				<span class="coins" aria-live="polite">
+					<span class="coin" aria-hidden="true"></span>
+					<span>{coins} {coins === 1 ? 'coin' : 'coins'}</span>
+				</span>
+			{/if}
+		</div>
+		<TabBar pathname={page.url.pathname} {cardCount} />
 	</header>
 	{@render children()}
 </div>
@@ -27,7 +62,7 @@
 		margin: 0 auto;
 	}
 
-	header {
+	.masthead {
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
@@ -35,12 +70,15 @@
 		gap: 12px 20px;
 	}
 
-	/* The name sits on a surface, never on the stripes, so its contrast can be measured. */
+	.titlerow {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 14px;
+	}
+
 	.game-name {
-		padding: 8px 14px 6px;
-		border: 2px solid var(--fg);
-		border-radius: 999px;
-		background: var(--surface);
-		font: 400 clamp(20px, 5vw, 28px) / 1 var(--font-display);
+		font: 400 clamp(24px, 6vw, 36px) / 1 var(--font-display);
+		letter-spacing: 0.01em;
 	}
 </style>

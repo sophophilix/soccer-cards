@@ -1,29 +1,81 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { browserStorage, createPlayerStore } from '../../lib/state/player-store.ts';
-	import { loadCardSet } from '../../lib/data/load-card-set.ts';
-	import CollectionView from '../../lib/collection/CollectionView.svelte';
-	import { listOwnedCards, type OwnedCard } from '../../lib/collection/owned-cards.ts';
+	import {
+		addFavourite,
+		createRandom,
+		isFavourite,
+		removeFavourite,
+		tradeCard
+	} from '@soccer-cards/game';
+	import type { CardId, CheckedCardSet, PlayerState } from '@soccer-cards/game';
+	import CollectionView, { type TradeOutcome } from '../../lib/collection/CollectionView.svelte';
+	import { openCollection, saveNotice } from '../../lib/collection/collection-session.ts';
+	import { listOwnedCards, type KnownCard } from '../../lib/collection/owned-cards.ts';
+	import type { CardFace } from '../../lib/data/card-face-from-summary.ts';
+	import { randomSeed } from '../../lib/packs/pack-session.ts';
+	import type { PlayerStore } from '../../lib/state/player-store.ts';
+
+	const TRADE_REFUSALS = {
+		'last-favourite': 'That is a favourite. Take the star off before you trade it.',
+		'no-other-card': 'There is no other card of that kind to swap for yet.',
+		'card-not-owned': "You don't have that card any more.",
+		'card-not-in-set': "That card can't be traded."
+	} as const;
 
 	// Loading reads storage and the API, so it runs in the browser, never while prerendering.
 	let status = $state<'loading' | 'ready' | 'no-cards'>('loading');
-	let owned = $state<readonly OwnedCard[]>([]);
+	let player = $state<PlayerState>();
+	let cardSet = $state<CheckedCardSet>();
+	let faces = $state<ReadonlyMap<CardId, CardFace>>(new Map());
+	let notice = $state<string>();
+	let store: PlayerStore | undefined;
+	const owned = $derived(
+		player && cardSet ? listOwnedCards(player.collection, cardSet, faces) : []
+	);
 
 	onMount(async () => {
-		const { state } = createPlayerStore(browserStorage).load();
-		// An empty collection needs no card set, so the child is pointed to Packs even with no API.
-		if (Object.keys(state.collection).length === 0) {
-			status = 'ready';
+		const session = await openCollection();
+		// An empty collection needs no card set, so the child is still pointed to Packs.
+		if (!session.ok) {
+			status = Object.keys(session.state.collection).length === 0 ? 'ready' : 'no-cards';
 			return;
 		}
-		const set = await loadCardSet((path) => fetch(path));
-		if (!set.ok) {
-			status = 'no-cards';
-			return;
-		}
-		owned = listOwnedCards(state.collection, set.value, set.faces);
+		({ store, cardSet, faces } = session);
+		player = session.state;
 		status = 'ready';
 	});
+
+	function keep(next: PlayerState): void {
+		player = next;
+		if (store) notice = saveNotice(store.save(next));
+	}
+
+	function toggleFavourite(entry: KnownCard): string {
+		if (!player) return '';
+		if (isFavourite(player, entry.id)) {
+			const result = removeFavourite(player, entry.id);
+			if (result.ok) keep(result.value);
+			return 'Star removed';
+		}
+		const result = addFavourite(player, entry.id);
+		if (!result.ok) return TRADE_REFUSALS[result.reason];
+		keep(result.value);
+		return `${entry.face.displayName} is now a favourite`;
+	}
+
+	function trade(entry: KnownCard): TradeOutcome {
+		if (!player || !cardSet) return { ok: false, message: TRADE_REFUSALS['card-not-owned'] };
+		const result = tradeCard(player, cardSet, entry.id, createRandom(randomSeed()));
+		if (!result.ok) return { ok: false, message: TRADE_REFUSALS[result.reason] };
+		const card = cardSet.find((each) => each.id === result.receivedCardId);
+		const face = faces.get(result.receivedCardId);
+		keep(result.value);
+		if (card === undefined || face === undefined) {
+			return { ok: false, message: 'Trade done.' };
+		}
+		const count = result.value.collection[card.id] ?? 1;
+		return { ok: true, received: { kind: 'known', id: card.id, count, card, face } };
+	}
 </script>
 
 <svelte:head>
@@ -31,12 +83,19 @@
 </svelte:head>
 
 <main>
-	<h1>Cards</h1>
+	<h1 class="sr-only">Cards</h1>
+	<h2>My cards</h2>
+	{#if notice}<p class="banner">{notice}</p>{/if}
 	{#if status === 'loading'}
-		<p>Getting your cards…</p>
+		<p class="muted">Getting your cards…</p>
 	{:else if status === 'no-cards'}
-		<p>We can't show your cards right now. Try again in a moment.</p>
+		<div class="empty"><p>We can't show your cards right now. Try again in a moment.</p></div>
 	{:else}
-		<CollectionView {owned} />
+		<CollectionView
+			{owned}
+			favourites={player?.favourites ?? []}
+			onfavourite={toggleFavourite}
+			ontrade={trade}
+		/>
 	{/if}
 </main>

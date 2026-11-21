@@ -13,6 +13,7 @@ skills:
   - svelte:svelte-core-bestpractices
   - svelte:svelte-code-writer
   - child-safety-privacy
+  - frontend-design:frontend-design
 ---
 
 You are an implementer on the Soccer Cards team. You build exactly one task.

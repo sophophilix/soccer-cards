@@ -1,6 +1,7 @@
 import adapter from '@sveltejs/adapter-static';
 import type { Adapter } from '@sveltejs/kit';
 import { sveltekit } from '@sveltejs/kit/vite';
+import tailwindcss from '@tailwindcss/vite';
 import { playwright } from '@vitest/browser-playwright';
 import { copyFile, lstat, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 import { defineConfig } from 'vitest/config';
@@ -81,6 +82,8 @@ function withApiAndScriptHashes(inner: Adapter): Adapter {
 
 export default defineConfig({
 	plugins: [
+		// Tailwind first, so its generated stylesheet is ready when SvelteKit bundles the pages.
+		tailwindcss(),
 		sveltekit({
 			// 404.html is the page wrangler serves for a path that doesn't exist.
 			adapter: withApiAndScriptHashes(adapter({ pages: BUILD_FOLDER, fallback: '404.html' })),

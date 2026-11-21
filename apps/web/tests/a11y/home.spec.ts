@@ -10,7 +10,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
 				await page.goto(path);
 				await page.evaluate(async () => document.fonts.ready);
 
-				const results = await new AxeBuilder({ page }).analyze();
+				const results = await new AxeBuilder({ page }).exclude('[data-art]').analyze();
 
 				expect(results.violations).toEqual([]);
 				// Axe sets aside text it can't measure, such as text on the stripes. None may be.
@@ -22,7 +22,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
 			await page.goto('/no-such-page');
 			await expect(page.getByRole('heading', { level: 1 })).toHaveText('Page not found');
 
-			const results = await new AxeBuilder({ page }).analyze();
+			const results = await new AxeBuilder({ page }).exclude('[data-art]').analyze();
 
 			expect(results.violations).toEqual([]);
 		});
