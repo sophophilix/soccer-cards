@@ -25,7 +25,8 @@ reveals the cards one at a time with FlipCard, best last.
 
 - The prototype's Packs view, T-0086 `lib/packs`, T-0094's display fields and T-0096's card number and title,
   `lib/cards/FlipCard`, the `sveltekit-web` and `child-safety-privacy`
-  skills. Starts after T-0084 publishes data and T-0094 merges.
+  skills. The first build was 600 lines: the card props are T-0107 (merge
+  first), and the reload, double-tap, storage and axe tests are T-0108.
 
 ## Acceptance criteria
 
@@ -47,8 +48,8 @@ reveals the cards one at a time with FlipCard, best last.
 
 ## Tests
 
-- `packs.spec.ts` end to end: open, reveal, reload, error, no storage,
-  reduced motion, axe.
+- `packs.spec.ts` end to end: prices, open, reveal with the best last,
+  flip, reduced motion, error and retry. The rest is T-0108.
 
 ## Out of scope
 

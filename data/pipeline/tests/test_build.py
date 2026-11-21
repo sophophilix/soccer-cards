@@ -31,6 +31,7 @@ class FakeWikimedia:
 
     def __init__(self, *, no_photo: tuple[str, ...] = (), image: int = 200) -> None:
         self.no_photo, self.image, self.asked = no_photo, image, list[str]()
+        self.open_teams = list[str]()  # Teams whose spells have no end date.
         teams = [FIXTURES / f"wikidata/{q}-teams.json" for q in ("Q615", "Q107365")]
         self.teams = [_json(path) for path in teams]
 
@@ -55,6 +56,10 @@ class FakeWikimedia:
             reply = _json(FIXTURES / f"wikidata/{params['ids']}.json")
             if params["ids"] in self.no_photo:
                 del reply["entities"][params["ids"]]["claims"]["P18"]
+            for claim in reply["entities"][params["ids"]]["claims"].get("P54", []):
+                value = claim["mainsnak"].get("datavalue", {}).get("value", {})
+                if value.get("id") in self.open_teams:
+                    claim.get("qualifiers", {}).pop("P582", None)
             return httpx.Response(200, json=reply)
         teams = next(t for t in self.teams if ids <= set(t["entities"]))
         return httpx.Response(200, json=teams)
@@ -300,11 +305,25 @@ def test_youth_spells_for_another_country_do_not_change_the_code(
     assert _json(tmp_path / "api/v1/players/lionel-messi.json")["nationalTeamCode"]
 
 
-def test_two_senior_teams_fail_naming_the_player(tmp_path: Path) -> None:
+def test_the_current_senior_team_gives_the_code_and_the_others_are_dropped(
+    tmp_path: Path,
+) -> None:
     net = FakeWikimedia()
+    _relabel(net, "Q1187790", "Spain national football team", "ESP")  # Ended 2005.
+
+    dropped = _run(tmp_path, net=net)
+
+    player = _json(tmp_path / "api/v1/players/lionel-messi.json")
+    assert player["nationalTeamCode"] == "ARG"
+    assert "Q615: dropped senior national team Spain national football team" in dropped
+
+
+def test_two_current_senior_teams_fail_naming_the_player(tmp_path: Path) -> None:
+    net = FakeWikimedia()
+    net.open_teams = ["Q1187790", "Q79800"]
     _relabel(net, "Q1187790", "Spain national football team", "ESP")
 
-    with pytest.raises(BuildError, match=r"Q615: found \['ARG', 'ESP'\]"):
+    with pytest.raises(BuildError, match="Q615: can't tell"):
         _run(tmp_path, net=net)
 
 
