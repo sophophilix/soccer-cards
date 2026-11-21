@@ -85,11 +85,16 @@ class PlayerRecord:
 
 
 def senior_national_teams(facts: PlayerFacts) -> list[Spell]:
-    """Return the national team spells that aren't youth.
+    """Return the national team spells that aren't youth or regional.
 
-    A national team with no label counts as youth, as the record does.
+    A national team with no label counts as youth, as the record does. A team
+    with no FIFA code, such as Catalonia, isn't a senior national team.
     """
-    return [s for s in facts.national_teams if not _YOUTH.search(s.team_label or "U21")]
+    return [
+        s
+        for s in facts.national_teams
+        if s.code and not _YOUTH.search(s.team_label or "U21")
+    ]
 
 
 def current_senior_teams(facts: PlayerFacts) -> tuple[list[Spell], list[Spell]]:
