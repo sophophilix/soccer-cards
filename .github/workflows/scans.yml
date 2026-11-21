@@ -96,6 +96,26 @@ jobs:
             exit 1
           fi
           exit "$status"
+      # The player API's uv project, checked the same way. A branch from
+      # before apps/api/uv.lock exists has nothing to scan and passes.
+      - name: Scan apps/api/uv.lock
+        if: ${{ !cancelled() }}
+        run: |
+          if [ ! -f apps/api/uv.lock ]; then
+            echo "apps/api/uv.lock is absent, so there is nothing to scan"
+            exit 0
+          fi
+          status=0
+          "$RUNNER_TEMP/osv-scanner" scan source --config=osv-scanner.toml \
+            --lockfile=apps/api/uv.lock >"$RUNNER_TEMP/osv-api.log" 2>&1 || status=$?
+          cat "$RUNNER_TEMP/osv-api.log"
+          expected="$(grep --count '^\[\[package\]\]$' apps/api/uv.lock || true)"
+          found="$(sed -nE 's/.*found ([0-9]+) packages.*/\1/p' "$RUNNER_TEMP/osv-api.log" | head -n 1)"
+          if [ "${found:-0}" -lt "${expected:-0}" ]; then
+            echo "::error::OSV-Scanner found ${found:-0} packages, and uv.lock holds ${expected:-0}"
+            exit 1
+          fi
+          exit "$status"
 
   # Compares the pull request's dependencies with its base, so it has
   # nothing to do on a push or on the weekly run and is skipped there.

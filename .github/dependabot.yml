@@ -64,3 +64,19 @@ updates:
     commit-message:
       prefix: ci
       include: scope
+
+  # The player API's uv project, on the same terms as the pipeline.
+  - package-ecosystem: uv
+    directory: /apps/api
+    schedule:
+      interval: weekly
+      day: monday
+    cooldown:
+      default-days: 14
+    groups:
+      uv-minor-patch:
+        patterns: ['*']
+        update-types: [minor, patch]
+    commit-message:
+      prefix: build
+      include: scope
