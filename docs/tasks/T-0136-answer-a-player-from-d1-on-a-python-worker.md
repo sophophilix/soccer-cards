@@ -7,16 +7,10 @@ agent: data-implementer
 paths:
   - apps/api/pyproject.toml
   - apps/api/uv.lock
-  - apps/api/.gitignore
-  - apps/api/src/soccer_cards_api/errors.py
-  - apps/api/tests/test_errors.py
   - apps/api/src/soccer_cards_api/app.py
   - apps/api/src/soccer_cards_api/players.py
   - apps/api/src/worker.py
   - apps/api/wrangler.jsonc
-  - apps/api/migrations/**
-  - apps/api/tests/test_project.py
-  - apps/api/tests/conftest.py
   - apps/api/tests/test_players.py
 dependencies:
   - workers-py
@@ -33,9 +27,12 @@ Workers runtime, to prove the parts fit before the rest of the API is built.
 
 ## Context
 
-- Merge T-0135 first; this uses its query layer and errors.
-- A first build exists on `feat/T-0135-spike-fastapi-worker-reading-d1`
-  (commit b0b8170). Take this task's files from it.
+- Merge T-0146 first. It holds the project groundwork this task builds on:
+  the 500 helper, the `no-build-package` list, `.gitignore`, the migration
+  and the test fixture that loads it. The first full build was 558 lines,
+  so it was split (lead, 2026-11-21).
+- That build is on `feat/T-0136-answer-a-player-from-d1-on-a-python-worker`
+  (commit c98d855). Take this task's files from it.
 - Cloudflare's Python Workers run FastAPI through their ASGI adapter
   (`asgi.entrypoint(app)` or the current equivalent; check it in the
   installed `workers-py`), the `python_workers` compatibility flag and Python
@@ -51,20 +48,18 @@ Workers runtime, to prove the parts fit before the rest of the API is built.
   `displayName`, `position`, `tier` and `overall`, camelCase by model alias.
 - An unknown player is a 404, a bad id (ADR 0005 D2) a 400 that never reaches
   the database, and a database failure a 500, all in T-0135's error shape.
-- A 500 body comes only from one fixed-message helper in `errors.py` (for
-  example `internal_error()`), and the app maps every `DatabaseError` and
-  unexpected exception to it, so no internal detail reaches a response
-  (T-0135 review F1). The cause of a 500 is never shown or logged (T-0135
-  security F5).
+- The app maps every `DatabaseError` and unexpected exception to T-0146's
+  `internal_error()`, so no internal detail reaches a response (T-0135
+  review F1). The cause of a 500 is never shown or logged (T-0135 security
+  F5).
 - Every SQL statement is a constant string in the code; no request text is
   joined into SQL (T-0135 security F4).
 - FastAPI's built-in OpenTelemetry is off, set explicitly, and a test proves
   no telemetry is configured (T-0135 security F2, ADR 0003).
-- `[tool.uv]` has a `no-build-package` list like `data/pipeline`'s, and
-  `tests/test_project.py` fails if a locked package is missing from it
-  (T-0135 security F3).
-- `wrangler.jsonc` binds D1 as `DB` for local development, and a migration
-  creates `players` and seeds the three invented players.
+- Every package this task adds is in T-0146's `no-build-package` list, so
+  `tests/test_project.py` still passes.
+- `wrangler.jsonc` binds D1 as `DB` for local development, using T-0146's
+  migration.
 - The Worker runs locally on the Workers runtime (`pywrangler dev`, after
   applying the migration locally), and the report pastes one real request and
   response for a known player and one for an unknown player.
