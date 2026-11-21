@@ -3,12 +3,14 @@
 The build writes a new folder beside the API, validates it, and only then
 swaps it in, so a failure leaves the last good output. Unchanged records keep
 their `updateTime`, and an unchanged release its index stamp (ADR 0005 D3).
-Slugs come from `names.assign_slugs`; the registry that keeps them is T-0099's.
+Slugs are kept in the committed registry `ids.toml`: a registered slug never
+changes and is never given to another Q-id (ADR 0005 D2).
 """
 
 import json
 import shutil
 import tempfile
+import tomllib
 from collections.abc import Mapping
 from pathlib import Path
 from typing import Any
@@ -22,6 +24,9 @@ from soccer_cards_data.validate import ValidationError, validate
 API_DIR = Path(__file__).resolve().parents[3] / "api" / "v1"
 MAX_PHOTO_BYTES = 25_000_000  # The largest original photo downloaded.
 LISTS = ("clubs", "credits", "players")  # In the order the index lists them.
+IDS_FILE = Path(__file__).resolve().parents[2] / "ids.toml"
+IDS_HEADER = "# Stable ids (ADR 0005 D2), written by `scdata build`. Never reuse one."
+KINDS = ("players", "clubs")
 STAMP = ("dataVersion", "generateTime")  # Index fields that move with a release.
 
 
@@ -36,6 +41,7 @@ def build(
     api_dir: Path = API_DIR,
     grades_file: Path = grades.PLAYERS_FILE,
     overrides_file: Path = grades.OVERRIDES_FILE,
+    ids_file: Path = IDS_FILE,
 ) -> tuple[str, ...]:
     """Build the API at `now`, an RFC 3339 moment, and return what was dropped.
 
@@ -50,10 +56,21 @@ def build(
     facts = {qid: wikidata.fetch_player(client, qid) for qid in sorted(entries)}
     years = {q: y for q, f in facts.items() if (y := names.birth_year(f)) is not None}
     labels = {qid: names.display_name(f) for qid, f in facts.items()}
-    slugs = names.assign_slugs(labels, years)
+    codes = {qid: _team_code(f) for qid, f in facts.items()}  # Before any download.
+    ids = _read_ids(ids_file)
+    slugs = ids["players"] = _slugs(ids["players"], labels, years)
     problems = [line for f in facts.values() for line in f.skipped]
     api_dir.parent.mkdir(parents=True, exist_ok=True)
+    leftovers = sorted(api_dir.parent.glob(f".{api_dir.name}-*"))
+    if not api_dir.exists() and (
+        kept := [p for p in leftovers if p.name.endswith("-old")]
+    ):
+        kept[0].rename(api_dir)  # A run was killed between the renames.
+    for stale in leftovers:
+        if not stale.name.endswith("-old"):
+            shutil.rmtree(stale, ignore_errors=True)
     work = Path(tempfile.mkdtemp(prefix=f".{api_dir.name}-", dir=api_dir.parent))
+    work.chmod(0o755)  # mkdtemp gives 0700, and this folder becomes the served API.
     try:
         records = []
         for qid, fact in facts.items():
@@ -66,16 +83,17 @@ def build(
                 overrides.get(qid),
                 photo,
                 slug=slugs[qid],
-                national_team_code=_team_code(fact),
+                national_team_code=codes[qid],
                 update_time=now,
             )
             records.append(record)
             problems += record.problems
-        _write_all(work, api_dir, records, now)
+        _write_all(work, api_dir, records, ids["clubs"], now)
         try:
             validate(work)
         except ValidationError as exc:
             raise BuildError(str(exc)) from exc
+        _write_ids(ids_file, ids)  # Before the swap, so no live slug is unregistered.
         _swap(work, api_dir)
     finally:
         shutil.rmtree(work, ignore_errors=True)
@@ -103,16 +121,57 @@ def _team_code(fact: wikidata.PlayerFacts) -> str:
     return codes[0]
 
 
+def _slugs(
+    known: Mapping[str, str],
+    labels: Mapping[str, str],
+    years: Mapping[str, int] | None = None,
+) -> dict[str, str]:
+    """Keep every registered slug and give each new Q-id one nobody has had."""
+    slugs = dict(known)  # Retired slugs stay, so a new name can't take one.
+    new = {qid: label for qid, label in labels.items() if qid not in known}
+    for qid, wanted in sorted(names.assign_slugs(new, years).items()):
+        slug, n = wanted, 2
+        while slug in slugs.values():
+            slug, n = f"{wanted}-{n}", n + 1
+        slugs[qid] = slug
+    return slugs
+
+
+def _read_ids(path: Path) -> dict[str, dict[str, str]]:
+    """Return the registry, empty when the file doesn't exist yet."""
+    text = path.read_text(encoding="utf-8") if path.is_file() else ""
+    data = tomllib.loads(text)
+    return {kind: dict(data.get(kind, {})) for kind in KINDS}
+
+
+def _write_ids(path: Path, ids: Mapping[str, Mapping[str, str]]) -> None:
+    """Write the registry sorted, through a partial file so it is never cut short."""
+    lines = [IDS_HEADER]
+    for kind in KINDS:
+        entries = (f'{q} = "{s}"' for q, s in sorted(ids[kind].items()))
+        lines += ["", f"[{kind}]", *entries]
+    partial = path.with_suffix(".part")
+    partial.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    partial.replace(path)
+
+
 def _write_all(
-    work: Path, old: Path, records: list[normalise.PlayerRecord], now: str
+    work: Path,
+    old: Path,
+    records: list[normalise.PlayerRecord],
+    club_slugs: dict[str, str],
+    now: str,
 ) -> None:
-    """Write every file into `work`, keeping the times of what didn't change."""
+    """Write every file into `work`, keeping the times of what didn't change.
+
+    New clubs are added to `club_slugs`, the registry's club entries.
+    """
     club_names = {
         r.club_qid: r.club_display_name
         for r in records
         if r.club_qid and r.club_display_name
     }
-    club_slugs = names.assign_slugs(club_names)
+    club_slugs.update(_slugs(club_slugs, club_names))
     old_list = _load(old / "clubs.json", {"clubs": []})["clubs"]
     old_clubs = {c["name"]: c for c in old_list}
     clubs: dict[str, dict[str, object]] = {}
