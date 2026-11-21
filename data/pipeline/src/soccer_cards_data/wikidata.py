@@ -39,7 +39,7 @@ _ITEM = "wikibase-entityid"
 # A spell's qualifiers: start, end, matches played, goals and as-of date.
 _SPELL_QUALIFIERS = ("P580", "P582", "P1350", "P1351", "P585")
 _COUNTS = {"P1350", "P1351"}  # Qualifiers that are quantities. The rest are dates.
-_PARAMS = {"action": "wbgetentities", "languages": "en", "format": "json"}
+_PARAMS = {"action": "wbgetentities", "languages": "en|mul", "format": "json"}
 
 type Json = dict[str, object]
 
@@ -229,8 +229,18 @@ def _dict(value: object) -> Json:
 
 
 def _label(entity: Json) -> str | None:
-    value = _dict(_dict(entity.get("labels")).get("en")).get("value")
-    return value if isinstance(value, str) else None
+    """Return the English label, else the multilingual one.
+
+    Wikidata keeps many people's names under `mul` and leaves `en` empty. See
+    https://www.wikidata.org/wiki/Help:Default_values_for_labels_and_aliases,
+    read 2026-11-21T22:13Z. Whether the text is plain is for `names.py` to say.
+    """
+    labels = _dict(entity.get("labels"))
+    for language in ("en", "mul"):
+        value = _dict(labels.get(language)).get("value")
+        if isinstance(value, str):
+            return value
+    return None
 
 
 def _statements(claims: Json, prop: str) -> list[Json]:
