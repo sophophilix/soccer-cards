@@ -2,7 +2,7 @@
 
 > Status: Approved
 > Created: 2026-11-15T11:16:22Z
-> Last reviewed: 2026-11-16T12:32:27Z
+> Last reviewed: 2026-11-21T20:51:24Z
 > Next review: after the first five tasks delivered under this workflow
 
 ## Review guide
@@ -86,9 +86,18 @@ kind, its agent, the paths it may change, the packages it may add and its
 size limit, and it has a goal, acceptance criteria, tests and an out-of-scope
 list. The size limit is 400 changed lines and a brief can't raise it.
 
-**D4. One command source.** `make check COMPONENT=<name>` runs a component's
-gates. The hooks, the lead and CI all call it, so a gate can't pass in one
-place and fail in another. A gate that isn't configured fails.
+**D4. One command source, two scopes.** `make check COMPONENT=<name>` runs a
+component's gates. The hooks, the lead and CI all call it, so a gate can't
+pass in one place and fail in another. A gate that isn't configured fails.
+
+- `SCOPE=full`, the default, runs every check and every test. CI uses it.
+- `SCOPE=affected BASE=<ref>` runs the same static checks in full: format,
+  lint, typecheck, Knip and the schema checks. It runs only the tests the
+  change can reach, and it skips the coverage thresholds, which hold only
+  for a full run. `sdlc verify` uses it.
+
+Both scopes call the same targets and tools. The affected scope only
+narrows the list of tests (D14).
 
 **D5. What the hooks check.** They run from `.claude/settings.json`.
 
@@ -140,8 +149,11 @@ discussion between agents.
 
 **D11. Evaluation.** `evals/` defines four checks: the kit's own tests,
 reviews of branches with planted defects, skill trigger and baseline runs,
-and product budgets. A change to a skill or an agent runs the evaluations
-that cover it.
+and product budgets. Evaluations don't run on every commit. A change to
+`.claude/skills/`, `.claude/agents/`, `AGENTS.md` or `tools/sdlc/` runs the
+evaluations that cover it, and all of them run once a week and after a
+model change. Only the kit's own tests are built today. They run in CI on
+every pull request.
 
 **D12. Every decision leaves a trace.** The kit appends one line to
 `.sdlc/audit.jsonl` in the main checkout for each tool call it allows, asks
@@ -163,6 +175,41 @@ are enabled in `.claude/settings.json`, and the implementers and the reviewer
 preload their skills. This project's skills keep only what is specific to
 Soccer Cards. The type-check gate stays mypy, and `ty` is not a gate. The
 lead starts only this team's agents (D1), never a plugin's agent.
+
+**D14. Run each test where it earns its time.** A change runs the gates of
+the components it touches, not every gate. One map in `tools/sdlc` places
+each path in its components. `bin/sdlc changes` prints the result, and both
+`sdlc verify` and CI's `changes` job read it. A path the map can't place
+runs every gate.
+
+| Where | What runs |
+|---|---|
+| Each file write | Format and lint of that file (D5) |
+| `sdlc verify` | The touched components' gates, `SCOPE=affected` (D4) |
+| A pull request in CI | The touched components' gates, `SCOPE=full` |
+| A push to `main`, before a deploy | Every gate, `SCOPE=full` |
+| Every night | Every gate, `SCOPE=full`, on `main` |
+| A change to a skill, an agent or the kit | The evaluations that cover it (D11) |
+
+The affected scope picks tests like this:
+
+- **TypeScript unit tests**: Vitest's `--changed <base>`, which follows the
+  import graph.
+- **Playwright**: the changed spec files, plus the specs for each route
+  folder that changed. A change to shared code, such as `src/lib/`, the
+  styles, the configuration or a package the app imports, runs every spec.
+- **Python**: each project's whole suite, only when that project changed.
+  `data/pipeline` and `apps/api` are separate.
+- **Kit, docs, workflows and infrastructure**: the whole gate, because each
+  one is fast.
+
+A gate result is recorded against the git tree it ran on. A later `sdlc
+verify` on the same clean tree, scope and component reuses a pass and says
+so. A reviewer or the lead running `verify` again on that tree doesn't run
+the tests again. A failure is never reused, so a flaky test can be run
+again. A tree with uncommitted changes never uses a recorded result.
+
+Independent checks within a gate run in parallel.
 
 ## Consequences
 
@@ -194,6 +241,13 @@ lead starts only this team's agents (D1), never a plugin's agent.
 - **This is not a sandbox.** An allowed program can write a file the hook
   never sees, for example through `python -c`. The diff, CI and the tech
   lead's review catch it.
+- **The affected scope can miss a test (D14).** A Playwright spec reaches
+  the app through the browser, not through imports. A change in one route
+  folder can still break a screen whose specs the map didn't pick. The full
+  run on each pull request, before each deploy and every night catches it.
+  A miss found that way becomes a row in the map, with a test.
+- **A recorded gate result is a local file (D14).** Like the audit log, an
+  allowed program could edit it. CI never reads it.
 - **The path check trusts `.sdlc/active-task`.** An agent names its own task.
   A wrong name fails `sdlc verify` later, not at once.
 - **The Python skills are personal skills on the tech lead's machine.**
@@ -224,3 +278,4 @@ lead starts only this team's agents (D1), never a plugin's agent.
 | 2026-11-16T12:32:27Z | Amended | The lead session now changes kit files without a prompt, and each change is logged. The tech lead asked for this ("dont want you asking me for approvals for small changes as its slow"). Subagents are still refused. |
 | 2026-11-16T12:32:27Z | Amended | The lead session now merges a task pull request when `sdlc merge-check` passes, and plans and kit fixes inside decided scope. The tech lead asked for this ("can you change the rule of dont wait for my approval on everything"). Scope, product rules, decision records, risk acceptance, relaxed rules and deploys stay with the tech lead. |
 | 2026-11-20T23:02:34Z | Amended | Added D13: maintainers' plugins for Svelte and Python tooling, this project's skills for its own rules. The tech lead asked for this ("we sould use the ones the is published by the maintainers", then "yes go ahead") and chose "Install the plugins as-is" over pinning. |
+| 2026-11-21T20:51:24Z | Amendment proposed | D4 gains two scopes, D11 says when evaluations run, D14 says which gates run where and reuses a pass on the same tree. The tech lead asked for this ("we cant run extensive test each time... if its just docs that are updated that doesnt need all the test") and chose "Yes, all of it". It takes effect when the tech lead merges the pull request. |
