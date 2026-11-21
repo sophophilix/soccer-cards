@@ -22,6 +22,11 @@
 	import PickTeam from './PickTeam.svelte';
 
 	const NOT_SAVING = "Your progress can't be saved on this device. You can still play.";
+	const SAVE_NOTICES = {
+		'not-saving': "Your results can't be saved on this device. You can still play.",
+		'storage-full': 'This device is full, so your result was not saved.',
+		'changed-in-another-tab': 'The game is open in another tab, so your result was not saved here.'
+	} as const;
 	const RESTARTED = "We couldn't use your saved cards, so the game starts again.";
 	const LOAD_NOTICES: Record<LoadOutcome, string> = {
 		loaded: '',
@@ -94,7 +99,7 @@
 		if (player === undefined || finished !== undefined) return;
 		finished = finishMatchAndSave(store, player, won);
 		player = finished.state;
-		if (!finished.saved.ok) notice = NOT_SAVING;
+		if (!finished.saved.ok) notice = SAVE_NOTICES[finished.saved.reason];
 	}
 
 	function playAgain(): void {
@@ -215,7 +220,8 @@
 		background: var(--accent);
 		color: var(--accent-ink);
 	}
-	main :global(.btn:disabled) {
+	main :global(.btn:disabled),
+	main :global(.btn[aria-disabled='true']) {
 		opacity: 0.5;
 		box-shadow: none;
 		cursor: not-allowed;

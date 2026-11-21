@@ -1,5 +1,6 @@
 <!-- The match stage: reveals a match that is already played, one moment at a time, then its result. -->
 <script lang="ts">
+	import { tick } from 'svelte';
 	import { STANDARD_PACK_COST_COINS, createRandom, takeKick } from '@soccer-cards/game';
 	import type { CardId, Corner, Random, ShootOut } from '@soccer-cards/game';
 	import { resolve } from '$app/paths';
@@ -39,6 +40,8 @@
 	});
 	const clock = $derived(isOver ? 'FT' : `${String(revealed.at(-1)?.minute ?? 0)}'`);
 	const isLevel = $derived(isOver && score.home === score.away);
+	let penalties = $state<HTMLDivElement>();
+	let resultHeading = $state<HTMLHeadingElement>();
 	let shootOut = $state.raw<ShootOut>();
 	let random: Random | undefined;
 	const penaltyWinner = $derived(
@@ -82,6 +85,12 @@
 		if (isLevel && shootOut === undefined) {
 			random = createRandom(randomSeed());
 			shootOut = startPenalties(match);
+			// Skip has just removed the focused button, so the first corner takes focus.
+			void tick().then(() => {
+				if (document.activeElement === document.body) {
+					penalties?.querySelector('button')?.focus();
+				}
+			});
 		}
 	});
 
@@ -89,6 +98,12 @@
 		if (!isOver || (isLevel && penaltyWinner === undefined) || hasReported) return;
 		hasReported = true;
 		onFullTime(won);
+	});
+
+	// The Skip button and the corner buttons go away or stop working, so focus moves on.
+	$effect(() => {
+		if (finished === undefined) return;
+		void tick().then(() => resultHeading?.focus());
 	});
 
 	function pickCorner(corner: Corner): void {
@@ -109,7 +124,7 @@
 	</div>
 {/snippet}
 
-<div class="board" aria-label="Score and clock">
+<div class="board" role="group" aria-label="Score and clock">
 	<div class:lead={score.home > score.away}>
 		<span class="who">You</span><span class="pts" data-testid="score-you">{score.home}</span>
 	</div>
@@ -129,10 +144,12 @@
 		<p>It is level, so it goes to penalties!</p>
 	</div>
 {/if}
-{#if shootOut !== undefined}<Penalties {shootOut} onPick={pickCorner} />{/if}
+{#if shootOut !== undefined}<div bind:this={penalties}>
+		<Penalties {shootOut} onPick={pickCorner} />
+	</div>{/if}
 {#if finished !== undefined}
 	<div class="result" role="status">
-		<h2>{won ? 'You win!' : 'The AI wins'}</h2>
+		<h2 tabindex="-1" bind:this={resultHeading}>{won ? 'You win!' : 'The AI wins'}</h2>
 		<p>
 			{score.home} – {score.away}{onPenalties}.
 			{#if won}

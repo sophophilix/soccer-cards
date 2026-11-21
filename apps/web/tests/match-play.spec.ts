@@ -252,7 +252,9 @@ test('Kick off tapped twice starts one match', async ({ page }) => {
 	expect(await page.evaluate(() => (window as unknown as { seedCalls: number }).seedCalls)).toBe(1);
 });
 
-test('a failed save still shows the result, with the store notice', async ({ page }) => {
+test('a failed save still shows the result, with the notice for a full device', async ({
+	page
+}) => {
 	await openPick(page, WIN_SEED);
 	await page.addInitScript(() => {
 		Storage.prototype.setItem = () => {
@@ -265,7 +267,5 @@ test('a failed save still shows the result, with the store notice', async ({ pag
 	await skip(page);
 
 	await expect(page.getByRole('heading', { name: 'You win!' })).toBeVisible();
-	await expect(
-		page.getByText("Your progress can't be saved on this device. You can still play.")
-	).toBeVisible();
+	await expect(page.getByText('This device is full, so your result was not saved.')).toBeVisible();
 });
