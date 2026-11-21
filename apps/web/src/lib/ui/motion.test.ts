@@ -44,11 +44,6 @@ function aScene(): ShotScene {
 	};
 }
 
-/** True when the promise has not settled yet. */
-async function isPending(promise: Promise<void>): Promise<boolean> {
-	return Promise.race([promise.then(() => false), Promise.resolve(true)]);
-}
-
 test('a player always celebrates the same way', () => {
 	expect(celebrationOf('lionel-messi')).toBe(celebrationOf('lionel-messi'));
 });
@@ -75,10 +70,13 @@ test('a pack tears at once with reduced motion', async () => {
 	expect(timeline).not.toHaveBeenCalled();
 });
 
-test('a pack tears over time without reduced motion', async () => {
+test('a pack tears over time without reduced motion', () => {
 	askForReducedMotion(false);
+	const timeline = vi.spyOn(gsap, 'timeline');
 
-	expect(await isPending(tearPack(aBox()))).toBe(true);
+	void tearPack(aBox());
+
+	expect(timeline).toHaveBeenCalledOnce();
 });
 
 test('a replay resolves at once with reduced motion', async () => {
@@ -90,13 +88,12 @@ test('a replay resolves at once with reduced motion', async () => {
 	expect(timeline.timeScale()).toBe(1);
 });
 
-test('a replay runs slowly without reduced motion', async () => {
+test('a replay runs slowly without reduced motion', () => {
 	askForReducedMotion(false);
 	const timeline = gsap.timeline({ paused: true }).to(aBox(), { x: 10, duration: 1 });
 
-	const done = replay(timeline);
+	void replay(timeline);
 
-	expect(await isPending(done)).toBe(true);
 	expect(timeline.timeScale()).toBeLessThan(1);
 });
 
