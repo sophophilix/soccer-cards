@@ -1,4 +1,125 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q176304&oldid=2562667425",
+        "value": 27
+      },
+      "club": "clubs/bulleen-lions",
+      "endYear": 2009,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q176304&oldid=2562667425",
+        "value": 15
+      },
+      "startYear": 2008
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q176304&oldid=2562667425",
+        "value": 35
+      },
+      "club": "clubs/adelaide-united-football-club",
+      "endYear": 2011,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q176304&oldid=2562667425",
+        "value": 8
+      },
+      "startYear": 2009
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q176304&oldid=2562667425",
+        "value": 9
+      },
+      "club": "clubs/borussia-monchengladbach",
+      "endYear": 2013,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q176304&oldid=2562667425",
+        "value": 0
+      },
+      "startYear": 2011
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q176304&oldid=2562667425",
+        "value": 28
+      },
+      "club": "clubs/fsv-frankfurt",
+      "endYear": 2013,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q176304&oldid=2562667425",
+        "value": 4
+      },
+      "startYear": 2012
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q176304&oldid=2562667425",
+        "value": 31
+      },
+      "club": "clubs/fsv-frankfurt",
+      "endYear": 2014,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q176304&oldid=2562667425",
+        "value": 10
+      },
+      "startYear": 2013
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q176304&oldid=2562667425",
+        "value": 94
+      },
+      "club": "clubs/fc-ingolstadt-04",
+      "endYear": 2017,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q176304&oldid=2562667425",
+        "value": 10
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q176304&oldid=2562667425",
+        "value": 68
+      },
+      "club": "clubs/hertha-bsc",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q176304&oldid=2562667425",
+        "value": 7
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2024-11-05",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q176304&oldid=2562667425",
+        "value": 73
+      },
+      "club": "clubs/melbourne-city-fc",
+      "goalCount": {
+        "retrieveDate": "2024-11-05",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q176304&oldid=2562667425",
+        "value": 18
+      },
+      "startYear": 2021
+    }
+  ],
   "club": "clubs/melbourne-city-fc",
   "clubGoalCount": {
     "retrieveDate": "2024-11-05",
@@ -41,5 +162,5 @@
   "position": "MIDFIELDER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-21T22:00:18Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

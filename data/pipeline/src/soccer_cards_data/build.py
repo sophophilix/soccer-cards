@@ -91,6 +91,7 @@ def build(
             )
             records.append(record)
             problems += record.problems
+        problems += _career_report(records)
         _write_all(work, api_dir, records, ids["clubs"], now)
         try:
             validate(work)
@@ -101,6 +102,16 @@ def build(
     finally:
         shutil.rmtree(work, ignore_errors=True)
     return tuple(problems)
+
+
+def _career_report(records: list[normalise.PlayerRecord]) -> list[str]:
+    """Count the players with spells, and the spells with games and goals."""
+    spells = [s for r in records for s in r.career]
+    full = sum(1 for s in spells if s.appearances and s.goals)
+    return [
+        f"career spells: {sum(1 for r in records if r.career)} of {len(records)} "
+        f"players have spells, {len(spells)} spells, {full} with games and goals"
+    ]
 
 
 def _photo(
@@ -208,6 +219,7 @@ def _write_all(
         for r in records
         if r.club_qid and r.club_display_name
     }
+    club_names |= {s.club_qid: s.club_display_name for r in records for s in r.career}
     club_slugs.update(_slugs(club_slugs, club_names))
     old_list = _load(old / "clubs.json", {"clubs": []})["clubs"]
     old_clubs = {c["name"]: c for c in old_list}
@@ -216,9 +228,16 @@ def _write_all(
         if record.club_qid in club_slugs:
             club = f"clubs/{club_slugs[record.club_qid]}"
             record.player["club"] = record.summary["club"] = club
-            body: dict[str, object] = {"name": club, "updateTime": now}
-            body["displayName"] = club_names[record.club_qid]
-            clubs[club] = _keep_time(body, old_clubs.get(club))
+        if record.career:
+            record.player["careerSpells"] = [
+                s.body(club_slugs[s.club_qid]) for s in record.career
+            ]
+        for qid in [record.club_qid, *(s.club_qid for s in record.career)]:
+            if qid in club_slugs:
+                club = f"clubs/{club_slugs[qid]}"
+                body: dict[str, object] = {"name": club, "updateTime": now}
+                body["displayName"] = club_names[qid]
+                clubs[club] = _keep_time(body, old_clubs.get(club))
         path = f"{record.player['name']}.json"
         _write(work / path, _keep_time(record.player, _load(old / path, None)))
     bodies: dict[str, list[dict[str, object]]] = {

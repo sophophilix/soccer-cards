@@ -1,4 +1,50 @@
 {
+  "careerSpells": [
+    {
+      "club": "clubs/ud-tegueste",
+      "endYear": 2015,
+      "startYear": 2013
+    },
+    {
+      "club": "clubs/cd-laguna-de-tenerife",
+      "endYear": 2018,
+      "startYear": 2015
+    },
+    {
+      "club": "clubs/ud-las-palmas",
+      "endYear": 2019,
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66606355&oldid=2560381004",
+        "value": 36
+      },
+      "club": "clubs/ud-las-palmas",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-10-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66606355&oldid=2560381004",
+        "value": 4
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66606355&oldid=2560381004",
+        "value": 173
+      },
+      "club": "clubs/fc-barcelona",
+      "goalCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66606355&oldid=2560381004",
+        "value": 23
+      },
+      "startYear": 2020
+    }
+  ],
   "club": "clubs/fc-barcelona",
   "displayName": "Pedri",
   "name": "players/pedri",
@@ -36,5 +82,5 @@
   "position": "MIDFIELDER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-21T03:57:58Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

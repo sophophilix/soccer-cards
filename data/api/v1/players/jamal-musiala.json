@@ -1,8 +1,24 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-05-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q96072055&oldid=2573775748",
+        "value": 154
+      },
+      "club": "clubs/fc-bayern-munich",
+      "goalCount": {
+        "retrieveDate": "2026-05-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q96072055&oldid=2573775748",
+        "value": 48
+      },
+      "startYear": 2020
+    }
+  ],
   "club": "clubs/fc-bayern-munich",
   "clubGoalCount": {
     "retrieveDate": "2026-05-16",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q96072055&oldid=2571925193",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q96072055&oldid=2573775748",
     "value": 48
   },
   "displayName": "Jamal Musiala",
@@ -10,7 +26,7 @@
   "nationalTeamCode": "GER",
   "nationalTeamGoalCount": {
     "retrieveDate": "2026-06-06",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q96072055&oldid=2571925193",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q96072055&oldid=2573775748",
     "value": 9
   },
   "outfieldRatings": {
@@ -41,5 +57,5 @@
   "position": "MIDFIELDER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-21T22:00:18Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

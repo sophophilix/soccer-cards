@@ -1,4 +1,65 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2562718695",
+        "value": 62
+      },
+      "club": "clubs/fc-groningen",
+      "endYear": 2013,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2562718695",
+        "value": 7
+      },
+      "startYear": 2011
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2562718695",
+        "value": 76
+      },
+      "club": "clubs/celtic-f-c",
+      "endYear": 2015,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2562718695",
+        "value": 9
+      },
+      "startYear": 2013
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2562718695",
+        "value": 67
+      },
+      "club": "clubs/southampton-f-c",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2562718695",
+        "value": 4
+      },
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2562718695",
+        "value": 278
+      },
+      "club": "clubs/liverpool-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-10-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2562718695",
+        "value": 27
+      },
+      "startYear": 2018
+    }
+  ],
   "club": "clubs/liverpool-f-c",
   "clubGoalCount": {
     "retrieveDate": "2026-10-11",
@@ -41,5 +102,5 @@
   "position": "DEFENDER",
   "state": "ACTIVE",
   "tier": "LEGEND",
-  "updateTime": "2026-11-21T03:57:58Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

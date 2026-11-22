@@ -1,4 +1,65 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-12",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q615&oldid=2568260945",
+        "value": 22
+      },
+      "club": "clubs/fc-barcelona-atletic",
+      "endYear": 2005,
+      "goalCount": {
+        "retrieveDate": "2026-11-12",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q615&oldid=2568260945",
+        "value": 6
+      },
+      "startYear": 2004
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-12",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q615&oldid=2568260945",
+        "value": 520
+      },
+      "club": "clubs/fc-barcelona",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-12",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q615&oldid=2568260945",
+        "value": 474
+      },
+      "startYear": 2004
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-12",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q615&oldid=2568260945",
+        "value": 58
+      },
+      "club": "clubs/paris-saint-germain-fc",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-11-12",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q615&oldid=2568260945",
+        "value": 22
+      },
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-08-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q615&oldid=2568260945",
+        "value": 72
+      },
+      "club": "clubs/inter-miami-cf",
+      "goalCount": {
+        "retrieveDate": "2026-08-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q615&oldid=2568260945",
+        "value": 68
+      },
+      "startYear": 2023
+    }
+  ],
   "club": "clubs/inter-miami-cf",
   "clubGoalCount": {
     "retrieveDate": "2026-08-30",
@@ -41,5 +102,5 @@
   "position": "FORWARD",
   "state": "ACTIVE",
   "tier": "ICON",
-  "updateTime": "2026-11-21T14:18:36Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

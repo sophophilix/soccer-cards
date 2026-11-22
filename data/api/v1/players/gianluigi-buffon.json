@@ -1,4 +1,81 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q68060&oldid=2567312419",
+        "value": 169
+      },
+      "club": "clubs/parma-calcio-1913",
+      "endYear": 2001,
+      "goalCount": {
+        "retrieveDate": "2026-11-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q68060&oldid=2567312419",
+        "value": 0
+      },
+      "startYear": 1995
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q68060&oldid=2567312419",
+        "value": 509
+      },
+      "club": "clubs/juventus-fc",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-11-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q68060&oldid=2567312419",
+        "value": 0
+      },
+      "startYear": 2001
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q68060&oldid=2567312419",
+        "value": 17
+      },
+      "club": "clubs/paris-saint-germain-fc",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-11-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q68060&oldid=2567312419",
+        "value": 0
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q68060&oldid=2567312419",
+        "value": 17
+      },
+      "club": "clubs/juventus-fc",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q68060&oldid=2567312419",
+        "value": 0
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q68060&oldid=2567312419",
+        "value": 43
+      },
+      "club": "clubs/parma-calcio-1913",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-11-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q68060&oldid=2567312419",
+        "value": 0
+      },
+      "startYear": 2021
+    }
+  ],
   "clubGoalCount": {
     "retrieveDate": "2026-11-09",
     "sourceUri": "https://www.wikidata.org/w/index.php?title=Q68060&oldid=2567312419",
@@ -40,5 +117,5 @@
   "position": "GOALKEEPER",
   "state": "RETIRED",
   "tier": "LEGEND",
-  "updateTime": "2026-11-21T03:57:58Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

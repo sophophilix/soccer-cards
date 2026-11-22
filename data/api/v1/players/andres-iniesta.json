@@ -1,4 +1,66 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
+        "value": 54
+      },
+      "club": "clubs/fc-barcelona-atletic",
+      "endYear": 2003,
+      "goalCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
+        "value": 5
+      },
+      "startYear": 2001
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
+        "value": 442
+      },
+      "club": "clubs/fc-barcelona",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
+        "value": 35
+      },
+      "startYear": 2002
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
+        "value": 114
+      },
+      "club": "clubs/vissel-kobe",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
+        "value": 21
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
+        "value": 20
+      },
+      "club": "clubs/emirates-club",
+      "endYear": 2024,
+      "goalCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
+        "value": 5
+      },
+      "startYear": 2023
+    }
+  ],
   "clubGoalCount": {
     "retrieveDate": "2026-11-01",
     "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
@@ -40,5 +102,5 @@
   "position": "MIDFIELDER",
   "state": "RETIRED",
   "tier": "LEGEND",
-  "updateTime": "2026-11-21T22:00:18Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

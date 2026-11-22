@@ -136,9 +136,16 @@ def test_a_build_writes_every_file_valid_and_sorted(tmp_path: Path) -> None:
     index = _json(api / "index.json")
     assert (index["formulaVersion"], index["dataVersion"]) == (FORMULA_VERSION, 1)
     assert index["generateTime"] == FIRST
-    assert [c["itemCount"] for c in index["collections"]] == [2, 1, 2]
+    assert [c["itemCount"] for c in index["collections"]] == [6, 1, 2]
     clubs = [c["name"] for c in _json(api / "clubs.json")["clubs"]]
-    assert clubs == ["clubs/fc-bayern-munich", "clubs/inter-miami-cf"]
+    assert clubs == [
+        "clubs/fc-barcelona",
+        "clubs/fc-barcelona-atletic",
+        "clubs/fc-bayern-munich",
+        "clubs/inter-miami-cf",
+        "clubs/paris-saint-germain-fc",
+        "clubs/schalke-04",
+    ]
     assert _json(api / players[0])["club"] == "clubs/inter-miami-cf"
     [credit] = _json(api / "credits.json")["credits"]
     assert (credit["player"], credit["uri"]) == (
@@ -412,3 +419,30 @@ def test_players_with_no_usable_position_are_named_at_once_before_any_download(
     assert "Q615: no Wikidata position" in str(error.value)
     assert "Q107365: no Wikidata position" in str(error.value)
     assert not any("upload" in a or "File:" in a for a in net.asked)
+
+
+def test_every_spells_club_is_in_clubs_and_the_report_counts_spells(
+    tmp_path: Path,
+) -> None:
+    problems = _run(tmp_path)
+
+    api = tmp_path / "api/v1"
+    clubs = {c["name"] for c in _json(api / "clubs.json")["clubs"]}
+    messi = _json(api / "players/lionel-messi.json")
+    spells = messi["careerSpells"]
+    assert [(s["club"], s["startYear"]) for s in spells] == [
+        ("clubs/fc-barcelona-atletic", 2004),
+        ("clubs/fc-barcelona", 2004),
+        ("clubs/paris-saint-germain-fc", 2021),
+        ("clubs/inter-miami-cf", 2023),
+    ]
+    assert spells[1]["appearanceCount"]["value"] == 520
+    assert {s["club"] for s in spells} <= clubs
+    assert "endYear" not in spells[-1]
+    assert "careerSpells" not in _json(api / "players.json")["players"][0]
+    ids = (tmp_path / "ids.toml").read_text(encoding="utf-8")
+    assert 'Q7156 = "fc-barcelona"' in ids
+    assert (
+        "career spells: 2 of 2 players have spells, 6 spells, 6 with games and goals"
+        in problems
+    )

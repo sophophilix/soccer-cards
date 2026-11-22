@@ -1,4 +1,35 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-03",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q30007142&oldid=2564356349",
+        "value": 204
+      },
+      "club": "clubs/west-ham-united-f-c",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-11-03",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q30007142&oldid=2564356349",
+        "value": 10
+      },
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q30007142&oldid=2564356349",
+        "value": 115
+      },
+      "club": "clubs/arsenal-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q30007142&oldid=2564356349",
+        "value": 15
+      },
+      "startYear": 2023
+    }
+  ],
   "club": "clubs/arsenal-f-c",
   "clubGoalCount": {
     "retrieveDate": "2026-10-10",
@@ -41,5 +72,5 @@
   "position": "MIDFIELDER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-21T03:57:58Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

@@ -1,4 +1,50 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2569170911",
+        "value": 41
+      },
+      "club": "clubs/birmingham-city-f-c",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2569170911",
+        "value": 4
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2569170911",
+        "value": 92
+      },
+      "club": "clubs/borussia-dortmund",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2569170911",
+        "value": 12
+      },
+      "startYear": 2020
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2569170911",
+        "value": 95
+      },
+      "club": "clubs/real-madrid-club-de-futbol",
+      "goalCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2569170911",
+        "value": 37
+      },
+      "startYear": 2023
+    }
+  ],
   "club": "clubs/real-madrid-club-de-futbol",
   "clubGoalCount": {
     "retrieveDate": "2026-10-10",
@@ -41,5 +87,5 @@
   "position": "MIDFIELDER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-21T03:57:58Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }
