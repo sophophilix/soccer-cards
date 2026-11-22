@@ -2,7 +2,7 @@
 
 > Status: Approved
 > Created: 2026-11-21T14:27:52Z
-> Last reviewed: 2026-11-21T14:34:12Z
+> Last reviewed: 2026-11-22T11:02:32Z
 > Next review: Not scheduled
 
 ## Review guide
@@ -140,6 +140,17 @@ skill is used. The first task is a spike: a FastAPI Worker answering one
 `/api/v2` route from a one-table D1 database on the preview, to prove the
 binding and the limits before the rest is built.
 
+`pywrangler`, from `workers-py`, packages the Python Worker and runs
+`npx --yes wrangler` inside itself, outside pnpm's lockfile, release age
+and build-script rules (T-0136 security review F2). The tech lead accepted
+this on 2026-11-21 on one condition, enforced by the kit. pywrangler runs
+only through `make api-db-local` and `make api-dev`. These targets install
+the pnpm-locked wrangler, refuse to start if its version differs from
+`pnpm-lock.yaml`, put it first on `PATH` and keep npm offline. The kit
+refuses a bare `pywrangler` command. The deploy task that bundles the API
+in CI must use the same guard. The local seed of invented players only ever
+goes to `--local`.
+
 **D9. Infrastructure is code.** The D1 database, the Worker routes, the MCP
 Worker and the rate-limit rule are OpenTofu resources in `infra/`, planned in
 CI and applied by the tech lead (ADR 0002). Worker logs stay off (ADR 0002 D10).
@@ -172,3 +183,4 @@ a reviewer agent sampling each batch (ADR 0006 D2 as amended 2026-11-21).
 | 2026-11-21T14:27:52Z | Drafted  | From the tech lead's answers on 2026-11-21: "we do need to build a proper db and api", "the website still can be how it is it just pulls all the data from an api... it needs to be the modern tht is AI agent appropriate", Cloudflare serverless chosen, and the player scope including the Socceroos, Matildas and Western Sydney Wanderers. |
 | 2026-11-21T14:34:12Z | Approved | The tech lead said "ADR 008 is fine...but the API needs to be built using FAST API skill published by fast api...and if there is a DB skill lets us it". D1 and D5 now name FastAPI; D10 adds FastAPI on Python Workers with the official FastAPI skill and Cloudflare's official skills plugin, and a spike comes first.                       |
 | 2026-11-21T14:42:38Z | Amended  | The tech lead chose "go with agent-drafted grades": the ratings item is settled (ADR 0006 D2). D3 now uses camelCase paging names (`pageSize`, `pageToken`, `nextPageToken`) and adds a check of the OpenAPI file against the AIPs, after the tech lead asked whether the API follows Google's API design patterns.                             |
+| 2026-11-22T11:02:32Z | Amended  | D10 records how pywrangler runs. The tech lead chose "go with option 1 and enforce it in the makefile", then "yes use python": pywrangler may call npx only through make targets that put the pnpm-locked wrangler first, and the kit refuses it anywhere else.                                                                                 |
