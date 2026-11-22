@@ -349,6 +349,11 @@ def _check_segment(operator: str, tokens: list[str], agent: str | None, event: d
         return ("deny", f"{prog} is not this repository's package manager. Use pnpm (ts-standards).")
     if prog in {"pip", "pip3", "pipx"}:
         return ("deny", f"{prog} is not allowed. Use uv (python-standards).")
+    # pywrangler runs `npx --yes wrangler` inside itself, which this hook never
+    # sees. The make targets install the locked wrangler first and check its
+    # version, so npx finds that copy (ADR 0008, tech lead 2026-11-21).
+    if prog == "pywrangler" or (prog in {"uv", "uvx"} and "pywrangler" in args):
+        return ("deny", "Run pywrangler through `make api-db-local` or `make api-dev`, which put the pnpm-locked wrangler in front of its npx call (ADR 0008).")
     if prog == "pnpm":
         if args[:1] == ["dlx"]:
             return ("deny", "pnpm dlx runs a package that is not in the lockfile. Add it as a dev dependency in a task that lists it.")

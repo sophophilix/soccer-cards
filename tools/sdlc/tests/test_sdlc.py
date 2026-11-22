@@ -185,6 +185,14 @@ class CommandTest(unittest.TestCase):
     def assert_allowed(self, text: str, **kwargs) -> None:
         self.assertIsNone(self.repo.command(text, **kwargs), text)
 
+    def test_pywrangler_runs_only_through_make(self) -> None:
+        for text in ("pywrangler dev", "uv run pywrangler d1 migrations apply DB --local", "cd apps/api && uv run --frozen pywrangler dev", "uvx pywrangler deploy"):
+            with self.subTest(text=text):
+                self.assert_denied(text)
+        for text in ("make api-dev", "make api-db-local", "uv run --frozen pytest -q"):
+            with self.subTest(text=text):
+                self.assert_allowed(text)
+
     def test_ordinary_work_is_allowed(self) -> None:
         for text in (
             "pnpm install --frozen-lockfile",

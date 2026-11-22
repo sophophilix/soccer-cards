@@ -10,7 +10,7 @@ SCOPE ?= full
 BASE ?= origin/main
 
 .DEFAULT_GOAL := help
-.PHONY: help check check-all dev preview e2e e2e-ui $(addprefix check-,$(COMPONENTS))
+.PHONY: help check check-all dev preview e2e e2e-ui api-wrangler-guard api-db-local api-dev $(addprefix check-,$(COMPONENTS))
 
 WEB := apps/web
 need-web = @[ -f $(WEB)/package.json ] || { echo "$@: $(WEB) is not scaffolded yet (see docs/decisions/0001)"; exit 1; }
@@ -45,6 +45,31 @@ e2e: ## Run the Playwright end-to-end tests against the local preview
 e2e-ui: ## Run the end-to-end tests in Playwright's UI mode
 	$(need-web)
 	@pnpm --dir $(WEB) run test:e2e --ui
+
+# The player API on the local Workers runtime (ADR 0008). pywrangler runs
+# `npx --yes wrangler` inside itself, outside pnpm. The tech lead chose on
+# 2026-11-21 to allow that locally only if the pnpm-locked wrangler is the
+# copy npx finds. So these targets install it first, refuse to start if its
+# version differs from pnpm-lock.yaml, put it first on PATH, and keep npm
+# offline so npx can't fetch another copy. The kit refuses a bare `pywrangler`
+# command. Deploys never use these targets: CI deploys with pnpm's wrangler.
+API_WRANGLER = cd $(API) && PATH="$(CURDIR)/node_modules/.bin:$$PATH" npm_config_offline=true uv run --frozen pywrangler
+
+api-wrangler-guard:
+	@pnpm install --frozen-lockfile --silent
+	@locked="$$(sed -n 's/^  wrangler@\([0-9][0-9.]*\):$$/\1/p' pnpm-lock.yaml | head -1)"; \
+	have="$$(node_modules/.bin/wrangler --version 2>/dev/null | grep -Eo '[0-9]+\.[0-9]+\.[0-9]+' | head -1)"; \
+	if [ -z "$$locked" ] || [ "$$locked" != "$$have" ]; then \
+		echo "$@: node_modules/.bin/wrangler is '$$have' but pnpm-lock.yaml has '$$locked'. Refusing to run pywrangler."; exit 1; \
+	fi
+
+api-db-local: api-wrangler-guard ## Reset the API's local D1, apply its migrations and the invented local seed
+	@rm -rf $(API)/.wrangler/state
+	@$(API_WRANGLER) d1 migrations apply DB --local
+	@$(API_WRANGLER) d1 execute DB --local --file=seeds/local.sql
+
+api-dev: api-wrangler-guard ## Run the player API on the local Workers runtime (run make api-db-local first)
+	@$(API_WRANGLER) dev
 
 # A TypeScript gate runs the canonical scripts in ts-standards for one
 # package, then Knip for the workspace. A missing package or script fails.
