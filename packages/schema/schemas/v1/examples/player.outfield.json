@@ -55,5 +55,23 @@
 			"retrieveDate": "2026-11-01"
 		}
 	],
+	"careerSpells": [
+		{
+			"club": "clubs/dunmore-united",
+			"startYear": 2017,
+			"endYear": 2022,
+			"appearanceCount": {
+				"value": 140,
+				"sourceUri": "https://almanac.example/players/tavi-brightwell",
+				"retrieveDate": "2026-11-01"
+			},
+			"goalCount": {
+				"value": 48,
+				"sourceUri": "https://almanac.example/players/tavi-brightwell",
+				"retrieveDate": "2026-11-01"
+			}
+		},
+		{ "club": "clubs/harbour-rovers", "startYear": 2022 }
+	],
 	"careerStartYear": 2017
 }
