@@ -24,9 +24,8 @@ _STATUS_NAMES = {
 class _FixedInternalError:
     """Turn any error that escapes the app into the fixed 500, and stop there.
 
-    Starlette's own 500 handler re-raises after it answers, and the Workers
-    adapter logs that exception with its traceback. Catching it here means the
-    cause reaches neither the response nor a log (T-0135 security F5).
+    Starlette re-raises after its own 500, and the Workers adapter would log the
+    traceback. Stopping it here keeps the cause out of every log (security F5).
     """
 
     def __init__(self, app: ASGIApp) -> None:
@@ -66,6 +65,9 @@ def create_app(database_for: DatabaseFor = database_from_scope) -> FastAPI:
     app = FastAPI(
         title="Soccer Cards API",
         version="2",
+        docs_url=None,
+        redoc_url=None,
+        openapi_url=None,
         telemetry={
             "tracing": False,
             "metrics": False,
@@ -89,7 +91,6 @@ def create_app(database_for: DatabaseFor = database_from_scope) -> FastAPI:
         )
         return error_response(exc.status_code, status, message)
 
-    # Every database failure and every unexpected error is the one fixed 500.
     app.add_middleware(_FixedInternalError)
 
     @app.get(

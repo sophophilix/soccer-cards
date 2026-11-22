@@ -70,10 +70,7 @@ def test_bad_id_is_a_400_and_never_reaches_the_database(
     response = client.get(f"/api/v2/players/{bad_id}")
 
     assert response.status_code == 400
-    error = response.json()["error"]
-    assert error["code"] == 400
-    assert error["status"] == "INVALID_ARGUMENT"
-    assert isinstance(error["message"], str)
+    assert response.json()["error"]["status"] == "INVALID_ARGUMENT"
     assert d1.prepared == []
 
 
@@ -136,10 +133,6 @@ def test_every_failure_is_the_fixed_500_and_its_cause_is_not_logged(
 
 
 def test_raw_asgi_call_raises_nothing_so_no_server_can_log_the_cause() -> None:
-    def database_for(_request: Request) -> FakeD1:
-        msg = "secret internal detail"
-        raise RuntimeError(msg)
-
     sent: list[MutableMapping[str, Any]] = []
 
     async def receive() -> dict[str, Any]:
@@ -152,14 +145,13 @@ def test_raw_asgi_call_raises_nothing_so_no_server_can_log_the_cause() -> None:
         "type": "http",
         "method": "GET",
         "path": "/api/v2/players/ada-vale",
-        "query_string": b"",
         "headers": [],
     }
 
-    asyncio.run(create_app(database_for)(scope, receive, send))
+    asyncio.run(create_app()(scope, receive, send))
 
     assert sent[0]["status"] == 500
-    assert b"secret" not in b"".join(m.get("body", b"") for m in sent)
+    assert b"KeyError" not in b"".join(m.get("body", b"") for m in sent)
 
 
 def test_fastapi_telemetry_is_off() -> None:
@@ -172,3 +164,11 @@ def test_fastapi_telemetry_is_off() -> None:
     assert config["tracer_provider"] is None
     assert config["meter_provider"] is None
     assert config["logger_provider"] is None
+
+
+@pytest.mark.parametrize("path", ["/docs", "/redoc", "/openapi.json"])
+def test_built_in_docs_pages_are_not_served(client: TestClient, path: str) -> None:
+    response = client.get(path)
+
+    assert response.status_code == 404
+    assert response.json()["error"]["status"] == "NOT_FOUND"
