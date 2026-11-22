@@ -33,6 +33,9 @@ test('every link and button on the not-found page is at least 44 pixels each way
 
 test('a short link inside a sentence is at least 44 pixels each way', async ({ page }) => {
 	await page.goto('/');
+	// The coin count is drawn by the browser after the app has taken over the page. Nodes added
+	// before that are thrown away when it does.
+	await expect(page.getByText(/^\d+ coins?$/)).toBeVisible();
 	await page.locator('main').evaluate((main) => {
 		const sentence = document.createElement('p');
 		const link = document.createElement('a');
