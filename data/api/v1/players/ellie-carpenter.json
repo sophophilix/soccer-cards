@@ -1,4 +1,49 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23013501&oldid=2570218031",
+        "value": 23
+      },
+      "club": "clubs/western-sydney-wanderers-fc-2",
+      "endYear": 2017,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23013501&oldid=2570218031",
+        "value": 0
+      },
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23013501&oldid=2570218031",
+        "value": 21
+      },
+      "club": "clubs/canberra-united-fc",
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23013501&oldid=2570218031",
+        "value": 5
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23013501&oldid=2570218031",
+        "value": 20
+      },
+      "club": "clubs/portland-thorns-fc",
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23013501&oldid=2570218031",
+        "value": 1
+      },
+      "startYear": 2018
+    }
+  ],
   "club": "clubs/portland-thorns-fc",
   "displayName": "Ellie Carpenter",
   "name": "players/ellie-carpenter",
@@ -36,5 +81,5 @@
   "position": "DEFENDER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-21T22:00:18Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

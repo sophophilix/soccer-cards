@@ -1,4 +1,111 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q182314&oldid=2563448129",
+        "value": 46
+      },
+      "club": "clubs/gladsaxe-hero",
+      "endYear": 1984,
+      "goalCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q182314&oldid=2563448129",
+        "value": 0
+      },
+      "startYear": 1981
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q182314&oldid=2563448129",
+        "value": 78
+      },
+      "club": "clubs/hvidovre-if",
+      "endYear": 1987,
+      "goalCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q182314&oldid=2563448129",
+        "value": 6
+      },
+      "startYear": 1984
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q182314&oldid=2563448129",
+        "value": 119
+      },
+      "club": "clubs/brondby-if",
+      "endYear": 1991,
+      "goalCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q182314&oldid=2563448129",
+        "value": 2
+      },
+      "startYear": 1987
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q182314&oldid=2563448129",
+        "value": 292
+      },
+      "club": "clubs/manchester-united-f-c",
+      "endYear": 1999,
+      "goalCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q182314&oldid=2563448129",
+        "value": 0
+      },
+      "startYear": 1991
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q182314&oldid=2563448129",
+        "value": 55
+      },
+      "club": "clubs/sporting-cp",
+      "endYear": 2001,
+      "goalCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q182314&oldid=2563448129",
+        "value": 0
+      },
+      "startYear": 1999
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q182314&oldid=2563448129",
+        "value": 29
+      },
+      "club": "clubs/aston-villa-f-c",
+      "endYear": 2002,
+      "goalCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q182314&oldid=2563448129",
+        "value": 1
+      },
+      "startYear": 2001
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q182314&oldid=2563448129",
+        "value": 29
+      },
+      "club": "clubs/manchester-city-f-c",
+      "endYear": 2003,
+      "goalCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q182314&oldid=2563448129",
+        "value": 0
+      },
+      "startYear": 2002
+    }
+  ],
   "clubGoalCount": {
     "retrieveDate": "2026-11-01",
     "sourceUri": "https://www.wikidata.org/w/index.php?title=Q182314&oldid=2563448129",
@@ -29,5 +136,5 @@
   "position": "GOALKEEPER",
   "state": "RETIRED",
   "tier": "LEGEND",
-  "updateTime": "2026-11-21T04:09:53Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

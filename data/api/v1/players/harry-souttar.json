@@ -1,4 +1,40 @@
 {
+  "careerSpells": [
+    {
+      "club": "clubs/dundee-united-f-c",
+      "endYear": 2016,
+      "startYear": 2016
+    },
+    {
+      "club": "clubs/stoke-city-f-c",
+      "endYear": 2023,
+      "startYear": 2016
+    },
+    {
+      "club": "clubs/ross-county-f-c",
+      "endYear": 2018,
+      "startYear": 2018
+    },
+    {
+      "club": "clubs/fleetwood-town-f-c",
+      "endYear": 2019,
+      "startYear": 2019
+    },
+    {
+      "club": "clubs/fleetwood-town-f-c",
+      "endYear": 2020,
+      "startYear": 2019
+    },
+    {
+      "club": "clubs/leicester-city-f-c",
+      "startYear": 2023
+    },
+    {
+      "club": "clubs/sheffield-united-f-c",
+      "endYear": 2025,
+      "startYear": 2024
+    }
+  ],
   "club": "clubs/leicester-city-f-c",
   "displayName": "Harry Souttar",
   "name": "players/harry-souttar",
@@ -31,5 +67,5 @@
   "position": "DEFENDER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-21T22:00:18Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

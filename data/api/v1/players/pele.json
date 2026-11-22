@@ -1,10 +1,47 @@
 {
+  "careerSpells": [
+    {
+      "club": "clubs/bauru-atletico-clube",
+      "endYear": 1956,
+      "startYear": 1953
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q12897&oldid=2573799725",
+        "value": 659
+      },
+      "club": "clubs/santos-f-c",
+      "endYear": 1974,
+      "goalCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q12897&oldid=2573799725",
+        "value": 643
+      },
+      "startYear": 1956
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q12897&oldid=2573799725",
+        "value": 65
+      },
+      "club": "clubs/new-york-cosmos",
+      "endYear": 1977,
+      "goalCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q12897&oldid=2573799725",
+        "value": 111
+      },
+      "startYear": 1975
+    }
+  ],
   "displayName": "Pelé",
   "name": "players/pele",
   "nationalTeamCode": "BRA",
   "nationalTeamGoalCount": {
-    "retrieveDate": "2026-11-11",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q12897&oldid=2568022319",
+    "retrieveDate": "2026-11-22",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q12897&oldid=2573799725",
     "value": 77
   },
   "outfieldRatings": {
@@ -35,5 +72,5 @@
   "position": "FORWARD",
   "state": "RETIRED",
   "tier": "ICON",
-  "updateTime": "2026-11-21T03:57:58Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

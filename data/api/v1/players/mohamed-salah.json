@@ -1,4 +1,125 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1354960&oldid=2568934524",
+        "value": 37
+      },
+      "club": "clubs/al-mokawloon-al-arab-sc",
+      "endYear": 2012,
+      "goalCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1354960&oldid=2568934524",
+        "value": 11
+      },
+      "startYear": 2010
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1354960&oldid=2568934524",
+        "value": 47
+      },
+      "club": "clubs/fc-basel",
+      "endYear": 2014,
+      "goalCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1354960&oldid=2568934524",
+        "value": 9
+      },
+      "startYear": 2012
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1354960&oldid=2568934524",
+        "value": 13
+      },
+      "club": "clubs/chelsea-f-c",
+      "endYear": 2015,
+      "goalCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1354960&oldid=2568934524",
+        "value": 2
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1354960&oldid=2568934524",
+        "value": 16
+      },
+      "club": "clubs/acf-fiorentina",
+      "endYear": 2015,
+      "goalCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1354960&oldid=2568934524",
+        "value": 6
+      },
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1354960&oldid=2568934524",
+        "value": 34
+      },
+      "club": "clubs/as-roma",
+      "endYear": 2016,
+      "goalCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1354960&oldid=2568934524",
+        "value": 14
+      },
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1354960&oldid=2568934524",
+        "value": 31
+      },
+      "club": "clubs/as-roma",
+      "endYear": 2017,
+      "goalCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1354960&oldid=2568934524",
+        "value": 15
+      },
+      "startYear": 2016
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1354960&oldid=2568934524",
+        "value": 315
+      },
+      "club": "clubs/liverpool-f-c",
+      "endYear": 2026,
+      "goalCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1354960&oldid=2568934524",
+        "value": 191
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1354960&oldid=2568934524",
+        "value": 0
+      },
+      "club": "clubs/trabzonspor",
+      "goalCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1354960&oldid=2568934524",
+        "value": 0
+      },
+      "startYear": 2026
+    }
+  ],
   "club": "clubs/trabzonspor",
   "clubGoalCount": {
     "retrieveDate": "2026-11-13",
@@ -41,5 +162,5 @@
   "position": "FORWARD",
   "state": "ACTIVE",
   "tier": "RARE",
-  "updateTime": "2026-11-21T03:57:58Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

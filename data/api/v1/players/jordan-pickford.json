@@ -1,4 +1,125 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q13014035&oldid=2556682940",
+        "value": 31
+      },
+      "club": "clubs/sunderland-a-f-c",
+      "endYear": 2017,
+      "goalCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q13014035&oldid=2556682940",
+        "value": 0
+      },
+      "startYear": 2011
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q13014035&oldid=2556682940",
+        "value": 17
+      },
+      "club": "clubs/darlington-f-c",
+      "endYear": 2012,
+      "goalCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q13014035&oldid=2556682940",
+        "value": 0
+      },
+      "startYear": 2012
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q13014035&oldid=2556682940",
+        "value": 12
+      },
+      "club": "clubs/alfreton-town-f-c",
+      "endYear": 2013,
+      "goalCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q13014035&oldid=2556682940",
+        "value": 0
+      },
+      "startYear": 2013
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q13014035&oldid=2556682940",
+        "value": 12
+      },
+      "club": "clubs/burton-albion-f-c",
+      "endYear": 2013,
+      "goalCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q13014035&oldid=2556682940",
+        "value": 0
+      },
+      "startYear": 2013
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q13014035&oldid=2556682940",
+        "value": 18
+      },
+      "club": "clubs/carlisle-united-f-c",
+      "endYear": 2014,
+      "goalCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q13014035&oldid=2556682940",
+        "value": 0
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q13014035&oldid=2556682940",
+        "value": 33
+      },
+      "club": "clubs/bradford-city-a-f-c",
+      "endYear": 2015,
+      "goalCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q13014035&oldid=2556682940",
+        "value": 0
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q13014035&oldid=2556682940",
+        "value": 24
+      },
+      "club": "clubs/preston-north-end-f-c",
+      "endYear": 2016,
+      "goalCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q13014035&oldid=2556682940",
+        "value": 0
+      },
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q13014035&oldid=2556682940",
+        "value": 337
+      },
+      "club": "clubs/everton-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-10-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q13014035&oldid=2556682940",
+        "value": 0
+      },
+      "startYear": 2017
+    }
+  ],
   "club": "clubs/everton-f-c",
   "clubGoalCount": {
     "retrieveDate": "2026-10-11",
@@ -41,5 +162,5 @@
   "position": "GOALKEEPER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-21T03:57:58Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

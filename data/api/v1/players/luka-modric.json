@@ -1,4 +1,95 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q483837&oldid=2558141293",
+        "value": 22
+      },
+      "club": "clubs/hsk-zrinjski-mostar",
+      "endYear": 2004,
+      "goalCount": {
+        "retrieveDate": "2026-10-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q483837&oldid=2558141293",
+        "value": 8
+      },
+      "startYear": 2003
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q483837&oldid=2558141293",
+        "value": 94
+      },
+      "club": "clubs/gnk-dinamo-zagreb",
+      "endYear": 2008,
+      "goalCount": {
+        "retrieveDate": "2026-10-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q483837&oldid=2558141293",
+        "value": 27
+      },
+      "startYear": 2003
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q483837&oldid=2558141293",
+        "value": 18
+      },
+      "club": "clubs/nk-inter-zapresic",
+      "endYear": 2005,
+      "goalCount": {
+        "retrieveDate": "2026-10-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q483837&oldid=2558141293",
+        "value": 4
+      },
+      "startYear": 2004
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q483837&oldid=2558141293",
+        "value": 127
+      },
+      "club": "clubs/tottenham-hotspur-f-c",
+      "endYear": 2012,
+      "goalCount": {
+        "retrieveDate": "2026-10-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q483837&oldid=2558141293",
+        "value": 13
+      },
+      "startYear": 2008
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q483837&oldid=2558141293",
+        "value": 394
+      },
+      "club": "clubs/real-madrid-club-de-futbol",
+      "endYear": 2025,
+      "goalCount": {
+        "retrieveDate": "2026-10-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q483837&oldid=2558141293",
+        "value": 30
+      },
+      "startYear": 2012
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q483837&oldid=2558141293",
+        "value": 40
+      },
+      "club": "clubs/ac-milan",
+      "goalCount": {
+        "retrieveDate": "2026-10-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q483837&oldid=2558141293",
+        "value": 2
+      },
+      "startYear": 2025
+    }
+  ],
   "club": "clubs/ac-milan",
   "clubGoalCount": {
     "retrieveDate": "2026-10-11",
@@ -41,5 +132,5 @@
   "position": "MIDFIELDER",
   "state": "ACTIVE",
   "tier": "RARE",
-  "updateTime": "2026-11-21T03:57:58Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

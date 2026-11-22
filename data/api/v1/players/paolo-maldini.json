@@ -1,4 +1,16 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-18",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q483027&oldid=2558205060",
+        "value": 647
+      },
+      "club": "clubs/ac-milan",
+      "endYear": 2009,
+      "startYear": 1985
+    }
+  ],
   "displayName": "Paolo Maldini",
   "name": "players/paolo-maldini",
   "nationalTeamCode": "ITA",
@@ -35,5 +47,5 @@
   "position": "DEFENDER",
   "state": "RETIRED",
   "tier": "ICON",
-  "updateTime": "2026-11-21T03:57:58Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

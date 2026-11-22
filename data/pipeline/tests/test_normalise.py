@@ -1,7 +1,7 @@
 import json
 import re
 from collections.abc import Mapping
-from dataclasses import replace
+from dataclasses import asdict, replace
 from functools import cache
 from pathlib import Path
 from typing import Any
@@ -119,7 +119,7 @@ def test_goalkeeper_without_photo_has_keeper_ratings_and_no_photo() -> None:
 
 def test_same_input_gives_the_same_output() -> None:
     first, second = _build(_facts()), _build(_facts())
-    assert json.dumps(vars(first)) == json.dumps(vars(second))  # Same bytes.
+    assert json.dumps(asdict(first)) == json.dumps(asdict(second))  # Same bytes.
 
 
 @pytest.mark.parametrize("tier", ["ICON", "BASE", "LEGEND"])
@@ -215,7 +215,11 @@ def test_unsafe_club_label_drops_the_club_and_is_reported() -> None:
     record = _build(replace(_facts(), clubs=(*clubs[:-1], miami)))
     assert "club" not in record.player
     assert record.player["state"] == "ACTIVE"
-    assert record.problems == ("Q615 Q16844931: label is missing or not plain text",)
+    assert record.problems == (
+        "Q615 Q16844931: label is missing or not plain text",
+        "Q615 Q16844931: label is missing or not plain text: career spell dropped",
+    )
+    assert "Q16844931" not in {s.club_qid for s in record.career}
 
 
 @pytest.mark.parametrize(
@@ -425,3 +429,66 @@ def test_photo_record_holds_size_type_and_credit() -> None:
             "sourceUri": FILE,
         },
     }
+
+
+def _spells(clubs: tuple[Any, ...]) -> tuple[list[Any], tuple[str, ...]]:
+    record = _build(replace(_facts(), clubs=clubs))
+    return [s.body("x") for s in record.career], record.problems
+
+
+def test_career_spells_run_oldest_first_and_leave_out_youth_sides() -> None:
+    record: Any = _build(_facts())
+    first, *_, last = record.career
+    assert [s.club_display_name for s in record.career] == [
+        "FC Barcelona Atlètic",  # Not matched by the youth rule, as before.
+        "FC Barcelona",
+        "Paris Saint-Germain FC",
+        "Inter Miami CF",
+    ]
+    assert (first.start_year, first.end_year) == (2004, 2005)
+    assert (last.start_year, last.end_year) == (2023, None)  # Still running.
+    assert last.body("inter-miami-cf") == {
+        "club": "clubs/inter-miami-cf",
+        "startYear": 2023,
+        "appearanceCount": {
+            "value": 72,
+            "sourceUri": MESSI,
+            "retrieveDate": "2026-08-30",
+        },
+        "goalCount": {"value": 68, "sourceUri": MESSI, "retrieveDate": "2026-08-30"},
+    }
+    assert "careerSpells" not in record.summary
+
+
+def test_a_spell_with_no_start_year_is_dropped_and_reported() -> None:
+    clubs = _facts().clubs
+    bad = replace(clubs[1], start=None)
+    spells, problems = _spells((bad, *clubs[2:]))
+    assert len(spells) == 3
+    assert "Q615 Q10467: career spell has no start year, dropped" in problems
+
+
+def test_a_spell_ending_before_it_starts_is_dropped_and_reported() -> None:
+    clubs = _facts().clubs
+    bad = replace(clubs[1], start="2006", end="2005")
+    spells, problems = _spells((bad, *clubs[2:]))
+    assert len(spells) == 3
+    assert "Q615 Q10467: career spell ends before it starts, dropped" in problems
+
+
+def test_two_spells_at_one_club_are_two_items_and_a_missing_count_is_absent() -> None:
+    barca = _facts().clubs[2]
+    back = replace(barca, start="2030", end=None, appearances=None, goals=None)
+    spells, problems = _spells((barca, back))
+    assert [(s["club"], s["startYear"]) for s in spells] == [
+        ("clubs/x", 2004),
+        ("clubs/x", 2030),
+    ]
+    assert "appearanceCount" not in spells[1]
+    assert "goalCount" not in spells[1]
+    assert not [p for p in problems if "career" in p]
+
+
+def test_a_player_with_no_senior_club_spell_has_no_career_field() -> None:
+    record: Any = _build(replace(_facts(), clubs=()))
+    assert record.career == ()

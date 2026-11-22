@@ -1,4 +1,65 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-08",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q73360&oldid=2566353481",
+        "value": 41
+      },
+      "club": "clubs/k-r-c-genk",
+      "endYear": 2011,
+      "goalCount": {
+        "retrieveDate": "2026-11-08",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q73360&oldid=2566353481",
+        "value": 0
+      },
+      "startYear": 2009
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-08",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q73360&oldid=2566353481",
+        "value": 111
+      },
+      "club": "clubs/atletico-madrid",
+      "endYear": 2014,
+      "goalCount": {
+        "retrieveDate": "2026-11-08",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q73360&oldid=2566353481",
+        "value": 0
+      },
+      "startYear": 2011
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-08",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q73360&oldid=2566353481",
+        "value": 126
+      },
+      "club": "clubs/chelsea-f-c",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-11-08",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q73360&oldid=2566353481",
+        "value": 0
+      },
+      "startYear": 2011
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q73360&oldid=2566353481",
+        "value": 240
+      },
+      "club": "clubs/real-madrid-club-de-futbol",
+      "goalCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q73360&oldid=2566353481",
+        "value": 0
+      },
+      "startYear": 2018
+    }
+  ],
   "club": "clubs/real-madrid-club-de-futbol",
   "clubGoalCount": {
     "retrieveDate": "2026-10-10",
@@ -41,5 +102,5 @@
   "position": "GOALKEEPER",
   "state": "ACTIVE",
   "tier": "LEGEND",
-  "updateTime": "2026-11-21T03:57:58Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

@@ -1,4 +1,35 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21621168&oldid=2559503007",
+        "value": 91
+      },
+      "club": "clubs/s-l-benfica",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-10-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21621168&oldid=2559503007",
+        "value": 9
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21621168&oldid=2559503007",
+        "value": 175
+      },
+      "club": "clubs/manchester-city-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-09-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21621168&oldid=2559503007",
+        "value": 5
+      },
+      "startYear": 2020
+    }
+  ],
   "club": "clubs/manchester-city-f-c",
   "clubGoalCount": {
     "retrieveDate": "2026-09-20",
@@ -41,5 +72,5 @@
   "position": "DEFENDER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-21T03:57:58Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }
