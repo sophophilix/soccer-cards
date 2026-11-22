@@ -69,6 +69,10 @@ p { margin: 0; max-width: 60ch; }
   padding: 10px 13px 9px; border-radius: 999px; color: var(--fg); white-space: nowrap;
 }
 .tab[aria-current="page"] { background: var(--fg); color: var(--bg); }
+@media (max-width: 480px) {
+  .tabs { gap: 0; padding: 3px; }
+  .tab { flex: 1 1 auto; text-align: center; font-size: 13px; letter-spacing: .02em; padding: 10px 5px 9px; }
+}
 :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 
 .btn {
@@ -512,12 +516,12 @@ p { margin: 0; max-width: 60ch; }
     <div class="view" id="mem-pick">
       <h2>Memory</h2>
       <p>Cards are face down. Turn two cards. If they are the same player, they stay up. If not, they turn back, so remember where they were. Pick how many pairs to find.</p>
-      <p class="muted">Use as few flips as you can. You win coins for every board.</p>
+      <p class="muted">Use as few turns as you can. A turn is two cards. You win coins for every board.</p>
       <div class="mem-sizes" id="mem-sizes"></div>
     </div>
     <div class="view" id="mem-play" hidden>
       <div class="memstats">
-        <span class="chip" id="mem-flips">Flips: 0</span>
+        <span class="chip" id="mem-flips">Turns: 0</span>
         <span class="chip legend" id="mem-pairs"></span>
         <button class="btn small" type="button" id="mem-quit">Change board</button>
       </div>
@@ -1213,7 +1217,7 @@ p { margin: 0; max-width: 60ch; }
   }
 
   // ---------- Memory ----------
-  // Pairs are two copies of one owned card. A board pays MEM_COINS[pairs], plus 1 when it took at most twice as many flips as pairs.
+  // Pairs are two copies of one owned card. A board pays MEM_COINS[pairs], plus 1 when it took at most twice as many turns (two cards each) as pairs.
   var MEM_SIZES = [6, 8, 10], MEM_COINS = { 6: 3, 8: 4, 10: 5 }, MEM_BACK_MS = 1000;
   var mem = null, memTimer = null;
   function plural(n, word) { return n + ' ' + word + (n === 1 ? '' : 's'); }
@@ -1241,7 +1245,7 @@ p { margin: 0; max-width: 60ch; }
   function startMemory(n) {
     clearTimeout(memTimer);
     var ids = sample(ownedIds(), n);
-    mem = { pairs: n, flips: 0, matched: 0, first: -1, busy: false, els: [], cards: sample(ids.concat(ids), n * 2).map(function (id) { return { id: id, up: false, done: false }; }) };
+    mem = { pairs: n, turns: 0, matched: 0, first: -1, busy: false, els: [], cards: sample(ids.concat(ids), n * 2).map(function (id) { return { id: id, up: false, done: false }; }) };
     var g = $('mem-grid'); g.innerHTML = ''; g.classList.toggle('ten', n === 10);
     mem.cards.forEach(function (c, i) {
       var b = document.createElement('button'); b.type = 'button'; b.className = 'slot mem';
@@ -1254,12 +1258,13 @@ p { margin: 0; max-width: 60ch; }
     memText('Turn a card.'); memCount(); renderMemory(); mem.els[0].focus();
   }
   function memText(t) { $('mem-status').textContent = t; }
-  function memCount() { $('mem-flips').textContent = 'Flips: ' + mem.flips; $('mem-pairs').textContent = 'Pairs: ' + mem.matched + ' of ' + mem.pairs; }
+  function memCount() { $('mem-flips').textContent = 'Turns: ' + mem.turns; $('mem-pairs').textContent = 'Pairs: ' + mem.matched + ' of ' + mem.pairs; }
   function memTap(i) {
     var c = mem.cards[i];
     if (mem.busy || c.up || c.done) return;
-    memSet(i, true); mem.flips++; memCount();
+    memSet(i, true);
     if (mem.first < 0) { mem.first = i; memText('Now turn a second card.'); return; }
+    mem.turns++; memCount();
     var a = mem.first, d = mem.cards[a]; mem.first = -1;
     if (d.id === c.id) {
       d.done = c.done = true; mem.matched++; memSet(a, true); memSet(i, true); memCount();
@@ -1275,13 +1280,13 @@ p { margin: 0; max-width: 60ch; }
     }, MEM_BACK_MS);
   }
   function memFinish() {
-    var n = mem.pairs, bonus = mem.flips <= n * 2 ? 1 : 0, earned = MEM_COINS[n] + bonus;
+    var n = mem.pairs, bonus = mem.turns <= n * 2 ? 1 : 0, earned = MEM_COINS[n] + bonus;
     S.coins += earned; save(); $('coins').textContent = S.coins + (S.coins === 1 ? ' coin' : ' coins');
     memText('Board finished.');
     var box = $('mem-done'); box.hidden = false;
     box.innerHTML = '<h2 tabindex="-1" id="mem-win">All ' + n + ' pairs found!</h2>' +
-      '<p>You used ' + plural(mem.flips, 'flip') + '. You earned ' + plural(earned, 'coin') + ': ' + MEM_COINS[n] + ' for the board' +
-      (bonus ? ' and 1 for finding them in ' + n * 2 + ' flips or fewer.' : '. Find them in ' + n * 2 + ' flips or fewer next time for 1 more.') + '</p>' +
+      '<p>You used ' + plural(mem.turns, 'turn') + '. You earned ' + plural(earned, 'coin') + ': ' + MEM_COINS[n] + ' for the board' +
+      (bonus ? ' and 1 for finding them in ' + n * 2 + ' turns or fewer.' : '. Find them in ' + n * 2 + ' turns or fewer next time for 1 more.') + '</p>' +
       '<div class="row center"><button class="btn primary" type="button" id="mem-again">Play again</button>' +
       '<button class="btn" type="button" id="mem-other">Another board size</button></div>';
     $('mem-again').addEventListener('click', function () { startMemory(n); });
