@@ -11,7 +11,7 @@ import json
 import shutil
 import tempfile
 import tomllib
-from collections.abc import Mapping
+from collections.abc import Iterable, Mapping
 from pathlib import Path
 from typing import Any
 
@@ -92,7 +92,8 @@ def build(
             records.append(record)
             problems += record.problems
         problems += _career_report(records)
-        _write_all(work, api_dir, records, ids["clubs"], now)
+        problems += _left_out_report(facts.values())
+        problems += _write_all(work, api_dir, records, ids["clubs"], now)
         try:
             validate(work)
         except ValidationError as exc:
@@ -112,6 +113,26 @@ def _career_report(records: list[normalise.PlayerRecord]) -> list[str]:
         f"career spells: {sum(1 for r in records if r.career)} of {len(records)} "
         f"players have spells, {len(spells)} spells, {full} with games and goals"
     ]
+
+
+def _left_out_report(facts: Iterable[wikidata.PlayerFacts]) -> list[str]:
+    """List each youth, reserve or academy club the rule leaves out, once."""
+    found = {
+        s.team: s.team_label
+        for f in facts
+        for s in f.clubs
+        if s.team_label and normalise.is_youth_side(s.team_label)
+    }
+    if not found:
+        return []
+    listed = ", ".join(
+        f"{label} ({q})" for q, label in sorted(found.items(), key=_by_label)
+    )
+    return [f"left out {len(found)} reserve, youth or academy sides: {listed}"]
+
+
+def _by_label(item: tuple[str, str | None]) -> tuple[str, str]:
+    return (item[1] or "", item[0])
 
 
 def _photo(
@@ -209,10 +230,11 @@ def _write_all(
     records: list[normalise.PlayerRecord],
     club_slugs: dict[str, str],
     now: str,
-) -> None:
+) -> list[str]:
     """Write every file into `work`, keeping the times of what didn't change.
 
-    New clubs are added to `club_slugs`, the registry's club entries.
+    New clubs are added to `club_slugs`, the registry's club entries. Returns
+    the report lines for the women's sides that were renamed.
     """
     club_names = {
         r.club_qid: r.club_display_name
@@ -220,6 +242,10 @@ def _write_all(
         if r.club_qid and r.club_display_name
     }
     club_names |= {s.club_qid: s.club_display_name for r in records for s in r.career}
+    women = frozenset().union(*(r.women for r in records))
+    named = normalise.tell_womens_sides_apart(club_names, women)
+    renamed = sorted(q for q in club_names if named[q] != club_names[q])
+    club_names = named
     club_slugs.update(_slugs(club_slugs, club_names))
     old_list = _load(old / "clubs.json", {"clubs": []})["clubs"]
     old_clubs = {c["name"]: c for c in old_list}
@@ -268,6 +294,11 @@ def _write_all(
         version = previous.get("dataVersion", 0) + 1
         index |= {"dataVersion": version, "generateTime": now}
     _write(work / "index.json", index)
+    if not renamed:
+        return []
+    listed = ", ".join(f"{q} to {club_names[q]}" for q in renamed)
+    plural = "s" if len(renamed) > 1 else ""
+    return [f"renamed {len(renamed)} women's side{plural}: {listed}"]
 
 
 def _keep_time(new: dict[str, object], old: object) -> dict[str, object]:

@@ -96,11 +96,6 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
-      "displayName": "Australian Institute of Sport Football Program",
-      "name": "clubs/australian-institute-of-sport-football-program",
-      "updateTime": "2026-11-22T17:33:08Z"
-    },
-    {
       "displayName": "AZ Alkmaar",
       "name": "clubs/az-alkmaar",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -299,11 +294,6 @@
       "displayName": "FC Barcelona",
       "name": "clubs/fc-barcelona",
       "updateTime": "2026-11-21T03:57:58Z"
-    },
-    {
-      "displayName": "FC Barcelona Atlètic",
-      "name": "clubs/fc-barcelona-atletic",
-      "updateTime": "2026-11-22T17:33:08Z"
     },
     {
       "displayName": "FC Basel",
@@ -541,9 +531,9 @@
       "updateTime": "2026-11-21T22:00:18Z"
     },
     {
-      "displayName": "Melbourne City FC",
+      "displayName": "Melbourne City FC Women",
       "name": "clubs/melbourne-city-fc-2",
-      "updateTime": "2026-11-22T17:33:08Z"
+      "updateTime": "2026-11-22T18:00:30Z"
     },
     {
       "displayName": "Melbourne Knights Football Club",
@@ -573,11 +563,6 @@
     {
       "displayName": "Molde FK",
       "name": "clubs/molde-fk",
-      "updateTime": "2026-11-22T17:33:08Z"
-    },
-    {
-      "displayName": "New South Wales Institute of Sport",
-      "name": "clubs/new-south-wales-institute-of-sport",
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
@@ -666,9 +651,9 @@
       "updateTime": "2026-11-21T22:00:18Z"
     },
     {
-      "displayName": "Perth Glory FC",
+      "displayName": "Perth Glory FC Women",
       "name": "clubs/perth-glory-fc-2",
-      "updateTime": "2026-11-22T17:33:08Z"
+      "updateTime": "2026-11-22T18:00:30Z"
     },
     {
       "displayName": "Piteå IF",
@@ -676,9 +661,9 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
-      "displayName": "Piteå IF",
+      "displayName": "Piteå IF Women",
       "name": "clubs/pitea-if-2",
-      "updateTime": "2026-11-22T17:33:08Z"
+      "updateTime": "2026-11-22T18:00:30Z"
     },
     {
       "displayName": "Portland Thorns FC",
@@ -821,9 +806,9 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
-      "displayName": "Sydney FC",
+      "displayName": "Sydney FC Women",
       "name": "clubs/sydney-fc-2",
-      "updateTime": "2026-11-22T17:33:08Z"
+      "updateTime": "2026-11-22T18:00:30Z"
     },
     {
       "displayName": "Sydney United FC",
@@ -901,9 +886,9 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
-      "displayName": "Western Sydney Wanderers FC",
+      "displayName": "Western Sydney Wanderers FC Women",
       "name": "clubs/western-sydney-wanderers-fc-2",
-      "updateTime": "2026-11-22T17:33:08Z"
+      "updateTime": "2026-11-22T18:00:30Z"
     },
     {
       "displayName": "Zhejiang Professional F.C.",

@@ -38,6 +38,7 @@ _PARTS = {9: 1, 10: 2, 11: 3}  # Wikidata precision to ISO parts: year, month, d
 _ITEM = "wikibase-entityid"
 # A spell's qualifiers: start, end, matches played, goals and as-of date.
 _SPELL_QUALIFIERS = ("P580", "P582", "P1350", "P1351", "P585")
+WOMENS_FOOTBALL = "Q606060"  # Competition class (P2094): women's association football.
 _COUNTS = {"P1350", "P1351"}  # Qualifiers that are quantities. The rest are dates.
 _PARAMS = {"action": "wbgetentities", "languages": "en|mul", "format": "json"}
 
@@ -71,6 +72,7 @@ class Spell:
     source: str
     as_of: str
     code: str | None = None  # A national team's FIFA code (P3441), such as ENG.
+    women: bool = False  # A club whose competition class (P2094) is women's football.
 
 
 @dataclass(frozen=True)
@@ -178,7 +180,8 @@ def fetch_player(source: JsonSource, qid: str) -> PlayerFacts:
             code = _fifa_code(team_claims, f"P54 {team} P3441", skipped)
             national.append(replace(spell, code=code))
         else:
-            clubs.append(spell)
+            classes = _values(team_claims, "P2094", _ITEM, skipped)
+            clubs.append(replace(spell, women=WOMENS_FOOTBALL in classes))
 
     honours: list[Honour] = []
     for statement in _statements(claims, "P166"):

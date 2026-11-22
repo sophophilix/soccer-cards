@@ -4,21 +4,6 @@
       "appearanceCount": {
         "retrieveDate": "2026-11-01",
         "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
-        "value": 54
-      },
-      "club": "clubs/fc-barcelona-atletic",
-      "endYear": 2003,
-      "goalCount": {
-        "retrieveDate": "2026-11-01",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
-        "value": 5
-      },
-      "startYear": 2001
-    },
-    {
-      "appearanceCount": {
-        "retrieveDate": "2026-11-01",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
         "value": 442
       },
       "club": "clubs/fc-barcelona",
@@ -64,7 +49,7 @@
   "clubGoalCount": {
     "retrieveDate": "2026-11-01",
     "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
-    "value": 66
+    "value": 61
   },
   "displayName": "Andrés Iniesta",
   "name": "players/andres-iniesta",
@@ -102,5 +87,5 @@
   "position": "MIDFIELDER",
   "state": "RETIRED",
   "tier": "LEGEND",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-22T18:00:30Z"
 }

@@ -1,11 +1,6 @@
 {
   "careerSpells": [
     {
-      "club": "clubs/new-south-wales-institute-of-sport",
-      "endYear": 2009,
-      "startYear": 2008
-    },
-    {
       "appearanceCount": {
         "retrieveDate": "2026-11-16",
         "sourceUri": "https://www.wikidata.org/w/index.php?title=Q513258&oldid=2570199940",
@@ -126,6 +121,11 @@
     }
   ],
   "club": "clubs/arsenal-w-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-16",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q513258&oldid=2570199940",
+    "value": 25
+  },
   "displayName": "Caitlin Foord",
   "name": "players/caitlin-foord",
   "nationalTeamCode": "AUS",
@@ -135,7 +135,7 @@
     "pace": 83,
     "passing": 75,
     "physical": 75,
-    "shooting": 75
+    "shooting": 76
   },
   "photo": {
     "attribution": {
@@ -157,5 +157,5 @@
   "position": "MIDFIELDER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-22T18:00:30Z"
 }

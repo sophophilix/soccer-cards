@@ -426,3 +426,32 @@ def test_career_end_ignores_a_deprecated_statement() -> None:
 
 def test_career_end_is_absent_when_wikidata_has_none() -> None:
     assert fetch_player(SavedResponses(), "Q615").career_end is None
+
+
+def _womens_team(qid: str, classes: list[str]) -> Json:
+    found = [{"rank": "normal", "mainsnak": _item(item)} for item in classes]
+    return {"id": qid, "labels": {}, "claims": {"P2094": found}}
+
+
+@pytest.mark.parametrize(
+    ("classes", "women"),
+    [
+        (["Q606060"], True),
+        (["Q15991290", "Q606060"], True),
+        (["Q15991290"], False),
+        ([], False),
+    ],
+)
+def test_a_club_whose_competition_class_is_womens_football_is_a_womens_side(
+    classes: list[str], women: bool
+) -> None:
+    teams = {"entities": {"Q9": _womens_team("Q9", classes)}}
+    source = SavedResponses({"Q1": _player(_spells("Q9")), "Q9": teams})
+
+    (spell,) = fetch_player(source, "Q1").clubs
+
+    assert spell.women is women
+
+
+def test_a_saved_mens_club_is_not_a_womens_side() -> None:
+    assert not any(s.women for s in fetch_player(SavedResponses(), "Q615").clubs)
