@@ -30,7 +30,7 @@
         "overall": 78
       },
       "position": "MIDFIELDER",
-      "state": "RETIRED",
+      "state": "ACTIVE",
       "tier": "BASE"
     },
     {
@@ -907,7 +907,7 @@
         "overall": 82
       },
       "position": "FORWARD",
-      "state": "RETIRED",
+      "state": "ACTIVE",
       "tier": "BASE"
     },
     {
@@ -1076,7 +1076,7 @@
         "overall": 85
       },
       "position": "DEFENDER",
-      "state": "RETIRED",
+      "state": "ACTIVE",
       "tier": "RARE"
     },
     {
@@ -1703,7 +1703,7 @@
         "overall": 80
       },
       "position": "DEFENDER",
-      "state": "RETIRED",
+      "state": "ACTIVE",
       "tier": "BASE"
     },
     {

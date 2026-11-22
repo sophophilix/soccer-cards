@@ -1,4 +1,80 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q455462&oldid=2573159952",
+        "value": 180
+      },
+      "club": "clubs/atletico-madrid",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q455462&oldid=2573159952",
+        "value": 94
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q455462&oldid=2573159952",
+        "value": 74
+      },
+      "club": "clubs/fc-barcelona",
+      "endYear": 2022,
+      "goalCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q455462&oldid=2573159952",
+        "value": 22
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q455462&oldid=2573159952",
+        "value": 34
+      },
+      "club": "clubs/atletico-madrid",
+      "endYear": 2022,
+      "goalCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q455462&oldid=2573159952",
+        "value": 5
+      },
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q455462&oldid=2573159952",
+        "value": 135
+      },
+      "club": "clubs/atletico-madrid",
+      "endYear": 2026,
+      "goalCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q455462&oldid=2573159952",
+        "value": 44
+      },
+      "startYear": 2022
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-07-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q455462&oldid=2573159952",
+        "value": 1
+      },
+      "club": "clubs/orlando-city-sc",
+      "goalCount": {
+        "retrieveDate": "2026-07-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q455462&oldid=2573159952",
+        "value": 1
+      },
+      "startYear": 2026
+    }
+  ],
   "club": "clubs/orlando-city-sc",
   "clubGoalCount": {
     "retrieveDate": "2026-07-23",
@@ -41,5 +117,5 @@
   "position": "FORWARD",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-21T22:00:18Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

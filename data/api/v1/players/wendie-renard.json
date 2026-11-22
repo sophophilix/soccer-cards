@@ -1,4 +1,10 @@
 {
+  "careerSpells": [
+    {
+      "club": "clubs/ol-lyonnes",
+      "startYear": 2006
+    }
+  ],
   "club": "clubs/ol-lyonnes",
   "displayName": "Wendie Renard",
   "name": "players/wendie-renard",
@@ -31,5 +37,5 @@
   "position": "DEFENDER",
   "state": "ACTIVE",
   "tier": "RARE",
-  "updateTime": "2026-11-21T22:00:18Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

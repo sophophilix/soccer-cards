@@ -1,4 +1,121 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-04",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q360580&oldid=2553018907",
+        "value": 86
+      },
+      "club": "clubs/urawa-red-diamonds",
+      "endYear": 2001,
+      "goalCount": {
+        "retrieveDate": "2026-10-04",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q360580&oldid=2553018907",
+        "value": 20
+      },
+      "startYear": 1998
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-04",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q360580&oldid=2553018907",
+        "value": 112
+      },
+      "club": "clubs/feyenoord-rotterdam",
+      "endYear": 2005,
+      "goalCount": {
+        "retrieveDate": "2026-10-04",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q360580&oldid=2553018907",
+        "value": 19
+      },
+      "startYear": 2001
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-04",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q360580&oldid=2553018907",
+        "value": 53
+      },
+      "club": "clubs/urawa-red-diamonds",
+      "endYear": 2007,
+      "goalCount": {
+        "retrieveDate": "2026-10-04",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q360580&oldid=2553018907",
+        "value": 8
+      },
+      "startYear": 2006
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-04",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q360580&oldid=2553018907",
+        "value": 29
+      },
+      "club": "clubs/vfl-bochum",
+      "endYear": 2010,
+      "goalCount": {
+        "retrieveDate": "2026-10-04",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q360580&oldid=2553018907",
+        "value": 0
+      },
+      "startYear": 2007
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-04",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q360580&oldid=2553018907",
+        "value": 64
+      },
+      "club": "clubs/shimizu-s-pulse",
+      "endYear": 2012,
+      "goalCount": {
+        "retrieveDate": "2026-10-04",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q360580&oldid=2553018907",
+        "value": 8
+      },
+      "startYear": 2010
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-04",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q360580&oldid=2553018907",
+        "value": 51
+      },
+      "club": "clubs/western-sydney-wanderers-fc",
+      "endYear": 2014,
+      "goalCount": {
+        "retrieveDate": "2026-10-04",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q360580&oldid=2553018907",
+        "value": 10
+      },
+      "startYear": 2012
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-04",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q360580&oldid=2553018907",
+        "value": 62
+      },
+      "club": "clubs/hokkaido-consadole-sapporo",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-10-04",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q360580&oldid=2553018907",
+        "value": 2
+      },
+      "startYear": 2014
+    },
+    {
+      "club": "clubs/fc-ryukyu-okinawa",
+      "endYear": 2020,
+      "startYear": 2019
+    },
+    {
+      "club": "clubs/hokkaido-consadole-sapporo",
+      "endYear": 2023,
+      "startYear": 2021
+    }
+  ],
   "displayName": "Shinji Ono",
   "name": "players/shinji-ono",
   "nationalTeamCode": "JPN",
@@ -35,5 +152,5 @@
   "position": "MIDFIELDER",
   "state": "RETIRED",
   "tier": "BASE",
-  "updateTime": "2026-11-21T22:00:18Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

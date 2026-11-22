@@ -39,11 +39,15 @@ to the prototype so the kids can play it and give their verdict.
   turns it face up with a flip. A second tap turns a second one. If the two
   match, both stay face up. If not, both turn back after about a second.
   A third card can't be turned while two are showing.
-- The screen counts flips. It shows no timer.
+- The screen counts turns. A turn is two cards turned face up. It shows no
+  timer.
 - Finishing a board pays coins into `S.coins`: 3 for 6 pairs, 4 for 8 and 5
-  for 10, plus 1 more when the board took no more than twice as many flips
-  as it has pairs. The finish screen says what was earned and offers
-  "Play again" and a different board size.
+  for 10, plus 1 more when the board took no more than twice as many turns
+  as it has pairs (12 turns for 6 pairs). A perfect board takes as many
+  turns as pairs, so the bonus allows one miss per pair. The finish screen
+  says what was earned and offers "Play again" and a different board size.
+- The tab bar with five tabs fits a phone: at 320, 360 and 390 pixels wide
+  the page doesn't scroll sideways.
 - Leaving the tab mid-game is allowed. Coming back starts a new board, with
   no penalty and no message about the old one.
 - Every card is a button. A face-up card's accessible name is the player's
@@ -52,7 +56,7 @@ to the prototype so the kids can play it and give their verdict.
 
 ## Edge cases
 
-- A double tap on one card counts once.
+- A double tap on one card turns it once.
 - A tap on a card that's already matched does nothing.
 - The prototype's two free packs at the start give enough cards for a
   6-pair board. Check this.

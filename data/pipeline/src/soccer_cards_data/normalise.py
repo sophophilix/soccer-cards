@@ -42,7 +42,12 @@ SPECIFIC_POSITIONS = {
     "Q1489923": Position.DEFENDER,  # sweeper
 }
 # The fields written to players/{id}.json but not to the summary in players.json.
-FULL_ONLY = ("updateTime", "clubGoalCount", "nationalTeamGoalCount")
+FULL_ONLY = (
+    "updateTime",
+    "clubGoalCount",
+    "nationalTeamGoalCount",
+    "careerSpells",
+)
 PLAY_STATS = ("attack", "defence", "control", "overall")
 # Sanity bounds on one spell's appearances and goals. Above one is a data error.
 CLUB_BOUNDS = (1500, 1000)
@@ -77,6 +82,29 @@ class SizedPhoto:
 
 
 @dataclass(frozen=True)
+class ClubSpell:
+    """One senior club spell, keyed by the club's Q-id until the build has a slug."""
+
+    club_qid: str
+    club_display_name: str
+    start_year: int
+    end_year: int | None
+    appearances: dict[str, object] | None
+    goals: dict[str, object] | None
+
+    def body(self, club_slug: str) -> dict[str, object]:
+        """Return the spell as `careerSpells` holds it. Unknown values are absent."""
+        body: dict[str, object] = {
+            "club": f"clubs/{club_slug}",
+            "startYear": self.start_year,
+            "endYear": self.end_year,
+            "appearanceCount": self.appearances,
+            "goalCount": self.goals,
+        }
+        return {k: v for k, v in body.items() if v is not None}
+
+
+@dataclass(frozen=True)
 class PlayerRecord:
     """A player's `players/{id}.json` body, its list summary and what was dropped."""
 
@@ -85,6 +113,7 @@ class PlayerRecord:
     club_display_name: str | None
     problems: tuple[str, ...]
     club_qid: str | None = None  # The current club, which the build keys clubs by.
+    career: tuple[ClubSpell, ...] = ()  # Oldest first. The build adds the clubs.
 
 
 def senior_national_teams(facts: PlayerFacts) -> list[Spell]:
@@ -192,7 +221,57 @@ def build_player(
     player = {k: v for k, v in player.items() if v is not None}
     summary = {k: v for k, v in player.items() if k not in FULL_ONLY}
     club_qid = current[-1].team if club else None
-    return PlayerRecord(player, summary, club or None, tuple(problems), club_qid)
+    career = career_spells(facts, clubs, problems)
+    return PlayerRecord(
+        player, summary, club or None, tuple(problems), club_qid, career
+    )
+
+
+def career_spells(
+    facts: PlayerFacts, clubs: Sequence[Spell], problems: list[str]
+) -> tuple[ClubSpell, ...]:
+    """Return the senior club spells, oldest first, and report each one dropped.
+
+    `clubs` has the youth and reserve sides already left out. A spell with no
+    usable start year, an end before its start or a club with no checked
+    English label is dropped. Two spells at one club stay two items.
+    """
+    found: list[ClubSpell] = []
+    for spell in clubs:
+        start, end = _year(spell.start), _year(spell.end)
+        who = f"{facts.qid} {spell.team}"
+        try:
+            label = club_name(spell.team, spell.team_label)
+        except LabelError as exc:
+            problems.append(f"{facts.qid} {exc}: career spell dropped")
+            continue
+        if start is None:
+            problems.append(f"{who}: career spell has no start year, dropped")
+        elif spell.end and (end is None or end < start):
+            problems.append(f"{who}: career spell ends before it starts, dropped")
+        else:
+            counts = [
+                _spell_count(facts, spell, value, bound)
+                for value, bound in zip(
+                    (spell.appearances, spell.goals), CLUB_BOUNDS, strict=True
+                )
+            ]
+            found.append(ClubSpell(spell.team, label, start, end, *counts))
+    found.sort(key=lambda c: (c.start_year, c.end_year or 9999, c.club_qid))
+    return tuple(found)
+
+
+def _year(day: str | None) -> int | None:
+    """Return a date's year when it is in the range the schema allows."""
+    year = (day or "")[:4]
+    return int(year) if year.isdigit() and 1850 <= int(year) <= 2100 else None
+
+
+def _spell_count(
+    facts: PlayerFacts, spell: Spell, value: int | None, bound: int
+) -> dict[str, object] | None:
+    """Wrap one spell's count. A count over its bound is absent (`_totals` reports)."""
+    return None if value is None or value > bound else _sourced(facts, [spell], value)
 
 
 def _state(

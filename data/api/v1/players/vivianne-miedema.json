@@ -1,4 +1,50 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q2754626&oldid=2562672492",
+        "value": 74
+      },
+      "club": "clubs/sc-heerenveen",
+      "endYear": 2014,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q2754626&oldid=2562672492",
+        "value": 83
+      },
+      "startYear": 2011
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q2754626&oldid=2562672492",
+        "value": 78
+      },
+      "club": "clubs/fc-bayern-munich-women",
+      "endYear": 2017,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q2754626&oldid=2562672492",
+        "value": 52
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q2754626&oldid=2562672492",
+        "value": 61
+      },
+      "club": "clubs/arsenal-w-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q2754626&oldid=2562672492",
+        "value": 56
+      },
+      "startYear": 2017
+    }
+  ],
   "club": "clubs/arsenal-w-f-c",
   "clubGoalCount": {
     "retrieveDate": "2026-10-30",
@@ -41,5 +87,5 @@
   "position": "FORWARD",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-21T22:00:18Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

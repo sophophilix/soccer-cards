@@ -1,4 +1,79 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16056053&oldid=2556683035",
+        "value": 185
+      },
+      "club": "clubs/aston-villa-f-c",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16056053&oldid=2556683035",
+        "value": 29
+      },
+      "startYear": 2012
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16056053&oldid=2556683035",
+        "value": 37
+      },
+      "club": "clubs/notts-county-f-c",
+      "endYear": 2014,
+      "goalCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16056053&oldid=2556683035",
+        "value": 5
+      },
+      "startYear": 2013
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2025-05-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16056053&oldid=2556683035",
+        "value": 95
+      },
+      "club": "clubs/manchester-city-f-c",
+      "goalCount": {
+        "retrieveDate": "2025-05-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16056053&oldid=2556683035",
+        "value": 12
+      },
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16056053&oldid=2556683035",
+        "value": 20
+      },
+      "club": "clubs/everton-f-c",
+      "endYear": 2026,
+      "goalCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16056053&oldid=2556683035",
+        "value": 2
+      },
+      "startYear": 2025
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16056053&oldid=2556683035",
+        "value": 4
+      },
+      "club": "clubs/everton-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-10-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16056053&oldid=2556683035",
+        "value": 0
+      },
+      "startYear": 2026
+    }
+  ],
   "club": "clubs/everton-f-c",
   "clubGoalCount": {
     "retrieveDate": "2025-05-21",
@@ -41,5 +116,5 @@
   "position": "FORWARD",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-21T03:57:58Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

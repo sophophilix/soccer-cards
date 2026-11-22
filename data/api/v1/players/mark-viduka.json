@@ -1,4 +1,96 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-08-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q239513&oldid=2529583158",
+        "value": 48
+      },
+      "club": "clubs/melbourne-knights-football-club",
+      "endYear": 1995,
+      "goalCount": {
+        "retrieveDate": "2026-08-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q239513&oldid=2529583158",
+        "value": 40
+      },
+      "startYear": 1993
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-08-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q239513&oldid=2529583158",
+        "value": 84
+      },
+      "club": "clubs/gnk-dinamo-zagreb",
+      "endYear": 1998,
+      "goalCount": {
+        "retrieveDate": "2026-08-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q239513&oldid=2529583158",
+        "value": 40
+      },
+      "startYear": 1995
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-08-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q239513&oldid=2529583158",
+        "value": 37
+      },
+      "club": "clubs/celtic-f-c",
+      "endYear": 2000,
+      "goalCount": {
+        "retrieveDate": "2026-08-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q239513&oldid=2529583158",
+        "value": 30
+      },
+      "startYear": 1998
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-08-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q239513&oldid=2529583158",
+        "value": 130
+      },
+      "club": "clubs/leeds-united-f-c",
+      "endYear": 2004,
+      "goalCount": {
+        "retrieveDate": "2026-08-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q239513&oldid=2529583158",
+        "value": 59
+      },
+      "startYear": 2000
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-08-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q239513&oldid=2529583158",
+        "value": 72
+      },
+      "club": "clubs/middlesbrough-f-c",
+      "endYear": 2007,
+      "goalCount": {
+        "retrieveDate": "2026-08-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q239513&oldid=2529583158",
+        "value": 26
+      },
+      "startYear": 2004
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-08-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q239513&oldid=2529583158",
+        "value": 38
+      },
+      "club": "clubs/newcastle-united-f-c",
+      "endYear": 2009,
+      "goalCount": {
+        "retrieveDate": "2026-08-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q239513&oldid=2529583158",
+        "value": 7
+      },
+      "startYear": 2007
+    }
+  ],
   "clubGoalCount": {
     "retrieveDate": "2026-08-10",
     "sourceUri": "https://www.wikidata.org/w/index.php?title=Q239513&oldid=2529583158",
@@ -40,5 +132,5 @@
   "position": "FORWARD",
   "state": "RETIRED",
   "tier": "BASE",
-  "updateTime": "2026-11-21T22:00:18Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

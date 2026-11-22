@@ -1,4 +1,65 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21621995&oldid=2568603283",
+        "value": 41
+      },
+      "club": "clubs/as-monaco-fc",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21621995&oldid=2568603283",
+        "value": 16
+      },
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21621995&oldid=2568603283",
+        "value": 27
+      },
+      "club": "clubs/paris-saint-germain-fc",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21621995&oldid=2568603283",
+        "value": 13
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21621995&oldid=2568603283",
+        "value": 178
+      },
+      "club": "clubs/paris-saint-germain-fc",
+      "endYear": 2024,
+      "goalCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21621995&oldid=2568603283",
+        "value": 162
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-18",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21621995&oldid=2568603283",
+        "value": 74
+      },
+      "club": "clubs/real-madrid-club-de-futbol",
+      "goalCount": {
+        "retrieveDate": "2026-10-18",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21621995&oldid=2568603283",
+        "value": 65
+      },
+      "startYear": 2024
+    }
+  ],
   "club": "clubs/real-madrid-club-de-futbol",
   "clubGoalCount": {
     "retrieveDate": "2026-10-18",
@@ -41,5 +102,5 @@
   "position": "FORWARD",
   "state": "ACTIVE",
   "tier": "LEGEND",
-  "updateTime": "2026-11-21T03:57:58Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

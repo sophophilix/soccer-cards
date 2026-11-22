@@ -1,8 +1,54 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q22951255&oldid=2573445237",
+        "value": 292
+      },
+      "club": "clubs/manchester-united-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-09-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q22951255&oldid=2573445237",
+        "value": 87
+      },
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q22951255&oldid=2573445237",
+        "value": 10
+      },
+      "club": "clubs/aston-villa-f-c",
+      "endYear": 2025,
+      "goalCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q22951255&oldid=2573445237",
+        "value": 2
+      },
+      "startYear": 2025
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q22951255&oldid=2573445237",
+        "value": 32
+      },
+      "club": "clubs/fc-barcelona",
+      "endYear": 2026,
+      "goalCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q22951255&oldid=2573445237",
+        "value": 8
+      },
+      "startYear": 2025
+    }
+  ],
   "club": "clubs/manchester-united-f-c",
   "clubGoalCount": {
     "retrieveDate": "2026-09-20",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q22951255&oldid=2561179517",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q22951255&oldid=2573445237",
     "value": 97
   },
   "displayName": "Marcus Rashford",
@@ -10,7 +56,7 @@
   "nationalTeamCode": "ENG",
   "nationalTeamGoalCount": {
     "retrieveDate": "2026-07-18",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q22951255&oldid=2561179517",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q22951255&oldid=2573445237",
     "value": 19
   },
   "outfieldRatings": {
@@ -41,5 +87,5 @@
   "position": "FORWARD",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-21T03:57:58Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

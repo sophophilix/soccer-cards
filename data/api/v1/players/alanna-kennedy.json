@@ -1,4 +1,115 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4708263&oldid=2570191977",
+        "value": 3
+      },
+      "club": "clubs/sydney-fc-2",
+      "endYear": 2011,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4708263&oldid=2570191977",
+        "value": 0
+      },
+      "startYear": 2010
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4708263&oldid=2570191977",
+        "value": 9
+      },
+      "club": "clubs/newcastle-jets-fc",
+      "endYear": 2012,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4708263&oldid=2570191977",
+        "value": 1
+      },
+      "startYear": 2011
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4708263&oldid=2570191977",
+        "value": 12
+      },
+      "club": "clubs/sydney-fc-2",
+      "endYear": 2013,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4708263&oldid=2570191977",
+        "value": 3
+      },
+      "startYear": 2012
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4708263&oldid=2570191977",
+        "value": 9
+      },
+      "club": "clubs/western-sydney-wanderers-fc-2",
+      "endYear": 2014,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4708263&oldid=2570191977",
+        "value": 0
+      },
+      "startYear": 2013
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4708263&oldid=2570191977",
+        "value": 13
+      },
+      "club": "clubs/perth-glory-fc-2",
+      "endYear": 2014,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4708263&oldid=2570191977",
+        "value": 2
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4708263&oldid=2570191977",
+        "value": 13
+      },
+      "club": "clubs/perth-glory-fc-2",
+      "endYear": 2015,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4708263&oldid=2570191977",
+        "value": 3
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4708263&oldid=2570191977",
+        "value": 12
+      },
+      "club": "clubs/sydney-fc-2",
+      "endYear": 2016,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4708263&oldid=2570191977",
+        "value": 1
+      },
+      "startYear": 2015
+    },
+    {
+      "club": "clubs/western-new-york-flash",
+      "startYear": 2016
+    }
+  ],
   "club": "clubs/western-new-york-flash",
   "displayName": "Alanna Kennedy",
   "name": "players/alanna-kennedy",
@@ -36,5 +147,5 @@
   "position": "MIDFIELDER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-21T22:00:18Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

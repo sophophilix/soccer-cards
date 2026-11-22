@@ -1,4 +1,95 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q969725&oldid=2572768211",
+        "value": 317
+      },
+      "club": "clubs/tottenham-hotspur-f-c",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-11-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q969725&oldid=2572768211",
+        "value": 213
+      },
+      "startYear": 2009
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q969725&oldid=2572768211",
+        "value": 18
+      },
+      "club": "clubs/leyton-orient-f-c",
+      "endYear": 2011,
+      "goalCount": {
+        "retrieveDate": "2026-11-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q969725&oldid=2572768211",
+        "value": 5
+      },
+      "startYear": 2011
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q969725&oldid=2572768211",
+        "value": 22
+      },
+      "club": "clubs/millwall-f-c",
+      "endYear": 2012,
+      "goalCount": {
+        "retrieveDate": "2026-11-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q969725&oldid=2572768211",
+        "value": 7
+      },
+      "startYear": 2012
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q969725&oldid=2572768211",
+        "value": 3
+      },
+      "club": "clubs/norwich-city-f-c",
+      "endYear": 2013,
+      "goalCount": {
+        "retrieveDate": "2026-11-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q969725&oldid=2572768211",
+        "value": 0
+      },
+      "startYear": 2012
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q969725&oldid=2572768211",
+        "value": 13
+      },
+      "club": "clubs/leicester-city-f-c",
+      "endYear": 2013,
+      "goalCount": {
+        "retrieveDate": "2026-11-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q969725&oldid=2572768211",
+        "value": 2
+      },
+      "startYear": 2013
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q969725&oldid=2572768211",
+        "value": 99
+      },
+      "club": "clubs/fc-bayern-munich",
+      "goalCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q969725&oldid=2572768211",
+        "value": 101
+      },
+      "startYear": 2023
+    }
+  ],
   "club": "clubs/fc-bayern-munich",
   "clubGoalCount": {
     "retrieveDate": "2026-10-10",
@@ -41,5 +132,5 @@
   "position": "FORWARD",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-21T22:00:18Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

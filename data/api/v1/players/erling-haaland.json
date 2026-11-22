@@ -1,4 +1,80 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+        "value": 16
+      },
+      "club": "clubs/bryne-fk",
+      "endYear": 2017,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+        "value": 0
+      },
+      "startYear": 2016
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+        "value": 39
+      },
+      "club": "clubs/molde-fk",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+        "value": 14
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+        "value": 16
+      },
+      "club": "clubs/fc-red-bull-salzburg",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+        "value": 17
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+        "value": 67
+      },
+      "club": "clubs/borussia-dortmund",
+      "endYear": 2022,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+        "value": 62
+      },
+      "startYear": 2020
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-12",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+        "value": 138
+      },
+      "club": "clubs/manchester-city-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-10-12",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+        "value": 118
+      },
+      "startYear": 2022
+    }
+  ],
   "club": "clubs/manchester-city-f-c",
   "clubGoalCount": {
     "retrieveDate": "2026-10-12",
@@ -41,5 +117,5 @@
   "position": "FORWARD",
   "state": "ACTIVE",
   "tier": "RARE",
-  "updateTime": "2026-11-21T03:57:58Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

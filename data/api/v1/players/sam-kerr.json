@@ -1,4 +1,141 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
+        "value": 22
+      },
+      "club": "clubs/perth-glory-fc-2",
+      "endYear": 2011,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
+        "value": 5
+      },
+      "startYear": 2008
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
+        "value": 12
+      },
+      "club": "clubs/sydney-fc-2",
+      "endYear": 2013,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
+        "value": 9
+      },
+      "startYear": 2012
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
+        "value": 19
+      },
+      "club": "clubs/western-new-york-flash",
+      "endYear": 2013,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
+        "value": 6
+      },
+      "startYear": 2013
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
+        "value": 12
+      },
+      "club": "clubs/sydney-fc-2",
+      "endYear": 2014,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
+        "value": 4
+      },
+      "startYear": 2013
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
+        "value": 20
+      },
+      "club": "clubs/western-new-york-flash",
+      "endYear": 2014,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
+        "value": 9
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
+        "value": 49
+      },
+      "club": "clubs/perth-glory-fc-2",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
+        "value": 52
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
+        "value": 40
+      },
+      "club": "clubs/gotham-fc",
+      "endYear": 2017,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
+        "value": 28
+      },
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
+        "value": 43
+      },
+      "club": "clubs/chicago-stars-fc",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
+        "value": 35
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
+        "value": 20
+      },
+      "club": "clubs/chelsea-f-c-women",
+      "endYear": 2026,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
+        "value": 13
+      },
+      "startYear": 2020
+    }
+  ],
   "clubGoalCount": {
     "retrieveDate": "2026-11-16",
     "sourceUri": "https://www.wikidata.org/w/index.php?title=Q919634&oldid=2570212538",
@@ -40,5 +177,5 @@
   "position": "FORWARD",
   "state": "RETIRED",
   "tier": "RARE",
-  "updateTime": "2026-11-21T22:00:18Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

@@ -54,6 +54,7 @@
 			"retrieveDate": "2026-11-01"
 		}
 	],
+	"careerSpells": [{ "club": "clubs/harbour-rovers", "startYear": 2009, "endYear": 2026 }],
 	"careerStartYear": 2009,
 	"careerEndYear": 2026
 }

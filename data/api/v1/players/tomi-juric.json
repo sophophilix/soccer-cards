@@ -1,4 +1,86 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q7818846&oldid=2568107291",
+        "value": 24
+      },
+      "club": "clubs/nk-croatia-sesvete",
+      "endYear": 2011,
+      "goalCount": {
+        "retrieveDate": "2026-11-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q7818846&oldid=2568107291",
+        "value": 12
+      },
+      "startYear": 2010
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q7818846&oldid=2568107291",
+        "value": 14
+      },
+      "club": "clubs/nk-lokomotiva",
+      "endYear": 2012,
+      "goalCount": {
+        "retrieveDate": "2026-11-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q7818846&oldid=2568107291",
+        "value": 3
+      },
+      "startYear": 2011
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q7818846&oldid=2568107291",
+        "value": 12
+      },
+      "club": "clubs/nk-inter-zapresic",
+      "endYear": 2013,
+      "goalCount": {
+        "retrieveDate": "2026-11-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q7818846&oldid=2568107291",
+        "value": 1
+      },
+      "startYear": 2012
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q7818846&oldid=2568107291",
+        "value": 7
+      },
+      "club": "clubs/adelaide-united-football-club",
+      "endYear": 2013,
+      "goalCount": {
+        "retrieveDate": "2026-11-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q7818846&oldid=2568107291",
+        "value": 2
+      },
+      "startYear": 2013
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q7818846&oldid=2568107291",
+        "value": 34
+      },
+      "club": "clubs/western-sydney-wanderers-fc",
+      "endYear": 2015,
+      "goalCount": {
+        "retrieveDate": "2026-11-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q7818846&oldid=2568107291",
+        "value": 12
+      },
+      "startYear": 2013
+    },
+    {
+      "club": "clubs/roda-jc-kerkrade",
+      "endYear": 2016,
+      "startYear": 2015
+    }
+  ],
   "club": "clubs/fc-luzern",
   "displayName": "Tomi Juric",
   "name": "players/tomi-juric",
@@ -31,5 +113,5 @@
   "position": "FORWARD",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-21T22:00:18Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }

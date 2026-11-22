@@ -1,4 +1,140 @@
 {
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+        "value": 19
+      },
+      "club": "clubs/frankston-pines",
+      "endYear": 2009,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+        "value": 1
+      },
+      "startYear": 2009
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+        "value": 1
+      },
+      "club": "clubs/celtic-f-c",
+      "endYear": 2015,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+        "value": 0
+      },
+      "startYear": 2012
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+        "value": 27
+      },
+      "club": "clubs/kilmarnock-f-c",
+      "endYear": 2014,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+        "value": 1
+      },
+      "startYear": 2013
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+        "value": 28
+      },
+      "club": "clubs/ross-county-f-c",
+      "endYear": 2015,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+        "value": 2
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+        "value": 36
+      },
+      "club": "clubs/ross-county-f-c",
+      "endYear": 2016,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+        "value": 2
+      },
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+        "value": 44
+      },
+      "club": "clubs/burton-albion-f-c",
+      "endYear": 2017,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+        "value": 11
+      },
+      "startYear": 2016
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+        "value": 107
+      },
+      "club": "clubs/hull-city-a-f-c",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+        "value": 10
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2025-11-29",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+        "value": 141
+      },
+      "club": "clubs/fc-st-pauli",
+      "endYear": 2026,
+      "goalCount": {
+        "retrieveDate": "2025-11-29",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+        "value": 15
+      },
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-08-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+        "value": 1
+      },
+      "club": "clubs/cerezo-osaka",
+      "goalCount": {
+        "retrieveDate": "2026-08-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+        "value": 0
+      },
+      "startYear": 2026
+    }
+  ],
   "club": "clubs/cerezo-osaka",
   "clubGoalCount": {
     "retrieveDate": "2025-11-29",
@@ -41,5 +177,5 @@
   "position": "MIDFIELDER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-21T22:00:18Z"
+  "updateTime": "2026-11-22T17:33:08Z"
 }
