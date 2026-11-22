@@ -91,7 +91,7 @@ def test_outfield_player_from_saved_facts_is_schema_valid() -> None:
     assert player["club"] == "clubs/inter-miami-cf"
     assert record.club_display_name == "Inter Miami CF"
     assert player["clubGoalCount"] == {
-        "value": 6 + 474 + 22 + 68,  # Not FC Barcelona C, a reserve team.
+        "value": 474 + 22 + 68,  # Not FC Barcelona C, a reserve team.
         "sourceUri": MESSI,
         "retrieveDate": "2026-08-30",
     }
@@ -119,7 +119,9 @@ def test_goalkeeper_without_photo_has_keeper_ratings_and_no_photo() -> None:
 
 def test_same_input_gives_the_same_output() -> None:
     first, second = _build(_facts()), _build(_facts())
-    assert json.dumps(asdict(first)) == json.dumps(asdict(second))  # Same bytes.
+    assert json.dumps(asdict(first), default=sorted) == json.dumps(
+        asdict(second), default=sorted
+    )  # Same bytes.
 
 
 @pytest.mark.parametrize("tier", ["ICON", "BASE", "LEGEND"])
@@ -195,7 +197,7 @@ def test_career_end_retires_a_player_with_only_closed_recent_spells() -> None:
 @pytest.mark.parametrize(("label", "total"), [(None, None), ("Barca U19", 564)])
 def test_unknown_count_voids_total_unless_youth(label: Any, total: Any) -> None:
     clubs = _facts().clubs
-    second = clubs[1]  # FC Barcelona Atlètic: 6 of the 570 club goals.
+    second = replace(clubs[1], team_label="Rivertown FC")  # 6 of the 570 goals.
     second = replace(second, goals=None, team_label=label or second.team_label)
     record: Any = _build(replace(_facts(), clubs=(clubs[0], second, *clubs[2:])))
     assert record.player.get("clubGoalCount", {}).get("value") == total
@@ -286,8 +288,18 @@ YOUTH_LABELS = [
     "Rivertown B-Team",
     "Rivertown C",
     "Rivertown II",
+    "FC Barcelona Atlètic",
+    "Rivertown Atletic",
+    "Australian Institute of Sport Football Program",
+    "New South Wales Institute of Sport",
+    "Rivertown Academy",
 ]
 SENIOR_LABELS = [
+    "Atlético Madrid",
+    "Athletic Club",
+    "Atletic Rovers",
+    "Institute Town FC",
+    "Sportinstitute United",
     "Youthville Rovers",
     "Academical Rivertown",
     "Juvenilia FC",
@@ -316,7 +328,7 @@ def test_youth_and_reserve_spells_are_left_out(label: str) -> None:
     record: Any = _with_current_club(label, goals=999, as_of="2019-05")
     assert record.club_display_name == "Inter Miami CF"  # The current club.
     assert record.player["clubGoalCount"] == {
-        "value": 6 + 474 + 22 + 68,
+        "value": 474 + 22 + 68,
         "sourceUri": MESSI,
         "retrieveDate": "2026-08-30",  # Not the youth spell's 2019-05-01.
     }
@@ -327,7 +339,7 @@ def test_youth_and_reserve_spells_are_left_out(label: str) -> None:
 def test_senior_clubs_with_youth_letters_are_kept(label: str) -> None:
     record: Any = _with_current_club(label, goals=1, as_of="2019-05")
     assert record.club_display_name == label
-    assert record.player["clubGoalCount"]["value"] == 6 + 474 + 22 + 68 + 1
+    assert record.player["clubGoalCount"]["value"] == 474 + 22 + 68 + 1
     assert record.player["clubGoalCount"]["retrieveDate"] == "2019-05-01"
 
 
@@ -440,12 +452,12 @@ def test_career_spells_run_oldest_first_and_leave_out_youth_sides() -> None:
     record: Any = _build(_facts())
     first, *_, last = record.career
     assert [s.club_display_name for s in record.career] == [
-        "FC Barcelona Atlètic",  # Not matched by the youth rule, as before.
         "FC Barcelona",
         "Paris Saint-Germain FC",
         "Inter Miami CF",
     ]
-    assert (first.start_year, first.end_year) == (2004, 2005)
+    assert first.club_display_name == "FC Barcelona"
+    assert (first.start_year, first.end_year) == (2004, 2021)
     assert (last.start_year, last.end_year) == (2023, None)  # Still running.
     assert last.body("inter-miami-cf") == {
         "club": "clubs/inter-miami-cf",
@@ -462,18 +474,18 @@ def test_career_spells_run_oldest_first_and_leave_out_youth_sides() -> None:
 
 def test_a_spell_with_no_start_year_is_dropped_and_reported() -> None:
     clubs = _facts().clubs
-    bad = replace(clubs[1], start=None)
-    spells, problems = _spells((bad, *clubs[2:]))
-    assert len(spells) == 3
-    assert "Q615 Q10467: career spell has no start year, dropped" in problems
+    bad = replace(clubs[2], start=None)
+    spells, problems = _spells((bad, *clubs[3:]))
+    assert len(spells) == 2
+    assert "Q615 Q7156: career spell has no start year, dropped" in problems
 
 
 def test_a_spell_ending_before_it_starts_is_dropped_and_reported() -> None:
     clubs = _facts().clubs
-    bad = replace(clubs[1], start="2006", end="2005")
-    spells, problems = _spells((bad, *clubs[2:]))
-    assert len(spells) == 3
-    assert "Q615 Q10467: career spell ends before it starts, dropped" in problems
+    bad = replace(clubs[2], start="2006", end="2005")
+    spells, problems = _spells((bad, *clubs[3:]))
+    assert len(spells) == 2
+    assert "Q615 Q7156: career spell ends before it starts, dropped" in problems
 
 
 def test_two_spells_at_one_club_are_two_items_and_a_missing_count_is_absent() -> None:
@@ -492,3 +504,55 @@ def test_two_spells_at_one_club_are_two_items_and_a_missing_count_is_absent() ->
 def test_a_player_with_no_senior_club_spell_has_no_career_field() -> None:
     record: Any = _build(replace(_facts(), clubs=()))
     assert record.career == ()
+
+
+def test_an_unparseable_end_date_is_reported_as_unparseable() -> None:
+    clubs = _facts().clubs
+    bad = replace(clubs[2], start="2006", end="soon")
+    spells, problems = _spells((bad, *clubs[3:]))
+    assert len(spells) == 2
+    assert "Q615 Q7156: career spell end date is unparseable, dropped" in problems
+    assert not [p for p in problems if "before it starts" in p]
+
+
+def test_a_reserve_side_is_not_a_career_spell_or_the_current_club() -> None:
+    record: Any = _with_current_club("FC Barcelona Atlètic", goals=1)
+    assert record.club_display_name == "Inter Miami CF"
+    assert "FC Barcelona Atlètic" not in [s.club_display_name for s in record.career]
+
+
+def test_a_womens_side_is_named_in_the_record() -> None:
+    barca = replace(_facts().clubs[2], team="Q999002", women=True)
+    miami = _facts().clubs[-1]
+    record = _build(replace(_facts(), clubs=(barca, miami)))
+    assert record.women == frozenset({"Q999002"})
+    assert _build(_facts()).women == frozenset()
+
+
+def test_a_womens_side_that_shares_a_name_gains_women() -> None:
+    names = {"Q1": "Sydney FC", "Q2": "Sydney FC", "Q3": "Perth Glory FC"}
+    renamed = normalise.tell_womens_sides_apart(names, frozenset({"Q2", "Q3"}))
+    assert renamed == {
+        "Q1": "Sydney FC",
+        "Q2": "Sydney FC Women",
+        "Q3": "Perth Glory FC",
+    }
+
+
+@pytest.mark.parametrize(
+    "name", ["Arsenal W.F.C.", "Chelsea F.C. Women", "Rovers Ladies"]
+)
+def test_a_name_that_already_says_women_is_left_alone(name: str) -> None:
+    names = {"Q1": name, "Q2": name}
+    assert normalise.tell_womens_sides_apart(names, frozenset({"Q2"})) == names
+
+
+def test_a_womens_side_with_no_mens_side_keeps_its_label() -> None:
+    names = {"Q1": "Orlando Pride"}
+    assert normalise.tell_womens_sides_apart(names, frozenset({"Q1"})) == names
+
+
+def test_a_mens_side_is_never_renamed() -> None:
+    names = {"Q1": "Sydney FC", "Q2": "Sydney FC"}
+    renamed = normalise.tell_womens_sides_apart(names, frozenset({"Q2"}))
+    assert renamed["Q1"] == "Sydney FC"

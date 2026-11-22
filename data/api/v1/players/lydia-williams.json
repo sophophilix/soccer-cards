@@ -1,11 +1,6 @@
 {
   "careerSpells": [
     {
-      "club": "clubs/australian-institute-of-sport-football-program",
-      "endYear": 2008,
-      "startYear": 2004
-    },
-    {
       "appearanceCount": {
         "retrieveDate": "2026-11-16",
         "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4990582&oldid=2570203376",
@@ -181,5 +176,5 @@
   "position": "GOALKEEPER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-22T18:00:30Z"
 }

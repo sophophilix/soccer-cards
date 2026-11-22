@@ -4,21 +4,6 @@
       "appearanceCount": {
         "retrieveDate": "2026-11-12",
         "sourceUri": "https://www.wikidata.org/w/index.php?title=Q615&oldid=2568260945",
-        "value": 22
-      },
-      "club": "clubs/fc-barcelona-atletic",
-      "endYear": 2005,
-      "goalCount": {
-        "retrieveDate": "2026-11-12",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q615&oldid=2568260945",
-        "value": 6
-      },
-      "startYear": 2004
-    },
-    {
-      "appearanceCount": {
-        "retrieveDate": "2026-11-12",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q615&oldid=2568260945",
         "value": 520
       },
       "club": "clubs/fc-barcelona",
@@ -64,7 +49,7 @@
   "clubGoalCount": {
     "retrieveDate": "2026-08-30",
     "sourceUri": "https://www.wikidata.org/w/index.php?title=Q615&oldid=2568260945",
-    "value": 570
+    "value": 564
   },
   "displayName": "Lionel Messi",
   "name": "players/lionel-messi",
@@ -102,5 +87,5 @@
   "position": "FORWARD",
   "state": "ACTIVE",
   "tier": "ICON",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-22T18:00:30Z"
 }

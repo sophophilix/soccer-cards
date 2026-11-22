@@ -136,11 +136,10 @@ def test_a_build_writes_every_file_valid_and_sorted(tmp_path: Path) -> None:
     index = _json(api / "index.json")
     assert (index["formulaVersion"], index["dataVersion"]) == (FORMULA_VERSION, 1)
     assert index["generateTime"] == FIRST
-    assert [c["itemCount"] for c in index["collections"]] == [6, 1, 2]
+    assert [c["itemCount"] for c in index["collections"]] == [5, 1, 2]
     clubs = [c["name"] for c in _json(api / "clubs.json")["clubs"]]
     assert clubs == [
         "clubs/fc-barcelona",
-        "clubs/fc-barcelona-atletic",
         "clubs/fc-bayern-munich",
         "clubs/inter-miami-cf",
         "clubs/paris-saint-germain-fc",
@@ -431,18 +430,60 @@ def test_every_spells_club_is_in_clubs_and_the_report_counts_spells(
     messi = _json(api / "players/lionel-messi.json")
     spells = messi["careerSpells"]
     assert [(s["club"], s["startYear"]) for s in spells] == [
-        ("clubs/fc-barcelona-atletic", 2004),
         ("clubs/fc-barcelona", 2004),
         ("clubs/paris-saint-germain-fc", 2021),
         ("clubs/inter-miami-cf", 2023),
     ]
-    assert spells[1]["appearanceCount"]["value"] == 520
+    assert spells[0]["appearanceCount"]["value"] == 520
+    assert "clubs/fc-barcelona-atletic" not in clubs
     assert {s["club"] for s in spells} <= clubs
     assert "endYear" not in spells[-1]
     assert "careerSpells" not in _json(api / "players.json")["players"][0]
     ids = (tmp_path / "ids.toml").read_text(encoding="utf-8")
     assert 'Q7156 = "fc-barcelona"' in ids
     assert (
-        "career spells: 2 of 2 players have spells, 6 spells, 6 with games and goals"
+        "career spells: 2 of 2 players have spells, 5 spells, 5 with games and goals"
         in problems
     )
+    (left_out,) = (p for p in problems if p.startswith("left out "))
+    assert "reserve, youth or academy sides: " in left_out
+    assert "FC Barcelona Atlètic (Q10467)" in left_out
+    assert "FC Barcelona C (Q2346842)" in left_out
+
+
+def _womens_psg(net: FakeWikimedia) -> FakeWikimedia:
+    """Make Inter Miami CF a women's side that shares PSG's name."""
+    entity = net.teams[0]["entities"]["Q16844931"]
+    entity["labels"]["en"] = {"language": "en", "value": "Paris Saint-Germain FC"}
+    value = {"type": "wikibase-entityid", "value": {"id": "Q606060"}}
+    item = {"snaktype": "value", "datavalue": value}
+    entity["claims"] = {"P2094": [{"rank": "normal", "mainsnak": item}]}
+    return net
+
+
+def test_a_womens_side_sharing_a_name_gains_women_and_is_reported(
+    tmp_path: Path,
+) -> None:
+    problems = _run(tmp_path, net=_womens_psg(FakeWikimedia()))
+
+    api = tmp_path / "api/v1"
+    names = [c["displayName"] for c in _json(api / "clubs.json")["clubs"]]
+    assert names.count("Paris Saint-Germain FC") == 1
+    assert names.count("Paris Saint-Germain FC Women") == 1
+    assert len(names) == len(set(names))
+    assert (
+        "renamed 1 women's side: Q16844931 to Paris Saint-Germain FC Women" in problems
+    )
+
+
+def test_a_registered_slug_is_kept_when_its_club_gains_women(tmp_path: Path) -> None:
+    _run(tmp_path)
+    ids = tmp_path / "ids.toml"
+    assert 'Q16844931 = "inter-miami-cf"' in ids.read_text(encoding="utf-8")
+
+    _run(tmp_path, LATER, _womens_psg(FakeWikimedia()))
+
+    after = ids.read_text(encoding="utf-8")
+    assert 'Q16844931 = "inter-miami-cf"' in after  # Never changed or reused.
+    clubs = _json(tmp_path / "api/v1/clubs.json")["clubs"]
+    assert "clubs/inter-miami-cf" in {c["name"] for c in clubs}

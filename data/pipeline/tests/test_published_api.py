@@ -5,6 +5,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
+from soccer_cards_data.normalise import is_youth_side
 from soccer_cards_data.validate import validate
 
 API = Path(__file__).resolve().parents[2] / "api/v1"
@@ -67,3 +68,18 @@ def test_every_spells_club_is_in_clubs_and_spells_are_ordered() -> None:
         assert starts == sorted(starts), path.name
         assert all(s.get("endYear", s["startYear"]) >= s["startYear"] for s in spells)
     assert with_spells > 0
+
+
+def test_no_two_clubs_share_a_display_name() -> None:
+    names = [c["displayName"] for c in _json("clubs.json")["clubs"]]
+    assert [n for n, count in Counter(names).items() if count > 1] == []
+
+
+def test_no_reserve_or_academy_side_is_a_club() -> None:
+    names = {c["displayName"] for c in _json("clubs.json")["clubs"]}
+    assert not names & {
+        "FC Barcelona Atlètic",
+        "Australian Institute of Sport Football Program",
+        "New South Wales Institute of Sport",
+    }
+    assert not [n for n in names if is_youth_side(n)]

@@ -7,14 +7,21 @@ A count over its sanity bound is reported in `problems` and treated as absent.
 """
 
 import re
-from collections.abc import Sequence
+from collections import Counter
+from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
 from datetime import date
 
 from soccer_cards_data import ratings
 from soccer_cards_data.commons import Avatar, Publish
 from soccer_cards_data.grades import GradeEntry, Override
-from soccer_cards_data.names import LabelError, assign_slugs, club_name, display_name
+from soccer_cards_data.names import (
+    LabelError,
+    assign_slugs,
+    club_name,
+    display_name,
+    is_plain,
+)
 from soccer_cards_data.photos import Photo
 from soccer_cards_data.wikidata import PlayerFacts, Spell
 
@@ -57,16 +64,21 @@ _FIFA = re.compile(r"[A-Z]{3}")
 _SLUG = re.compile(r"[a-z][a-z0-9-]{0,62}")
 _PHOTO_URI = re.compile(r"photos/[A-Za-z0-9_-]+\.webp")
 _MOMENT = re.compile(r"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ")
-# Youth and reserve teams: "Under-21s", "U23", "Juvenil A", "Youth", "Academy",
-# "Reserves", "B team", and a last word of B, C, II or III ("FC Schalke 04 II").
-# Whole words only, so "Youthville", "Academical" and "B36" stay senior.
+# Youth, reserve and academy teams: "Under-21s", "U23", "Juvenil A", "Youth",
+# "Academy", "Reserves", "B team", a last word of B, C, II, III or Atlètic ("FC
+# Schalke 04 II", "FC Barcelona Atlètic") and a sports institute ("Institute of
+# Sport"). Whole words only, so "Youthville", "Academical", "B36", "Atlético
+# Madrid" and "Athletic Club" stay senior.
 _YOUTH = re.compile(
     r"\b(?:under[- ]?\d{1,2}|u-?\d\d)s?\b"
     r"|\b(?:juvenil|youth|academy|reserves?)\b"
     r"|\bB[- ]team\b"
-    r"|\s(?:B|C|II|III)$",
+    r"|\binstitute of sport\b"
+    r"|\s(?:B|C|II|III|Atl[eè]tic)$",
     re.IGNORECASE,
 )
+# A name that already says it is a women's side.
+_WOMEN_NAME = re.compile(r"\bwomen\b|\bladies\b|\bW\.?F\.?C\b", re.IGNORECASE)
 
 
 class NormaliseError(ValueError):
@@ -114,6 +126,7 @@ class PlayerRecord:
     problems: tuple[str, ...]
     club_qid: str | None = None  # The current club, which the build keys clubs by.
     career: tuple[ClubSpell, ...] = ()  # Oldest first. The build adds the clubs.
+    women: frozenset[str] = frozenset()  # Q-ids of its clubs that are women's sides.
 
 
 def senior_national_teams(facts: PlayerFacts) -> list[Spell]:
@@ -222,9 +235,37 @@ def build_player(
     summary = {k: v for k, v in player.items() if k not in FULL_ONLY}
     club_qid = current[-1].team if club else None
     career = career_spells(facts, clubs, problems)
+    women = frozenset(s.team for s in clubs if s.women)
     return PlayerRecord(
-        player, summary, club or None, tuple(problems), club_qid, career
+        player, summary, club or None, tuple(problems), club_qid, career, women
     )
+
+
+def is_youth_side(label: str | None) -> bool:
+    """Return whether a club label is a youth, reserve or academy side."""
+    return bool(_YOUTH.search(label or ""))
+
+
+def tell_womens_sides_apart(
+    names: Mapping[str, str], women: frozenset[str]
+) -> dict[str, str]:
+    """Add " Women" to a women's side that shares its name with another club.
+
+    A name that already says so, such as "Arsenal W.F.C.", and a name that
+    isn't plain once extended, are left as they are.
+    """
+    shared = Counter(names.values())
+    renamed = dict(names)
+    for qid, name in names.items():
+        longer = f"{name} Women"
+        if (
+            qid in women
+            and shared[name] > 1
+            and not _WOMEN_NAME.search(name)
+            and is_plain(longer)
+        ):
+            renamed[qid] = longer
+    return renamed
 
 
 def career_spells(
@@ -247,7 +288,9 @@ def career_spells(
             continue
         if start is None:
             problems.append(f"{who}: career spell has no start year, dropped")
-        elif spell.end and (end is None or end < start):
+        elif spell.end and end is None:
+            problems.append(f"{who}: career spell end date is unparseable, dropped")
+        elif end is not None and end < start:
             problems.append(f"{who}: career spell ends before it starts, dropped")
         else:
             counts = [
