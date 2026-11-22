@@ -22,6 +22,12 @@ export type Player = PlayerSummary & {
 	 */
 	awards?: Award[];
 	/**
+	 * The clubs the player played for, oldest first. Youth and reserve sides are left out.
+	 *
+	 * @minItems 1
+	 */
+	careerSpells?: [CareerSpell, ...CareerSpell[]];
+	/**
 	 * The year of the first senior match.
 	 */
 	careerStartYear?: number;
@@ -61,6 +67,24 @@ export type TransferFee = Sourced & {
 	nanos: number;
 };
 export type Award = Sourced & Award1;
+/**
+ * The player's games for the club in this spell.
+ */
+export type AppearanceCount = Sourced & {
+	/**
+	 * The number of games.
+	 */
+	value: number;
+};
+/**
+ * The player's goals for the club in this spell.
+ */
+export type GoalCount2 = Sourced & {
+	/**
+	 * The number of goals.
+	 */
+	value: number;
+};
 
 export interface PlayerSummary {
 	/**
@@ -242,4 +266,20 @@ export interface Award1 {
 	 * The award's name.
 	 */
 	displayName: string;
+}
+export interface CareerSpell {
+	/**
+	 * The club's resource name, clubs/{club}.
+	 */
+	club: string;
+	/**
+	 * The year the spell began.
+	 */
+	startYear: number;
+	/**
+	 * The year the spell ended. Absent while the player is still at the club.
+	 */
+	endYear?: number;
+	appearanceCount?: AppearanceCount;
+	goalCount?: GoalCount2;
 }

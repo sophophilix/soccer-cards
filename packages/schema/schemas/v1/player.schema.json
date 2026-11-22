@@ -28,6 +28,12 @@
 			"type": "array",
 			"items": { "$ref": "#/$defs/award" }
 		},
+		"careerSpells": {
+			"description": "The clubs the player played for, oldest first. Youth and reserve sides are left out.",
+			"type": "array",
+			"minItems": 1,
+			"items": { "$ref": "#/$defs/careerSpell" }
+		},
 		"careerStartYear": { "description": "The year of the first senior match.", "type": "integer" },
 		"careerEndYear": { "description": "The year of the last senior match.", "type": "integer" }
 	},
@@ -209,6 +215,49 @@
 				"value": { "description": "The number of goals.", "type": "integer", "minimum": 0 }
 			},
 			"required": ["value"]
+		},
+		"appearanceCount": {
+			"title": "AppearanceCount",
+			"type": "object",
+			"allOf": [{ "$ref": "#/$defs/sourced" }],
+			"properties": {
+				"value": { "description": "The number of games.", "type": "integer", "minimum": 0 }
+			},
+			"required": ["value"]
+		},
+		"careerSpell": {
+			"title": "CareerSpell",
+			"$comment": "An endYear earlier than startYear passes this schema. The pipeline's validate stage refuses it (T-0142).",
+			"type": "object",
+			"properties": {
+				"club": {
+					"description": "The club's resource name, clubs/{club}.",
+					"type": "string",
+					"pattern": "^clubs/[a-z][a-z0-9-]{0,62}$"
+				},
+				"startYear": {
+					"description": "The year the spell began.",
+					"type": "integer",
+					"minimum": 1850,
+					"maximum": 2100
+				},
+				"endYear": {
+					"description": "The year the spell ended. Absent while the player is still at the club.",
+					"type": "integer",
+					"minimum": 1850,
+					"maximum": 2100
+				},
+				"appearanceCount": {
+					"description": "The player's games for the club in this spell.",
+					"$ref": "#/$defs/appearanceCount"
+				},
+				"goalCount": {
+					"description": "The player's goals for the club in this spell.",
+					"$ref": "#/$defs/goalCount"
+				}
+			},
+			"required": ["club", "startYear"],
+			"additionalProperties": false
 		},
 		"transferFee": {
 			"title": "TransferFee",
