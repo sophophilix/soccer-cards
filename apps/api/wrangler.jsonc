@@ -1,0 +1,19 @@
+{
+	// Local development only (T-0135). Deploying, routes and the real database
+	// belong to a later task that the tech lead applies through infra/.
+	"name": "soccer-cards-api",
+	"main": "src/worker.py",
+	"compatibility_date": "2026-11-01",
+	"compatibility_flags": ["python_workers"],
+	"observability": { "enabled": false },
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "soccer-cards-local",
+			// A placeholder: `wrangler dev` uses a local SQLite file and never
+			// calls Cloudflare with it.
+			"database_id": "00000000-0000-0000-0000-000000000000",
+			"migrations_dir": "migrations"
+		}
+	]
+}
