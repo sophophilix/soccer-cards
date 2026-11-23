@@ -415,6 +415,12 @@ p { margin: 0; max-width: 60ch; }
 .cnopts .btn.miss { border-color: var(--accent); }
 .cnyears { display: grid; gap: 4px; }
 .cnyears p { margin: 0; }
+.sronly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.gcspells { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.gcspells li { display: grid; gap: 1px; min-height: 44px; align-content: center; border: 2px solid var(--line); border-radius: 12px; padding: 3px 10px; }
+.gcspells li small { color: var(--muted); font-size: 14px; }
+.gcspells li.hole { border: 2px dashed var(--fg); }
+.gcspells li.hit { border: 2px solid var(--ctrl); background: color-mix(in srgb, var(--ctrl) 18%, var(--surface)); }
 @media (max-width: 480px) { .cnpair { grid-template-columns: minmax(0, 1fr); max-width: 150px; } .cnopts { grid-template-columns: minmax(0, 1fr); } .ttplay { grid-template-columns: minmax(0, 1fr); } .ttcard { max-width: 150px; } }
 
 @media (prefers-reduced-motion: reduce) {
@@ -552,6 +558,7 @@ p { margin: 0; max-width: 60ch; }
         <button class="gamebtn" type="button" id="pick-pairs"><b>Pairs</b><span>Turn cards over and find the two that match.</span></button>
         <button class="gamebtn" type="button" id="pick-trail"><b>Transfer Trail</b><span>Put a player’s clubs in the order they joined them.</span></button>
         <button class="gamebtn" type="button" id="pick-connect"><b>Connections</b><span>Two players. Name a club they both played for.</span></button>
+        <button class="gamebtn" type="button" id="pick-club"><b>Guess the Club</b><span>Read a career with one club hidden. Pick the missing club.</span></button>
       </div>
     </div>
     <div class="view" id="games-trail" hidden>
@@ -588,6 +595,25 @@ p { margin: 0; max-width: 60ch; }
         <div class="cnopts" id="cn-opts" role="group" aria-labelledby="cn-opts-label"></div>
         <div class="cnyears" id="cn-years" hidden></div>
         <div class="row"><button class="btn primary" type="button" id="cn-next" hidden>Next</button></div>
+      </div>
+    </div>
+    <div class="view" id="games-club" hidden>
+      <div class="memstats">
+        <span class="chip" id="gc-count"></span>
+        <span class="chip legend" id="gc-right"></span>
+        <button class="btn small" type="button" id="gc-quit">Back to games</button>
+      </div>
+      <p class="muted" id="gc-status" role="status" aria-live="polite"></p>
+      <div class="memdone" id="gc-done" hidden></div>
+      <div class="ttplay" id="gc-board">
+        <div class="ttcard" id="gc-card"></div>
+        <div class="ttside">
+          <h3 id="gc-career-label">Career</h3>
+          <ol class="gcspells" id="gc-spells" aria-labelledby="gc-career-label"></ol>
+          <h3 id="gc-opts-label">Which club is hidden?</h3>
+          <div class="cnopts" id="gc-opts" role="group" aria-labelledby="gc-opts-label"></div>
+          <div class="row"><button class="btn primary" type="button" id="gc-next" hidden>Next</button></div>
+        </div>
       </div>
     </div>
     <div class="view" id="games-pairs" hidden>
@@ -1413,21 +1439,26 @@ p { margin: 0; max-width: 60ch; }
 
   // ---------- Games menu ----------
   var game = 'menu';
-  function gamesStop() { memStop(); tt = null; cn = null; game = 'menu'; $('tt-status').textContent = ''; $('cn-status').textContent = ''; }
-  function openGame(g) { game = g; if (g === 'trail') startTrail(); if (g === 'connect') startConnect(); renderGames(); }
+  function gamesStop() { memStop(); tt = null; cn = null; gc = null; game = 'menu'; $('tt-status').textContent = ''; $('cn-status').textContent = ''; $('gc-status').textContent = ''; }
+  function openGame(g) { game = g; if (g === 'trail') startTrail(); if (g === 'connect') startConnect(); if (g === 'club') startClub(); renderGames(); }
   function renderGames() {
-    $('games-menu').hidden = game !== 'menu'; $('games-pairs').hidden = game !== 'pairs'; $('games-trail').hidden = game !== 'trail'; $('games-connect').hidden = game !== 'connect';
+    $('games-menu').hidden = game !== 'menu'; $('games-pairs').hidden = game !== 'pairs'; $('games-trail').hidden = game !== 'trail'; $('games-connect').hidden = game !== 'connect'; $('games-club').hidden = game !== 'club';
     if (game === 'pairs') renderMemory();
     if (game === 'trail') renderTrail();
     if (game === 'connect') renderConnect();
+    if (game === 'club') renderClub();
   }
   $('pick-pairs').addEventListener('click', function () { openGame('pairs'); });
   $('pick-trail').addEventListener('click', function () { openGame('trail'); });
   $('pick-connect').addEventListener('click', function () { openGame('connect'); });
+  $('pick-club').addEventListener('click', function () { openGame('club'); });
   function backToMenu() { gamesStop(); renderGames(); $('games-menu').querySelector('button').focus(); }
   $('mem-menu').addEventListener('click', backToMenu);
   $('tt-quit').addEventListener('click', backToMenu);
   $('cn-quit').addEventListener('click', backToMenu);
+  $('gc-quit').addEventListener('click', backToMenu);
+  // Coming back to the tab mid-round opens the games menu; the round is not kept.
+  document.addEventListener('visibilitychange', function () { if (document.hidden && game === 'club') { gamesStop(); renderGames(); } });
 
   // ---------- Transfer Trail ----------
   // A round is 5 players with 3 or more published clubs. Each trail right on the check pays 1 coin; finishing the round pays 2 more. Nothing is taken away.
@@ -1583,6 +1614,85 @@ p { margin: 0; max-width: 60ch; }
     $('cn-again').addEventListener('click', function () { startConnect(); renderConnect(); $('cn-opts').querySelector('button').focus(); });
     $('cn-other').addEventListener('click', backToMenu);
     $('cn-win').focus();
+  }
+
+  // ---------- Guess the Club ----------
+  // A round is 5 players with 3 or more spells. The hidden club is the one of the spell with the most games (the earlier on a tie); every spell at that club is hidden. Each right club pays 1 coin; finishing pays 2 more. Nothing is taken away.
+  var GC_QUESTIONS = 5, GC_FINISH_COINS = 2, gc = null;
+  function gcHidden(id) {
+    var best = null;
+    CAREERS[id].forEach(function (s) { if (s.games !== null && (best === null || s.games > best.games)) best = s; });
+    return best === null ? null : best.club;
+  }
+  function startClub() {
+    var ids = Object.keys(CAREERS).map(Number).filter(function (id) { return CAREERS[id].length >= 3 && gcHidden(id) !== null; });
+    gc = { ids: sample(ids, GC_QUESTIONS), i: 0, right: 0, answered: false, picked: null, club: '', options: [] };
+    gcDeal();
+  }
+  function gcDeal() {
+    var id = gc.ids[gc.i], played = cnClubs(id), others = [];
+    Object.keys(CAREERS).forEach(function (k) { cnClubs(Number(k)).forEach(function (c) { if (played.indexOf(c) < 0 && others.indexOf(c) < 0) others.push(c); }); });
+    gc.club = gcHidden(id); gc.options = sample([gc.club].concat(sample(others, 3)), 4); gc.answered = false; gc.picked = null;
+    $('gc-done').hidden = true; $('gc-board').hidden = false;
+    gcText('Which club is hidden in ' + fullName(BY_ID[id]) + '’s career?');
+  }
+  function gcText(t) { $('gc-status').textContent = t; }
+  function renderClub() {
+    if (!gc) return;
+    var id = gc.ids[gc.i], p = BY_ID[id];
+    $('gc-count').textContent = 'Question ' + (gc.i + 1) + ' of ' + gc.ids.length; $('gc-right').textContent = 'Right: ' + gc.right;
+    $('gc-card').innerHTML = '<span class="card">' + cardHTML(p, false) + '</span>';
+    var ol = $('gc-spells'); ol.innerHTML = '';
+    CAREERS[id].forEach(function (s) {
+      var li = document.createElement('li'), name = document.createElement('span'), facts = document.createElement('small'), hole = s.club === gc.club && !gc.answered;
+      if (hole) {
+        li.className = 'hole'; name.textContent = '?';
+        var sr = document.createElement('span'); sr.className = 'sronly'; sr.textContent = 'hidden club';
+        name.setAttribute('aria-hidden', 'true'); li.appendChild(name); li.appendChild(sr);
+      } else {
+        name.textContent = s.club; li.appendChild(name);
+        if (gc.answered && s.club === gc.club) li.className = 'hit';
+      }
+      facts.textContent = ttYears(s) + ', ' + (s.games === null ? 'games not known' : plural(s.games, 'game') + ', ' + (s.goals === null ? 'goals not known' : plural(s.goals, 'goal')));
+      li.appendChild(facts); ol.appendChild(li);
+    });
+    var box = $('gc-opts'); box.innerHTML = '';
+    gc.options.forEach(function (club) {
+      var b = ttButton(club, function () { gcAnswer(club); }, 'tile');
+      if (gc.answered) {
+        if (club === gc.club) { b.classList.add('hit'); b.textContent = club + ' (right)'; }
+        else if (club === gc.picked) { b.classList.add('miss'); b.textContent = club + ' (not this one)'; }
+      }
+      b.setAttribute('aria-label', b.textContent);
+      box.appendChild(b);
+    });
+    $('gc-next').hidden = !gc.answered;
+    $('gc-next').textContent = gc.i === gc.ids.length - 1 ? 'Finish round' : 'Next';
+  }
+  function gcAnswer(club) {
+    if (!gc || gc.answered) return;
+    gc.answered = true; gc.picked = club;
+    var ok = club === gc.club;
+    if (ok) { gc.right++; S.coins += 1; save(); $('coins').textContent = S.coins + (S.coins === 1 ? ' coin' : ' coins'); }
+    gcText(ok ? 'Right! You earned 1 coin. The hidden club was ' + gc.club : 'Not this one. The hidden club was ' + gc.club + ' and it is marked now');
+    renderClub(); $('gc-next').focus();
+  }
+  $('gc-next').addEventListener('click', function () {
+    if (!gc || !gc.answered) return;
+    if (gc.i === gc.ids.length - 1) { gcFinish(); return; }
+    gc.i++; gcDeal(); renderClub(); $('gc-opts').querySelector('button').focus();
+  });
+  function gcFinish() {
+    var n = gc.right, total = gc.ids.length, earned = n + GC_FINISH_COINS;
+    S.coins += GC_FINISH_COINS; save(); $('coins').textContent = S.coins + (S.coins === 1 ? ' coin' : ' coins');
+    gcText('Round finished.'); $('gc-board').hidden = true;
+    var box = $('gc-done'); box.hidden = false;
+    box.innerHTML = '<h2 tabindex="-1" id="gc-win">Round finished!</h2>' +
+      '<p>You found ' + plural(n, 'club') + ' right out of ' + total + '. You earned ' + plural(earned, 'coin') + ': ' + plural(n, 'coin') + ' for the clubs and ' + GC_FINISH_COINS + ' for finishing.</p>' +
+      '<div class="row center"><button class="btn primary" type="button" id="gc-again">Play again</button><button class="btn" type="button" id="gc-other">Back to games</button></div>';
+    $('gc-again').addEventListener('click', function () { startClub(); renderClub(); $('gc-opts').querySelector('button').focus(); });
+    $('gc-other').addEventListener('click', backToMenu);
+    $('gc-win').focus();
   }
 
   // ---------- Collection ----------
