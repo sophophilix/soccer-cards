@@ -1,12 +1,14 @@
 ---
 id: T-0161
-title: Play Transfer Trail on the site
+title: Draw the Transfer Trail board for one player
 component: web
 kind: feature
 agent: web-implementer
 paths:
-  - apps/web/src/routes/games/transfer-trail/**
-  - apps/web/tests/transfer-trail.spec.ts
+  - apps/web/src/routes/games/transfer-trail/TrailBoard.svelte
+  - apps/web/src/routes/games/transfer-trail/TrailBoard.svelte.test.ts
+  - apps/web/src/routes/games/transfer-trail/trail-words.ts
+  - apps/web/src/routes/games/transfer-trail/trail-words.test.ts
 dependencies: []
 max_changed_lines: 400
 status: ready
@@ -14,66 +16,59 @@ status: ready
 
 ## Goal
 
-A child can play Transfer Trail on the real site, as in the prototype the
-tech lead and the kids played (T-0153). It starts after T-0158, T-0159,
-T-0160, T-0162 and T-0163 merge.
+Transfer Trail comes to the site in three screen tasks: this board, the
+page that runs a round (T-0165) and the end-to-end tests (T-0166). The
+first build of all three (commit a6a5384, kept on `spike/t-0161-full`) was
+909 lines, over the 400-line ceiling in AGENTS.md rule 4, so it was split on
+2026-11-23. Carry this task's part over from that commit.
+
+The board shows one player's question: their card face, their clubs to
+place, the trail, and the result of a check.
 
 ## Context
 
 - `prototype/soccer-cards-prototype.html`, the Transfer Trail screen
-  (`#games-trail` and the code under "Transfer Trail") is the approved look
-  and behaviour.
-- The rules: `startTrailRound` (T-0158), `checkTrail` (T-0162) and the paying functions
-  (T-0163) in `packages/game`. The screen holds no rule of its own.
-- Careers: `loadCareer` in `apps/web/src/lib/data/load-career.ts` (T-0159).
-- Saving coins: `apps/web/src/lib/state/player-store.ts` and how the Match
-  screen saves a win and words a refused save.
-- The card face: the components the Cards screen uses.
+  (`#games-trail` and the code under "Transfer Trail") is the approved look.
+- `packages/game`: `TrailStep`, `TrailCheck`, `ClubId`.
+- `apps/web/src/lib/cards/CardFront.svelte` for the card face.
 - `sveltekit-web`, `child-safety-privacy`, `ts-testing`.
 
 ## Acceptance criteria
 
-- `/games/transfer-trail` plays a round of up to 5 players, as the rules
-  give it. Each shows the player's card face, their clubs as buttons in the
-  dealt order, and a numbered trail. A tap moves a club into the trail; a
-  tap on a trail club takes it back.
-- "Check" appears when the trail is full. A right trail says so. A wrong
-  one shows the right order with each club's years and marks each place
-  right or wrong in words as well as colour. "Next player" (or "Finish
-  round" on the last) carries on.
-- Coins are paid through the rules and saved with the player store. The
-  coin count in the masthead updates. A failed save says so in words and
-  doesn't stop the round.
-- The finish screen says what was earned and offers "Play again" and "Back
-  to games".
-- The careers for a round are loaded before it starts. A player whose career
-  doesn't load is left out. If too few load to play, the screen says the
-  game can't start right now, with a link back to Games.
-- Every club button's accessible name is the club's name. The game works
-  with a keyboard alone. With reduced motion nothing moves.
-- No request leaves the site's origin, and no new storage key is written.
+- `TrailBoard` takes one dealt step (the player's clubs in the dealt order,
+  with display names and years), the card face, and the check result when
+  there is one. It holds no rule of its own and pays nothing.
+- Clubs show as buttons in the dealt order. A tap moves a club into a
+  numbered trail; a tap on a trail club takes it back.
+- "Check" appears only when the trail is full, and tells the page the order
+  the child chose.
+- After a check, a right trail says so. A wrong one shows the right order
+  with each club's years and marks each place in words ("right place",
+  "you put X here") as well as colour.
+- "Next player", or "Finish round" on the last player, tells the page to
+  carry on.
+- `trail-words.ts` holds the board's words: the check result and the place
+  marks, and "to now" for a spell with no end year.
+- Every club button's accessible name is the club's name. The board works
+  with a keyboard alone, and focus moves sensibly after each tap. Nothing
+  animates.
 
 ## Edge cases
 
-- A double tap on a club adds it once. A double tap on Check pays once.
-- Two tiles with the same club are the same answer in either order.
-- A spell with no end year shows "to now".
-- Leaving the page mid-round and coming back starts a new round. Coins
-  already earned stay earned.
+- A double tap on a club adds it once.
+- A double tap on "Check" can't land on "Next player" and skip the result.
 - Long club names ("Real Madrid Club de Fútbol") wrap inside the button at
   320 pixels.
+- Two clubs with the same name both show; either can go in either place.
 
 ## Tests
 
-- Component tests beside the screen for the trail, the check result in
-  words and the finish screen.
-- `tests/transfer-trail.spec.ts` with invented players and careers served
-  in place of the real files and a fixed random seed: a full round with the
-  mouse, a round with the keyboard alone, reduced motion, the coin count
-  after the round, a career that fails to load, and widths of 320 and 390
-  pixels with no sideways scroll.
+- `TrailBoard.svelte.test.ts`: placing and taking back, Check only when
+  full, a right and a wrong result in words, Finish round on the last
+  player, the double tap on Check, and two clubs with the same name.
+- `trail-words.test.ts`: each piece of wording, including "to now".
 
 ## Out of scope
 
-- The rules (T-0158), the career loader (T-0159) and the Games tab (T-0160).
-- Other games, short club names and saving a round in progress.
+- Loading careers, starting a round, paying and saving coins, the finish
+  screen (T-0165) and the end-to-end tests (T-0166).
