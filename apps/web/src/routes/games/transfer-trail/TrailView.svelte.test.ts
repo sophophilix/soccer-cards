@@ -34,7 +34,7 @@ const career = {
 	]
 };
 
-function serve(careersLoad: boolean): void {
+function serve(careersLoad: boolean, brokenIds: readonly string[] = []): void {
 	vi.stubGlobal('fetch', (path: string) => {
 		const json = (body: unknown): Promise<Response> =>
 			Promise.resolve(new Response(JSON.stringify(body)));
@@ -52,6 +52,8 @@ function serve(careersLoad: boolean): void {
 				clubs: CLUBS.map((displayName, i) => ({ name: `clubs/c${String(i)}`, displayName }))
 			});
 		}
+		if (brokenIds.some((id) => path.includes(`${id}.json`)))
+			return Promise.resolve(new Response('', { status: 404 }));
 		return careersLoad ? json(career) : Promise.resolve(new Response('', { status: 404 }));
 	});
 }
@@ -90,7 +92,7 @@ test('five right trails finish the round and say what was earned', async () => {
 		.element(screen.getByRole('link', { name: 'Back to games' }))
 		.toHaveAttribute('href', '/games');
 	const saved = createPlayerStore(browserStorage).load().state;
-	expect(saved.coins).toBeGreaterThanOrEqual(7);
+	expect(saved.coins).toBe(7);
 });
 
 test('says the game cannot start when no career loads, with a way back', async () => {
@@ -118,4 +120,34 @@ test('a failed save is said in words and the round goes on', async () => {
 	await expect.element(screen.getByText(/your coins were not saved/)).toBeVisible();
 	await expect.element(screen.getByRole('button', { name: 'Next player' })).toBeVisible();
 	vi.restoreAllMocks();
+});
+
+test('leaves out a player whose career does not load and plays the rest', async () => {
+	serve(true, ['p-1', 'p-2', 'p-3', 'p-4']);
+	const screen = await render(TrailView);
+
+	await expect.element(screen.getByText('Player 1 of 4')).toBeVisible();
+});
+
+test('a second tap on Check, then on Finish, pays nothing more', async () => {
+	serve(true);
+	const screen = await render(TrailView);
+
+	for (let player = 0; player < IDS.length; player++) {
+		await screen.getByRole('button', { name: CLUBS[0] ?? '' }).click();
+		await screen.getByRole('button', { name: CLUBS[1] ?? '' }).click();
+		await screen.getByRole('button', { name: CLUBS[2] ?? '' }).click();
+		const check = screen.getByRole('button', { name: 'Check' }).element() as HTMLElement;
+		check.click();
+		check.click();
+		const isLast = player === IDS.length - 1;
+		const nextName = isLast ? 'Finish round' : 'Next player';
+		await expect.element(screen.getByRole('button', { name: nextName })).toBeVisible();
+		const next = screen.getByRole('button', { name: nextName }).element() as HTMLElement;
+		next.click();
+		if (isLast) next.click();
+	}
+
+	await expect.element(screen.getByRole('heading', { name: 'Round finished!' })).toBeVisible();
+	expect(createPlayerStore(browserStorage).load().state.coins).toBe(7);
 });
