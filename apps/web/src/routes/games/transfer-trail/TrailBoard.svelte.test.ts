@@ -143,13 +143,45 @@ test('Next player works once the moment has passed', async () => {
 	try {
 		const { screen, onNext } = await checked();
 		await screen.getByRole('button', { name: 'Check' }).click();
-		await screen.getByRole('button', { name: 'Next player' }).click();
+		// A real click waits for an enabled button, so press it the way a late tap would.
+		screen
+			.getByRole('button', { name: 'Next player' })
+			.element()
+			.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 		expect(onNext).not.toHaveBeenCalled();
 
 		await vi.advanceTimersByTimeAsync(1000);
 		await screen.getByRole('button', { name: 'Next player' }).click();
 
 		expect(onNext).toHaveBeenCalledTimes(1);
+	} finally {
+		vi.useRealTimers();
+	}
+});
+
+test('the board headings are level 2 and the card face is marked as art', async () => {
+	const screen = await render(TrailBoard, props(anyCheck));
+
+	await expect
+		.element(screen.getByRole('heading', { level: 2, name: 'Clubs to place' }))
+		.toBeVisible();
+	await expect
+		.element(screen.getByRole('heading', { level: 2, name: 'Trail, first club to last' }))
+		.toBeVisible();
+	expect(screen.container.querySelector('.face[data-art]')).not.toBeNull();
+});
+
+test('Next player says it is not ready during the pause and is ready after', async () => {
+	vi.useFakeTimers();
+	try {
+		const { screen } = await checked();
+		await screen.getByRole('button', { name: 'Check' }).click();
+		const next = screen.getByRole('button', { name: 'Next player' });
+
+		await expect.element(next).toHaveAttribute('aria-disabled', 'true');
+		await vi.advanceTimersByTimeAsync(1000);
+
+		await expect.element(next).not.toHaveAttribute('aria-disabled');
 	} finally {
 		vi.useRealTimers();
 	}
