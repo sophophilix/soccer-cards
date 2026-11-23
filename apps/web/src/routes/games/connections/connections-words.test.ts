@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest';
 import {
 	endSentence,
+	finishText,
 	markText,
 	questionText,
 	rightText,
@@ -37,5 +38,11 @@ test('the years line shows a closed and an open spell', () => {
 	);
 	expect(yearsLine('Bo Lee', 'Alpha FC', { startYear: 2019 })).toBe(
 		'Bo Lee at Alpha FC: 2019 to now'
+	);
+});
+
+test('the finish says what was earned, from the economy table', () => {
+	expect(finishText(5, 5)).toBe(
+		'You got 5 answers right out of 5. You earned 7 coins: 5 coins for the answers and 2 for finishing.'
 	);
 });

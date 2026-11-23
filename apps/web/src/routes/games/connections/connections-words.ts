@@ -1,4 +1,22 @@
-import { yearsText } from '../transfer-trail/trail-words.ts';
+import { CONNECTIONS_FINISH_COINS, CONNECTIONS_RIGHT_COINS } from '@soccer-cards/game';
+import { plural, yearsText } from '../transfer-trail/trail-words.ts';
+
+/** The words for a save the store refused. */
+export const CONNECTIONS_SAVE_NOTICES = {
+	'not-saving': "Your coins can't be saved on this device. You can still play.",
+	'storage-full': 'This device is full, so your coins were not saved.',
+	'changed-in-another-tab': 'The game is open in another tab, so your coins were not saved here.'
+} as const;
+
+/** What the finish screen says was earned. */
+export function finishText(rightCount: number, questionCount: number): string {
+	const earned = rightCount * CONNECTIONS_RIGHT_COINS + CONNECTIONS_FINISH_COINS;
+	return (
+		`You got ${plural(rightCount, 'answer')} right out of ${String(questionCount)}. ` +
+		`You earned ${plural(earned, 'coin')}: ${plural(rightCount * CONNECTIONS_RIGHT_COINS, 'coin')} for the answers ` +
+		`and ${String(CONNECTIONS_FINISH_COINS)} for finishing.`
+	);
+}
 
 /** A club name with one closing full stop, so "Chelsea F.C." doesn't get a second. */
 export function endSentence(name: string): string {
