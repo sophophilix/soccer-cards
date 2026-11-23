@@ -1,5 +1,6 @@
 import type { CardId, CheckedCardSet, Tier } from './cards.ts';
 import { drawPack } from './draw-pack.ts';
+import { WIN_COINS_BY_DIVISION } from './economy.ts';
 import { FORMATIONS, TEAM_SIZE, bestTeam } from './lineup.ts';
 import type { Formation } from './lineup.ts';
 import { TACTIC_IDS } from './match.ts';
@@ -11,11 +12,16 @@ import type { Random } from './random.ts';
  * a win pays `winCoins`, and `formPercent` lifts every line of the computer's side.
  */
 export const DIVISIONS = [
-	{ id: 'division-4', packs: 2, winCoins: 4, formPercent: 0 },
-	{ id: 'division-3', packs: 6, winCoins: 5, formPercent: 0 },
-	{ id: 'division-2', packs: 15, winCoins: 6, formPercent: 0 },
-	{ id: 'division-1', packs: 35, winCoins: 8, formPercent: 0 },
-	{ id: 'champions-league', packs: 80, winCoins: 10, formPercent: 1 }
+	{ id: 'division-4', packs: 2, winCoins: WIN_COINS_BY_DIVISION['division-4'], formPercent: 0 },
+	{ id: 'division-3', packs: 6, winCoins: WIN_COINS_BY_DIVISION['division-3'], formPercent: 0 },
+	{ id: 'division-2', packs: 15, winCoins: WIN_COINS_BY_DIVISION['division-2'], formPercent: 0 },
+	{ id: 'division-1', packs: 35, winCoins: WIN_COINS_BY_DIVISION['division-1'], formPercent: 0 },
+	{
+		id: 'champions-league',
+		packs: 80,
+		winCoins: WIN_COINS_BY_DIVISION['champions-league'],
+		formPercent: 1
+	}
 ] as const;
 
 /** One division of the league. */

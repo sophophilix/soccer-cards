@@ -5,9 +5,13 @@ export type { DrawPackResult, PackKind } from './draw-pack.ts';
 export { createRandom } from './random.ts';
 export type { Random } from './random.ts';
 export {
+	ECONOMY_VERSION,
 	JUMBO_PACK_COST_COINS,
 	STANDARD_PACK_COST_COINS,
 	STARTING_COINS,
+	WIN_COINS_BY_DIVISION
+} from './economy.ts';
+export {
 	STARTING_FREE_PACKS,
 	STATE_VERSION,
 	WINS_TO_GO_UP,
