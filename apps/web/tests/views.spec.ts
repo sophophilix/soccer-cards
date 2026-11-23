@@ -4,10 +4,14 @@ const MIN_TARGET_PX = 44;
 const NARROW_PHONE = { width: 320, height: 568 };
 
 /** Checks the page shows one view: its address, title, single heading and current tab. */
-async function expectView(page: Page, name: string): Promise<void> {
-	await expect(page).toHaveURL(new RegExp(`/${name.toLowerCase()}$`));
-	await expect(page).toHaveTitle(`${name} · Soccer Cards`);
-	await expect(page.getByRole('heading', { level: 1 })).toHaveText(name);
+async function expectView(
+	page: Page,
+	name: string,
+	shown: { path: string; title: string } = { path: name.toLowerCase(), title: name }
+): Promise<void> {
+	await expect(page).toHaveURL(new RegExp(`/${shown.path}$`));
+	await expect(page).toHaveTitle(`${shown.title} · Soccer Cards`);
+	await expect(page.getByRole('heading', { level: 1 })).toHaveText(shown.title);
 	await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
 	const current = page.getByRole('navigation', { name: 'Views' }).locator('[aria-current="page"]');
 	// The Cards tab adds the number of cards held, as in the prototype: "Cards (10)".
@@ -35,8 +39,7 @@ for (const name of ['Packs', 'Match', 'Games', 'Cards', 'Guide']) {
 test('/games/transfer-trail shows its own page', async ({ page }) => {
 	await page.goto('/games/transfer-trail');
 
-	await expect(page).toHaveTitle('Transfer Trail · Soccer Cards');
-	await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
+	await expectView(page, 'Games', { path: 'games/transfer-trail', title: 'Transfer Trail' });
 });
 
 test('every tab is at least 44 pixels each way at 320 pixels wide', async ({ page }) => {

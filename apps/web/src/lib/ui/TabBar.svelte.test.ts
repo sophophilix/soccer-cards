@@ -14,6 +14,8 @@ for (const [pathname, current] of [
 	['/match', ['Match']],
 	['/games', ['Games']],
 	['/games/', ['Games']],
+	['/games/transfer-trail', ['Games']],
+	['/gamesx', []],
 	['/cards', ['Cards']],
 	['/guide/', ['Guide']],
 	['/no-such-page', []]
