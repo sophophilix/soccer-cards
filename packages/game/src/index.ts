@@ -66,7 +66,17 @@ export type { ComputerSide, ComputerSideResult, Division } from './divisions.ts'
 export {
 	MIN_TRAIL_SPELLS,
 	TRAIL_ROUND_PLAYERS,
+	checkTrail,
 	startTrailRound,
 	trailOrder
 } from './transfer-trail.ts';
-export type { Career, ClubId, PlayerId, Spell, TrailRound, TrailStep } from './transfer-trail.ts';
+export type {
+	Career,
+	ClubId,
+	PlayerId,
+	Spell,
+	TrailCheck,
+	TrailRefusal,
+	TrailRound,
+	TrailStep
+} from './transfer-trail.ts';
