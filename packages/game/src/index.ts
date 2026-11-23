@@ -84,3 +84,9 @@ export type {
 } from './transfer-trail.ts';
 export { checkTrailInRound, finishTrailRound, openPaidRound } from './transfer-trail-round.ts';
 export type { PaidTrailRefusal, PaidTrailResult, PaidTrailRound } from './transfer-trail-round.ts';
+export {
+	CONNECTIONS_OPTIONS,
+	CONNECTIONS_QUESTIONS,
+	startConnectionsRound
+} from './connections.ts';
+export type { ConnectionsQuestion, ConnectionsRound } from './connections.ts';
