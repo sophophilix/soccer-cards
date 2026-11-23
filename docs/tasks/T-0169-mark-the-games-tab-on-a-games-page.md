@@ -10,7 +10,7 @@ paths:
   - apps/web/tests/views.spec.ts
 dependencies: []
 max_changed_lines: 120
-status: ready
+status: done
 ---
 
 ## Goal

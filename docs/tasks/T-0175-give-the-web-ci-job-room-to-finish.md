@@ -8,7 +8,7 @@ paths:
   - .github/workflows/checks.yml
 dependencies: []
 max_changed_lines: 60
-status: ready
+status: done
 ---
 
 ## Goal
