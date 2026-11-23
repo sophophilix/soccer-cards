@@ -22,12 +22,17 @@
 		const trimmed = pathname.length > 1 ? pathname.replace(/\/$/, '') : pathname;
 		return trimmed === resolve('/') ? resolve('/packs') : trimmed;
 	});
+
+	// A tab is current on its own address and on any page under it.
+	function isCurrent(href: string): boolean {
+		return currentPath === href || currentPath.startsWith(`${href}/`);
+	}
 </script>
 
 <nav aria-label="Views">
 	{#each VIEWS as view (view.path)}
 		{@const href = resolve(view.path)}
-		<a {href} aria-current={href === currentPath ? 'page' : undefined}
+		<a {href} aria-current={isCurrent(href) ? 'page' : undefined}
 			>{view.name}{#if view.name === 'Cards' && cardCount !== undefined}&nbsp;({cardCount}){/if}</a
 		>
 	{/each}
