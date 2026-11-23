@@ -63,10 +63,17 @@ beforeEach(() => {
 });
 afterEach(() => {
 	vi.unstubAllGlobals();
+	vi.useRealTimers();
 });
+
+/** Lets the board's short guard after a check pass, so Next can be pressed. */
+async function letGuardPass(): Promise<void> {
+	await vi.advanceTimersByTimeAsync(1000);
+}
 
 test('five right trails finish the round and say what was earned', async () => {
 	serve(true);
+	vi.useFakeTimers();
 	const screen = await render(TrailView);
 
 	for (let player = 0; player < IDS.length; player++) {
@@ -74,6 +81,7 @@ test('five right trails finish the round and say what was earned', async () => {
 		await screen.getByRole('button', { name: CLUBS[1] ?? '' }).click();
 		await screen.getByRole('button', { name: CLUBS[2] ?? '' }).click();
 		await screen.getByRole('button', { name: 'Check' }).click();
+		await letGuardPass();
 		await screen
 			.getByRole('button', { name: player === IDS.length - 1 ? 'Finish round' : 'Next player' })
 			.click();
@@ -131,6 +139,7 @@ test('leaves out a player whose career does not load and plays the rest', async 
 
 test('a second tap on Check, then on Finish, pays nothing more', async () => {
 	serve(true);
+	vi.useFakeTimers();
 	const screen = await render(TrailView);
 
 	for (let player = 0; player < IDS.length; player++) {
@@ -140,6 +149,7 @@ test('a second tap on Check, then on Finish, pays nothing more', async () => {
 		const check = screen.getByRole('button', { name: 'Check' }).element() as HTMLElement;
 		check.click();
 		check.click();
+		await letGuardPass();
 		const isLast = player === IDS.length - 1;
 		const nextName = isLast ? 'Finish round' : 'Next player';
 		await expect.element(screen.getByRole('button', { name: nextName })).toBeVisible();
