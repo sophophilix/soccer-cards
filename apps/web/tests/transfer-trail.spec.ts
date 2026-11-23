@@ -7,6 +7,7 @@ const LONG_NAME = 'Real Madrid Club de Fútbol';
 // The right order, first club to last.
 const CLUBS = ['Alpha FC', 'Beta United', LONG_NAME] as const;
 const START_COINS = 10;
+const TRAIL_COINS = 1;
 const ROUND_COINS = 5 + 2;
 
 function aSummary(id: string, tier: string): unknown {
@@ -110,14 +111,24 @@ test('a full round with the mouse pays coins and shows them in the masthead', as
 	await expect(page.getByRole('link', { name: 'Back to games' })).toHaveAttribute('href', '/games');
 });
 
-test('a wrong trail shows the right order and a double tap on Check pays once', async ({
-	page
-}) => {
+test('a double tap on Check pays one right trail once', async ({ page }) => {
+	await serve(page);
+	await page.goto('/games/transfer-trail');
+	await placeAll(page, CLUBS);
+
+	await page.getByRole('button', { name: 'Check' }).dblclick();
+
+	await expect(page.getByText(/^Right! /)).toBeVisible();
+	await expect(page.getByText('Right: 1')).toBeVisible();
+	await expect(page.getByText(`${String(START_COINS + TRAIL_COINS)} coins`)).toBeVisible();
+});
+
+test('a wrong trail shows the right order in words and pays nothing', async ({ page }) => {
 	await serve(page);
 	await page.goto('/games/transfer-trail');
 	await placeAll(page, [CLUBS[2], CLUBS[1], CLUBS[0]]);
 
-	await page.getByRole('button', { name: 'Check' }).dblclick();
+	await page.getByRole('button', { name: 'Check' }).click();
 
 	await expect(page.getByText(/^Not this time\./)).toBeVisible();
 	await expect(page.getByText('2004 to 2008 (right place)')).toBeVisible();
