@@ -11,7 +11,7 @@ paths:
   - packages/game/src/index.ts
 dependencies: []
 max_changed_lines: 250
-status: ready
+status: done
 ---
 
 ## Goal

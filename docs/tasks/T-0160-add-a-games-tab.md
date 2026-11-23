@@ -16,7 +16,7 @@ paths:
   - apps/web/tests/a11y/home.spec.ts
 dependencies: []
 max_changed_lines: 300
-status: ready
+status: done
 ---
 
 ## Goal
