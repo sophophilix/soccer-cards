@@ -98,3 +98,44 @@ export function startTrailRound(
 	}));
 	return { ok: true, value: { steps } };
 }
+
+/** The result of checking a trail: whether it is all right, and whether each place is. */
+export interface TrailCheck {
+	readonly isRight: boolean;
+	readonly places: readonly boolean[];
+}
+
+/** Why an answer is not checked: it is not a trail of this career. */
+export type TrailRefusal = 'wrong-length' | 'unknown-club' | 'club-used-too-often';
+
+const countClubs = (clubs: readonly ClubId[]): Map<ClubId, number> => {
+	const counts = new Map<ClubId, number>();
+	for (const clubId of clubs) {
+		counts.set(clubId, (counts.get(clubId) ?? 0) + 1);
+	}
+	return counts;
+};
+
+/** Checks the clubs a child put in order against the career, place by place. */
+export function checkTrail(
+	career: Career,
+	answer: readonly ClubId[]
+):
+	| { readonly ok: true; readonly value: TrailCheck }
+	| { readonly ok: false; readonly reason: TrailRefusal } {
+	const right = trailOrder(career).map((spell) => spell.clubId);
+	if (answer.length !== right.length) {
+		return { ok: false, reason: 'wrong-length' };
+	}
+	const available = countClubs(right);
+	if (answer.some((clubId) => !available.has(clubId))) {
+		return { ok: false, reason: 'unknown-club' };
+	}
+	for (const [clubId, used] of countClubs(answer)) {
+		if (used > (available.get(clubId) ?? 0)) {
+			return { ok: false, reason: 'club-used-too-often' };
+		}
+	}
+	const places = right.map((clubId, place) => answer[place] === clubId);
+	return { ok: true, value: { isRight: places.every(Boolean), places } };
+}
