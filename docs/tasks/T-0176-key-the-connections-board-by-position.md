@@ -9,7 +9,7 @@ paths:
   - apps/web/src/routes/games/connections/ConnectionsBoard.svelte.test.ts
 dependencies: []
 max_changed_lines: 80
-status: ready
+status: done
 ---
 
 ## Goal
