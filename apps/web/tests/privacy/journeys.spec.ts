@@ -60,9 +60,21 @@ async function serveCards(page: Page): Promise<void> {
 			aSummary(position, `p-${code}-${String(index + 1)}`, tier)
 		)
 	);
-	const club = { name: 'clubs/test-club', displayName: 'Test Club' };
+	const clubs = [
+		{ name: 'clubs/test-club', displayName: 'Test Club' },
+		{ name: 'clubs/second-club', displayName: 'Second Club' },
+		{ name: 'clubs/third-club', displayName: 'Third Club' }
+	];
+	const careerSpells = [
+		{ club: 'clubs/test-club', startYear: 2000, endYear: 2004 },
+		{ club: 'clubs/second-club', startYear: 2004, endYear: 2008 },
+		{ club: 'clubs/third-club', startYear: 2008 }
+	];
 	await page.route('**/api/v1/players.json', (route) => route.fulfill({ json: { players } }));
-	await page.route('**/api/v1/clubs.json', (route) => route.fulfill({ json: { clubs: [club] } }));
+	await page.route('**/api/v1/clubs.json', (route) => route.fulfill({ json: { clubs } }));
+	await page.route('**/api/v1/players/*.json', (route) =>
+		route.fulfill({ json: { careerSpells } })
+	);
 	await page.route('**/api/v1/photos/**', (route) => route.fulfill({ status: 404 }));
 }
 
@@ -126,6 +138,9 @@ test('every view runs with one origin, no cookie and no security policy violatio
 
 	await page.goto('/games');
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+
+	await page.goto('/games/transfer-trail');
+	await expect(page.getByText('Player 1 of 5')).toBeVisible();
 
 	await page.goto('/guide');
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();

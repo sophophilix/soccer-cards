@@ -32,6 +32,13 @@ for (const name of ['Packs', 'Match', 'Games', 'Cards', 'Guide']) {
 	});
 }
 
+test('/games/transfer-trail shows its own page', async ({ page }) => {
+	await page.goto('/games/transfer-trail');
+
+	await expect(page).toHaveTitle('Transfer Trail · Soccer Cards');
+	await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
+});
+
 test('every tab is at least 44 pixels each way at 320 pixels wide', async ({ page }) => {
 	await page.setViewportSize(NARROW_PHONE);
 	await page.goto('/packs');
