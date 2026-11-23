@@ -1,8 +1,8 @@
 # ADR 0010: A shop, a training ground and card levels
 
-> Status: In review
+> Status: Accepted
 > Created: 2026-11-22T17:29:52Z
-> Last reviewed: 2026-11-22T17:29:52Z
+> Last reviewed: 2026-11-23T02:16:22Z
 > Next review: Not scheduled
 
 ## Review guide
@@ -171,3 +171,4 @@ children try.
 | Reviewed at          | Decision | Notes                                                                                                                                                                |
 | -------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 2026-11-22T17:29:52Z | Drafted  | From the child's requests passed on by the tech lead on 2026-11-22, and the tech lead's answers: "Starting level", "Special editions", "Our own names", "Yes, both". |
+| 2026-11-23T02:16:22Z | Accepted | Approved by the tech lead in the main session: "approve ADR 0010 while we wait".                                                                                     |
