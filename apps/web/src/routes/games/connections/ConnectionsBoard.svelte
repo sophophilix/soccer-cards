@@ -65,7 +65,7 @@
 
 <p class="muted" role="status" aria-live="polite">{status}</p>
 <div class="faces">
-	{#each players as player (player.displayName)}
+	{#each players as player, i (i)}
 		<div class="face" data-art><CardFront {...player} /></div>
 	{/each}
 </div>
@@ -91,7 +91,7 @@
 {#if result !== undefined}
 	<h2 class="label" id="years-label">Years at {rightName}</h2>
 	<div aria-labelledby="years-label" role="group">
-		{#each players as player, i (player.displayName)}
+		{#each players as player, i (i)}
 			<p>{yearsLine(player.displayName, rightName, result.years[i] ?? result.years[0])}</p>
 		{/each}
 	</div>
