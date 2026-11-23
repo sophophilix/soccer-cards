@@ -408,7 +408,14 @@ p { margin: 0; max-width: 60ch; }
 .step.miss { border-color: var(--accent); }
 .ans { display: grid; gap: 1px; min-width: 0; }
 .ans small { color: var(--muted); font-size: 14px; }
-@media (max-width: 480px) { .ttplay { grid-template-columns: minmax(0, 1fr); } .ttcard { max-width: 150px; } }
+.cnpair { display: grid; grid-template-columns: repeat(2, minmax(0, 190px)); gap: 16px; justify-content: start; }
+.cnpair .card { width: 100%; }
+.cnopts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; max-width: 520px; }
+.cnopts .btn.hit { border-color: var(--ctrl); background: color-mix(in srgb, var(--ctrl) 18%, var(--surface)); }
+.cnopts .btn.miss { border-color: var(--accent); }
+.cnyears { display: grid; gap: 4px; }
+.cnyears p { margin: 0; }
+@media (max-width: 480px) { .cnpair { grid-template-columns: minmax(0, 1fr); max-width: 150px; } .cnopts { grid-template-columns: minmax(0, 1fr); } .ttplay { grid-template-columns: minmax(0, 1fr); } .ttcard { max-width: 150px; } }
 
 @media (prefers-reduced-motion: reduce) {
   .inner, .slot { transition: none; }
@@ -544,6 +551,7 @@ p { margin: 0; max-width: 60ch; }
       <div class="gamelist">
         <button class="gamebtn" type="button" id="pick-pairs"><b>Pairs</b><span>Turn cards over and find the two that match.</span></button>
         <button class="gamebtn" type="button" id="pick-trail"><b>Transfer Trail</b><span>Put a player’s clubs in the order they joined them.</span></button>
+        <button class="gamebtn" type="button" id="pick-connect"><b>Connections</b><span>Two players. Name a club they both played for.</span></button>
       </div>
     </div>
     <div class="view" id="games-trail" hidden>
@@ -564,6 +572,22 @@ p { margin: 0; max-width: 60ch; }
           <p class="muted" id="tt-hint">Tap the clubs in the order the player joined them. Tap a club in the trail to take it back.</p>
           <div class="row"><button class="btn primary" type="button" id="tt-check" hidden>Check</button><button class="btn primary" type="button" id="tt-next" hidden>Next player</button></div>
         </div>
+      </div>
+    </div>
+    <div class="view" id="games-connect" hidden>
+      <div class="memstats">
+        <span class="chip" id="cn-count"></span>
+        <span class="chip legend" id="cn-right"></span>
+        <button class="btn small" type="button" id="cn-quit">Back to games</button>
+      </div>
+      <p class="muted" id="cn-status" role="status" aria-live="polite"></p>
+      <div class="memdone" id="cn-done" hidden></div>
+      <div class="ttside" id="cn-board">
+        <div class="cnpair" id="cn-cards"></div>
+        <h3 id="cn-opts-label">Which club did both players play for?</h3>
+        <div class="cnopts" id="cn-opts" role="group" aria-labelledby="cn-opts-label"></div>
+        <div class="cnyears" id="cn-years" hidden></div>
+        <div class="row"><button class="btn primary" type="button" id="cn-next" hidden>Next</button></div>
       </div>
     </div>
     <div class="view" id="games-pairs" hidden>
@@ -1389,18 +1413,21 @@ p { margin: 0; max-width: 60ch; }
 
   // ---------- Games menu ----------
   var game = 'menu';
-  function gamesStop() { memStop(); tt = null; game = 'menu'; $('tt-status').textContent = ''; }
-  function openGame(g) { game = g; if (g === 'trail') startTrail(); renderGames(); }
+  function gamesStop() { memStop(); tt = null; cn = null; game = 'menu'; $('tt-status').textContent = ''; $('cn-status').textContent = ''; }
+  function openGame(g) { game = g; if (g === 'trail') startTrail(); if (g === 'connect') startConnect(); renderGames(); }
   function renderGames() {
-    $('games-menu').hidden = game !== 'menu'; $('games-pairs').hidden = game !== 'pairs'; $('games-trail').hidden = game !== 'trail';
+    $('games-menu').hidden = game !== 'menu'; $('games-pairs').hidden = game !== 'pairs'; $('games-trail').hidden = game !== 'trail'; $('games-connect').hidden = game !== 'connect';
     if (game === 'pairs') renderMemory();
     if (game === 'trail') renderTrail();
+    if (game === 'connect') renderConnect();
   }
   $('pick-pairs').addEventListener('click', function () { openGame('pairs'); });
   $('pick-trail').addEventListener('click', function () { openGame('trail'); });
+  $('pick-connect').addEventListener('click', function () { openGame('connect'); });
   function backToMenu() { gamesStop(); renderGames(); $('games-menu').querySelector('button').focus(); }
   $('mem-menu').addEventListener('click', backToMenu);
   $('tt-quit').addEventListener('click', backToMenu);
+  $('cn-quit').addEventListener('click', backToMenu);
 
   // ---------- Transfer Trail ----------
   // A round is 5 players with 3 or more published clubs. Each trail right on the check pays 1 coin; finishing the round pays 2 more. Nothing is taken away.
@@ -1484,6 +1511,78 @@ p { margin: 0; max-width: 60ch; }
     $('tt-again').addEventListener('click', function () { startTrail(); renderTrail(); $('tt-bank').querySelector('button:not(.gone)').focus(); });
     $('tt-other').addEventListener('click', backToMenu);
     $('tt-win').focus();
+  }
+
+  // ---------- Connections ----------
+  // A round is up to 5 pairs of players who share a club (same club name in both CAREERS entries). Each right club pays 1 coin; finishing pays 2 more. Nothing is taken away.
+  var CN_QUESTIONS = 5, CN_FINISH_COINS = 2, cn = null;
+  function cnClubs(id) { return CAREERS[id].map(function (s) { return s.club; }); }
+  function cnShared(a, b) { var other = cnClubs(b); return cnClubs(a).filter(function (c, k, all) { return other.indexOf(c) >= 0 && all.indexOf(c) === k; }); }
+  function cnPairs() {
+    var ids = Object.keys(CAREERS).map(Number), out = [];
+    for (var i = 0; i < ids.length; i++) for (var j = i + 1; j < ids.length; j++) if (cnShared(ids[i], ids[j]).length) out.push([ids[i], ids[j]]);
+    return out;
+  }
+  function cnYears(id, club) { return CAREERS[id].filter(function (s) { return s.club === club; }).map(ttYears).join(' and '); }
+  function startConnect() {
+    cn = { pairs: sample(cnPairs(), CN_QUESTIONS), i: 0, right: 0, answered: false, picked: null, club: '', options: [] };
+    cnDeal();
+  }
+  function cnDeal() {
+    var pair = cn.pairs[cn.i], shared = cnShared(pair[0], pair[1]), right = sample(shared, 1)[0];
+    var near = cnClubs(pair[0]).concat(cnClubs(pair[1])).filter(function (c, k, all) { return shared.indexOf(c) < 0 && all.indexOf(c) === k; });
+    var far = [];
+    Object.keys(CAREERS).forEach(function (id) { cnClubs(Number(id)).forEach(function (c) { if (shared.indexOf(c) < 0 && near.indexOf(c) < 0 && far.indexOf(c) < 0) far.push(c); }); });
+    var wrong = sample(near, 3); if (wrong.length < 3) wrong = wrong.concat(sample(far, 3 - wrong.length));
+    cn.club = right; cn.options = sample([right].concat(wrong), 4); cn.answered = false; cn.picked = null;
+    $('cn-done').hidden = true; $('cn-board').hidden = false;
+    cnText('Name a club that ' + fullName(BY_ID[pair[0]]) + ' and ' + fullName(BY_ID[pair[1]]) + ' both played for.');
+  }
+  function cnText(t) { $('cn-status').textContent = t; }
+  function renderConnect() {
+    if (!cn) return;
+    var pair = cn.pairs[cn.i];
+    $('cn-count').textContent = 'Question ' + (cn.i + 1) + ' of ' + cn.pairs.length; $('cn-right').textContent = 'Right: ' + cn.right;
+    $('cn-cards').innerHTML = pair.map(function (id) { return '<span class="card">' + cardHTML(BY_ID[id], false) + '</span>'; }).join('');
+    var box = $('cn-opts'); box.innerHTML = '';
+    cn.options.forEach(function (club) {
+      var b = ttButton(club, function () { cnAnswer(club); }, 'tile');
+      if (cn.answered) {
+        if (club === cn.club) { b.classList.add('hit'); b.textContent = club + ' (right)'; }
+        else if (club === cn.picked) { b.classList.add('miss'); b.textContent = club + ' (not this one)'; }
+      }
+      b.setAttribute('aria-label', b.textContent);
+      box.appendChild(b);
+    });
+    var yrs = $('cn-years'); yrs.hidden = !cn.answered; yrs.innerHTML = '';
+    if (cn.answered) pair.forEach(function (id) { var p = document.createElement('p'); p.textContent = fullName(BY_ID[id]) + ' at ' + cn.club + ': ' + cnYears(id, cn.club); yrs.appendChild(p); });
+    $('cn-next').hidden = !cn.answered;
+    $('cn-next').textContent = cn.i === cn.pairs.length - 1 ? 'Finish round' : 'Next';
+  }
+  function cnAnswer(club) {
+    if (!cn || cn.answered) return;
+    cn.answered = true; cn.picked = club;
+    var ok = club === cn.club;
+    if (ok) { cn.right++; S.coins += 1; save(); $('coins').textContent = S.coins + (S.coins === 1 ? ' coin' : ' coins'); }
+    cnText(ok ? 'Right! Both played for ' + cn.club + '. You earned 1 coin.' : 'Not this one. Both played for ' + cn.club + '. Their years are below.');
+    renderConnect(); $('cn-next').focus();
+  }
+  $('cn-next').addEventListener('click', function () {
+    if (!cn || !cn.answered) return;
+    if (cn.i === cn.pairs.length - 1) { cnFinish(); return; }
+    cn.i++; cnDeal(); renderConnect(); $('cn-opts').querySelector('button').focus();
+  });
+  function cnFinish() {
+    var n = cn.right, total = cn.pairs.length, earned = n + CN_FINISH_COINS;
+    S.coins += CN_FINISH_COINS; save(); $('coins').textContent = S.coins + (S.coins === 1 ? ' coin' : ' coins');
+    cnText('Round finished.'); $('cn-board').hidden = true;
+    var box = $('cn-done'); box.hidden = false;
+    box.innerHTML = '<h2 tabindex="-1" id="cn-win">Round finished!</h2>' +
+      '<p>You found ' + plural(n, 'club') + ' right out of ' + total + '. You earned ' + plural(earned, 'coin') + ': ' + plural(n, 'coin') + ' for the clubs and ' + CN_FINISH_COINS + ' for finishing.</p>' +
+      '<div class="row center"><button class="btn primary" type="button" id="cn-again">Play again</button><button class="btn" type="button" id="cn-other">Back to games</button></div>';
+    $('cn-again').addEventListener('click', function () { startConnect(); renderConnect(); $('cn-opts').querySelector('button').focus(); });
+    $('cn-other').addEventListener('click', backToMenu);
+    $('cn-win').focus();
   }
 
   // ---------- Collection ----------
