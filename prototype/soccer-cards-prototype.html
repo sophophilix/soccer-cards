@@ -2,7 +2,7 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Figtree:wght@400;600;700&family=Saira+Condensed:ital,wght@0,600;0,800;1,800&display=swap">
 <style>
-/* Layout: five views on a mown-pitch ground (Packs, Battle, Memory, Cards, Guide); one card component drawn at every size from its own width. */
+/* Layout: five views on a mown-pitch ground (Packs, Battle, Games, Cards, Guide); one card component drawn at every size from its own width. */
 @property --mx { syntax: '<percentage>'; inherits: true; initial-value: 50%; }
 @property --my { syntax: '<percentage>'; inherits: true; initial-value: 50%; }
 
@@ -385,6 +385,31 @@ p { margin: 0; max-width: 60ch; }
 }
 .memdone { background: var(--surface); border: 2px solid var(--fg); border-radius: 14px; padding: 16px; display: grid; gap: 10px; justify-items: center; text-align: center; }
 
+/* ---------- Games menu and Transfer Trail ---------- */
+.gamelist { display: grid; gap: 12px; max-width: 520px; }
+.gamebtn {
+  all: unset; box-sizing: border-box; cursor: pointer; display: grid; gap: 6px; padding: 14px 16px; background: var(--surface);
+  border: 2px solid var(--fg); border-radius: 14px; box-shadow: 0 3px 0 var(--fg);
+}
+.gamebtn b { font: 400 22px/1.1 var(--font-display); }
+.gamebtn span { color: var(--muted); }
+.gamebtn:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+.ttplay { display: grid; grid-template-columns: minmax(0, 190px) minmax(0, 1fr); gap: 16px; align-items: start; }
+.ttcard .card { width: 100%; }
+.ttside { display: grid; gap: 10px; min-width: 0; }
+.ttbank { display: flex; flex-wrap: wrap; gap: 8px; }
+.ttbank .gone { visibility: hidden; }
+.btn.tile { text-transform: none; letter-spacing: .02em; font-size: 16px; min-height: 44px; text-align: left; border-radius: 12px; line-height: 1.15; }
+.trail { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; counter-reset: step; }
+.step { counter-increment: step; display: flex; gap: 8px; align-items: center; min-height: 44px; border: 2px dashed var(--line); border-radius: 12px; padding: 3px 8px 3px 6px; }
+.step::before { content: counter(step); flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--fg); color: var(--bg); font: 800 15px/1 var(--font-data); }
+.step.filled { border-style: solid; border-color: var(--fg); }
+.step.hit { border-color: var(--ctrl); background: color-mix(in srgb, var(--ctrl) 18%, var(--surface)); }
+.step.miss { border-color: var(--accent); }
+.ans { display: grid; gap: 1px; min-width: 0; }
+.ans small { color: var(--muted); font-size: 14px; }
+@media (max-width: 480px) { .ttplay { grid-template-columns: minmax(0, 1fr); } .ttcard { max-width: 150px; } }
+
 @media (prefers-reduced-motion: reduce) {
   .inner, .slot { transition: none; }
   .card.big.idle, .spot .card.big.idle, .pack.tearing, .pack.tearing::before, .grid.trading .slot, .spot.legend::before, .spot.icon::before { animation: none; }
@@ -400,7 +425,7 @@ p { margin: 0; max-width: 60ch; }
     <nav class="tabs" aria-label="Sections">
       <button class="tab" type="button" data-go="packs">Packs</button>
       <button class="tab" type="button" data-go="battle">Battle</button>
-      <button class="tab" type="button" data-go="memory">Memory</button>
+      <button class="tab" type="button" data-go="games">Games</button>
       <button class="tab" type="button" data-go="cards" id="tab-cards">Cards</button>
       <button class="tab" type="button" data-go="guide">Guide</button>
     </nav>
@@ -511,10 +536,40 @@ p { margin: 0; max-width: 60ch; }
     </div>
   </section>
 
-  <!-- Memory -->
-  <section class="view" id="view-memory" hidden>
+  <!-- Games -->
+  <section class="view" id="view-games" hidden>
+    <div class="view" id="games-menu">
+      <h2>Games</h2>
+      <p class="muted">Pick a game. You win coins for playing. Nothing is ever taken away.</p>
+      <div class="gamelist">
+        <button class="gamebtn" type="button" id="pick-pairs"><b>Pairs</b><span>Turn cards over and find the two that match.</span></button>
+        <button class="gamebtn" type="button" id="pick-trail"><b>Transfer Trail</b><span>Put a player’s clubs in the order they joined them.</span></button>
+      </div>
+    </div>
+    <div class="view" id="games-trail" hidden>
+      <div class="memstats">
+        <span class="chip" id="tt-count"></span>
+        <span class="chip legend" id="tt-right"></span>
+        <button class="btn small" type="button" id="tt-quit">Back to games</button>
+      </div>
+      <p class="muted" id="tt-status" role="status" aria-live="polite"></p>
+      <div class="memdone" id="tt-done" hidden></div>
+      <div class="ttplay" id="tt-board">
+        <div class="ttcard" id="tt-card"></div>
+        <div class="ttside">
+          <h3 id="tt-bank-label">Clubs to place</h3>
+          <div class="ttbank" id="tt-bank" role="group" aria-labelledby="tt-bank-label"></div>
+          <h3 id="tt-trail-label">Trail, first club to last</h3>
+          <ol class="trail" id="tt-trail" aria-labelledby="tt-trail-label"></ol>
+          <p class="muted" id="tt-hint">Tap the clubs in the order the player joined them. Tap a club in the trail to take it back.</p>
+          <div class="row"><button class="btn primary" type="button" id="tt-check" hidden>Check</button><button class="btn primary" type="button" id="tt-next" hidden>Next player</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="view" id="games-pairs" hidden>
     <div class="view" id="mem-pick">
-      <h2>Memory</h2>
+      <div><button class="btn small" type="button" id="mem-menu">Back to games</button></div>
+      <h2>Pairs</h2>
       <p>Cards are face down. Turn two cards. If they are the same player, they stay up. If not, they turn back, so remember where they were. Pick how many pairs to find.</p>
       <p class="muted">Use as few turns as you can. A turn is two cards. You win coins for every board.</p>
       <div class="mem-sizes" id="mem-sizes"></div>
@@ -528,6 +583,7 @@ p { margin: 0; max-width: 60ch; }
       <p class="muted" id="mem-status" role="status" aria-live="polite">Turn a card.</p>
       <div class="memdone" id="mem-done" hidden></div>
       <div class="grid memory" id="mem-grid"></div>
+    </div>
     </div>
   </section>
 
@@ -863,10 +919,10 @@ p { margin: 0; max-width: 60ch; }
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // ---------- Views ----------
-  var VIEWS = ['packs', 'battle', 'memory', 'cards', 'guide'], view = 'packs';
+  var VIEWS = ['packs', 'battle', 'games', 'cards', 'guide'], view = 'packs';
   function go(v) {
     if (battle && !battle.done && v !== 'battle') finishBattle();
-    if (v !== 'memory') memStop();
+    if (v !== 'games') gamesStop();
     view = VIEWS.indexOf(v) < 0 ? 'packs' : v;
     VIEWS.forEach(function (name) { $('view-' + name).hidden = name !== view; });
     Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (t) {
@@ -880,7 +936,7 @@ p { margin: 0; max-width: 60ch; }
     $('tab-cards').textContent = 'Cards (' + totalCards() + ')';
     if (view === 'packs') renderPacks();
     if (view === 'battle') renderBattle();
-    if (view === 'memory') renderMemory();
+    if (view === 'games') renderGames();
     if (view === 'cards') renderCollection();
     if (view === 'guide') renderGuide();
   }
@@ -1216,6 +1272,42 @@ p { margin: 0; max-width: 60ch; }
     $('again').addEventListener('click', function () { battle = null; renderBattle(); });
   }
 
+  // ---------- Career facts for the games ----------
+  // Source: data/api/v1/players/<slug>.json (careerSpells) and data/api/v1/clubs.json (displayName), read on 2026-11-23.
+  // Keyed by the prototype player's id. Spells keep the published order. to: null is the current club; games and goals are null where the file has none.
+  var CAREERS = {
+    1: [{ club: "FC Barcelona", from: 2004, to: 2021, games: 520, goals: 474 }, { club: "Paris Saint-Germain FC", from: 2021, to: 2023, games: 58, goals: 22 }, { club: "Inter Miami CF", from: 2023, to: null, games: 72, goals: 68 }], // Lionel Messi
+    2: [{ club: "CF Andorinha", from: 1992, to: 1995, games: null, goals: null }, { club: "C.D. Nacional", from: 1995, to: 1997, games: null, goals: null }, { club: "Sporting CP", from: 2002, to: 2003, games: 25, goals: 3 }, { club: "Manchester United F.C.", from: 2003, to: 2009, games: 196, goals: 84 }, { club: "Real Madrid Club de Fútbol", from: 2009, to: 2018, games: 292, goals: 311 }, { club: "Juventus FC", from: 2018, to: 2021, games: 98, goals: 81 }, { club: "Manchester United F.C.", from: 2021, to: 2022, games: 40, goals: 19 }, { club: "Al-Nassr", from: 2023, to: null, games: 117, goals: 110 }], // Cristiano Ronaldo
+    3: [{ club: "AS Monaco FC", from: 2015, to: 2018, games: 41, goals: 16 }, { club: "Paris Saint-Germain FC", from: 2017, to: 2018, games: 27, goals: 13 }, { club: "Paris Saint-Germain FC", from: 2018, to: 2024, games: 178, goals: 162 }, { club: "Real Madrid Club de Fútbol", from: 2024, to: null, games: 74, goals: 65 }], // Kylian Mbappé
+    4: [{ club: "Bryne FK", from: 2016, to: 2017, games: 16, goals: 0 }, { club: "Molde FK", from: 2017, to: 2019, games: 39, goals: 14 }, { club: "FC Red Bull Salzburg", from: 2019, to: 2020, games: 16, goals: 17 }, { club: "Borussia Dortmund", from: 2020, to: 2022, games: 67, goals: 62 }, { club: "Manchester City F.C.", from: 2022, to: null, games: 138, goals: 118 }], // Erling Haaland
+    5: [{ club: "Al Mokawloon Al Arab SC", from: 2010, to: 2012, games: 37, goals: 11 }, { club: "FC Basel", from: 2012, to: 2014, games: 47, goals: 9 }, { club: "Chelsea F.C.", from: 2014, to: 2015, games: 13, goals: 2 }, { club: "ACF Fiorentina", from: 2015, to: 2015, games: 16, goals: 6 }, { club: "AS Roma", from: 2015, to: 2016, games: 34, goals: 14 }, { club: "AS Roma", from: 2016, to: 2017, games: 31, goals: 15 }, { club: "Liverpool F.C.", from: 2017, to: 2026, games: 315, goals: 191 }, { club: "Trabzonspor", from: 2026, to: null, games: 0, goals: 0 }], // Mohamed Salah
+    6: [{ club: "Tottenham Hotspur F.C.", from: 2009, to: 2023, games: 317, goals: 213 }, { club: "Leyton Orient F.C.", from: 2011, to: 2011, games: 18, goals: 5 }, { club: "Millwall F.C.", from: 2012, to: 2012, games: 22, goals: 7 }, { club: "Norwich City F.C.", from: 2012, to: 2013, games: 3, goals: 0 }, { club: "Leicester City F.C.", from: 2013, to: 2013, games: 13, goals: 2 }, { club: "FC Bayern Munich", from: 2023, to: null, games: 99, goals: 101 }], // Harry Kane
+    7: [{ club: "Birmingham City F.C.", from: 2019, to: 2020, games: 41, goals: 4 }, { club: "Borussia Dortmund", from: 2020, to: 2023, games: 92, goals: 12 }, { club: "Real Madrid Club de Fútbol", from: 2023, to: null, games: 95, goals: 37 }], // Jude Bellingham
+    8: [{ club: "FC Barcelona", from: 2023, to: null, games: 109, goals: 37 }], // Lamine Yamal
+    10: [{ club: "FC Groningen", from: 2011, to: 2013, games: 62, goals: 7 }, { club: "Celtic F.C.", from: 2013, to: 2015, games: 76, goals: 9 }, { club: "Southampton F.C.", from: 2015, to: 2018, games: 67, goals: 4 }, { club: "Liverpool F.C.", from: 2018, to: null, games: 278, goals: 27 }], // Virgil van Dijk
+    11: [{ club: "CF Rayo Majadahonda", from: 2006, to: 2007, games: null, goals: null }, { club: "Villarreal CF", from: 2015, to: 2018, games: 63, goals: 1 }, { club: "Atlético Madrid", from: 2018, to: 2019, games: 34, goals: 3 }, { club: "Manchester City F.C.", from: 2019, to: 2026, games: 196, goals: 23 }, { club: "FC Barcelona", from: 2026, to: null, games: 7, goals: 0 }], // Rodri
+    12: [{ club: "Arsenal F.C.", from: 2018, to: null, games: 232, goals: 63 }], // Bukayo Saka
+    13: [{ club: "UD Tegueste", from: 2013, to: 2015, games: null, goals: null }, { club: "CD Laguna de Tenerife", from: 2015, to: 2018, games: null, goals: null }, { club: "UD Las Palmas", from: 2018, to: 2019, games: null, goals: null }, { club: "UD Las Palmas", from: 2019, to: 2020, games: 36, goals: 4 }, { club: "FC Barcelona", from: 2020, to: null, games: 173, goals: 23 }], // Pedri
+    14: [{ club: "FC Bayern Munich", from: 2020, to: null, games: 154, goals: 48 }], // Jamal Musiala
+    17: [{ club: "West Ham United F.C.", from: 2015, to: 2023, games: 204, goals: 10 }, { club: "Arsenal F.C.", from: 2023, to: null, games: 115, goals: 15 }], // Declan Rice
+    25: [{ club: "S.L. Benfica", from: 2017, to: 2020, games: 91, goals: 9 }, { club: "Manchester City F.C.", from: 2020, to: null, games: 175, goals: 5 }], // Rúben Dias
+    26: [{ club: "Bayer 04 Leverkusen", from: 2020, to: 2025, games: 140, goals: 35 }, { club: "Liverpool F.C.", from: 2025, to: null, games: 39, goals: 5 }], // Florian Wirtz
+    38: [{ club: "Liverpool F.C.", from: 2016, to: 2025, games: 259, goals: 18 }, { club: "Real Madrid Club de Fútbol", from: 2025, to: null, games: 26, goals: 0 }], // Trent Alexander-Arnold
+    43: [{ club: "Atlético Madrid", from: 2014, to: 2019, games: 180, goals: 94 }, { club: "FC Barcelona", from: 2019, to: 2022, games: 74, goals: 22 }, { club: "Atlético Madrid", from: 2021, to: 2022, games: 34, goals: 5 }, { club: "Atlético Madrid", from: 2022, to: 2026, games: 135, goals: 44 }, { club: "Orlando City SC", from: 2026, to: null, games: 1, goals: 1 }], // Antoine Griezmann
+    49: [{ club: "Bauru Atlético Clube", from: 1953, to: 1956, games: null, goals: null }, { club: "Santos F.C.", from: 1956, to: 1974, games: 659, goals: 643 }, { club: "New York Cosmos", from: 1975, to: 1977, games: 65, goals: 111 }], // Pelé
+    51: [{ club: "AS Cannes", from: 1989, to: 1992, games: 61, goals: 6 }, { club: "FC Girondins de Bordeaux", from: 1992, to: 1996, games: 139, goals: 28 }, { club: "Juventus FC", from: 1996, to: 2001, games: 151, goals: 24 }, { club: "Real Madrid Club de Fútbol", from: 2001, to: 2006, games: 155, goals: 37 }], // Zinedine Zidane
+    54: [{ club: "AS Monaco FC", from: 1994, to: 1999, games: 105, goals: 20 }, { club: "Juventus FC", from: 1999, to: 1999, games: 16, goals: 3 }, { club: "Arsenal F.C.", from: 1999, to: 2007, games: 377, goals: 228 }, { club: "FC Barcelona", from: 2007, to: 2010, games: 80, goals: 35 }, { club: "Red Bull New York", from: 2010, to: 2014, games: 122, goals: 51 }, { club: "Arsenal F.C.", from: 2012, to: 2012, games: 4, goals: 1 }], // Thierry Henry
+    56: [{ club: "FC Bayern Munich", from: 1965, to: 1977, games: 439, goals: 64 }, { club: "New York Cosmos", from: 1977, to: 1980, games: 80, goals: 17 }, { club: "Hamburger SV", from: 1980, to: 1982, games: 28, goals: 0 }, { club: "New York Cosmos", from: 1983, to: 1983, games: 25, goals: 2 }], // Franz Beckenbauer
+    57: [{ club: "AC Milan", from: 1985, to: 2009, games: 647, goals: null }], // Paolo Maldini
+    58: [{ club: "Everton F.C.", from: 2002, to: 2004, games: 67, goals: 15 }, { club: "Manchester United F.C.", from: 2004, to: 2017, games: 393, goals: 183 }, { club: "Everton F.C.", from: 2017, to: 2018, games: 31, goals: 10 }, { club: "D.C. United", from: 2018, to: 2019, games: 48, goals: 23 }, { club: "Derby County F.C.", from: 2019, to: 2021, games: 30, goals: 6 }], // Wayne Rooney
+    60: [{ club: "Malmö FF", from: 1999, to: 2001, games: 40, goals: 16 }, { club: "AFC Ajax", from: 2000, to: 2004, games: 74, goals: 35 }, { club: "Juventus FC", from: 2004, to: 2006, games: 70, goals: 23 }, { club: "Inter Milan", from: 2006, to: 2009, games: 88, goals: 57 }, { club: "FC Barcelona", from: 2009, to: 2010, games: 29, goals: 16 }, { club: "AC Milan", from: 2010, to: 2012, games: 61, goals: 42 }, { club: "Paris Saint-Germain FC", from: 2012, to: 2016, games: 122, goals: 113 }, { club: "Manchester United F.C.", from: 2016, to: 2018, games: 33, goals: 17 }, { club: "LA Galaxy", from: 2018, to: 2019, games: 56, goals: 52 }, { club: "AC Milan", from: 2020, to: 2023, games: 64, goals: 34 }], // Zlatan Ibrahimović
+    61: [{ club: "FC Barcelona", from: 2002, to: 2018, games: 442, goals: 35 }, { club: "Vissel Kobe", from: 2018, to: 2023, games: 114, goals: 21 }, { club: "Emirates Club", from: 2023, to: 2024, games: 20, goals: 5 }], // Andrés Iniesta
+    63: [{ club: "Liverpool F.C.", from: 1998, to: 2015, games: 504, goals: 120 }, { club: "LA Galaxy", from: 2015, to: 2016, games: 34, goals: 5 }], // Steven Gerrard
+    68: [{ club: "K.R.C. Genk", from: 2009, to: 2011, games: 41, goals: 0 }, { club: "Atlético Madrid", from: 2011, to: 2014, games: 111, goals: 0 }, { club: "Chelsea F.C.", from: 2011, to: 2018, games: 126, goals: 0 }, { club: "Real Madrid Club de Fútbol", from: 2018, to: null, games: 240, goals: 0 }], // Thibaut Courtois
+    70: [{ club: "Schalke 04", from: 2006, to: 2011, games: 156, goals: 0 }, { club: "FC Bayern Munich", from: 2011, to: null, games: 393, goals: 0 }], // Manuel Neuer
+    77: [{ club: "Parma Calcio 1913", from: 1995, to: 2001, games: 169, goals: 0 }, { club: "Juventus FC", from: 2001, to: 2018, games: 509, goals: 0 }, { club: "Paris Saint-Germain FC", from: 2018, to: 2019, games: 17, goals: 0 }, { club: "Juventus FC", from: 2019, to: 2021, games: 17, goals: 0 }, { club: "Parma Calcio 1913", from: 2021, to: 2023, games: 43, goals: 0 }], // Gianluigi Buffon
+  };
+
   // ---------- Memory ----------
   // Pairs are two copies of one owned card. A board pays MEM_COINS[pairs], plus 1 when it took at most twice as many turns (two cards each) as pairs.
   var MEM_SIZES = [6, 8, 10], MEM_COINS = { 6: 3, 8: 4, 10: 5 }, MEM_BACK_MS = 1000;
@@ -1294,6 +1386,105 @@ p { margin: 0; max-width: 60ch; }
     $('mem-win').focus();
   }
   $('mem-quit').addEventListener('click', function () { memStop(); renderMemory(); });
+
+  // ---------- Games menu ----------
+  var game = 'menu';
+  function gamesStop() { memStop(); tt = null; game = 'menu'; $('tt-status').textContent = ''; }
+  function openGame(g) { game = g; if (g === 'trail') startTrail(); renderGames(); }
+  function renderGames() {
+    $('games-menu').hidden = game !== 'menu'; $('games-pairs').hidden = game !== 'pairs'; $('games-trail').hidden = game !== 'trail';
+    if (game === 'pairs') renderMemory();
+    if (game === 'trail') renderTrail();
+  }
+  $('pick-pairs').addEventListener('click', function () { openGame('pairs'); });
+  $('pick-trail').addEventListener('click', function () { openGame('trail'); });
+  function backToMenu() { gamesStop(); renderGames(); $('games-menu').querySelector('button').focus(); }
+  $('mem-menu').addEventListener('click', backToMenu);
+  $('tt-quit').addEventListener('click', backToMenu);
+
+  // ---------- Transfer Trail ----------
+  // A round is 5 players with 3 or more published clubs. Each trail right on the check pays 1 coin; finishing the round pays 2 more. Nothing is taken away.
+  var TT_PLAYERS = 5, TT_FINISH_COINS = 2, tt = null;
+  function ttYears(s) { return s.to === null ? s.from + ' to now' : s.to === s.from ? String(s.from) : s.from + ' to ' + s.to; }
+  function ttSpells() { return CAREERS[tt.ids[tt.i]]; }
+  function startTrail() {
+    var ids = Object.keys(CAREERS).map(Number).filter(function (id) { return CAREERS[id].length >= 3; });
+    tt = { ids: sample(ids, TT_PLAYERS), i: 0, right: 0, tiles: [], trail: [], checked: false, ok: false };
+    ttDeal();
+  }
+  function ttDeal() {
+    var spells = ttSpells(), names = spells.map(function (s) { return s.club; }), tiles = spells.map(function (s, k) { return { k: k, club: s.club, placed: false }; }), shuffled = sample(tiles, tiles.length), tries = 0;
+    while (tries++ < 10 && shuffled.every(function (t, k) { return t.club === names[k]; })) shuffled = sample(tiles, tiles.length);
+    tt.tiles = shuffled; tt.trail = []; tt.checked = false; tt.ok = false;
+    $('tt-done').hidden = true; $('tt-board').hidden = false;
+    ttText('Which club did ' + fullName(BY_ID[tt.ids[tt.i]]) + ' join first? Tap the clubs in order.');
+  }
+  function ttText(t) { $('tt-status').textContent = t; }
+  function ttButton(label, onTap, cls) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'btn small ' + (cls || ''); b.textContent = label; b.addEventListener('click', onTap); return b;
+  }
+  function renderTrail() {
+    if (!tt) return;
+    var p = BY_ID[tt.ids[tt.i]], spells = ttSpells(), full = tt.trail.length === spells.length;
+    $('tt-count').textContent = 'Player ' + (tt.i + 1) + ' of ' + TT_PLAYERS; $('tt-right').textContent = 'Right: ' + tt.right;
+    $('tt-card').innerHTML = '<span class="card">' + cardHTML(p, false) + '</span>';
+    var bank = $('tt-bank'); bank.innerHTML = '';
+    tt.tiles.forEach(function (t) { bank.appendChild(ttButton(t.club, function () { ttPlace(t); }, 'tile' + (t.placed ? ' gone' : ''))); });
+    var ol = $('tt-trail'); ol.innerHTML = '';
+    spells.forEach(function (s, n) {
+      var li = document.createElement('li'), t = tt.trail[n], text;
+      li.className = 'step' + (t ? ' filled' : '');
+      if (!tt.checked) {
+        if (t) li.appendChild(ttButton(t.club, function () { ttTake(t); }, 'tile')); else li.insertAdjacentHTML('beforeend', '<span class="slotname muted">Club ' + (n + 1) + '</span>');
+      } else {
+        var hit = t.club === s.club; li.classList.add(hit ? 'hit' : 'miss');
+        text = document.createElement('span'); text.className = 'ans';
+        text.innerHTML = '<b></b><small></small>'; text.firstChild.textContent = s.club; text.lastChild.textContent = ttYears(s) + (hit ? ' (right place)' : ' (you put ' + t.club + ' here)');
+        li.appendChild(text);
+      }
+      ol.appendChild(li);
+    });
+    $('tt-bank-label').hidden = $('tt-bank').hidden = tt.checked || full;
+    $('tt-hint').hidden = tt.checked;
+    $('tt-check').hidden = tt.checked || !full; $('tt-next').hidden = !tt.checked;
+    $('tt-next').textContent = tt.i === TT_PLAYERS - 1 ? 'Finish round' : 'Next player';
+  }
+  function ttPlace(t) {
+    if (!tt || tt.checked || t.placed) return;
+    t.placed = true; tt.trail.push(t); renderTrail();
+    if (tt.trail.length === ttSpells().length) { ttText('The trail is full. Press Check.'); $('tt-check').focus(); }
+    else { var next = $('tt-bank').querySelector('button:not(.gone)'); if (next) next.focus(); }
+  }
+  function ttTake(t) {
+    if (!tt || tt.checked || !t.placed) return;
+    t.placed = false; tt.trail.splice(tt.trail.indexOf(t), 1); ttText('Took ' + t.club + ' back.'); renderTrail();
+    var again = $('tt-bank').querySelectorAll('button:not(.gone)'); for (var n = 0; n < again.length; n++) if (again[n].textContent === t.club) { again[n].focus(); break; }
+  }
+  $('tt-check').addEventListener('click', function () {
+    if (!tt || tt.checked) return;
+    var spells = ttSpells(), p = BY_ID[tt.ids[tt.i]];
+    tt.checked = true; tt.ok = tt.trail.every(function (t, n) { return t.club === spells[n].club; });
+    if (tt.ok) { tt.right++; S.coins += 1; save(); $('coins').textContent = S.coins + (S.coins === 1 ? ' coin' : ' coins'); }
+    ttText(tt.ok ? 'Right! That is ' + fullName(p) + '’s trail. You earned 1 coin.' : 'Not this time. Here is ' + fullName(p) + '’s real trail. Each club shows its years.');
+    renderTrail(); $('tt-next').focus();
+  });
+  $('tt-next').addEventListener('click', function () {
+    if (!tt || !tt.checked) return;
+    if (tt.i === TT_PLAYERS - 1) { ttFinish(); return; }
+    tt.i++; ttDeal(); renderTrail(); $('tt-bank').querySelector('button:not(.gone)').focus();
+  });
+  function ttFinish() {
+    var n = tt.right, earned = n + TT_FINISH_COINS;
+    S.coins += TT_FINISH_COINS; save(); $('coins').textContent = S.coins + (S.coins === 1 ? ' coin' : ' coins');
+    ttText('Round finished.'); $('tt-board').hidden = true;
+    var box = $('tt-done'); box.hidden = false;
+    box.innerHTML = '<h2 tabindex="-1" id="tt-win">Round finished!</h2>' +
+      '<p>You put ' + plural(n, 'trail') + ' right out of ' + TT_PLAYERS + '. You earned ' + plural(earned, 'coin') + ': ' + plural(n, 'coin') + ' for the trails and ' + TT_FINISH_COINS + ' for finishing.</p>' +
+      '<div class="row center"><button class="btn primary" type="button" id="tt-again">Play again</button><button class="btn" type="button" id="tt-other">Back to games</button></div>';
+    $('tt-again').addEventListener('click', function () { startTrail(); renderTrail(); $('tt-bank').querySelector('button:not(.gone)').focus(); });
+    $('tt-other').addEventListener('click', backToMenu);
+    $('tt-win').focus();
+  }
 
   // ---------- Collection ----------
   var favOnly = false, trading = false;
