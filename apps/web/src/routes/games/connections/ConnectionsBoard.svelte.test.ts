@@ -93,6 +93,17 @@ test('Next ignores a repeated Enter for a moment, then carries on', async () => 
 	}
 });
 
+test('two players with the same name show as two cards with their own years', async () => {
+	const screen = await render(
+		ConnectionsBoard,
+		props({ players: [front('Sam Lee'), front('Sam Lee')] as const, result: result('a') })
+	);
+
+	await expect.element(screen.getByText('Sam Lee at Chelsea F.C.: 2008 to 2012')).toBeVisible();
+	await expect.element(screen.getByText('Sam Lee at Chelsea F.C.: 2019 to now')).toBeVisible();
+	expect(screen.container.querySelectorAll('.faces > .face')).toHaveLength(2);
+});
+
 test('the last question offers Finish round', async () => {
 	const screen = await render(ConnectionsBoard, props({ result: result('a'), isLast: true }));
 
