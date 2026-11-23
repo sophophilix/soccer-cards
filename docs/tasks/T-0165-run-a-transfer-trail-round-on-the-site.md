@@ -52,6 +52,10 @@ unnecessary.
 - `GamesMenu.svelte` links to `/games/transfer-trail` with the typed
   `resolve`, with no `rel="external"` and no TODO.
 - No request leaves the site's origin, and no new storage key is written.
+- The board starts fresh for each player: it is keyed by player, so no
+  placed clubs or result carry over (T-0161 review F2).
+- The coin in the right-trail message comes from `TRAIL_RIGHT_COINS`, not a
+  number written in the words (T-0161 review F3).
 
 ## Edge cases
 
