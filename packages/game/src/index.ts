@@ -9,6 +9,8 @@ export {
 	JUMBO_PACK_COST_COINS,
 	STANDARD_PACK_COST_COINS,
 	STARTING_COINS,
+	TRAIL_FINISH_COINS,
+	TRAIL_RIGHT_COINS,
 	WIN_COINS_BY_DIVISION
 } from './economy.ts';
 export {
@@ -80,3 +82,5 @@ export type {
 	TrailRound,
 	TrailStep
 } from './transfer-trail.ts';
+export { checkTrailInRound, finishTrailRound, openPaidRound } from './transfer-trail-round.ts';
+export type { PaidTrailRefusal, PaidTrailResult, PaidTrailRound } from './transfer-trail-round.ts';
