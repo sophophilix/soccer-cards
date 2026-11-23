@@ -24,7 +24,7 @@
 	let bank = $state<HTMLElement>();
 	let checkButton = $state<HTMLButtonElement>();
 	let nextButton = $state<HTMLButtonElement>();
-	let isNextReady = false;
+	let isNextReady = $state(false);
 	let guardTimer: ReturnType<typeof setTimeout> | undefined;
 
 	const isFull = $derived(placed.length === step.dealt.length);
@@ -86,10 +86,10 @@
 
 <p class="muted" role="status" aria-live="polite">{status}</p>
 <div class="play">
-	<div class="face"><CardFront {...front} /></div>
+	<div class="face" data-art><CardFront {...front} /></div>
 	<div class="side">
 		{#if check === undefined && !isFull}
-			<h3 id="bank-label">Clubs to place</h3>
+			<h2 class="label" id="bank-label">Clubs to place</h2>
 			<div class="bank" role="group" aria-labelledby="bank-label" bind:this={bank}>
 				{#each step.dealt as clubId, tile (tile)}
 					<button
@@ -100,7 +100,7 @@
 				{/each}
 			</div>
 		{/if}
-		<h3 id="trail-label">Trail, first club to last</h3>
+		<h2 class="label" id="trail-label">Trail, first club to last</h2>
 		<ol class="trail" aria-labelledby="trail-label">
 			{#each step.spells as spell, place (place)}
 				{@const tile = placed[place]}
@@ -141,8 +141,12 @@
 			{/if}
 		{:else}
 			<div class="row">
-				<button type="button" class="btn primary" bind:this={nextButton} onclick={goNext}
-					>{isLast ? 'Finish round' : 'Next player'}</button
+				<button
+					type="button"
+					class="btn primary"
+					bind:this={nextButton}
+					aria-disabled={isNextReady ? undefined : 'true'}
+					onclick={goNext}>{isLast ? 'Finish round' : 'Next player'}</button
 				>
 			</div>
 		{/if}
@@ -160,6 +164,13 @@
 		display: grid;
 		gap: 10px;
 		min-width: 0;
+	}
+	/* The look of the global h3, so the headings keep their place in the order. */
+	.label {
+		color: var(--muted);
+		font: 800 var(--text-label) / var(--text-label--line-height) var(--font-data);
+		letter-spacing: var(--tracking-heading);
+		text-transform: uppercase;
 	}
 	.bank {
 		display: flex;
