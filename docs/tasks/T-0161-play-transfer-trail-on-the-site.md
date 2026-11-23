@@ -15,16 +15,16 @@ status: ready
 ## Goal
 
 A child can play Transfer Trail on the real site, as in the prototype the
-tech lead and the kids played (T-0153). It starts after T-0158, T-0159 and
-T-0160 merge.
+tech lead and the kids played (T-0153). It starts after T-0158, T-0159,
+T-0160, T-0162 and T-0163 merge.
 
 ## Context
 
 - `prototype/soccer-cards-prototype.html`, the Transfer Trail screen
   (`#games-trail` and the code under "Transfer Trail") is the approved look
   and behaviour.
-- The rules: `startTrailRound`, `checkTrail` and the paying functions in
-  `packages/game` (T-0158). The screen holds no rule of its own.
+- The rules: `startTrailRound` (T-0158), `checkTrail` (T-0162) and the paying functions
+  (T-0163) in `packages/game`. The screen holds no rule of its own.
 - Careers: `loadCareer` in `apps/web/src/lib/data/load-career.ts` (T-0159).
 - Saving coins: `apps/web/src/lib/state/player-store.ts` and how the Match
   screen saves a win and words a refused save.
