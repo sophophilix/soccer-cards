@@ -9,7 +9,7 @@ paths:
   - apps/web/src/routes/games/transfer-trail/TrailBoard.svelte.test.ts
 dependencies: []
 max_changed_lines: 120
-status: ready
+status: done
 ---
 
 ## Goal

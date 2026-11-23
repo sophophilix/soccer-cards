@@ -9,7 +9,7 @@ paths:
   - apps/web/src/lib/data/load-career.test.ts
 dependencies: []
 max_changed_lines: 120
-status: ready
+status: done
 ---
 
 ## Goal
