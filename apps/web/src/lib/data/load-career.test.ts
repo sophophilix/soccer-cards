@@ -1,9 +1,10 @@
 import { describe, expect, it, vi } from 'vitest';
+import { clubNamesFromList } from './card-face-from-summary.ts';
 import { loadCareer } from './load-career.ts';
 
 const clubNames: ReadonlyMap<string, string> = new Map([
-	['clubs/aaa', 'Alpha FC'],
-	['clubs/bbb', 'Beta United']
+	['aaa', 'Alpha FC'],
+	['bbb', 'Beta United']
 ]);
 
 function aResponse(body: unknown, init: ResponseInit = {}): Response {
@@ -98,6 +99,32 @@ describe('loadCareer', () => {
 		];
 
 		expect(await loadFrom(recordWith(spells))).toBeUndefined();
+	});
+
+	it('gives no career when a club has no slug or more than one part', async () => {
+		const good = { club: 'clubs/aaa', startYear: 2010 };
+
+		expect(await loadFrom(recordWith([good, { club: 'clubs/', startYear: 2012 }]))).toBeUndefined();
+		expect(
+			await loadFrom(recordWith([good, { club: 'clubs/aaa/bbb', startYear: 2012 }]))
+		).toBeUndefined();
+	});
+
+	it('finds the clubs in the map the club list gives', async () => {
+		const list = {
+			clubs: [
+				{ name: 'clubs/aaa', displayName: 'Alpha FC' },
+				{ name: 'clubs/bbb', displayName: 'Beta United' }
+			]
+		};
+		const spells = [{ club: 'clubs/bbb', startYear: 2010 }];
+		const career = await loadCareer(
+			() => Promise.resolve(aResponse(recordWith(spells))),
+			'p-1',
+			clubNamesFromList(list)
+		);
+
+		expect(career?.spells[0]?.displayName).toBe('Beta United');
 	});
 
 	it('gives no career when the end year is before the start year', async () => {

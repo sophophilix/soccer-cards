@@ -35,9 +35,10 @@ function spellFrom(raw: unknown, clubNames: ReadonlyMap<string, string>): TrailS
 	if (typeof club !== 'string' || !club.startsWith(CLUB_PREFIX) || !isYear(startYear)) {
 		return undefined;
 	}
-	const displayName = clubNames.get(club);
-	if (displayName === undefined) return undefined;
 	const clubId = club.slice(CLUB_PREFIX.length);
+	if (clubId === '' || clubId.includes('/')) return undefined;
+	const displayName = clubNames.get(clubId);
+	if (displayName === undefined) return undefined;
 	if (endYear === undefined) return { clubId, displayName, startYear };
 	if (!isYear(endYear) || endYear < startYear) return undefined;
 	return { clubId, displayName, startYear, endYear };
