@@ -5,6 +5,8 @@ export type { DrawPackResult, PackKind } from './draw-pack.ts';
 export { createRandom } from './random.ts';
 export type { Random } from './random.ts';
 export {
+	CONNECTIONS_FINISH_COINS,
+	CONNECTIONS_RIGHT_COINS,
 	ECONOMY_VERSION,
 	JUMBO_PACK_COST_COINS,
 	STANDARD_PACK_COST_COINS,
@@ -90,3 +92,13 @@ export {
 	startConnectionsRound
 } from './connections.ts';
 export type { ConnectionsQuestion, ConnectionsRound } from './connections.ts';
+export {
+	answerConnection,
+	finishConnectionsRound,
+	openConnectionsRound
+} from './connections-round.ts';
+export type {
+	ConnectionsRefusal,
+	ConnectionsResult,
+	PaidConnectionsRound
+} from './connections-round.ts';

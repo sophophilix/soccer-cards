@@ -1,5 +1,5 @@
 /** The version of the coin table. A change to any amount raises it (ADR 0010 D1). */
-export const ECONOMY_VERSION = 2;
+export const ECONOMY_VERSION = 3;
 /** The coins a new player starts with. */
 export const STARTING_COINS = 0;
 /** The price of a standard pack once the free packs are used. */
@@ -18,3 +18,7 @@ export const WIN_COINS_BY_DIVISION = {
 export const TRAIL_RIGHT_COINS = 1;
 /** The coins finishing a Transfer Trail round pays. */
 export const TRAIL_FINISH_COINS = 2;
+/** The coins a Connections question pays for a right first answer. */
+export const CONNECTIONS_RIGHT_COINS = 1;
+/** The coins finishing a Connections round pays. */
+export const CONNECTIONS_FINISH_COINS = 2;
