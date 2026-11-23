@@ -6,6 +6,11 @@
 			name: 'Transfer Trail',
 			blurb: 'Put a player’s clubs in the order they joined them.',
 			slug: 'transfer-trail'
+		},
+		{
+			name: 'Connections',
+			blurb: 'Two players. Name a club they both played for.',
+			slug: 'connections'
 		}
 	] as const;
 </script>

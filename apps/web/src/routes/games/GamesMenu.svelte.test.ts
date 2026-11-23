@@ -30,3 +30,13 @@ test('links to the page with no rel, so the site treats it as its own', async ()
 		.element(screen.getByRole('link', { name: /Transfer Trail/ }))
 		.not.toHaveAttribute('rel');
 });
+
+test('offers Connections after Transfer Trail, as a link to its own page', async () => {
+	const screen = await render(GamesMenu);
+
+	const links = screen.getByRole('link').elements();
+	expect(links.map((link) => link.getAttribute('href'))).toEqual([
+		'/games/transfer-trail',
+		'/games/connections'
+	]);
+});
