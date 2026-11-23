@@ -6,6 +6,8 @@
 	import type { CardFrontProps } from '../../../lib/cards/card-front.ts';
 	import { checkText, placeText } from './trail-words.ts';
 
+	const NEXT_GUARD_MS = 700;
+
 	interface Props {
 		readonly step: TrailStep;
 		readonly front: CardFrontProps;
@@ -22,6 +24,8 @@
 	let bank = $state<HTMLElement>();
 	let checkButton = $state<HTMLButtonElement>();
 	let nextButton = $state<HTMLButtonElement>();
+	let isNextReady = false;
+	let guardTimer: ReturnType<typeof setTimeout> | undefined;
 
 	const isFull = $derived(placed.length === step.dealt.length);
 	const answer = $derived(placed.map((tile) => step.dealt[tile] ?? ''));
@@ -54,10 +58,14 @@
 		bank?.querySelectorAll<HTMLElement>('button')[tile]?.focus();
 	}
 
-	function goNext(event: MouseEvent): void {
-		if (event.detail > 1) return;
+	function goNext(): void {
+		if (!isNextReady) return;
 		onNext();
 	}
+
+	$effect(() => () => {
+		clearTimeout(guardTimer);
+	});
 
 	async function checkTrail(): Promise<void> {
 		if (check !== undefined) return;
@@ -67,6 +75,9 @@
 			return;
 		}
 		check = result;
+		guardTimer = setTimeout(() => {
+			isNextReady = true;
+		}, NEXT_GUARD_MS);
 		said = checkText(result.isRight, front.displayName);
 		await tick();
 		nextButton?.focus();

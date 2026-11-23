@@ -1,4 +1,5 @@
 import { expect, test, vi } from 'vitest';
+import { userEvent } from 'vitest/browser';
 import { render } from 'vitest-browser-svelte';
 import type { TrailCheck, TrailStep } from '@soccer-cards/game';
 import TrailBoard from './TrailBoard.svelte';
@@ -101,15 +102,65 @@ test('the last player offers Finish round', async () => {
 	await expect.element(screen.getByRole('button', { name: 'Finish round' })).toBeVisible();
 });
 
-test('the second tap of a double tap does not skip the result', async () => {
-	const onNext = vi.fn();
-	const screen = await render(TrailBoard, { ...props(anyCheck), onNext });
+async function checked(onNext = vi.fn(), onCheck = vi.fn(anyCheck)) {
+	const screen = await render(TrailBoard, { ...props(onCheck), onNext });
 	await fill(screen, ['Alpha FC', 'Beta United', 'Real Madrid Club de Fútbol']);
-	await screen.getByRole('button', { name: 'Check' }).click();
+	return { screen, onNext, onCheck };
+}
 
-	await screen.getByRole('button', { name: 'Next player' }).click({ clickCount: 2 });
+test('a double click on Check keeps the result on screen', async () => {
+	vi.useFakeTimers();
+	try {
+		const { screen, onNext, onCheck } = await checked();
 
-	expect(onNext).toHaveBeenCalledTimes(1);
+		await screen.getByRole('button', { name: 'Check' }).click({ clickCount: 2 });
+
+		expect(onCheck).toHaveBeenCalledTimes(1);
+		expect(onNext).not.toHaveBeenCalled();
+		await expect.element(screen.getByRole('button', { name: 'Next player' })).toBeVisible();
+	} finally {
+		vi.useRealTimers();
+	}
+});
+
+test('a repeated Enter on Check does not press Next player', async () => {
+	vi.useFakeTimers();
+	try {
+		const { screen, onNext } = await checked();
+		screen.getByRole('button', { name: 'Check' }).element().focus();
+
+		await userEvent.keyboard('{Enter}{Enter}{Enter}');
+
+		expect(onNext).not.toHaveBeenCalled();
+		await expect.element(screen.getByText(/^Not this time\./)).toBeVisible();
+	} finally {
+		vi.useRealTimers();
+	}
+});
+
+test('Next player works once the moment has passed', async () => {
+	vi.useFakeTimers();
+	try {
+		const { screen, onNext } = await checked();
+		await screen.getByRole('button', { name: 'Check' }).click();
+		await screen.getByRole('button', { name: 'Next player' }).click();
+		expect(onNext).not.toHaveBeenCalled();
+
+		await vi.advanceTimersByTimeAsync(1000);
+		await screen.getByRole('button', { name: 'Next player' }).click();
+
+		expect(onNext).toHaveBeenCalledTimes(1);
+	} finally {
+		vi.useRealTimers();
+	}
+});
+
+test('a double click on a club places it once', async () => {
+	const screen = await render(TrailBoard, props(anyCheck));
+
+	await screen.getByRole('button', { name: 'Alpha FC' }).click({ clickCount: 2 });
+
+	await expect.element(screen.getByRole('list').getByRole('button')).toHaveLength(1);
 });
 
 test('two clubs with the same name both show and either can go first', async () => {
