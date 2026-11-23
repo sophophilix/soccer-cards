@@ -1,6 +1,7 @@
 import type { CardId, CheckedCardSet } from './cards.ts';
 import { DIVISIONS } from './divisions.ts';
 import type { Division } from './divisions.ts';
+import { JUMBO_PACK_COST_COINS, STANDARD_PACK_COST_COINS, STARTING_COINS } from './economy.ts';
 import { drawPack } from './draw-pack.ts';
 import type { PackKind } from './draw-pack.ts';
 import { TEAM_SIZE } from './lineup.ts';
@@ -10,12 +11,6 @@ import type { Random } from './random.ts';
 export const STATE_VERSION = 2;
 /** The free standard packs a new player starts with. */
 export const STARTING_FREE_PACKS = 2;
-/** The coins a new player starts with. */
-export const STARTING_COINS = 0;
-/** The price of a standard pack once the free packs are used. */
-export const STANDARD_PACK_COST_COINS = 5;
-/** The price of a jumbo pack. A free pack never pays for it. */
-export const JUMBO_PACK_COST_COINS = 20;
 /** The wins in one division that move the player up to the next. */
 export const WINS_TO_GO_UP = 3;
 
