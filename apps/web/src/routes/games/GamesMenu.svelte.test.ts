@@ -22,3 +22,11 @@ test('offers Transfer Trail as a link to its own page', async () => {
 
 	await expect.element(link).toHaveAttribute('href', '/games/transfer-trail');
 });
+
+test('links to the page with no rel, so the site treats it as its own', async () => {
+	const screen = await render(GamesMenu);
+
+	await expect
+		.element(screen.getByRole('link', { name: /Transfer Trail/ }))
+		.not.toHaveAttribute('rel');
+});

@@ -14,8 +14,7 @@
 <p class="muted">Pick a game. You win coins for playing. Nothing is ever taken away.</p>
 <div class="gamelist">
 	{#each GAMES as game (game.slug)}
-		<!-- TODO(T-0161): drop rel="external" once the page exists; it keeps the build's crawler off a not-yet-built page. -->
-		<a class="gamebtn" rel="external" href="{resolve('/games')}/{game.slug}">
+		<a class="gamebtn" href={resolve(`/games/${game.slug}`)}>
 			<b>{game.name}</b><span>{game.blurb}</span>
 		</a>
 	{/each}
