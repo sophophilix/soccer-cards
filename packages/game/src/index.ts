@@ -9,8 +9,31 @@ export {
 	JUMBO_PACK_COST_COINS,
 	STANDARD_PACK_COST_COINS,
 	STARTING_COINS,
+	TRAIL_FINISH_COINS,
+	TRAIL_RIGHT_COINS,
 	WIN_COINS_BY_DIVISION
 } from './economy.ts';
+export {
+	MIN_TRAIL_SPELLS,
+	TRAIL_ROUND_PLAYERS,
+	checkTrail,
+	checkTrailInRound,
+	finishTrailRound,
+	startTrailRound,
+	trailOrder
+} from './transfer-trail.ts';
+export type {
+	Career,
+	ClubId,
+	PlayerId,
+	Spell,
+	TrailCheck,
+	TrailRefusal,
+	TrailResult,
+	TrailRound,
+	TrailRoundRefusal,
+	TrailStep
+} from './transfer-trail.ts';
 export {
 	STARTING_FREE_PACKS,
 	STATE_VERSION,
