@@ -164,7 +164,10 @@ jobs:
     needs: changes
     if: ${{ !cancelled() && (needs.changes.result != 'success' || needs.changes.outputs.web != 'false') }}
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    # 20, not 10: on 2026-11-23 web jobs took 6 to 9.1 minutes and one was
+    # cancelled at 10 while Playwright ran. Each game adds tests on three
+    # browser projects, so the run keeps growing.
+    timeout-minutes: 20
     # Playwright's image holds the browsers and their system packages, so the
     # job downloads none. The tag must equal the Playwright version in
     # pnpm-lock.yaml. Change the tag, the digest and this comment together.
@@ -184,8 +187,8 @@ jobs:
       # Ubuntu is the only publisher. Node comes from setup-node below.
       - run: |
           rm -f /etc/apt/sources.list.d/nodesource.list
-          apt-get update
-          apt-get install -y --no-install-recommends make=4.3-4.1build2
+          apt-get -o Acquire::Retries=3 update
+          apt-get -o Acquire::Retries=3 install -y --no-install-recommends make=4.3-4.1build2
       - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
       # The image has its own Node. The gate uses the repository's version.
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
