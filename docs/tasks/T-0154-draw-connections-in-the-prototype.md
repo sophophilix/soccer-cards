@@ -8,7 +8,7 @@ paths:
   - prototype/soccer-cards-prototype.html
 dependencies: []
 max_changed_lines: 250
-status: ready
+status: done
 ---
 
 ## Goal
