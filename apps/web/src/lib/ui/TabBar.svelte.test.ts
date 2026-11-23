@@ -12,6 +12,8 @@ for (const [pathname, current] of [
 	['/', ['Packs']],
 	['/packs', ['Packs']],
 	['/match', ['Match']],
+	['/games', ['Games']],
+	['/games/', ['Games']],
 	['/cards', ['Cards']],
 	['/guide/', ['Guide']],
 	['/no-such-page', []]
@@ -25,12 +27,13 @@ for (const [pathname, current] of [
 	});
 }
 
-test('each of the four tabs links to its own view', async () => {
+test('each of the five tabs links to its own view', async () => {
 	const tabs = await renderTabs('/');
 
 	expect(tabs.map((tab) => [tab.textContent, tab.getAttribute('href')])).toEqual([
 		['Packs', '/packs'],
 		['Match', '/match'],
+		['Games', '/games'],
 		['Cards', '/cards'],
 		['Guide', '/guide']
 	]);

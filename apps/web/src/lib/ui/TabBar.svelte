@@ -12,6 +12,7 @@
 	const VIEWS = [
 		{ name: 'Packs', path: '/packs' },
 		{ name: 'Match', path: '/match' },
+		{ name: 'Games', path: '/games' },
 		{ name: 'Cards', path: '/cards' },
 		{ name: 'Guide', path: '/guide' }
 	] as const;
@@ -59,9 +60,9 @@
 		color: var(--bg);
 	}
 
-	/* On the narrowest phones the tabs tighten, and their text shrinks with the screen so the bar
+	/* On phones the tabs tighten, and their text shrinks with the screen so the bar
 	   fits at 320 pixels even in a wide fallback font, with "Cards (N)" on the Cards tab. */
-	@media (max-width: 400px) {
+	@media (max-width: 520px) {
 		nav {
 			max-width: 100%;
 		}
