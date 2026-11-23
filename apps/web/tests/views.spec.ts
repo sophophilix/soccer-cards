@@ -24,7 +24,7 @@ function focusNextKey(browserName: string): string {
 	return browserName === 'webkit' ? 'Alt+Tab' : 'Tab';
 }
 
-for (const name of ['Packs', 'Match', 'Cards', 'Guide']) {
+for (const name of ['Packs', 'Match', 'Games', 'Cards', 'Guide']) {
 	test(`/${name.toLowerCase()} shows the ${name} view as its own page`, async ({ page }) => {
 		await page.goto(`/${name.toLowerCase()}`);
 
@@ -71,6 +71,7 @@ test('the keyboard alone reaches every tab and moves to its view', async ({
 	await page.keyboard.press(key);
 	await expect(tab(page, 'Packs')).toBeFocused();
 	await expect(tab(page, 'Packs')).toHaveCSS('outline-style', 'solid');
+	await page.keyboard.press(key);
 	await page.keyboard.press(key);
 	await page.keyboard.press(key);
 	await page.keyboard.press('Enter');

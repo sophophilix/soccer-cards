@@ -124,6 +124,9 @@ test('every view runs with one origin, no cookie and no security policy violatio
 	await page.getByRole('button', { name: 'Skip to full time' }).click();
 	await expect(page.getByRole('heading', { name: 'You win!' })).toBeVisible();
 
+	await page.goto('/games');
+	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+
 	await page.goto('/guide');
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 	await page.waitForLoadState('networkidle');
