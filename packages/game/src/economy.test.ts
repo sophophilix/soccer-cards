@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest';
 import { DIVISIONS } from './divisions.ts';
 import {
+	CONNECTIONS_FINISH_COINS,
+	CONNECTIONS_RIGHT_COINS,
 	ECONOMY_VERSION,
 	JUMBO_PACK_COST_COINS,
 	STANDARD_PACK_COST_COINS,
@@ -11,8 +13,8 @@ import {
 } from './economy.ts';
 
 describe('the economy table (ADR 0010 D1)', () => {
-	it('is version 2', () => {
-		expect(ECONOMY_VERSION).toBe(2);
+	it('is version 3', () => {
+		expect(ECONOMY_VERSION).toBe(3);
 	});
 
 	it('starts a player with 0 coins', () => {
@@ -53,6 +55,14 @@ describe('the economy table (ADR 0010 D1)', () => {
 
 	it('pays 2 coins for finishing a Transfer Trail round', () => {
 		expect(TRAIL_FINISH_COINS).toBe(2);
+	});
+
+	it('pays 1 coin for each Connections question answered right first', () => {
+		expect(CONNECTIONS_RIGHT_COINS).toBe(1);
+	});
+
+	it('pays 2 coins for finishing a Connections round', () => {
+		expect(CONNECTIONS_FINISH_COINS).toBe(2);
 	});
 
 	it('keeps each division reading its win coins from the table', () => {
