@@ -276,8 +276,39 @@ SHELLS = {"sh", "bash", "zsh", "dash", "fish"}
 READERS = {"cat", "less", "more", "head", "tail", "grep", "rg", "cp", "mv", "source", ".", "bat", "sed", "awk", "open", "code", "strings", "base64"}
 
 
+HEREDOC_RE = re.compile(r"<<-?\s*(['\"]?)([A-Za-z_][A-Za-z0-9_]*)\1")
+
+
+def drop_heredoc_bodies(command: str) -> str:
+    """Remove the body of each here-document that feeds a program other than a shell.
+
+    A body is that program's input, not shell code: `python3 - <<'E'` followed by
+    `a >= b` must not read as a write to a file named `=`. A body fed to a shell
+    is shell code, so it stays and is checked.
+    """
+    lines = command.split("\n")
+    kept: list[str] = []
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        kept.append(line)
+        i += 1
+        for match in HEREDOC_RE.finditer(line):
+            before = re.split(r"[;&|()]", line[: match.start()])[-1].split()
+            words = strip_wrappers(before)
+            feeds_shell = bool(words) and os.path.basename(words[0]) in SHELLS
+            delimiter = match.group(2)
+            while i < len(lines) and lines[i].strip() != delimiter:
+                if feeds_shell:
+                    kept.append(lines[i])
+                i += 1
+            i += 1  # the delimiter line
+    return "\n".join(kept)
+
+
 def split_segments(command: str) -> list[tuple[str, list[str]]]:
     """Split a command line into (operator before it, tokens) segments."""
+    command = drop_heredoc_bodies(command)
     lexer = shlex.shlex(command.replace("\n", " ; "), posix=True, punctuation_chars=True)
     lexer.whitespace_split = True
     segments: list[tuple[str, list[str]]] = []
@@ -323,7 +354,7 @@ def check_command(command: str, agent: str | None, event: dict[str, object], bra
         segments = split_segments(command)
     except ValueError:
         # Quotes the lexer can't follow. Scan the raw text for the same programs.
-        segments = [("", part.split()) for part in re.split(r"[;|&()\n]+", command) if part.strip()]
+        segments = [("", part.split()) for part in re.split(r"[;|&()\n]+", drop_heredoc_bodies(command)) if part.strip()]
     asks: list[Decision] = []
     for operator, raw in segments:
         tokens = strip_wrappers(raw)
@@ -729,6 +760,34 @@ def heavy_slot(label: str, max_wait_s: float = SLOT_MAX_WAIT_S) -> Iterator[None
             handle.close()
 
 
+@contextlib.contextmanager
+def same_tree_lock(tree: str, component: str, max_wait_s: float = SLOT_MAX_WAIT_S) -> Iterator[None]:
+    """Let one run at a time check a tree's component, so a second run waits and reuses the first's pass.
+
+    Without it, the finish hook, the lead and the reviewer can start the same
+    gate on the same tree at once, when the machine has a slot free for each.
+    """
+    if not tree:
+        yield
+        return
+    path = state_dir() / f"tree-{tree[:16]}-{component}.lock"
+    with path.open("a+", encoding="utf-8") as handle:
+        deadline = time.monotonic() + max_wait_s
+        announced = False
+        while True:
+            try:
+                fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except BlockingIOError:
+                if time.monotonic() >= deadline:
+                    raise TimeoutError(f"another run held tree {tree[:12]} ({component}) for {int(max_wait_s)} s") from None
+                if not announced:
+                    print(f"SDLC kit: another run is checking tree {tree[:12]} ({component}). Waiting to reuse its result.", file=sys.stderr)
+                    announced = True
+                time.sleep(1)
+        yield
+
+
 def _alive(pid: int) -> bool:
     try:
         os.kill(pid, 0)
@@ -857,6 +916,13 @@ def reap(root: Path | None, dry_run: bool = False) -> list[str]:
         if not dry_run:
             with contextlib.suppress(OSError):
                 path.unlink()
+    if not dry_run:
+        # Same-tree locks are kept while in use, because deleting a locked file
+        # lets a second run lock a new one. A day later nothing waits on them.
+        for lock in state_dir().glob("tree-*.lock"):
+            with contextlib.suppress(OSError):
+                if time.time() - lock.stat().st_mtime > 86400:
+                    lock.unlink()
     if root is not None:
         for pgid in sorted(_orphan_groups(shared_root(root) / ".claude" / "worktrees")):
             stopped.append(f"group {pgid}: orphaned processes under .claude/worktrees/")
@@ -942,7 +1008,7 @@ def verify(root: Path, run_gates: bool = True) -> list[str]:
             command = ["make", "-s", "check", f"COMPONENT={component}", "SCOPE=affected", f"BASE={base}"]
             slot = heavy_slot(f"{component} in {root.name}") if component in HEAVY_COMPONENTS else contextlib.nullcontext()
             try:
-                with slot:
+                with same_tree_lock(tree, component), slot:
                     # Another actor may have passed this tree while this one waited (ADR 0012 D3).
                     recorded = _recorded_pass(root, key) if tree else None
                     if recorded:
