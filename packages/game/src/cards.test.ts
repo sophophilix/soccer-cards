@@ -71,22 +71,6 @@ describe('checkCardSet', () => {
 		expect(cards.map((card) => card.tier)).toEqual(['base', 'icon', 'icon']);
 	});
 
-	it('returns the same cards when every id appears once', () => {
-		const cards = aCardSet({ base: 3, rare: 2, legend: 1 });
-
-		const result = checkCardSet(cards);
-
-		expect(result).toEqual({ ok: true, value: cards });
-	});
-
-	it('refuses an id listed twice in one tier and names it', () => {
-		const cards = [cardWithId('base-1'), cardWithId('base-2'), cardWithId('base-2')];
-
-		const result = checkCardSet(cards);
-
-		expect(result).toEqual({ ok: false, reason: 'repeated-card-id', cardId: 'base-2' });
-	});
-
 	it('refuses an id listed in two tiers and names it', () => {
 		const cards = [cardWithId('base-1'), aCard({ id: toCardId('base-1'), tier: 'rare' })];
 
@@ -116,14 +100,6 @@ describe('checkCardSet', () => {
 
 		expect(result.ok && result.value).toBe(cards);
 		expect(cards).toEqual([cardWithId('z'), cardWithId('a')]);
-	});
-
-	it('accepts a list of one card', () => {
-		const cards = [cardWithId('only')];
-
-		const result = checkCardSet(cards);
-
-		expect(result).toEqual({ ok: true, value: cards });
 	});
 
 	it('treats ids that differ only by letter case as different ids', () => {

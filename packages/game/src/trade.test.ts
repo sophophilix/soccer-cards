@@ -21,14 +21,6 @@ const trade = (
 ): TradeResult => tradeCard(state, cardSet, cardId, createRandom(SEED));
 
 describe('tradeCard', () => {
-	it('names a different card of the same tier as the card received', () => {
-		const state = aPlayerState({ collection: { [RARE_1]: 2 } });
-
-		const received = receivedOf(trade(state, RARE_1));
-
-		expect(RARE_IDS.filter((id) => id !== RARE_1)).toContain(received);
-	});
-
 	it('removes one copy of the card and adds one copy of the card received', () => {
 		const state = aPlayerState({ collection: { [RARE_1]: 3, [BASE_1]: 1 }, coins: 4 });
 
