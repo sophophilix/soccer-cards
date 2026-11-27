@@ -38,8 +38,9 @@ The ones that matter most here:
 4. Before removing or reshaping code, say in your notes what it appears to
    be for.
 5. Make one small change, run the tests, and repeat.
-6. Run `make check COMPONENT=<component>` and `bin/sdlc verify`.
-7. Commit with a `refactor(<scope>): ...` message. Don't push.
+6. Commit with a `refactor(<scope>): ...` message. Don't push.
+7. Run `bin/sdlc verify` once. It runs the gates and saves the pass for the
+   committed tree (ADR 0012 D3).
 
 If you find a bug, don't fix it. Report it. If a test must change for the
 code to work, stop and report why.

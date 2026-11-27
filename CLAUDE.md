@@ -8,6 +8,8 @@
 - Check everything: `make check-all`
 - Check the working tree against the active task: `bin/sdlc verify`
 - Validate a task brief: `bin/sdlc task-check docs/tasks/T-0001-<slug>.md`
+- How many agents and heavy gates this machine runs at once: `bin/sdlc capacity`
+- Stop processes a dead session left behind: `bin/sdlc reap` (add `--dry-run` to only list them)
 
 ## Where things are
 
