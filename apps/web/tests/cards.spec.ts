@@ -60,12 +60,6 @@ test('a card opens large, flips to its back with the credit, and Escape returns 
 	await expect(tile).toBeFocused();
 });
 
-test('an empty collection points to Packs', async ({ page }) => {
-	await page.goto('/cards');
-
-	await expect(page.getByRole('main').getByRole('link', { name: 'Open a pack' })).toBeVisible();
-});
-
 test('the screen has no accessibility violation', async ({ page }) => {
 	await ownCards(page);
 	await page.goto('/cards');

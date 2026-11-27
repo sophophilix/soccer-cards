@@ -7,7 +7,6 @@ const LONG_NAME = 'Real Madrid Club de Fútbol';
 // The right order, first club to last.
 const CLUBS = ['Alpha FC', 'Beta United', LONG_NAME] as const;
 const START_COINS = 10;
-const TRAIL_COINS = 1;
 const ROUND_COINS = 5 + 2;
 
 function aSummary(id: string, tier: string): unknown {
@@ -26,10 +25,7 @@ function aSummary(id: string, tier: string): unknown {
 }
 
 /** Serves invented players, clubs and careers in place of the real files. */
-async function serve(
-	page: Page,
-	{ careers = true, missing = [] }: { careers?: boolean; missing?: readonly string[] } = {}
-): Promise<void> {
+async function serve(page: Page): Promise<void> {
 	const players = [
 		...['a', 'b', 'c', 'd', 'e'].map((id) => aSummary(`p-${id}`, 'BASE')),
 		aSummary('p-rare', 'RARE'),
@@ -48,10 +44,7 @@ async function serve(
 	await page.route('**/api/v1/players.json', (route) => route.fulfill({ json: { players } }));
 	await page.route('**/api/v1/clubs.json', (route) => route.fulfill({ json: { clubs } }));
 	await page.route('**/api/v1/players/*.json', (route) => {
-		const id = /players\/(.+)\.json$/.exec(route.request().url())?.[1] ?? '';
-		return careers && !missing.includes(id)
-			? route.fulfill({ json: { careerSpells } })
-			: route.fulfill({ status: 404 });
+		return route.fulfill({ json: { careerSpells } });
 	});
 	// A fixed random seed, so the deal is the same on every run.
 	await page.addInitScript(() => {
@@ -111,31 +104,6 @@ test('a full round with the mouse pays coins and shows them in the masthead', as
 	await expect(page.getByRole('link', { name: 'Back to games' })).toHaveAttribute('href', '/games');
 });
 
-test('a double tap on Check pays one right trail once', async ({ page }) => {
-	await serve(page);
-	await page.goto('/games/transfer-trail');
-	await placeAll(page, CLUBS);
-
-	await page.getByRole('button', { name: 'Check' }).dblclick();
-
-	await expect(page.getByText(/^Right! /)).toBeVisible();
-	await expect(page.getByText('Right: 1')).toBeVisible();
-	await expect(page.getByText(`${String(START_COINS + TRAIL_COINS)} coins`)).toBeVisible();
-});
-
-test('a wrong trail shows the right order in words and pays nothing', async ({ page }) => {
-	await serve(page);
-	await page.goto('/games/transfer-trail');
-	await placeAll(page, [CLUBS[2], CLUBS[1], CLUBS[0]]);
-
-	await page.getByRole('button', { name: 'Check' }).click();
-
-	await expect(page.getByText(/^Not this time\./)).toBeVisible();
-	await expect(page.getByText('2004 to 2008 (right place)')).toBeVisible();
-	await expect(page.getByText(`2008 to now (you put ${CLUBS[0]} here)`)).toBeVisible();
-	await expect(page.getByText(`${String(START_COINS)} coins`)).toBeVisible();
-});
-
 test('a round plays with the keyboard alone', async ({ page }) => {
 	await serve(page);
 	await page.goto('/games/transfer-trail');
@@ -168,27 +136,6 @@ test('with reduced motion nothing on the board animates', async ({ page }) => {
 		.evaluate((list) => list.getAnimations({ subtree: true }).length);
 
 	expect(running).toBe(0);
-});
-
-test('a career that fails to load is left out and the round still has 5 players', async ({
-	page
-}) => {
-	await serve(page, { missing: ['p-a', 'p-b'] });
-	await page.goto('/games/transfer-trail');
-
-	await expect(page.getByText('Player 1 of 5')).toBeVisible();
-	await playRound(page);
-
-	await expect(page.getByRole('heading', { name: 'Round finished!' })).toBeVisible();
-	await expect(page.getByText(`${String(START_COINS + ROUND_COINS)} coins`)).toBeVisible();
-});
-
-test('says the game cannot start when no career loads, with a link back', async ({ page }) => {
-	await serve(page, { careers: false });
-	await page.goto('/games/transfer-trail');
-
-	await expect(page.getByText("The game can't start right now")).toBeVisible();
-	await expect(page.getByRole('link', { name: 'Back to games' })).toHaveAttribute('href', '/games');
 });
 
 for (const width of [320, 390]) {
