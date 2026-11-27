@@ -723,6 +723,52 @@ class HookTest(unittest.TestCase):
         self.assertIn("changed by the lead session", (repo.root / ".sdlc" / "audit.jsonl").read_text())
 
 
+class HeredocTest(unittest.TestCase):
+    """A here-document's body is its program's input, not shell code, unless a shell reads it."""
+
+    def test_a_python_body_is_not_read_as_shell(self) -> None:
+        command = "python3 - <<'E'\nif n >= 2: s[0] = 1\nopen('x').write('y') > 0\nE\necho done"
+        self.assertEqual(sdlc.split_segments(command), [("", ["python3", "-", "<<", "E"]), (";", ["echo", "done"])])
+
+    def test_a_body_a_shell_reads_is_still_checked(self) -> None:
+        command = "bash <<EOF\nrm -rf build > out.txt\nEOF"
+        self.assertIn((";", ["rm", "-rf", "build", ">", "out.txt"]), sdlc.split_segments(command))
+
+    def test_two_bodies_on_one_line_are_both_dropped(self) -> None:
+        command = "cat <<A; cat <<'B'\nx > y\nA\np >= q\nB\nls"
+        self.assertEqual(sdlc.split_segments(command)[-1], (";", ["ls"]))
+
+
+class SameTreeLockTest(unittest.TestCase):
+    def setUp(self) -> None:
+        self.state = tempfile.TemporaryDirectory()
+        self.addCleanup(self.state.cleanup)
+        saved = os.environ.get("SDLC_STATE_DIR")
+        self.addCleanup(lambda: os.environ.pop("SDLC_STATE_DIR", None) if saved is None else os.environ.__setitem__("SDLC_STATE_DIR", saved))
+        os.environ["SDLC_STATE_DIR"] = self.state.name
+
+    def test_a_second_run_on_the_same_tree_waits(self) -> None:
+        lock = Path(self.state.name) / f"tree-{'a' * 16}-web.lock"
+        holder = subprocess.Popen(
+            [sys.executable, "-c", "import fcntl,sys,time; f=open(sys.argv[1],'a+'); fcntl.flock(f, fcntl.LOCK_EX); print('held', flush=True); time.sleep(30)", str(lock)],
+            stdout=subprocess.PIPE,
+            text=True,
+        )
+        self.addCleanup(lambda: (holder.kill(), holder.wait(), holder.stdout and holder.stdout.close()))
+        self.assertEqual(holder.stdout.readline().strip() if holder.stdout else "", "held")
+        with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(TimeoutError):
+            with sdlc.same_tree_lock("a" * 40, "web", max_wait_s=1.5):
+                self.fail("two runs held the same tree")
+
+    def test_another_tree_or_component_does_not_wait(self) -> None:
+        with sdlc.same_tree_lock("a" * 40, "web"), sdlc.same_tree_lock("b" * 40, "web"), sdlc.same_tree_lock("a" * 40, "game"):
+            pass
+
+    def test_a_dirty_tree_takes_no_lock(self) -> None:
+        with sdlc.same_tree_lock("", "web"):
+            self.assertEqual(list(Path(self.state.name).glob("tree-*")), [])
+
+
 class MachineBudgetTest(unittest.TestCase):
     """ADR 0012: one budget per machine, and every gate's processes owned and stopped."""
 
