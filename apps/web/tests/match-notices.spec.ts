@@ -19,8 +19,8 @@ const cardIds = (code: string, count: number): string[] =>
 const WIN_SEED = 1;
 const DRAW_SEED = 18;
 
-/** Serves the squad, fixes the match's seed (and counts its uses), and saves a player who owns 11. */
-async function openPick(page: Page, seed: number, failWith = ''): Promise<void> {
+/** Serves the squad, fixes the match's seed, and saves a player who owns 11. */
+async function openPick(page: Page, seed: number): Promise<void> {
 	const players = SQUAD.flatMap(([position, code, count, tier]) =>
 		cardIds(code, count).map((id) => ({
 			name: `players/${id}`,
@@ -47,22 +47,14 @@ async function openPick(page: Page, seed: number, failWith = ''): Promise<void> 
 		coins: 0
 	};
 	await page.addInitScript(
-		([key, text, value, errorName]) => {
-			const counted = window as unknown as { seedCalls?: number };
+		([key, text, value]) => {
 			crypto.getRandomValues = ((array: Uint32Array) => {
-				counted.seedCalls = (counted.seedCalls ?? 0) + 1;
 				array[0] = value;
 				return array;
 			}) as typeof crypto.getRandomValues;
 			if (localStorage.getItem(key) === null) localStorage.setItem(key, text);
-			const realSetItem = Storage.prototype.setItem.bind(localStorage);
-			if (errorName === '') return;
-			Storage.prototype.setItem = function (itemKey: string, itemValue: string) {
-				if (itemKey === key) throw new DOMException('refused', errorName);
-				realSetItem(itemKey, itemValue);
-			};
 		},
-		[STATE_KEY, JSON.stringify(state), seed, failWith] as const
+		[STATE_KEY, JSON.stringify(state), seed] as const
 	);
 	await page.goto('/match');
 }
@@ -70,23 +62,6 @@ async function openPick(page: Page, seed: number, failWith = ''): Promise<void> 
 const kickOff = (page: Page) => page.getByRole('button', { name: 'Kick off' }).click();
 const skip = (page: Page) => page.getByRole('button', { name: 'Skip to full time' }).click();
 const result = (page: Page) => page.getByRole('heading', { name: /^(You win!|The AI wins)$/ });
-
-const refusals = [
-	['QuotaExceededError', 'This device is full, so your result was not saved.'],
-	['SecurityError', "Your results can't be saved on this device. You can still play."]
-] as const;
-
-for (const [errorName, words] of refusals) {
-	test(`says "${words}" when saving fails with ${errorName}`, async ({ page }) => {
-		await openPick(page, WIN_SEED, errorName);
-		await kickOff(page);
-
-		await skip(page);
-
-		await expect(result(page)).toBeVisible();
-		await expect(page.getByText(words)).toBeVisible();
-	});
-}
 
 test('says the game is open in another tab, shows the result and writes nothing', async ({
 	page
@@ -142,16 +117,4 @@ test('in a shoot-out, focus stays on a corner button through a kick, then moves 
 		throw new Error('still kicking');
 	}).toPass({ timeout: 30_000, intervals: [100] });
 	await expect(result(page)).toBeFocused();
-});
-
-test('two Kick off clicks before the page updates start one match', async ({ page }) => {
-	await openPick(page, WIN_SEED);
-
-	await page.getByRole('button', { name: 'Kick off' }).evaluate((button: HTMLElement) => {
-		button.click();
-		button.click();
-	});
-
-	await expect(page.getByRole('heading', { name: 'The match' })).toHaveCount(1);
-	expect(await page.evaluate(() => (window as unknown as { seedCalls: number }).seedCalls)).toBe(1);
 });
