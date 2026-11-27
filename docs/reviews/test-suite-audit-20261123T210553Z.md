@@ -28,7 +28,7 @@ Respond with one of:
 The repository has about 1,000 test cases. Most are in the right place. The cost and the instability sit in three areas:
 
 1. **The end-to-end layer checks things that cheaper layers already check, in three browsers.** Some specs repeat arithmetic the game package tests. Three spec files test config functions and need no browser.
-2. **Some tests are not deterministic.** 30 property tests draw new random inputs on every run. One test compares wall-clock time with 50 ms.
+2. **Some tests are not deterministic.** The web package's property test draws new random inputs on every run. One test compares wall-clock time with 50 ms.
 3. **Nothing decides which layer owns a behaviour.** Each task adds tests at every layer, and nothing removes them. ADR 0009 requires end-to-end tests for every screen.
 
 The fix is a test strategy, not a one-off cut. The cut follows from the strategy, and the strategy stops the suite from growing back.
@@ -82,11 +82,11 @@ A guard that one component owns belongs in that component's test. The end-to-end
 
 ### A4. Tests that are not deterministic
 
-| Problem                                                               | Where                                                                                  | Fix                                                                                                                                                         |
-| --------------------------------------------------------------------- | -------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| fast-check with no seed: 30 of 41 `fc.assert` calls                   | 15 files in `packages/game/src/`, `apps/web/src/lib/match/play-match.property.test.ts` | One fixed seed per package in a Vitest setup file. A scheduled job runs new seeds and reports any failure as a task.                                        |
-| A test passes only if validation takes under 50 ms of wall-clock time | `packages/schema/src/schema.test.ts:323`                                               | Keep the 200,000-character inputs. Replace the timer with a check that has no clock, for example that every pattern in the schema has no nested quantifier. |
-| Pure logic runs in a real Chromium                                    | all 34 web unit files, of which only 12 render a component                             | A Vitest Node project for files that don't render.                                                                                                          |
+| Problem                                                                                                                   | Where                                                      | Fix                                                                                                                                                         |
+| ------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| fast-check with no seed in the web package (the game package seeds every property test in `src/testing/property-seed.ts`) | `apps/web/src/lib/match/play-match.property.test.ts`       | The same setup file for the web package. A scheduled job runs new seeds and reports any failure as a task.                                                  |
+| A test passes only if validation takes under 50 ms of wall-clock time                                                     | `packages/schema/src/schema.test.ts:323`                   | Keep the 200,000-character inputs. Replace the timer with a check that has no clock, for example that every pattern in the schema has no nested quantifier. |
+| Pure logic runs in a real Chromium                                                                                        | all 34 web unit files, of which only 12 render a component | A Vitest Node project for files that don't render.                                                                                                          |
 
 Fixed sleeps, unseeded `Math.random` and real network calls: none found. The run log names five flaky runs since 2026-11-21. Two were real bugs (hydration, T-0151). The rest happened under parallel load.
 
@@ -177,7 +177,8 @@ Task 8 changes kit files. The lead makes it in the main session once the tech le
 
 ## Review history
 
-| Reviewed at          | Decision | Notes                                                                                      |
-| -------------------- | -------- | ------------------------------------------------------------------------------------------ |
-| 2026-11-23T21:05:53Z | Drafted  | Audit of all tests on `main` at `f2bb6bc`.                                                 |
-| 2026-11-27T21:48:16Z | Approved | Tech lead: "approve, do phase 1 first then the test tasks". Strategy recorded as ADR 0011. |
+| Reviewed at          | Decision  | Notes                                                                                                                                                                                                                  |
+| -------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-23T21:05:53Z | Drafted   | Audit of all tests on `main` at `f2bb6bc`.                                                                                                                                                                             |
+| 2026-11-27T21:48:16Z | Approved  | Tech lead: "approve, do phase 1 first then the test tasks". Strategy recorded as ADR 0011.                                                                                                                             |
+| 2026-11-27T22:00:04Z | Corrected | A4 said 30 property tests had no seed. The game package has set one seed for all of them since `cc9fa7a` (PR #16). The scan counted only seeds written in each file. Only the web package's property test is unseeded. |

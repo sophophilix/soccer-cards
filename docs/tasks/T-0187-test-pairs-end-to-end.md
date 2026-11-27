@@ -22,6 +22,10 @@ T-0182 merge (T-0182 changes the same test lists).
 
 ## Context
 
+- ADR 0011 D2 applies. Test journeys, saved progress across reloads, the
+  accessibility scan and privacy here. Leave out a guard or a computed value
+  that a component or game test already covers, and say which in the
+  report. Tag width, touch and tap-target tests `@engines` (T-0192).
 - The other game specs (T-0166, T-0174, T-0182): invented data with
   `page.route`, a saved player state with invented owned cards, a fixed
   seed.

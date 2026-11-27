@@ -37,8 +37,10 @@ matter most here:
    touch. Read the matching part of `prototype/soccer-cards-prototype.html`
    when the task has an interface.
 3. Create the branch the lead named.
-4. Write the tests for the acceptance criteria and the listed edge cases.
-   See them fail for the right reason.
+4. Write the tests the brief's `## Tests` plan lists, at the layers it
+   names (ADR 0011). See them fail for the right reason, and commit them
+   with a `test(<scope>): ...` message before any code. A test the plan
+   doesn't list needs its reason in your report.
 5. Write the code until they pass. Keep the change as small as the brief
    allows.
 6. Commit with a Conventional Commit message. Don't push.
