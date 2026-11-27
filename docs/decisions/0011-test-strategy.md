@@ -13,7 +13,7 @@ The tech lead approved this on 2026-11-23 ("approve, do phase 1 first then the t
 
 ## Context
 
-The repository has about 1,000 test cases. The audit found that the end-to-end layer repeats checks that cheaper layers own, and runs them in three browsers. 30 property tests draw new random inputs on every run. One test compares wall-clock time with 50 ms. Nothing decided which layer owns a behaviour, so tasks added tests at every layer.
+The repository has about 1,000 test cases. The audit found that the end-to-end layer repeats checks that cheaper layers own, and runs them in three browsers. The web package's property test draws new random inputs on every run. One test compares wall-clock time with 50 ms. Nothing decided which layer owns a behaviour, so tasks added tests at every layer.
 
 ## Decisions
 
@@ -68,6 +68,7 @@ Each finding becomes a `chore` brief, at most three per review.
 
 ## Review history
 
-| Reviewed at          | Decision | Notes                                                                                                                 |
-| -------------------- | -------- | --------------------------------------------------------------------------------------------------------------------- |
-| 2026-11-27T21:48:16Z | Approved | From `docs/reviews/test-suite-audit-20261123T210553Z.md`. Tech lead: "approve, do phase 1 first then the test tasks". |
+| Reviewed at          | Decision  | Notes                                                                                                                                                      |
+| -------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-27T21:48:16Z | Approved  | From `docs/reviews/test-suite-audit-20261123T210553Z.md`. Tech lead: "approve, do phase 1 first then the test tasks".                                      |
+| 2026-11-27T22:00:04Z | Corrected | The context said 30 property tests had no seed. Only the web package's one does. The game package seeds them all in one file. The decisions are unchanged. |

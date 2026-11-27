@@ -46,8 +46,10 @@ matter most here:
 2. Read the brief, ADR 0003, and the schema in `packages/schema`. For the
    API, read ADR 0005 and ADR 0008 too.
 3. Create the branch the lead named.
-4. Write the tests first, against saved responses. See them fail for the
-   right reason.
+4. Write the tests the brief's `## Tests` plan lists, against saved
+   responses (ADR 0011). See them fail for the right reason, and commit
+   them with a `test(<scope>): ...` message before any code. A test the
+   plan doesn't list needs its reason in your report.
 5. Write the code until they pass.
 6. If the task changes generated data, run the pipeline and include the
    diff. Say in the report how many records changed.
