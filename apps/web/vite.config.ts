@@ -103,6 +103,7 @@ export default defineConfig({
 	],
 	test: {
 		include: ['src/**/*.test.ts'],
+		setupFiles: ['src/testing/property-seed.ts'],
 		browser: {
 			provider: playwright(),
 			enabled: true,
