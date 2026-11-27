@@ -132,6 +132,7 @@ tiles and calls no map service.
 
 ## Review history
 
-| Reviewed at          | Decision | Notes                                                                                                                                                |
-| -------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-11-21T21:54:01Z | Drafted  | From the tech lead's request on 2026-11-21 and their choice of order: "Memory games, Career Journey + search, Club pages + Atlas, Leagues and cups". |
+| Reviewed at          | Decision | Notes                                                                                                                                                                        |
+| -------------------- | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-21T21:54:01Z | Drafted  | From the tech lead's request on 2026-11-21 and their choice of order: "Memory games, Career Journey + search, Club pages + Atlas, Leagues and cups".                         |
+| 2026-11-27T21:48:16Z | Amended  | The testing line amended by ADR 0011 D2: a screen keeps its accessibility scan and journey tests, and its guards and computed values are tested at component and rule level. |

@@ -41,9 +41,12 @@ matter most here:
    See them fail for the right reason.
 5. Write the code until they pass. Keep the change as small as the brief
    allows.
-6. Run `make check COMPONENT=<component>` and then `bin/sdlc verify`. Fix
-   what they report.
-7. Commit with a Conventional Commit message. Don't push.
+6. Commit with a Conventional Commit message. Don't push.
+7. Run `bin/sdlc verify` once. It runs the gates of every component the
+   change touches and saves the pass for the committed tree, so the finish
+   hook, the lead and the reviewer reuse it (ADR 0012 D3). Don't also run
+   `make check`: it repeats the same gates in full. Fix what `verify`
+   reports, commit again and rerun it.
 
 If the brief is wrong, unclear or too small for what it asks, stop and say
 so. Don't widen it, and don't edit it.
