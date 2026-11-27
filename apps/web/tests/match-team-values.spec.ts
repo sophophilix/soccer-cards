@@ -104,6 +104,6 @@ test.describe('with more than 11 cards', () => {
 		for (const card of EXTRAS) {
 			await expect(lineUp.getByText(`Name ${card.id}`, { exact: true })).toHaveCount(0);
 		}
-		await expect(page.getByTestId('totals')).toHaveText(/^ATT \d+ · MID \d+ · DEF \d+ · GK \d+$/);
+		await expect(page.getByTestId('totals')).toHaveText(/^ATT \d+ · MID \d+ · DEF \d+ · GK\s+\d+$/);
 	});
 });
