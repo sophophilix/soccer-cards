@@ -26,6 +26,8 @@ export interface Card {
 	readonly attack: number;
 	readonly defence: number;
 	readonly control: number;
+	/** The national team's three-letter code, such as `AUS`. A card without one never counts towards a pack limit. */
+	readonly nationalTeam?: string;
 }
 
 /** Turns a checked, non-empty string into a card id. */
@@ -40,7 +42,9 @@ export function toCardId(value: string): CardId {
 /** A card set that `checkCardSet` accepted: not empty, every id once, every field known. */
 export type CheckedCardSet = readonly Card[] & { readonly __brand: 'CheckedCardSet' };
 
-type CardField = 'tier' | 'position' | 'overall';
+type CardField = 'tier' | 'position' | 'overall' | 'nationalTeam';
+
+const NATIONAL_TEAM_CODE = /^[A-Z]{3}$/u;
 
 /** The checked card set, or the reason the cards were refused. */
 export type CardSetResult =
@@ -67,6 +71,11 @@ function findInvalidField(card: Card): CardField | undefined {
 	const isWholeNumber = Number.isInteger(card.overall);
 	if (!isWholeNumber || card.overall < MIN_OVERALL || card.overall > MAX_OVERALL) {
 		return 'overall';
+	}
+	// Widened first, as a data file can hold a value of any type.
+	const team: unknown = card.nationalTeam;
+	if (team !== undefined && (typeof team !== 'string' || !NATIONAL_TEAM_CODE.test(team))) {
+		return 'nationalTeam';
 	}
 	return undefined;
 }

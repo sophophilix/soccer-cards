@@ -1,5 +1,5 @@
 import { TIERS } from './cards.ts';
-import type { CardId, CheckedCardSet, Tier } from './cards.ts';
+import type { Card, CardId, CheckedCardSet, Tier } from './cards.ts';
 import type { Random } from './random.ts';
 
 /** The packs a player can open. */
@@ -12,6 +12,11 @@ export const PACK_CONTENTS = {
 	standard: { base: 8, lucky: 2 },
 	jumbo: { base: 40, lucky: 10 }
 } as const satisfies Readonly<Record<PackKind, { readonly base: number; readonly lucky: number }>>;
+
+/** The most cards from one national team a pack holds, when the card set allows it. */
+export const PACK_TEAM_LIMIT = { standard: 3, jumbo: 15 } as const satisfies Readonly<
+	Record<PackKind, number>
+>;
 
 /** The chances out of 100 that a lucky card has each tier. */
 export const LUCKY_ODDS = { rare: 85, legend: 12, icon: 3 } as const;
@@ -35,6 +40,54 @@ function rollLuckyTier(random: Random): LuckyTier {
 		return 'rare';
 	}
 	return roll <= LUCKY_ODDS.rare + LUCKY_ODDS.legend ? 'legend' : 'icon';
+}
+
+/**
+ * Swaps cards over the team limit for cards of the same tier from other teams.
+ * A card stays when no other card of its tier is free, so the pack is always full.
+ */
+function limitTeams(
+	pack: readonly CardId[],
+	cardSet: CheckedCardSet,
+	limit: number,
+	random: Random
+): CardId[] {
+	const byId = new Map<CardId, Card>(cardSet.map((card) => [card.id, card]));
+	const teamOf = (id: CardId): string | undefined => byId.get(id)?.nationalTeam;
+	const counts = new Map<string, number>();
+	const countOf = (team: string | undefined): number =>
+		team === undefined ? 0 : (counts.get(team) ?? 0);
+	const shift = (team: string | undefined, change: number): void => {
+		if (team !== undefined) {
+			counts.set(team, countOf(team) + change);
+		}
+	};
+	for (const id of pack) {
+		shift(teamOf(id), 1);
+	}
+
+	const result = [...pack];
+	// From the end, so a lucky card is swapped before a base card.
+	for (let index = result.length - 1; index >= 0; index -= 1) {
+		const id = result[index];
+		const team = id === undefined ? undefined : teamOf(id);
+		if (id === undefined || countOf(team) <= limit) {
+			continue;
+		}
+		const tier = byId.get(id)?.tier;
+		const free = cardSet
+			.filter(
+				(card) => card.tier === tier && countOf(card.nationalTeam) < limit && !result.includes(card.id)
+			)
+			.map((card) => card.id);
+		const [swap] = free.length > 0 ? random.sample(free, 1) : [];
+		if (swap !== undefined) {
+			shift(team, -1);
+			shift(teamOf(swap), 1);
+			result[index] = swap;
+		}
+	}
+	return result;
 }
 
 /** Draws a pack: its base cards, then its lucky cards from Rare to Icon. */
@@ -66,5 +119,7 @@ export function drawPack(cardSet: CheckedCardSet, kind: PackKind, random: Random
 	}
 
 	// The best card comes last, so the reveal builds up.
-	return { ok: true, value: [...base, ...lucky.rare, ...lucky.legend, ...lucky.icon] };
+	const pack = [...base, ...lucky.rare, ...lucky.legend, ...lucky.icon];
+	// After every roll, so the limit never changes which tier a lucky card has.
+	return { ok: true, value: limitTeams(pack, cardSet, PACK_TEAM_LIMIT[kind], random) };
 }

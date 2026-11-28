@@ -1,6 +1,6 @@
 export { POSITIONS, TIERS, checkCardSet, toCardId } from './cards.ts';
 export type { Card, CardId, CardSetResult, CheckedCardSet, Position, Tier } from './cards.ts';
-export { LUCKY_ODDS, PACK_CONTENTS, drawPack, packSize } from './draw-pack.ts';
+export { LUCKY_ODDS, PACK_CONTENTS, PACK_TEAM_LIMIT, drawPack, packSize } from './draw-pack.ts';
 export type { DrawPackResult, PackKind } from './draw-pack.ts';
 export { createRandom } from './random.ts';
 export type { Random } from './random.ts';
