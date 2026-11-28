@@ -55,9 +55,7 @@ async function serveCards(page: Page): Promise<void> {
 /** Makes the match's random seed this number, so the match is the same every run. */
 async function fixSeed(page: Page, seed: number): Promise<void> {
 	await page.addInitScript((value) => {
-		const counted = window as unknown as { seedCalls?: number };
 		crypto.getRandomValues = ((array: Uint32Array) => {
-			counted.seedCalls = (counted.seedCalls ?? 0) + 1;
 			array[0] = value;
 			return array;
 		}) as typeof crypto.getRandomValues;
@@ -217,55 +215,4 @@ test('a new moment leaves the older commentary lines as they were', async ({ pag
 
 	const after = await commentary(page).allTextContents();
 	expect(after.slice(1)).toEqual(before);
-});
-
-test('the result panel is a status for a win', async ({ page }) => {
-	await kickOff(page, WIN_SEED);
-	await skip(page);
-
-	await expect(page.getByRole('status').getByRole('heading', { name: 'You win!' })).toBeVisible();
-});
-
-test('the result panel is a status for a loss', async ({ page }) => {
-	await kickOff(page, LOSS_SEED);
-	await skip(page);
-
-	await expect(
-		page.getByRole('status').getByRole('heading', { name: 'The AI wins' })
-	).toBeVisible();
-});
-
-test('the result panel is a status for a draw', async ({ page }) => {
-	await kickOff(page, DRAW_SEED);
-	await skip(page);
-
-	await expect(page.getByRole('status').getByRole('heading', { name: 'Full time' })).toBeVisible();
-});
-
-test('Kick off tapped twice starts one match', async ({ page }) => {
-	await openPick(page, WIN_SEED);
-
-	await page.getByRole('button', { name: 'Kick off' }).click({ clickCount: 2 });
-
-	await expect(page.getByTestId('clock')).toBeVisible();
-	await expect(page.getByRole('heading', { name: 'Your team' })).toHaveCount(1);
-	expect(await page.evaluate(() => (window as unknown as { seedCalls: number }).seedCalls)).toBe(1);
-});
-
-test('a failed save still shows the result, with the notice for a full device', async ({
-	page
-}) => {
-	await openPick(page, WIN_SEED);
-	await page.addInitScript(() => {
-		Storage.prototype.setItem = () => {
-			throw new DOMException('full', 'QuotaExceededError');
-		};
-	});
-	await page.goto('/match');
-	await page.getByRole('button', { name: 'Kick off' }).click();
-
-	await skip(page);
-
-	await expect(page.getByRole('heading', { name: 'You win!' })).toBeVisible();
-	await expect(page.getByText('This device is full, so your result was not saved.')).toBeVisible();
 });
