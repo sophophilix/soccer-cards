@@ -1,5 +1,5 @@
 /** The version of the coin table. A change to any amount raises it (ADR 0010 D1). */
-export const ECONOMY_VERSION = 4;
+export const ECONOMY_VERSION = 5;
 /** The coins a new player starts with. */
 export const STARTING_COINS = 0;
 /** The price of a standard pack once the free packs are used. */
@@ -26,3 +26,7 @@ export const CONNECTIONS_FINISH_COINS = 2;
 export const GUESS_RIGHT_COINS = 1;
 /** The coins finishing a Guess the Club round pays. */
 export const GUESS_FINISH_COINS = 2;
+/** The coins a finished Pairs board pays, by its number of pairs. */
+export const PAIRS_BOARD_COINS = { 6: 3, 8: 4, 10: 5 } as const;
+/** The coins added when a Pairs board took no more than twice as many turns as pairs. */
+export const PAIRS_FEW_TURNS_BONUS = 1;
