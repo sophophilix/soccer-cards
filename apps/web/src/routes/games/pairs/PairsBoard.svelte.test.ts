@@ -143,15 +143,35 @@ test('a matched card is outlined and an unmatched one is not', async () => {
 	document.documentElement.style.removeProperty('--card-shadow');
 });
 
+const turnOf = (screen: { getByTestId: (id: string) => { element: () => Element } }): number =>
+	new DOMMatrix(getComputedStyle(screen.getByTestId('turning-c0').element()).transform).m11;
+
 test('with reduced motion a card changes face with no flip', async () => {
 	await emulateReducedMotion('reduce');
 	const screen = await render(PairsBoard, props());
-	const inner = (): Element => screen.getByTestId('turning-c0').element();
-	expect(new DOMMatrix(getComputedStyle(inner()).transform).m11).toBeLessThan(0);
+	expect(turnOf(screen)).toBeLessThan(0);
 
 	await screen.rerender(props({ cards: board(6, { 0: 'up' }) }));
 
 	await vi.waitFor(() => {
-		expect(new DOMMatrix(getComputedStyle(inner()).transform).m11).toBeGreaterThan(0.99);
+		expect(turnOf(screen)).toBeGreaterThan(0.99);
 	});
+});
+
+test('the first turn of a card that mounted face down starts at 180 degrees and animates to 0', async () => {
+	await emulateReducedMotion('no-preference');
+	const screen = await render(PairsBoard, props());
+
+	await screen.rerender(props({ cards: board(6, { 0: 'up' }) }));
+
+	expect(turnOf(screen)).toBeLessThan(0.5);
+	await vi.waitFor(() => {
+		expect(turnOf(screen)).toBeGreaterThan(0.99);
+	});
+});
+
+test('a card that mounts face up shows its front with no flip', async () => {
+	const screen = await render(PairsBoard, props({ cards: board(6, { 0: 'up' }) }));
+
+	expect(turnOf(screen)).toBeGreaterThan(0.99);
 });
