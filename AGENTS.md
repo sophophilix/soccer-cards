@@ -98,6 +98,8 @@ covered by tests.
 | After a file write | Formats and lints the file with the repository's own tools and returns any errors | 5 |
 | When an implementer finishes | Runs `sdlc verify`: paths, size limit, declared dependencies, tests with the change, and the component's gate. Sends the agent back once with the failures | 4, 5, 9, 10 |
 | When a reviewer finishes | Checks the review file against the schema. An approval with a blocking finding or a failed gate is refused | 5 |
+| Before a heavy gate | Queues the gate for a slot that every worktree and project on the machine shares, sized to its memory. Runs it in its own process group and stops the whole group when it ends | 5 |
+| When a session starts | Stops gate processes that a finished session left behind | 5 |
 | On `git commit` | Conventional Commits message, secret scan, task briefs valid | 3, 6 |
 | In CI | The same gates, plus the scanners in the `ci-supply-chain` skill. `main` accepts only a pull request with passing checks and the tech lead's approval | 1, 3, 5 |
 | Every time | Appends each decision above to `.sdlc/audit.jsonl` with the time, task, agent, verdict and reason. `bin/sdlc evidence <task-id>` prints a task's record for its pull request | 5, 14 |

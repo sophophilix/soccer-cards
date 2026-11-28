@@ -9,6 +9,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 
@@ -720,6 +721,151 @@ class HookTest(unittest.TestCase):
         result = self.run_hook({"hook_event_name": "PreToolUse", "tool_name": "Edit", "tool_input": {"file_path": str(repo.root / "AGENTS.md")}, "cwd": str(repo.root)})
         self.assertEqual((result.returncode, result.stdout), (0, ""))
         self.assertIn("changed by the lead session", (repo.root / ".sdlc" / "audit.jsonl").read_text())
+
+
+class HeredocTest(unittest.TestCase):
+    """A here-document's body is its program's input, not shell code, unless a shell reads it."""
+
+    def test_a_python_body_is_not_read_as_shell(self) -> None:
+        command = "python3 - <<'E'\nif n >= 2: s[0] = 1\nopen('x').write('y') > 0\nE\necho done"
+        self.assertEqual(sdlc.split_segments(command), [("", ["python3", "-", "<<", "E"]), (";", ["echo", "done"])])
+
+    def test_a_body_a_shell_reads_is_still_checked(self) -> None:
+        command = "bash <<EOF\nrm -rf build > out.txt\nEOF"
+        self.assertIn((";", ["rm", "-rf", "build", ">", "out.txt"]), sdlc.split_segments(command))
+
+    def test_two_bodies_on_one_line_are_both_dropped(self) -> None:
+        command = "cat <<A; cat <<'B'\nx > y\nA\np >= q\nB\nls"
+        self.assertEqual(sdlc.split_segments(command)[-1], (";", ["ls"]))
+
+
+class SameTreeLockTest(unittest.TestCase):
+    def setUp(self) -> None:
+        self.state = tempfile.TemporaryDirectory()
+        self.addCleanup(self.state.cleanup)
+        saved = os.environ.get("SDLC_STATE_DIR")
+        self.addCleanup(lambda: os.environ.pop("SDLC_STATE_DIR", None) if saved is None else os.environ.__setitem__("SDLC_STATE_DIR", saved))
+        os.environ["SDLC_STATE_DIR"] = self.state.name
+
+    def test_a_second_run_on_the_same_tree_waits(self) -> None:
+        lock = Path(self.state.name) / f"tree-{'a' * 16}-web.lock"
+        holder = subprocess.Popen(
+            [sys.executable, "-c", "import fcntl,sys,time; f=open(sys.argv[1],'a+'); fcntl.flock(f, fcntl.LOCK_EX); print('held', flush=True); time.sleep(30)", str(lock)],
+            stdout=subprocess.PIPE,
+            text=True,
+        )
+        self.addCleanup(lambda: (holder.kill(), holder.wait(), holder.stdout and holder.stdout.close()))
+        self.assertEqual(holder.stdout.readline().strip() if holder.stdout else "", "held")
+        with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(TimeoutError):
+            with sdlc.same_tree_lock("a" * 40, "web", max_wait_s=1.5):
+                self.fail("two runs held the same tree")
+
+    def test_another_tree_or_component_does_not_wait(self) -> None:
+        with sdlc.same_tree_lock("a" * 40, "web"), sdlc.same_tree_lock("b" * 40, "web"), sdlc.same_tree_lock("a" * 40, "game"):
+            pass
+
+    def test_a_dirty_tree_takes_no_lock(self) -> None:
+        with sdlc.same_tree_lock("", "web"):
+            self.assertEqual(list(Path(self.state.name).glob("tree-*")), [])
+
+
+class MachineBudgetTest(unittest.TestCase):
+    """ADR 0012: one budget per machine, and every gate's processes owned and stopped."""
+
+    def setUp(self) -> None:
+        self.state = tempfile.TemporaryDirectory()
+        self.addCleanup(self.state.cleanup)
+        names = ("SDLC_STATE_DIR", "SDLC_HEAVY_SLOTS", "SDLC_MAX_AGENTS", sdlc.SLOT_ENV)
+        saved = {name: os.environ.get(name) for name in names}
+        self.addCleanup(lambda: [os.environ.pop(n, None) if v is None else os.environ.__setitem__(n, v) for n, v in saved.items()])
+        for name in names:
+            os.environ.pop(name, None)
+        os.environ["SDLC_STATE_DIR"] = self.state.name
+
+    @staticmethod
+    def _stop(proc: subprocess.Popen[str] | subprocess.Popen[bytes]) -> None:
+        proc.kill()
+        proc.wait()
+        if proc.stdout is not None:
+            proc.stdout.close()
+
+    def _wait_dead(self, pid: int) -> bool:
+        deadline = time.monotonic() + 10
+        while time.monotonic() < deadline:
+            try:
+                os.kill(pid, 0)
+            except ProcessLookupError:
+                return True
+            with contextlib.suppress(ChildProcessError):
+                os.waitpid(pid, os.WNOHANG)
+            time.sleep(0.05)
+        return False
+
+    def test_capacity_follows_memory(self) -> None:
+        gib = sdlc.GIB
+        self.assertEqual(
+            [(c["profile"], c["agents"], c["heavy_slots"]) for c in (sdlc.capacity(m * gib) for m in (8, 16, 32, 48))],
+            [("small", 1, 1), ("small", 2, 1), ("medium", 3, 1), ("large", 4, 2)],
+        )
+
+    def test_capacity_takes_overrides(self) -> None:
+        os.environ["SDLC_HEAVY_SLOTS"] = "3"
+        os.environ["SDLC_MAX_AGENTS"] = "0"  # not positive, so ignored
+        self.assertEqual((sdlc.capacity(8 * sdlc.GIB)["heavy_slots"], sdlc.capacity(8 * sdlc.GIB)["agents"]), (3, 1))
+
+    def test_a_held_slot_makes_the_next_gate_wait(self) -> None:
+        os.environ["SDLC_HEAVY_SLOTS"] = "1"
+        holder = subprocess.Popen(
+            [sys.executable, "-c", "import fcntl,sys,time; f=open(sys.argv[1],'a+'); fcntl.flock(f, fcntl.LOCK_EX); print('held', flush=True); time.sleep(30)", str(Path(self.state.name) / "heavy-0.lock")],
+            stdout=subprocess.PIPE,
+            text=True,
+        )
+        self.addCleanup(self._stop, holder)
+        self.assertEqual(holder.stdout.readline().strip() if holder.stdout else "", "held")
+        with contextlib.redirect_stderr(io.StringIO()), self.assertRaises(TimeoutError):
+            with sdlc.heavy_slot("test", max_wait_s=1.5):
+                self.fail("the slot was taken twice")
+
+    def test_a_nested_slot_passes_through(self) -> None:
+        os.environ["SDLC_HEAVY_SLOTS"] = "1"
+        with sdlc.heavy_slot("outer"):
+            self.assertEqual(os.environ.get(sdlc.SLOT_ENV), "1")
+            with sdlc.heavy_slot("inner", max_wait_s=0.5):
+                pass
+        self.assertIsNone(os.environ.get(sdlc.SLOT_ENV))
+
+    def test_a_timeout_stops_the_whole_group(self) -> None:
+        pidfile = Path(self.state.name) / "child.pid"
+        with self.assertRaises(subprocess.TimeoutExpired):
+            sdlc.run_owned(["sh", "-c", f"sleep 30 & echo $! > {pidfile}; wait"], cwd=Path(self.state.name), timeout=1)
+        self.assertTrue(self._wait_dead(int(pidfile.read_text())))
+
+    def test_a_child_left_behind_after_a_normal_exit_is_stopped(self) -> None:
+        result = sdlc.run_owned(["sh", "-c", "sleep 30 > /dev/null 2>&1 & echo $!"], cwd=Path(self.state.name), timeout=10)
+        self.assertEqual(result.returncode, 0)
+        self.assertTrue(self._wait_dead(int(result.stdout.strip())))
+        self.assertEqual(list((Path(self.state.name) / "groups").glob("*.json")), [])
+
+    def test_reap_stops_a_group_whose_owner_is_gone(self) -> None:
+        orphan = subprocess.Popen(["sleep", "30"], start_new_session=True)
+        self.addCleanup(self._stop, orphan)
+        dead_owner = subprocess.Popen(["true"])
+        dead_owner.wait()
+        groups = Path(self.state.name) / "groups"
+        groups.mkdir()
+        (groups / f"{orphan.pid}.json").write_text(json.dumps({"pgid": orphan.pid, "owner": dead_owner.pid, "cwd": "/somewhere"}))
+        self.assertEqual(len(sdlc.reap(None)), 1)
+        self.assertTrue(self._wait_dead(orphan.pid))
+        self.assertEqual(list(groups.glob("*.json")), [])
+
+    def test_reap_leaves_a_group_whose_owner_lives(self) -> None:
+        live = subprocess.Popen(["sleep", "30"], start_new_session=True)
+        self.addCleanup(self._stop, live)
+        groups = Path(self.state.name) / "groups"
+        groups.mkdir()
+        (groups / f"{live.pid}.json").write_text(json.dumps({"pgid": live.pid, "owner": os.getpid(), "cwd": "/somewhere"}))
+        self.assertEqual(sdlc.reap(None), [])
+        os.kill(live.pid, 0)  # still running
 
 
 if __name__ == "__main__":

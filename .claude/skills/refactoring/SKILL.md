@@ -44,6 +44,25 @@ The scan writes `docs/reviews/refactor-scan-<UTC timestamp>.md` under the
 `technical-writing` skill: each signal, its count, the change since the last
 scan, and the items.
 
+## The test review
+
+Every two weeks, with the scan (ADR 0011 D4). It writes
+`docs/reviews/test-review-<UTC timestamp>.md` in the same format. Run each
+step one at a time, inside `bin/sdlc slot --`, so it stays within the
+machine budget (ADR 0012).
+
+| Signal | How | Reports |
+|---|---|---|
+| Flaky tests | Each package's tests 5 times, each with a new fast-check seed (`fc.configureGlobal`), and the end-to-end suite with `--repeat-each=3` | Each test that failed at least once, with its seed |
+| Two layers | Search component and end-to-end tests for the same behaviour, such as double taps, reduced motion, saving refused, another tab | Each pair, with the layer that should own it |
+| Slow tests | Vitest and Playwright JSON reporters | Tests over 1 s |
+| Density | Test lines per source line, by module | Modules over 3 |
+| Stale tests | A search of test names and comments for removed features and closed task ids | Each one |
+
+Each finding becomes a `kind: chore` brief for the `web-implementer` or
+`data-implementer`, at most three per review. A cut lists every test it
+removes and names the test that still covers that behaviour.
+
 ## From scan to tasks
 
 The lead reads the report and writes briefs for what is worth doing.

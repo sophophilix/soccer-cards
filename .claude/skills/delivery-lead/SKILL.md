@@ -64,8 +64,10 @@ For each ready task whose dependencies are merged:
      any other file."
    - the branch name, `<kind>/<task-id>-<slug>`
    - "Finish with the report in your agent definition."
-2. Run tasks in parallel only when their `paths` don't overlap. Three at a
-   time is the ceiling.
+2. Run tasks in parallel only when their `paths` don't overlap. Run
+   `bin/sdlc capacity` first: its `agents` value is the ceiling for this
+   machine, counting reviewers (ADR 0012 D2). Every project on the machine
+   shares it, so count agents you know another session is running.
 3. Don't answer an agent's question about scope by widening the task. Write
    a new brief or ask the tech lead.
 
@@ -73,7 +75,10 @@ For each ready task whose dependencies are merged:
 
 When an agent reports that it has finished:
 
-1. Run `bin/sdlc verify` in the agent's worktree. Read the output yourself.
+1. Run `bin/sdlc verify` in the agent's worktree and read the output
+   yourself. On a committed, clean tree it reuses the pass the agent's own
+   run saved and finishes in seconds. If it starts the gates again, the
+   agent left changes uncommitted: send it back to commit them.
 2. If it fails, send the failures to the same agent with SendMessage. Two
    rounds at most. After that, stop and tell the tech lead what blocks.
 3. Read the agent's report for anything it says it couldn't do or check.
@@ -134,6 +139,12 @@ The tech lead asked not to be the gate on every change (AGENTS.md rule 1).
    open `should_fix` and where it went.
 4. Update `main`, and set the brief's `status` to `done` in the next
    planning pull request.
+5. Remove the task's worktree with `git worktree remove <path>` (ADR 0012
+   D4). If git refuses because the tree has changes, report it and leave it.
+
+A local gate runs only the end-to-end specs a change targets, in one browser.
+When it prints "CI runs them", the CI web job is the only end-to-end
+evidence. Merge only after it passes, and say so in the pull request.
 
 Leave the pull request for the tech lead, and say why, when the change:
 

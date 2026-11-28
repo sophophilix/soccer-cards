@@ -41,7 +41,12 @@ The decision records, files and prototype behaviour the agent must read first.
 
 ## Tests
 
-- The tests that prove each criterion, and where they live.
+The test plan (ADR 0011 D1). The implementer writes these first, commits
+them failing, then writes the code. One line per acceptance criterion, at
+the lowest layer that can check it: game rules, unit, component,
+end-to-end, or end-to-end `@engines` for layout and input only.
+
+- <layer>: `<file>`: what the test checks.
 
 ## Out of scope
 

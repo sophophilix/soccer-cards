@@ -22,6 +22,10 @@ T-0174 merge (T-0174 changes the same test lists).
 
 ## Context
 
+- ADR 0011 D2 applies. Test journeys, saved progress across reloads, the
+  accessibility scan and privacy here. Leave out a guard or a computed value
+  that a component or game test already covers, and say which in the
+  report. Tag width, touch and tap-target tests `@engines` (T-0192).
 - `apps/web/tests/transfer-trail.spec.ts` (T-0166) and
   `connections.spec.ts` (T-0174): invented data with `page.route`, a fixed
   seed, waiting out the board's pause before Next.

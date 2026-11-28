@@ -7,15 +7,20 @@ Exit code 0 means no objection. Exit code 2 refuses and gives the reason on stde
 
 from __future__ import annotations
 
+import contextlib
+import fcntl
 import json
 import os
 import re
 import shlex
 import shutil
+import signal
 import subprocess
 import sys
+import tempfile
 import time
 import tomllib
+from collections.abc import Iterator
 from pathlib import Path
 
 REFUSED = "Refused by the SDLC kit: "
@@ -271,8 +276,39 @@ SHELLS = {"sh", "bash", "zsh", "dash", "fish"}
 READERS = {"cat", "less", "more", "head", "tail", "grep", "rg", "cp", "mv", "source", ".", "bat", "sed", "awk", "open", "code", "strings", "base64"}
 
 
+HEREDOC_RE = re.compile(r"<<-?\s*(['\"]?)([A-Za-z_][A-Za-z0-9_]*)\1")
+
+
+def drop_heredoc_bodies(command: str) -> str:
+    """Remove the body of each here-document that feeds a program other than a shell.
+
+    A body is that program's input, not shell code: `python3 - <<'E'` followed by
+    `a >= b` must not read as a write to a file named `=`. A body fed to a shell
+    is shell code, so it stays and is checked.
+    """
+    lines = command.split("\n")
+    kept: list[str] = []
+    i = 0
+    while i < len(lines):
+        line = lines[i]
+        kept.append(line)
+        i += 1
+        for match in HEREDOC_RE.finditer(line):
+            before = re.split(r"[;&|()]", line[: match.start()])[-1].split()
+            words = strip_wrappers(before)
+            feeds_shell = bool(words) and os.path.basename(words[0]) in SHELLS
+            delimiter = match.group(2)
+            while i < len(lines) and lines[i].strip() != delimiter:
+                if feeds_shell:
+                    kept.append(lines[i])
+                i += 1
+            i += 1  # the delimiter line
+    return "\n".join(kept)
+
+
 def split_segments(command: str) -> list[tuple[str, list[str]]]:
     """Split a command line into (operator before it, tokens) segments."""
+    command = drop_heredoc_bodies(command)
     lexer = shlex.shlex(command.replace("\n", " ; "), posix=True, punctuation_chars=True)
     lexer.whitespace_split = True
     segments: list[tuple[str, list[str]]] = []
@@ -318,7 +354,7 @@ def check_command(command: str, agent: str | None, event: dict[str, object], bra
         segments = split_segments(command)
     except ValueError:
         # Quotes the lexer can't follow. Scan the raw text for the same programs.
-        segments = [("", part.split()) for part in re.split(r"[;|&()\n]+", command) if part.strip()]
+        segments = [("", part.split()) for part in re.split(r"[;|&()\n]+", drop_heredoc_bodies(command)) if part.strip()]
     asks: list[Decision] = []
     for operator, raw in segments:
         tokens = strip_wrappers(raw)
@@ -623,6 +659,278 @@ def e2e_specs(root: Path, paths: list[str]) -> list[str] | None:
     return sorted(picked)
 
 
+# ---------- machine budget and process ownership (ADR 0012) ----------
+
+# Gates that start browsers, a build or a type checker. They queue for a slot
+# that every worktree and every project on the machine shares.
+HEAVY_COMPONENTS = {"web", "game", "schema", "data"}
+GIB = 1024**3
+SLOT_ENV = "SDLC_SLOT_HELD"
+SLOT_MAX_WAIT_S = 1500
+KILL_GRACE_S = 5.0
+
+
+def state_dir() -> Path:
+    """The kit's machine-wide state, outside any repository, so every worktree and project shares it."""
+    raw = os.environ.get("SDLC_STATE_DIR")
+    folder = Path(raw) if raw else Path.home() / ".local" / "state" / "sdlc"
+    folder.mkdir(parents=True, exist_ok=True)
+    return folder
+
+
+def total_memory() -> int:
+    """Physical memory in bytes, or 0 when the system won't say."""
+    try:
+        return os.sysconf("SC_PHYS_PAGES") * os.sysconf("SC_PAGE_SIZE")
+    except (ValueError, OSError, AttributeError):
+        return 0
+
+
+def _positive_env(name: str) -> int | None:
+    raw = os.environ.get(name, "")
+    return int(raw) if raw.isdigit() and int(raw) > 0 else None
+
+
+def capacity(memory: int | None = None) -> dict[str, object]:
+    """How many agents and heavy gates this machine runs at once (ADR 0012 D2)."""
+    memory = total_memory() if memory is None else memory
+    gib = memory / GIB
+    if gib <= 0:
+        profile, agents, slots = "unknown", 1, 1
+    elif gib < 12:
+        profile, agents, slots = "small", 1, 1
+    elif gib <= 16:
+        profile, agents, slots = "small", 2, 1
+    elif gib <= 32:
+        profile, agents, slots = "medium", 3, 1
+    else:
+        profile, agents, slots = "large", 4, 2
+    return {
+        "memory_gib": round(gib, 1),
+        "profile": profile,
+        "agents": _positive_env("SDLC_MAX_AGENTS") or agents,
+        "heavy_slots": _positive_env("SDLC_HEAVY_SLOTS") or slots,
+    }
+
+
+@contextlib.contextmanager
+def heavy_slot(label: str, max_wait_s: float = SLOT_MAX_WAIT_S) -> Iterator[None]:
+    """Hold one of the machine's heavy-gate slots. A nested call inside a held slot passes through.
+
+    The lock is an flock on a file in state_dir(), so the kernel frees it when
+    its holder dies. A crashed gate never leaves a slot taken.
+    """
+    if os.environ.get(SLOT_ENV):
+        yield
+        return
+    count = int(str(capacity()["heavy_slots"]))
+    folder = state_dir()
+    handles = [(folder / f"heavy-{i}.lock").open("a+", encoding="utf-8") for i in range(count)]
+    held = None
+    try:
+        deadline = time.monotonic() + max_wait_s
+        announced = False
+        while held is None:
+            for handle in handles:
+                try:
+                    fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                except BlockingIOError:
+                    continue
+                held = handle
+                break
+            if held is not None:
+                break
+            if time.monotonic() >= deadline:
+                raise TimeoutError(f"no heavy-gate slot came free in {int(max_wait_s)} s ({count} on this machine)")
+            if not announced:
+                print(f"SDLC kit: waiting for a heavy-gate slot ({count} on this machine, all in use) for {label}", file=sys.stderr)
+                announced = True
+            time.sleep(1)
+        held.seek(0)
+        held.truncate()
+        held.write(json.dumps({"pid": os.getpid(), "label": label, "since": _now()}) + "\n")
+        held.flush()
+        os.environ[SLOT_ENV] = "1"
+        try:
+            yield
+        finally:
+            os.environ.pop(SLOT_ENV, None)
+    finally:
+        for handle in handles:
+            handle.close()
+
+
+@contextlib.contextmanager
+def same_tree_lock(tree: str, component: str, max_wait_s: float = SLOT_MAX_WAIT_S) -> Iterator[None]:
+    """Let one run at a time check a tree's component, so a second run waits and reuses the first's pass.
+
+    Without it, the finish hook, the lead and the reviewer can start the same
+    gate on the same tree at once, when the machine has a slot free for each.
+    """
+    if not tree:
+        yield
+        return
+    path = state_dir() / f"tree-{tree[:16]}-{component}.lock"
+    with path.open("a+", encoding="utf-8") as handle:
+        deadline = time.monotonic() + max_wait_s
+        announced = False
+        while True:
+            try:
+                fcntl.flock(handle, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except BlockingIOError:
+                if time.monotonic() >= deadline:
+                    raise TimeoutError(f"another run held tree {tree[:12]} ({component}) for {int(max_wait_s)} s") from None
+                if not announced:
+                    print(f"SDLC kit: another run is checking tree {tree[:12]} ({component}). Waiting to reuse its result.", file=sys.stderr)
+                    announced = True
+                time.sleep(1)
+        yield
+
+
+def _alive(pid: int) -> bool:
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    return True
+
+
+def _group_alive(pgid: int) -> bool:
+    try:
+        os.killpg(pgid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    return True
+
+
+def kill_group(pgid: int, grace_s: float = KILL_GRACE_S) -> None:
+    """Stop every process in a group: SIGTERM, then SIGKILL for what is left after the grace period."""
+    try:
+        os.killpg(pgid, signal.SIGTERM)
+    except (ProcessLookupError, PermissionError):
+        return
+    deadline = time.monotonic() + grace_s
+    while time.monotonic() < deadline:
+        if not _group_alive(pgid):
+            return
+        time.sleep(0.1)
+    with contextlib.suppress(ProcessLookupError, PermissionError):
+        os.killpg(pgid, signal.SIGKILL)
+
+
+def _groups_dir() -> Path:
+    folder = state_dir() / "groups"
+    folder.mkdir(exist_ok=True)
+    return folder
+
+
+def run_owned(command: list[str], cwd: Path, timeout: float, capture: bool = True) -> subprocess.CompletedProcess[str]:
+    """Run a command in its own process group, and stop the whole group when it ends.
+
+    The group is stopped on a timeout, on SIGTERM, SIGHUP or SIGINT, and after a
+    normal exit, so a preview server or browser the command left behind dies
+    with it. Output goes to temporary files, not pipes, so a leftover child that
+    holds a pipe open can't keep this call waiting. The group is recorded in
+    state_dir(), so `reap` can stop it if this process is killed outright.
+    """
+    with contextlib.ExitStack() as stack:
+        out = stack.enter_context(tempfile.TemporaryFile("w+", encoding="utf-8")) if capture else None
+        err = stack.enter_context(tempfile.TemporaryFile("w+", encoding="utf-8")) if capture else None
+        proc = subprocess.Popen(command, cwd=cwd, stdout=out, stderr=err, text=True, start_new_session=True)
+        record = _groups_dir() / f"{proc.pid}.json"
+        with contextlib.suppress(OSError):
+            record.write_text(json.dumps({"pgid": proc.pid, "owner": os.getpid(), "cwd": str(cwd), "command": command[:4], "since": _now()}), encoding="utf-8")
+
+        def stop(signum: int, _frame: object) -> None:
+            kill_group(proc.pid)
+            raise SystemExit(128 + signum)
+
+        previous = {}
+        for sig in (signal.SIGTERM, signal.SIGHUP, signal.SIGINT):
+            with contextlib.suppress(ValueError):  # only the main thread may set a handler
+                previous[sig] = signal.signal(sig, stop)
+        try:
+            try:
+                code = proc.wait(timeout=timeout)
+            except subprocess.TimeoutExpired:
+                kill_group(proc.pid)
+                proc.wait()
+                raise
+        finally:
+            kill_group(proc.pid, grace_s=2.0)
+            for sig, handler in previous.items():
+                signal.signal(sig, handler)
+            with contextlib.suppress(OSError):
+                record.unlink()
+        stdout = stderr = ""
+        if out is not None and err is not None:
+            out.seek(0)
+            err.seek(0)
+            stdout, stderr = out.read(), err.read()
+        return subprocess.CompletedProcess(command, code, stdout, stderr)
+
+
+def _orphan_groups(worktrees: Path) -> set[int]:
+    """Process groups whose every member runs from under `worktrees` and at least one has lost its parent."""
+    try:
+        listing = subprocess.run(["ps", "-axo", "pid=,ppid=,pgid=,command="], capture_output=True, text=True, timeout=10, check=False).stdout
+    except (OSError, subprocess.SubprocessError):
+        return set()
+    members: dict[int, list[tuple[int, str]]] = {}
+    for line in listing.splitlines():
+        parts = line.split(None, 3)
+        if len(parts) < 4 or not all(p.isdigit() for p in parts[:3]):
+            continue
+        _pid, ppid, pgid, cmd = int(parts[0]), int(parts[1]), int(parts[2]), parts[3]
+        members.setdefault(pgid, []).append((ppid, cmd))
+    marker = str(worktrees.resolve()) + "/"
+    return {
+        pgid
+        for pgid, rows in members.items()
+        if pgid > 1 and any(ppid == 1 for ppid, _ in rows) and all(marker in cmd for _, cmd in rows)
+    }
+
+
+def reap(root: Path | None, dry_run: bool = False) -> list[str]:
+    """Stop gate processes whose owner is gone. Returns one line per group stopped (or that would be)."""
+    stopped: list[str] = []
+    for path in sorted(_groups_dir().glob("*.json")):
+        try:
+            record = json.loads(path.read_text(encoding="utf-8"))
+            pgid, owner = int(record["pgid"]), int(record["owner"])
+        except (OSError, ValueError, KeyError, TypeError):
+            with contextlib.suppress(OSError):
+                path.unlink()
+            continue
+        if _alive(owner):
+            continue
+        if _group_alive(pgid):
+            stopped.append(f"group {pgid} from {record.get('cwd', '?')} (its owner {owner} is gone)")
+            if not dry_run:
+                kill_group(pgid)
+        if not dry_run:
+            with contextlib.suppress(OSError):
+                path.unlink()
+    if not dry_run:
+        # Same-tree locks are kept while in use, because deleting a locked file
+        # lets a second run lock a new one. A day later nothing waits on them.
+        for lock in state_dir().glob("tree-*.lock"):
+            with contextlib.suppress(OSError):
+                if time.time() - lock.stat().st_mtime > 86400:
+                    lock.unlink()
+    if root is not None:
+        for pgid in sorted(_orphan_groups(shared_root(root) / ".claude" / "worktrees")):
+            stopped.append(f"group {pgid}: orphaned processes under .claude/worktrees/")
+            if not dry_run:
+                kill_group(pgid)
+    return stopped
+
+
 def verify(root: Path, run_gates: bool = True) -> list[str]:
     """Check the working tree against the active task brief. Returns the failures."""
     brief, meta, errors = active_brief(root)
@@ -698,14 +1006,21 @@ def verify(root: Path, run_gates: bool = True) -> list[str]:
                 print(f"gate 'make check COMPONENT={component}': reused the pass recorded at {recorded} for tree {tree[:12]}", file=sys.stderr)
                 continue
             command = ["make", "-s", "check", f"COMPONENT={component}", "SCOPE=affected", f"BASE={base}"]
+            slot = heavy_slot(f"{component} in {root.name}") if component in HEAVY_COMPONENTS else contextlib.nullcontext()
             try:
-                gate = subprocess.run(command, cwd=root, capture_output=True, text=True, timeout=1500, check=False)
+                with same_tree_lock(tree, component), slot:
+                    # Another actor may have passed this tree while this one waited (ADR 0012 D3).
+                    recorded = _recorded_pass(root, key) if tree else None
+                    if recorded:
+                        print(f"gate 'make check COMPONENT={component}': reused the pass recorded at {recorded} for tree {tree[:12]}", file=sys.stderr)
+                        continue
+                    gate = run_owned(command, cwd=root, timeout=1500)
                 if gate.returncode != 0:
                     tail = "\n".join((gate.stdout + gate.stderr).strip().splitlines()[-40:])
                     failures.append(f"gate 'make check COMPONENT={component}' failed:\n{tail}")
                 elif tree and _clean_tree(root) == tree:
                     _record_pass(root, key)
-            except (OSError, subprocess.SubprocessError) as exc:
+            except (OSError, subprocess.SubprocessError, TimeoutError) as exc:
                 failures.append(f"gate 'make check COMPONENT={component}' is unavailable ({exc}). Unavailable is not a pass.")
     return failures
 
@@ -1018,7 +1333,7 @@ def hook_post(event: dict[str, object]) -> int:
             commands.append((["uv", "run", "--frozen", "ruff", "check", str(target)], project))
     problems: list[str] = []
     for command, cwd in commands:
-        result = subprocess.run(command, cwd=cwd, capture_output=True, text=True, timeout=120, check=False)
+        result = run_owned(command, cwd=cwd, timeout=120)
         if result.returncode != 0:
             problems.append((result.stdout + result.stderr).strip())
     if problems:
@@ -1053,6 +1368,21 @@ def hook_subagent_stop(event: dict[str, object]) -> int:
     return 0
 
 
+def hook_session_start(event: dict[str, object]) -> int:
+    """Stop gate processes a dead session left behind. Never blocks a session from starting."""
+    start = Path(str(event.get("cwd") or os.getcwd()))
+    root = find_root(start / "AGENTS.md")
+    try:
+        stopped = reap(root)
+    except Exception as exc:  # cleaning up must never stop a session
+        print(f"SDLC kit: reap failed ({type(exc).__name__}: {exc})", file=sys.stderr)
+        return 0
+    if stopped:
+        audit(root, event="SessionStart", agent="lead", verdict="reaped", reason="; ".join(stopped))
+        print("SDLC kit: stopped processes a finished session left behind:\n- " + "\n- ".join(stopped), file=sys.stderr)
+    return 0
+
+
 def run_hook() -> int:
     name = ""
     try:
@@ -1064,6 +1394,8 @@ def run_hook() -> int:
             return hook_post(event)
         if name == "SubagentStop":
             return hook_subagent_stop(event)
+        if name == "SessionStart":
+            return hook_session_start(event)
         return 0
     except Exception as exc:  # a broken check refuses (ADR 0004 D6); a post hook can't block anyway
         if name == "PostToolUse":
@@ -1085,6 +1417,9 @@ USAGE = """usage: sdlc <command>
   changes BASE [HEAD]  print name=true|false for each CI gate a diff needs
   e2e-specs BASE       print the Playwright specs the working tree's change reaches, or 'all'
   touched BASE DIR...  exit 0 if the working tree changes a path under one of the folders
+  capacity             print this machine's profile, agent ceiling and heavy-gate slots
+  reap [--dry-run]     stop gate processes whose owner is gone
+  slot -- COMMAND...   run a command in a heavy-gate slot, in its own process group
 """
 
 
@@ -1162,6 +1497,31 @@ def main(argv: list[str]) -> int:
         specs = None if paths is None or root is None else e2e_specs(root, paths)
         print("all" if specs is None else "\n".join(specs))
         return 0
+    if command == "capacity" and not args:
+        for key, value in capacity().items():
+            print(f"{key}={value}")
+        return 0
+    if command == "reap" and args in ([], ["--dry-run"]):
+        dry = bool(args)
+        root = find_root(Path.cwd() / "AGENTS.md")
+        stopped = reap(root, dry_run=dry)
+        if stopped and not dry:
+            audit(root, event="reap", agent="command line", verdict="reaped", reason="; ".join(stopped))
+        for line in stopped:
+            print(("would stop " if dry else "stopped ") + line)
+        if not stopped:
+            print("reap: nothing to stop")
+        return 0
+    if command == "slot" and len(args) >= 2 and args[0] == "--":
+        try:
+            with heavy_slot(" ".join([Path(args[1]).name, *args[2:]])[:120] + f" in {Path.cwd().name}"):
+                return run_owned(args[1:], cwd=Path.cwd(), timeout=SLOT_MAX_WAIT_S * 2, capture=False).returncode
+        except TimeoutError as exc:
+            print(f"slot: {exc}. Unavailable is not a pass.", file=sys.stderr)
+            return 75
+        except subprocess.TimeoutExpired:
+            print("slot: the command ran out of time and was stopped with its whole process group", file=sys.stderr)
+            return 124
     if command == "commit-msg" and len(args) == 1:
         subject = next((line for line in Path(args[0]).read_text(encoding="utf-8").splitlines() if line.strip() and not line.startswith("#")), "")
         if subject.startswith(("Merge ", "Revert ")) or COMMIT_RE.match(subject):

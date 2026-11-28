@@ -40,7 +40,9 @@ matter most here:
 3. Create the branch the lead named.
 4. Make the change. Add or update the test that proves it, such as the
    header test.
-5. Run `make check COMPONENT=<component>` and then `bin/sdlc verify`.
+5. Commit, then run `bin/sdlc verify` once. Don't also run `make check`:
+   `verify` runs the same gates and saves the pass for the committed tree
+   (ADR 0012 D3).
 6. For OpenTofu, follow the `opentofu` skill. You hold no credentials, so
    no real plan runs. Report what the configuration will create, change or
    destroy, from the code and the mock plan in `tofu test`.

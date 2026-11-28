@@ -69,18 +69,6 @@ test.describe('with the cards served', () => {
 		await expect(page.getByRole('button', { name: 'Open free pack (1 left)' })).toBeVisible();
 	});
 
-	test('shows the best card last', async ({ page }) => {
-		await page.goto('/');
-		await page.getByRole('button', { name: 'Open free pack (2 left)' }).click();
-
-		for (let step = 0; step < CARDS_IN_PACK - 1; step += 1) {
-			await page.getByRole('button', { name: 'Next card', exact: true }).click();
-		}
-
-		await expect(page.getByText('Card 10 of 10')).toBeVisible();
-		await expect(page.locator('.chip', { hasText: /^(Rare|Legend|Icon)$/ })).toBeVisible();
-	});
-
 	test('shows the cards without animation when reduced motion is asked for', async ({ page }) => {
 		await page.emulateMedia({ reducedMotion: 'reduce' });
 		await page.goto('/');

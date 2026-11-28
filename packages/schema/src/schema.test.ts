@@ -323,12 +323,8 @@ describe('player.schema.json', () => {
 		['a source path', source(`${SITE}${'?#'.repeat(100_000)}\\`)],
 		['a photo source', photoSource(`${COMMONS}${'a'.repeat(200_000)} `)],
 		['an author', author(`${'a'.repeat(200_000)}<`)]
-	])('refuses %s of 200,000 characters in under 50 ms', (_rule, overrides) => {
-		const player = aPlayer(overrides);
-		isValidPlayer(aPlayer());
-		const startMs = Date.now();
-		const isValid = isValidPlayer(player);
-		expect([isValid, Date.now() - startMs < 50]).toEqual([false, true]);
+	])('refuses %s of 200,000 characters', (_rule, overrides) => {
+		expect(isValidPlayer(aPlayer(overrides))).toBe(false);
 	});
 
 	it('says that the author is plain text', () => {

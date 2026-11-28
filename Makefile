@@ -9,6 +9,17 @@ COMPONENTS := web game schema data infra ci docs sdlc
 SCOPE ?= full
 BASE ?= origin/main
 
+# Heavy gates queue for a slot that every worktree and project on the machine
+# shares, and run in their own process group (ADR 0012 D2, D4). Inside a slot
+# `bin/sdlc slot` passes straight through. A CI runner holds one job, so CI
+# skips the slot.
+HEAVY := web game schema data
+SLOT = $(if $(CI),,$(if $(filter $(1),$(HEAVY)),bin/sdlc slot --,))
+# Off CI, end-to-end tests run in one browser with two workers. CI runs all
+# three browsers and is the authority for them (ADR 0012 D1). E2E_ALL=1 runs
+# every browser locally.
+E2E_LOCAL := $(if $(CI)$(E2E_ALL),,--project=phone-chromium --workers=2)
+
 .DEFAULT_GOAL := help
 .PHONY: help check check-all dev preview e2e e2e-ui api-wrangler-guard api-db-local api-dev $(addprefix check-,$(COMPONENTS))
 
@@ -18,9 +29,11 @@ need-web = @[ -f $(WEB)/package.json ] || { echo "$@: $(WEB) is not scaffolded y
 help: ## Show this help
 	@grep -E '^[a-z0-9-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-12s %s\n", $$1, $$2}'
 
-check: check-$(COMPONENT) ## COMPONENT=<name>: run one component's gates
+check: ## COMPONENT=<name>: run one component's gates
+	@$(call SLOT,$(COMPONENT)) $(MAKE) -s --no-print-directory check-$(COMPONENT)
 
-check-all: $(addprefix check-,$(COMPONENTS)) ## Run every component's gates
+check-all: ## Run every component's gates
+	@$(call SLOT,web) $(MAKE) -s --no-print-directory $(addprefix check-,$(COMPONENTS))
 
 check-sdlc: ## The SDLC kit's own tests
 	@python3 -I -m unittest discover -s tools/sdlc/tests -q
@@ -40,7 +53,7 @@ preview: ## Build the web app and serve the build as production does
 
 e2e: ## Run the Playwright end-to-end tests against the local preview
 	$(need-web)
-	@pnpm --dir $(WEB) run test:e2e
+	@$(call SLOT,web) pnpm --dir $(WEB) run test:e2e $(E2E_LOCAL)
 
 e2e-ui: ## Run the end-to-end tests in Playwright's UI mode
 	$(need-web)
@@ -91,11 +104,12 @@ check-schema: ## Gates for packages/schema
 
 check-web: ## Gates for apps/web, including the end-to-end tests
 	$(call ts-gate,$(WEB))
-	@if [ "$(SCOPE)" != affected ]; then pnpm --dir $(WEB) run test:e2e; \
+	@if [ "$(SCOPE)" != affected ]; then pnpm --dir $(WEB) run test:e2e $(E2E_LOCAL); \
 	else specs="$$(bin/sdlc e2e-specs $(BASE))"; \
-		if [ "$$specs" = all ]; then pnpm --dir $(WEB) run test:e2e; \
+		if [ "$$specs" = all ] && [ -n "$(CI)" ]; then pnpm --dir $(WEB) run test:e2e; \
+		elif [ "$$specs" = all ]; then echo "check-web: the change reaches every end-to-end spec, so CI runs them (ADR 0012 D1)"; \
 		elif [ -z "$$specs" ]; then echo "check-web: no end-to-end spec reaches this change"; \
-		else echo "check-web: end-to-end specs for this change:" $$specs; pnpm --dir $(WEB) run test:e2e $$specs; fi; \
+		else echo "check-web: end-to-end specs for this change:" $$specs; pnpm --dir $(WEB) run test:e2e $(E2E_LOCAL) $$specs; fi; \
 	fi
 
 # Workflows are linted by actionlint and audited by zizmor (the

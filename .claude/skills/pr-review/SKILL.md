@@ -71,7 +71,14 @@ you confirming it.
 4. **Contracts.** The schema, the API files, saved-state shape and package
    exports. A breaking change without a decision record is a `must_fix`.
 5. **Tests.** Would a test fail if the behaviour broke? Are failure paths
-   tested? Are tests deterministic? Apply `ts-testing`.
+   tested? Are tests deterministic: a seed for every random input, no wall
+   clock, no fixed wait? Apply `ts-testing` and ADR 0011:
+   - Each acceptance criterion has one test, at the layer the brief's
+     `## Tests` plan names.
+   - A test at a higher layer than its behaviour needs, or a behaviour
+     already tested at another layer, is a `should_fix`.
+   - An end-to-end test that checks a number a rule computes, instead of
+     that the number appears, is a `should_fix`.
 6. **Design.** Package boundaries, pure rules, one owner for storage and
    for network. Apply `ts-style-guide` and the decision records.
 7. **Accessibility and performance**, for interface changes. Apply

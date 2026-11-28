@@ -143,3 +143,4 @@ the commands and the journeys.
 | 2026-11-15T11:16:22Z | Drafted | Initial version, written by Claude for the tech lead. |
 | 2026-11-16T07:28:57Z | Amended | Added D8 on local running and end-to-end tests, at the tech lead's request. |
 | 2026-11-16T07:30:27Z | Approved | The tech lead replied "approve all" in the lead session. |
+| 2026-11-27T21:48:16Z | Amended | D8 amended by ADR 0012 D1: off CI, end-to-end tests run in one browser with two workers, and CI runs all three browsers. |
