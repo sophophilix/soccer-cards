@@ -41,6 +41,19 @@ league. This batch is the Ligue 1.
 - 40 new players, each a Wikidata item with six grades from 1 to 5 and a
   one-line reason per grade that names a public, checkable fact. No number
   on the 1 to 99 scale, and no video game or card maker named.
+- Every fact in a reason is checked against Wikidata or the player's
+  Wikipedia article before it is written: the year, the team and the
+  player's own part in it. A fact that can't be checked becomes "No
+  standout public record for <skill>". T-0203 and T-0204 shipped reasons
+  with the wrong year or a squad member described as the starter.
+- Each candidate's current club is checked before grading. A player whose
+  published club after the build is outside this league is replaced.
+- Each candidate has a senior national team in Wikidata `P54` with a FIFA
+  code, checked before grading, so the build doesn't fail late. T-0210
+  found that many players' senior caps aren't recorded there.
+- Numbers in a reason are words and years are four digits, as the
+  `players.toml` header says. The build refuses any digit below 100, such
+  as a season written "2024-25".
 - Every new player is in a squad of the Ligue 1 or the Première Ligue (the women's
   top division in France) in the current season, by Wikidata.
 - At least 8 of the 40 are women, and at least 4 are goalkeepers.
