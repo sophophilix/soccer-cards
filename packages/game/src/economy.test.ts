@@ -4,6 +4,8 @@ import {
 	CONNECTIONS_FINISH_COINS,
 	CONNECTIONS_RIGHT_COINS,
 	ECONOMY_VERSION,
+	GUESS_FINISH_COINS,
+	GUESS_RIGHT_COINS,
 	JUMBO_PACK_COST_COINS,
 	STANDARD_PACK_COST_COINS,
 	STARTING_COINS,
@@ -13,8 +15,8 @@ import {
 } from './economy.ts';
 
 describe('the economy table (ADR 0010 D1)', () => {
-	it('is version 3', () => {
-		expect(ECONOMY_VERSION).toBe(3);
+	it('is version 4', () => {
+		expect(ECONOMY_VERSION).toBe(4);
 	});
 
 	it('starts a player with 0 coins', () => {
@@ -63,6 +65,14 @@ describe('the economy table (ADR 0010 D1)', () => {
 
 	it('pays 2 coins for finishing a Connections round', () => {
 		expect(CONNECTIONS_FINISH_COINS).toBe(2);
+	});
+
+	it('pays 1 coin for each Guess the Club question answered right first', () => {
+		expect(GUESS_RIGHT_COINS).toBe(1);
+	});
+
+	it('pays 2 coins for finishing a Guess the Club round', () => {
+		expect(GUESS_FINISH_COINS).toBe(2);
 	});
 
 	it('keeps each division reading its win coins from the table', () => {
