@@ -226,11 +226,6 @@
       "updateTime": "2026-11-21T22:00:18Z"
     },
     {
-      "displayName": "Boston River",
-      "name": "clubs/boston-river",
-      "updateTime": "2026-11-28T08:03:04Z"
-    },
-    {
       "displayName": "Bradford City A.F.C.",
       "name": "clubs/bradford-city-a-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -274,11 +269,6 @@
       "displayName": "Burton Albion F.C.",
       "name": "clubs/burton-albion-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
-    },
-    {
-      "displayName": "C.A. Rentistas",
-      "name": "clubs/c-a-rentistas",
-      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "C.D. Nacional",
@@ -564,6 +554,11 @@
       "displayName": "FC Tokyo",
       "name": "clubs/fc-tokyo",
       "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
+      "displayName": "Fenerbahçe Istanbul",
+      "name": "clubs/fenerbahce-istanbul",
+      "updateTime": "2026-11-28T08:08:39Z"
     },
     {
       "displayName": "Ferro Carril Oeste",
@@ -936,6 +931,11 @@
       "updateTime": "2026-11-28T06:44:11Z"
     },
     {
+      "displayName": "N.K. Zagreb",
+      "name": "clubs/n-k-zagreb",
+      "updateTime": "2026-11-28T08:08:39Z"
+    },
+    {
       "displayName": "New York City FC",
       "name": "clubs/new-york-city-fc",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -1206,11 +1206,6 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
-      "displayName": "São Paulo FC",
-      "name": "clubs/sao-paulo-fc",
-      "updateTime": "2026-11-28T08:03:04Z"
-    },
-    {
       "displayName": "SBV Vitesse",
       "name": "clubs/sbv-vitesse",
       "updateTime": "2026-11-28T06:44:11Z"
@@ -1439,11 +1434,6 @@
       "displayName": "Valencia CF",
       "name": "clubs/valencia-cf",
       "updateTime": "2026-11-22T17:33:08Z"
-    },
-    {
-      "displayName": "Valencia CF Mestalla",
-      "name": "clubs/valencia-cf-mestalla",
-      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "VfB Stuttgart",

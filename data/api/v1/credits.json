@@ -101,6 +101,15 @@
     },
     {
       "attribution": {
+        "author": "Антон Зайцев",
+        "licenseCode": "CC-BY-SA-3.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Andreas_Christensen_2019.jpg"
+      },
+      "player": "players/andreas-christensen",
+      "uri": "photos/andreas-christensen.webp"
+    },
+    {
+      "attribution": {
         "author": "Bryan Berlin",
         "licenseCode": "CC-BY-SA-4.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:Andr%C3%A9s_Iniesta_Argentina_v_Spain_19_July_2026-034_(cropped).jpg"
@@ -119,6 +128,15 @@
     },
     {
       "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Anthony_Gordon_England_v_Ghana_23_June_2026-017_(cropped).jpg"
+      },
+      "player": "players/anthony-gordon",
+      "uri": "photos/anthony-gordon.webp"
+    },
+    {
+      "attribution": {
         "author": "Biser Todorov (User:Biso) from Sofia, Bulgaria",
         "licenseCode": "CC-BY-SA-2.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:Antoine_Griezmann_(51100409504)_(cropped).jpg"
@@ -134,15 +152,6 @@
       },
       "player": "players/antonee-robinson",
       "uri": "photos/antonee-robinson.webp"
-    },
-    {
-      "attribution": {
-        "author": "FotosLaLiga",
-        "licenseCode": "CC-BY-SA-4.0",
-        "sourceUri": "https://commons.wikimedia.org/wiki/File:Antony_-_Betis_-_Partido_Betis_vs_Valencia.jpg"
-      },
-      "player": "players/antony-dos-santos",
-      "uri": "photos/antony-dos-santos.webp"
     },
     {
       "attribution": {
@@ -278,6 +287,15 @@
       },
       "player": "players/declan-rice",
       "uri": "photos/declan-rice.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Dominik_Livakovic_Croatia_v_Portugal_2_July_2026-063.jpg"
+      },
+      "player": "players/dominik-livakovic",
+      "uri": "photos/dominik-livakovic.webp"
     },
     {
       "attribution": {
@@ -542,6 +560,15 @@
     },
     {
       "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Jo%C3%A3o_Cancelo_USMNT_v_Portugal_Mar_31_2026-30_(cropped).jpg"
+      },
+      "player": "players/joao-cancelo",
+      "uri": "photos/joao-cancelo.webp"
+    },
+    {
+      "attribution": {
         "author": "Silesia711",
         "licenseCode": "CC-BY-SA-4.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:Joelinton_(cropped).jpg"
@@ -686,15 +713,6 @@
     },
     {
       "attribution": {
-        "author": "Republic of Korea from Seoul, Republic of Korea",
-        "licenseCode": "CC-BY-SA-2.0",
-        "sourceUri": "https://commons.wikimedia.org/wiki/File:Lee_Kang-in_-_2022_(52551771501)_(cropped).jpg"
-      },
-      "player": "players/lee-kang-in",
-      "uri": "photos/lee-kang-in.webp"
-    },
-    {
-      "attribution": {
         "author": "Bryan Berlin",
         "licenseCode": "CC-BY-SA-4.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:Linda_Caicedo_USWNT_v_Colombia_Mar_7_2026-97_(cropped).jpg"
@@ -764,15 +782,6 @@
       },
       "player": "players/manuel-neuer",
       "uri": "photos/manuel-neuer.webp"
-    },
-    {
-      "attribution": {
-        "author": "Government of Catalonia",
-        "licenseCode": "CC0-1.0",
-        "sourceUri": "https://commons.wikimedia.org/wiki/File:Marc-Andre_Ter_Stegen_ACCI_FCBARCELONA_Turisme_Catalunya_gira_pretemporada_CATPRESS.jpg"
-      },
-      "player": "players/marc-andre-ter-stegen",
-      "uri": "photos/marc-andre-ter-stegen.webp"
     },
     {
       "attribution": {
@@ -1025,15 +1034,6 @@
       },
       "player": "players/rodrygo",
       "uri": "photos/rodrygo.webp"
-    },
-    {
-      "attribution": {
-        "author": "Werner100359",
-        "licenseCode": "CC0-1.0",
-        "sourceUri": "https://commons.wikimedia.org/wiki/File:FC_Red_Bull_Salzburg_gegen_CF_Barcelona_(Testspiel_4._August_2021)_45_(cropped).jpg"
-      },
-      "player": "players/ronald-araujo",
-      "uri": "photos/ronald-araujo.webp"
     },
     {
       "attribution": {

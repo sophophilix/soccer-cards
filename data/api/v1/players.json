@@ -373,6 +373,40 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/fc-barcelona",
+      "displayName": "Andreas Christensen",
+      "name": "players/andreas-christensen",
+      "nationalTeamCode": "DEN",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 65,
+        "pace": 74,
+        "passing": 85,
+        "physical": 75,
+        "shooting": 65
+      },
+      "photo": {
+        "attribution": {
+          "author": "Антон Зайцев",
+          "licenseCode": "CC-BY-SA-3.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Andreas_Christensen_2019.jpg"
+        },
+        "heightPx": 373,
+        "mimeType": "image/webp",
+        "uri": "photos/andreas-christensen.webp",
+        "widthPx": 317
+      },
+      "playStats": {
+        "attack": 69,
+        "control": 75,
+        "defence": 81,
+        "overall": 82
+      },
+      "position": "DEFENDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "displayName": "Andrés Iniesta",
       "name": "players/andres-iniesta",
       "nationalTeamCode": "ESP",
@@ -434,6 +468,40 @@
         "control": 72,
         "defence": 77,
         "overall": 75
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/fc-barcelona",
+      "displayName": "Anthony Gordon",
+      "name": "players/anthony-gordon",
+      "nationalTeamCode": "ENG",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 85,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 73
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Anthony_Gordon_England_v_Ghana_23_June_2026-017_(cropped).jpg"
+        },
+        "heightPx": 677,
+        "mimeType": "image/webp",
+        "uri": "photos/anthony-gordon.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 78,
+        "control": 80,
+        "defence": 71,
+        "overall": 78
       },
       "position": "FORWARD",
       "state": "ACTIVE",
@@ -504,40 +572,6 @@
         "overall": 77
       },
       "position": "DEFENDER",
-      "state": "ACTIVE",
-      "tier": "BASE"
-    },
-    {
-      "club": "clubs/real-betis-balompie",
-      "displayName": "Antony dos Santos",
-      "name": "players/antony-dos-santos",
-      "nationalTeamCode": "BRA",
-      "outfieldRatings": {
-        "defending": 65,
-        "dribbling": 85,
-        "pace": 75,
-        "passing": 75,
-        "physical": 75,
-        "shooting": 73
-      },
-      "photo": {
-        "attribution": {
-          "author": "FotosLaLiga",
-          "licenseCode": "CC-BY-SA-4.0",
-          "sourceUri": "https://commons.wikimedia.org/wiki/File:Antony_-_Betis_-_Partido_Betis_vs_Valencia.jpg"
-        },
-        "heightPx": 292,
-        "mimeType": "image/webp",
-        "uri": "photos/antony-dos-santos.webp",
-        "widthPx": 480
-      },
-      "playStats": {
-        "attack": 76,
-        "control": 79,
-        "defence": 70,
-        "overall": 76
-      },
-      "position": "FORWARD",
       "state": "ACTIVE",
       "tier": "BASE"
     },
@@ -1048,6 +1082,40 @@
         "overall": 81
       },
       "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/fc-barcelona",
+      "displayName": "Dominik Livaković",
+      "goalkeeperRatings": {
+        "diving": 75,
+        "handling": 75,
+        "kicking": 75,
+        "positioning": 75,
+        "reflexes": 85,
+        "speed": 75
+      },
+      "name": "players/dominik-livakovic",
+      "nationalTeamCode": "CRO",
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Dominik_Livakovic_Croatia_v_Portugal_2_July_2026-063.jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/dominik-livakovic.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 75,
+        "control": 75,
+        "defence": 78,
+        "overall": 80
+      },
+      "position": "GOALKEEPER",
       "state": "ACTIVE",
       "tier": "BASE"
     },
@@ -2057,6 +2125,40 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/fc-barcelona",
+      "displayName": "João Cancelo",
+      "name": "players/joao-cancelo",
+      "nationalTeamCode": "POR",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 85,
+        "pace": 73,
+        "passing": 85,
+        "physical": 75,
+        "shooting": 65
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Jo%C3%A3o_Cancelo_USMNT_v_Portugal_Mar_31_2026-30_(cropped).jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/joao-cancelo.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 73,
+        "control": 83,
+        "defence": 76,
+        "overall": 80
+      },
+      "position": "DEFENDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/newcastle-united-f-c",
       "displayName": "Joelinton",
       "name": "players/joelinton",
@@ -2599,40 +2701,6 @@
       "tier": "RARE"
     },
     {
-      "club": "clubs/atletico-madrid",
-      "displayName": "Lee Kang-in",
-      "name": "players/lee-kang-in",
-      "nationalTeamCode": "KOR",
-      "outfieldRatings": {
-        "defending": 75,
-        "dribbling": 85,
-        "pace": 75,
-        "passing": 85,
-        "physical": 65,
-        "shooting": 75
-      },
-      "photo": {
-        "attribution": {
-          "author": "Republic of Korea from Seoul, Republic of Korea",
-          "licenseCode": "CC-BY-SA-2.0",
-          "sourceUri": "https://commons.wikimedia.org/wiki/File:Lee_Kang-in_-_2022_(52551771501)_(cropped).jpg"
-        },
-        "heightPx": 720,
-        "mimeType": "image/webp",
-        "uri": "photos/lee-kang-in.webp",
-        "widthPx": 480
-      },
-      "playStats": {
-        "attack": 78,
-        "control": 82,
-        "defence": 73,
-        "overall": 81
-      },
-      "position": "MIDFIELDER",
-      "state": "ACTIVE",
-      "tier": "BASE"
-    },
-    {
       "club": "clubs/real-madrid-femenino",
       "displayName": "Linda Caicedo",
       "name": "players/linda-caicedo",
@@ -2902,40 +2970,6 @@
       "position": "GOALKEEPER",
       "state": "ACTIVE",
       "tier": "LEGEND"
-    },
-    {
-      "club": "clubs/afc-ajax",
-      "displayName": "Marc-André ter Stegen",
-      "goalkeeperRatings": {
-        "diving": 75,
-        "handling": 85,
-        "kicking": 95,
-        "positioning": 75,
-        "reflexes": 85,
-        "speed": 75
-      },
-      "name": "players/marc-andre-ter-stegen",
-      "nationalTeamCode": "GER",
-      "photo": {
-        "attribution": {
-          "author": "Government of Catalonia",
-          "licenseCode": "CC0-1.0",
-          "sourceUri": "https://commons.wikimedia.org/wiki/File:Marc-Andre_Ter_Stegen_ACCI_FCBARCELONA_Turisme_Catalunya_gira_pretemporada_CATPRESS.jpg"
-        },
-        "heightPx": 600,
-        "mimeType": "image/webp",
-        "uri": "photos/marc-andre-ter-stegen.webp",
-        "widthPx": 480
-      },
-      "playStats": {
-        "attack": 91,
-        "control": 86,
-        "defence": 80,
-        "overall": 80
-      },
-      "position": "GOALKEEPER",
-      "state": "ACTIVE",
-      "tier": "BASE"
     },
     {
       "club": "clubs/boca-juniors",
@@ -3904,40 +3938,6 @@
         "overall": 80
       },
       "position": "FORWARD",
-      "state": "ACTIVE",
-      "tier": "BASE"
-    },
-    {
-      "club": "clubs/liverpool-f-c",
-      "displayName": "Ronald Araújo",
-      "name": "players/ronald-araujo",
-      "nationalTeamCode": "URU",
-      "outfieldRatings": {
-        "defending": 85,
-        "dribbling": 65,
-        "pace": 85,
-        "passing": 75,
-        "physical": 85,
-        "shooting": 65
-      },
-      "photo": {
-        "attribution": {
-          "author": "Werner100359",
-          "licenseCode": "CC0-1.0",
-          "sourceUri": "https://commons.wikimedia.org/wiki/File:FC_Red_Bull_Salzburg_gegen_CF_Barcelona_(Testspiel_4._August_2021)_45_(cropped).jpg"
-        },
-        "heightPx": 724,
-        "mimeType": "image/webp",
-        "uri": "photos/ronald-araujo.webp",
-        "widthPx": 480
-      },
-      "playStats": {
-        "attack": 70,
-        "control": 73,
-        "defence": 84,
-        "overall": 82
-      },
-      "position": "DEFENDER",
       "state": "ACTIVE",
       "tier": "BASE"
     },
