@@ -27,9 +27,7 @@ describe('startGuessRound properties', () => {
 				const questions = result.ok ? result.value.questions : [];
 
 				expect(questions.length).toBeLessThanOrEqual(GUESS_QUESTIONS);
-				expect(new Set(questions.map((question) => question.playerId)).size).toBe(
-					questions.length
-				);
+				expect(new Set(questions.map((question) => question.playerId)).size).toBe(questions.length);
 				for (const question of questions) {
 					const spells = list.find((item) => item.playerId === question.playerId)?.spells ?? [];
 					const played = new Set(spells.map((item) => item.clubId));
