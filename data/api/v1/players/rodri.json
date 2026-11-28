@@ -7,45 +7,45 @@
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-22",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20994118&oldid=2573655390",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20994118&oldid=2575314398",
         "value": 63
       },
       "club": "clubs/villarreal-cf",
       "endYear": 2018,
       "goalCount": {
-        "retrieveDate": "2026-11-22",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20994118&oldid=2573655390",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20994118&oldid=2575314398",
         "value": 1
       },
       "startYear": 2015
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-22",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20994118&oldid=2573655390",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20994118&oldid=2575314398",
         "value": 34
       },
       "club": "clubs/atletico-madrid",
       "endYear": 2019,
       "goalCount": {
-        "retrieveDate": "2026-11-22",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20994118&oldid=2573655390",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20994118&oldid=2575314398",
         "value": 3
       },
       "startYear": 2018
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-22",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20994118&oldid=2573655390",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20994118&oldid=2575314398",
         "value": 196
       },
       "club": "clubs/manchester-city-f-c",
       "endYear": 2026,
       "goalCount": {
-        "retrieveDate": "2026-11-22",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20994118&oldid=2573655390",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20994118&oldid=2575314398",
         "value": 23
       },
       "startYear": 2019
@@ -53,13 +53,13 @@
     {
       "appearanceCount": {
         "retrieveDate": "2026-10-10",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20994118&oldid=2573655390",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20994118&oldid=2575314398",
         "value": 7
       },
       "club": "clubs/fc-barcelona",
       "goalCount": {
         "retrieveDate": "2026-10-10",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20994118&oldid=2573655390",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20994118&oldid=2575314398",
         "value": 0
       },
       "startYear": 2026
@@ -71,7 +71,7 @@
   "nationalTeamCode": "ESP",
   "nationalTeamGoalCount": {
     "retrieveDate": "2026-10-07",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20994118&oldid=2573655390",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20994118&oldid=2575314398",
     "value": 5
   },
   "outfieldRatings": {
@@ -102,5 +102,5 @@
   "position": "MIDFIELDER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-28T06:44:11Z"
 }

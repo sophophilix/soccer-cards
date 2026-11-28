@@ -1,0 +1,121 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4979316&oldid=2575576555",
+        "value": 23
+      },
+      "club": "clubs/novara-calcio",
+      "endYear": 2013,
+      "goalCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4979316&oldid=2575576555",
+        "value": 4
+      },
+      "startYear": 2012
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4979316&oldid=2575576555",
+        "value": 86
+      },
+      "club": "clubs/udinese-calcio",
+      "endYear": 2016,
+      "goalCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4979316&oldid=2575576555",
+        "value": 10
+      },
+      "startYear": 2013
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4979316&oldid=2575576555",
+        "value": 33
+      },
+      "club": "clubs/u-c-sampdoria",
+      "endYear": 2017,
+      "goalCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4979316&oldid=2575576555",
+        "value": 5
+      },
+      "startYear": 2016
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4979316&oldid=2575576555",
+        "value": 83
+      },
+      "club": "clubs/sporting-cp",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4979316&oldid=2575576555",
+        "value": 39
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4979316&oldid=2575576555",
+        "value": 235
+      },
+      "club": "clubs/manchester-united-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-09-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4979316&oldid=2575576555",
+        "value": 74
+      },
+      "startYear": 2020
+    }
+  ],
+  "club": "clubs/manchester-united-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-09-20",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4979316&oldid=2575576555",
+    "value": 132
+  },
+  "displayName": "Bruno Fernandes",
+  "name": "players/bruno-fernandes",
+  "nationalTeamCode": "POR",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-04",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4979316&oldid=2575576555",
+    "value": 29
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 75,
+    "pace": 73,
+    "passing": 85,
+    "physical": 75,
+    "shooting": 86
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Bruno_Fernandes_USMNT_v_Portugal_Mar_31_2026-27_(cropped).jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/bruno-fernandes.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 81,
+    "control": 79,
+    "defence": 76,
+    "overall": 82
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

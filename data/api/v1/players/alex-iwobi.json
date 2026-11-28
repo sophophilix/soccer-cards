@@ -1,0 +1,91 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21091691&oldid=2556682297",
+        "value": 100
+      },
+      "club": "clubs/arsenal-f-c",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21091691&oldid=2556682297",
+        "value": 11
+      },
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21091691&oldid=2556682297",
+        "value": 123
+      },
+      "club": "clubs/everton-f-c",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21091691&oldid=2556682297",
+        "value": 6
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21091691&oldid=2556682297",
+        "value": 103
+      },
+      "club": "clubs/fulham-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-10-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21091691&oldid=2556682297",
+        "value": 18
+      },
+      "startYear": 2023
+    }
+  ],
+  "club": "clubs/fulham-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-11",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21091691&oldid=2556682297",
+    "value": 35
+  },
+  "displayName": "Alex Iwobi",
+  "name": "players/alex-iwobi",
+  "nationalTeamCode": "NGA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-09-29",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21091691&oldid=2556682297",
+    "value": 10
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 85,
+    "pace": 74,
+    "passing": 85,
+    "physical": 75,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "Антон Зайцев",
+      "licenseCode": "CC-BY-SA-3.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Alex_Iwobi_2019.jpg"
+    },
+    "heightPx": 561,
+    "mimeType": "image/webp",
+    "uri": "photos/alex-iwobi.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 78,
+    "control": 83,
+    "defence": 76,
+    "overall": 83
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

@@ -1,0 +1,51 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/nippon-tv-tokyo-verdy-beleza",
+      "endYear": 2020,
+      "startYear": 2013
+    },
+    {
+      "club": "clubs/a-c-milan",
+      "endYear": 2021,
+      "startYear": 2021
+    },
+    {
+      "club": "clubs/west-ham-united-f-c-women",
+      "endYear": 2022,
+      "startYear": 2021
+    }
+  ],
+  "displayName": "Yui Hasegawa",
+  "name": "players/yui-hasegawa",
+  "nationalTeamCode": "JPN",
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 75,
+    "pace": 75,
+    "passing": 85,
+    "physical": 65,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "James Boyes from UK",
+      "licenseCode": "CC-BY-2.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Yui_Hasegawa_Lewes_FC_Women_2_West_Ham_Utd_Women_2_Pre_season_22_08_2021-340_(51395930921)_(cropped).jpg"
+    },
+    "heightPx": 640,
+    "mimeType": "image/webp",
+    "uri": "photos/yui-hasegawa.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 76,
+    "control": 78,
+    "defence": 73,
+    "overall": 77
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

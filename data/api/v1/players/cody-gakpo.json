@@ -1,0 +1,91 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28801927&oldid=2573841951",
+        "value": 26
+      },
+      "club": "clubs/jong-psv",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28801927&oldid=2573841951",
+        "value": 17
+      },
+      "startYear": 2016
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28801927&oldid=2573841951",
+        "value": 106
+      },
+      "club": "clubs/psv-eindhoven",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28801927&oldid=2573841951",
+        "value": 36
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28801927&oldid=2573841951",
+        "value": 132
+      },
+      "club": "clubs/liverpool-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-09-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28801927&oldid=2573841951",
+        "value": 33
+      },
+      "startYear": 2023
+    }
+  ],
+  "club": "clubs/liverpool-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-09-20",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28801927&oldid=2573841951",
+    "value": 86
+  },
+  "displayName": "Cody Gakpo",
+  "name": "players/cody-gakpo",
+  "nationalTeamCode": "NED",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-09-27",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28801927&oldid=2573841951",
+    "value": 25
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 85,
+    "pace": 75,
+    "passing": 75,
+    "physical": 85,
+    "shooting": 84
+  },
+  "photo": {
+    "attribution": {
+      "author": "User:Zafer",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Cody_Gakpo_Liverpool_FC_20261103_(1)_(cropped).JPG"
+    },
+    "heightPx": 652,
+    "mimeType": "image/webp",
+    "uri": "photos/cody-gakpo.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 82,
+    "control": 80,
+    "defence": 73,
+    "overall": 82
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

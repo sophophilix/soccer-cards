@@ -1,0 +1,171 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/ifk-aspudden-tellus",
+      "endYear": 2014,
+      "startYear": 2005
+    },
+    {
+      "club": "clubs/if-brommapojkarna",
+      "endYear": 2015,
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47075606&oldid=2573849668",
+        "value": 56
+      },
+      "club": "clubs/if-brommapojkarna",
+      "endYear": 2017,
+      "goalCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47075606&oldid=2573849668",
+        "value": 20
+      },
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47075606&oldid=2573849668",
+        "value": 0
+      },
+      "club": "clubs/brighton-hove-albion-f-c",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47075606&oldid=2573849668",
+        "value": 0
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47075606&oldid=2573849668",
+        "value": 26
+      },
+      "club": "clubs/fc-st-pauli",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47075606&oldid=2573849668",
+        "value": 7
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47075606&oldid=2573849668",
+        "value": 11
+      },
+      "club": "clubs/swansea-city-a-f-c",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47075606&oldid=2573849668",
+        "value": 0
+      },
+      "startYear": 2020
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47075606&oldid=2573849668",
+        "value": 19
+      },
+      "club": "clubs/coventry-city-f-c",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47075606&oldid=2573849668",
+        "value": 3
+      },
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47075606&oldid=2573849668",
+        "value": 91
+      },
+      "club": "clubs/coventry-city-f-c",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47075606&oldid=2573849668",
+        "value": 38
+      },
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47075606&oldid=2573849668",
+        "value": 66
+      },
+      "club": "clubs/sporting-cp",
+      "endYear": 2025,
+      "goalCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47075606&oldid=2573849668",
+        "value": 68
+      },
+      "startYear": 2023
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47075606&oldid=2573849668",
+        "value": 39
+      },
+      "club": "clubs/arsenal-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47075606&oldid=2573849668",
+        "value": 14
+      },
+      "startYear": 2025
+    }
+  ],
+  "club": "clubs/arsenal-f-c",
+  "displayName": "Viktor Gyökeres",
+  "name": "players/viktor-gyokeres",
+  "nationalTeamCode": "SWE",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-05",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47075606&oldid=2573849668",
+    "value": 25
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 75,
+    "pace": 85,
+    "passing": 75,
+    "physical": 95,
+    "shooting": 97
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Viktor_Gyokeres_France_v_Sweden_6.30.26-123_(cropped).jpg"
+    },
+    "heightPx": 767,
+    "mimeType": "image/webp",
+    "uri": "photos/viktor-gyokeres.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 88,
+    "control": 78,
+    "defence": 77,
+    "overall": 85
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "RARE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

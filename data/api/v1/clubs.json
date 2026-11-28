@@ -1,6 +1,16 @@
 {
   "clubs": [
     {
+      "displayName": "A.C. Ajaccio",
+      "name": "clubs/a-c-ajaccio",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "A.C. Milan",
+      "name": "clubs/a-c-milan",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "AC Milan",
       "name": "clubs/ac-milan",
       "updateTime": "2026-11-21T03:57:58Z"
@@ -51,9 +61,24 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "Angers SCO",
+      "name": "clubs/angers-sco",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "Antalyaspor",
       "name": "clubs/antalyaspor",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Antiguoko",
+      "name": "clubs/antiguoko",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "Argentinos Juniors",
+      "name": "clubs/argentinos-juniors",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "Arsenal F.C.",
@@ -86,6 +111,11 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "AS Saint-Étienne",
+      "name": "clubs/as-saint-etienne",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "Aston Villa F.C.",
       "name": "clubs/aston-villa-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -94,6 +124,11 @@
       "displayName": "Atlético Madrid",
       "name": "clubs/atletico-madrid",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Avaí Futebol Clube",
+      "name": "clubs/avai-futebol-clube",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "AZ Alkmaar",
@@ -111,9 +146,34 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "Beerschot A.C.",
+      "name": "clubs/beerschot-a-c",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "Birmingham City F.C.",
       "name": "clubs/birmingham-city-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "BK Häcken FF",
+      "name": "clubs/bk-hacken-ff",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "Blackburn Rovers F.C.",
+      "name": "clubs/blackburn-rovers-f-c",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "Boca Juniors",
+      "name": "clubs/boca-juniors",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "Bologna F.C. 1909",
+      "name": "clubs/bologna-f-c-1909",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "Bolton Wanderers F.C.",
@@ -139,6 +199,11 @@
       "displayName": "Bradford City A.F.C.",
       "name": "clubs/bradford-city-a-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Brentford F.C.",
+      "name": "clubs/brentford-f-c",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "Brescia Calcio",
@@ -191,6 +256,11 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "CD Berio FT",
+      "name": "clubs/cd-berio-ft",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "CD Laguna de Tenerife",
       "name": "clubs/cd-laguna-de-tenerife",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -241,9 +311,24 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "Club Atlético Osasuna",
+      "name": "clubs/club-atletico-osasuna",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "Club Brugge K.V.",
       "name": "clubs/club-brugge-k-v",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Como 1907",
+      "name": "clubs/como-1907",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "Coventry City F.C.",
+      "name": "clubs/coventry-city-f-c",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "Crystal Palace F.C.",
@@ -276,6 +361,11 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "ES Troyes AC",
+      "name": "clubs/es-troyes-ac",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "Everton F.C.",
       "name": "clubs/everton-f-c",
       "updateTime": "2026-11-21T03:57:58Z"
@@ -291,9 +381,19 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "F.C. Lorient",
+      "name": "clubs/f-c-lorient",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "FC Barcelona",
       "name": "clubs/fc-barcelona",
       "updateTime": "2026-11-21T03:57:58Z"
+    },
+    {
+      "displayName": "FC Barcelona Femení",
+      "name": "clubs/fc-barcelona-femeni",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "FC Basel",
@@ -311,6 +411,11 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "FC Dinamo Tbilisi",
+      "name": "clubs/fc-dinamo-tbilisi",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "FC Girondins de Bordeaux",
       "name": "clubs/fc-girondins-de-bordeaux",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -326,14 +431,34 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "FC Liefering",
+      "name": "clubs/fc-liefering",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "FC Lokomotivi Tbilisi",
+      "name": "clubs/fc-lokomotivi-tbilisi",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "FC Luzern",
       "name": "clubs/fc-luzern",
       "updateTime": "2026-11-21T22:00:18Z"
     },
     {
+      "displayName": "FC Metz",
+      "name": "clubs/fc-metz",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "FC Red Bull Salzburg",
       "name": "clubs/fc-red-bull-salzburg",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "FC Rustavi",
+      "name": "clubs/fc-rustavi",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "FC Ryukyu Okinawa",
@@ -361,6 +486,11 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "Forest Green Rovers F.C.",
+      "name": "clubs/forest-green-rovers-f-c",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "Frankston Pines",
       "name": "clubs/frankston-pines",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -369,6 +499,11 @@
       "displayName": "FSV Frankfurt",
       "name": "clubs/fsv-frankfurt",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Fulham F.C.",
+      "name": "clubs/fulham-f-c",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "Galatasaray S.K.",
@@ -381,9 +516,24 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "Genoa CFC",
+      "name": "clubs/genoa-cfc",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "Girondins de Bordeaux",
+      "name": "clubs/girondins-de-bordeaux",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "Gladsaxe-Hero",
       "name": "clubs/gladsaxe-hero",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Glasgow City F.C.",
+      "name": "clubs/glasgow-city-f-c",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "GNK Dinamo Zagreb",
@@ -436,6 +586,26 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "IF Brommapojkarna",
+      "name": "clubs/if-brommapojkarna",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "IFK Aspudden-Tellus",
+      "name": "clubs/ifk-aspudden-tellus",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "IK Skovbakken",
+      "name": "clubs/ik-skovbakken",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "Independiente del Valle",
+      "name": "clubs/independiente-del-valle",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "Inter Miami CF",
       "name": "clubs/inter-miami-cf",
       "updateTime": "2026-11-21T03:57:58Z"
@@ -449,6 +619,16 @@
       "displayName": "Jamshedpur FC",
       "name": "clubs/jamshedpur-fc",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Jong Ajax",
+      "name": "clubs/jong-ajax",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "Jong PSV",
+      "name": "clubs/jong-psv",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "Juventus FC",
@@ -481,6 +661,16 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "LB Châteauroux",
+      "name": "clubs/lb-chateauroux",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "Le Havre AC",
+      "name": "clubs/le-havre-ac",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "Leeds United F.C.",
       "name": "clubs/leeds-united-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -499,6 +689,16 @@
       "displayName": "Leyton Orient F.C.",
       "name": "clubs/leyton-orient-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Lille OSC",
+      "name": "clubs/lille-osc",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "Linköpings FC",
+      "name": "clubs/linkopings-fc",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "Liverpool F.C.",
@@ -566,6 +766,11 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "Montpellier FC",
+      "name": "clubs/montpellier-fc",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "New York City FC",
       "name": "clubs/new-york-city-fc",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -584,6 +789,16 @@
       "displayName": "Newcastle United F.C.",
       "name": "clubs/newcastle-united-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Newport County A.F.C.",
+      "name": "clubs/newport-county-a-f-c",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "Nippon TV Tokyo Verdy Beleza",
+      "name": "clubs/nippon-tv-tokyo-verdy-beleza",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "NK Croatia Sesvete",
@@ -616,9 +831,29 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "Novara Calcio",
+      "name": "clubs/novara-calcio",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "Odense Boldklub",
+      "name": "clubs/odense-boldklub",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "OGC Nice",
+      "name": "clubs/ogc-nice",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "OL Lyonnes",
       "name": "clubs/ol-lyonnes",
       "updateTime": "2026-11-21T22:00:18Z"
+    },
+    {
+      "displayName": "Olympique de Marseille",
+      "name": "clubs/olympique-de-marseille",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "Olympique Lyonnais",
@@ -641,6 +876,11 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "Paris Saint-Germain Féminine",
+      "name": "clubs/paris-saint-germain-feminine",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "Parma Calcio 1913",
       "name": "clubs/parma-calcio-1913",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -654,6 +894,11 @@
       "displayName": "Perth Glory FC Women",
       "name": "clubs/perth-glory-fc-2",
       "updateTime": "2026-11-22T18:00:30Z"
+    },
+    {
+      "displayName": "Peterborough United F.C.",
+      "name": "clubs/peterborough-united-f-c",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "Piteå IF",
@@ -676,6 +921,11 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "PSV Eindhoven",
+      "name": "clubs/psv-eindhoven",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "PSV Vrouwen",
       "name": "clubs/psv-vrouwen",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -684,6 +934,21 @@
       "displayName": "R.C. Lens",
       "name": "clubs/r-c-lens",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "R.S.C. Anderlecht",
+      "name": "clubs/r-s-c-anderlecht",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "Rangers W.F.C.",
+      "name": "clubs/rangers-w-f-c",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "RB Leipzig",
+      "name": "clubs/rb-leipzig",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "Real Madrid Club de Fútbol",
@@ -699,6 +964,11 @@
       "displayName": "Red Bull New York",
       "name": "clubs/red-bull-new-york",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Rochdale A.F.C.",
+      "name": "clubs/rochdale-a-f-c",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "Roda JC Kerkrade",
@@ -724,6 +994,11 @@
       "displayName": "Santos F.C.",
       "name": "clubs/santos-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "SBV Vitesse",
+      "name": "clubs/sbv-vitesse",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "SC Heerenveen",
@@ -761,6 +1036,11 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "SK Rapid Wien",
+      "name": "clubs/sk-rapid-wien",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "South Coast United",
       "name": "clubs/south-coast-united",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -769,6 +1049,16 @@
       "displayName": "Southampton F.C.",
       "name": "clubs/southampton-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Southport F.C.",
+      "name": "clubs/southport-f-c",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "Sport Club do Recife",
+      "name": "clubs/sport-club-do-recife",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "Sporting CP",
@@ -786,9 +1076,24 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "Stade Lavallois",
+      "name": "clubs/stade-lavallois",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "Stade Rennais F.C.",
+      "name": "clubs/stade-rennais-f-c",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "Stoke City F.C.",
       "name": "clubs/stoke-city-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Strømsgodset TF",
+      "name": "clubs/stromsgodset-tf",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "Sunderland A.F.C.",
@@ -799,6 +1104,11 @@
       "displayName": "Sunderland A.F.C. Women",
       "name": "clubs/sunderland-a-f-c-women",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Swansea City A.F.C.",
+      "name": "clubs/swansea-city-a-f-c",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "Sydney FC",
@@ -816,6 +1126,16 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "Syracuse Orange women's soccer",
+      "name": "clubs/syracuse-orange-women-s-soccer",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "Tennessee Lady Volunteers soccer",
+      "name": "clubs/tennessee-lady-volunteers-soccer",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "Tottenham Hotspur F.C.",
       "name": "clubs/tottenham-hotspur-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -831,6 +1151,21 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "TSG 1899 Hoffenheim",
+      "name": "clubs/tsg-1899-hoffenheim",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "U.C. Sampdoria",
+      "name": "clubs/u-c-sampdoria",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "UD Collerense",
+      "name": "clubs/ud-collerense",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "UD Las Palmas",
       "name": "clubs/ud-las-palmas",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -839,6 +1174,11 @@
       "displayName": "UD Tegueste",
       "name": "clubs/ud-tegueste",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Udinese Calcio",
+      "name": "clubs/udinese-calcio",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "Urawa Red Diamonds",
@@ -851,9 +1191,24 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "VfB Stuttgart",
+      "name": "clubs/vfb-stuttgart",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "VfL Bochum",
       "name": "clubs/vfl-bochum",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "VfL Sindelfingen",
+      "name": "clubs/vfl-sindelfingen",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "VfL Wolfsburg",
+      "name": "clubs/vfl-wolfsburg",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "Villarreal CF",
@@ -871,9 +1226,19 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "Watford F.C.",
+      "name": "clubs/watford-f-c",
+      "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
       "displayName": "West Ham United F.C.",
       "name": "clubs/west-ham-united-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "West Ham United F.C. Women",
+      "name": "clubs/west-ham-united-f-c-women",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "Western New York Flash",
@@ -889,6 +1254,11 @@
       "displayName": "Western Sydney Wanderers FC Women",
       "name": "clubs/western-sydney-wanderers-fc-2",
       "updateTime": "2026-11-22T18:00:30Z"
+    },
+    {
+      "displayName": "Wigan Athletic F.C.",
+      "name": "clubs/wigan-athletic-f-c",
+      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "Zhejiang Professional F.C.",

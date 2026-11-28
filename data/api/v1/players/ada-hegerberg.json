@@ -2,60 +2,60 @@
   "careerSpells": [
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q129118&oldid=2572153968",
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q129118&oldid=2574509066",
         "value": 30
       },
       "club": "clubs/kolbotn-fotball",
       "endYear": 2011,
       "goalCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q129118&oldid=2572153968",
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q129118&oldid=2574509066",
         "value": 15
       },
       "startYear": 2010
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q129118&oldid=2572153968",
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q129118&oldid=2574509066",
         "value": 20
       },
       "club": "clubs/kolbotn-il",
       "endYear": 2011,
       "goalCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q129118&oldid=2572153968",
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q129118&oldid=2574509066",
         "value": 12
       },
       "startYear": 2011
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q129118&oldid=2572153968",
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q129118&oldid=2574509066",
         "value": 18
       },
       "club": "clubs/stabaek-fotball-kvinner",
       "endYear": 2012,
       "goalCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q129118&oldid=2572153968",
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q129118&oldid=2574509066",
         "value": 24
       },
       "startYear": 2012
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q129118&oldid=2572153968",
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q129118&oldid=2574509066",
         "value": 25
       },
       "club": "clubs/ffc-turbine-potsdam",
       "endYear": 2014,
       "goalCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q129118&oldid=2572153968",
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q129118&oldid=2574509066",
         "value": 11
       },
       "startYear": 2013
@@ -97,5 +97,5 @@
   "position": "FORWARD",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-28T06:44:11Z"
 }

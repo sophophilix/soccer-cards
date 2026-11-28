@@ -1,0 +1,91 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q59209505&oldid=2574892950",
+        "value": 34
+      },
+      "club": "clubs/r-s-c-anderlecht",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-11-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q59209505&oldid=2574892950",
+        "value": 5
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q59209505&oldid=2574892950",
+        "value": 75
+      },
+      "club": "clubs/stade-rennais-f-c",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-11-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q59209505&oldid=2574892950",
+        "value": 10
+      },
+      "startYear": 2020
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-05-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q59209505&oldid=2574892950",
+        "value": 86
+      },
+      "club": "clubs/manchester-city-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-05-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q59209505&oldid=2574892950",
+        "value": 11
+      },
+      "startYear": 2023
+    }
+  ],
+  "club": "clubs/manchester-city-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-05-13",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q59209505&oldid=2574892950",
+    "value": 26
+  },
+  "displayName": "Jérémy Doku",
+  "name": "players/jeremy-doku",
+  "nationalTeamCode": "BEL",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-04-01",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q59209505&oldid=2574892950",
+    "value": 7
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 95,
+    "pace": 95,
+    "passing": 75,
+    "physical": 65,
+    "shooting": 72
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:J%C3%A9r%C3%A9my_Doku_USMNT_v_Belgium_Mar_28_2026-27_(cropped).jpg"
+    },
+    "heightPx": 640,
+    "mimeType": "image/webp",
+    "uri": "photos/jeremy-doku.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 82,
+    "control": 84,
+    "defence": 69,
+    "overall": 82
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

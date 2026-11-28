@@ -12,75 +12,75 @@
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-21",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2573368578",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2575509645",
         "value": 25
       },
       "club": "clubs/sporting-cp",
       "endYear": 2003,
       "goalCount": {
-        "retrieveDate": "2026-11-21",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2573368578",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2575509645",
         "value": 3
       },
       "startYear": 2002
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-21",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2573368578",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2575509645",
         "value": 196
       },
       "club": "clubs/manchester-united-f-c",
       "endYear": 2009,
       "goalCount": {
-        "retrieveDate": "2026-11-21",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2573368578",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2575509645",
         "value": 84
       },
       "startYear": 2003
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-21",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2573368578",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2575509645",
         "value": 292
       },
       "club": "clubs/real-madrid-club-de-futbol",
       "endYear": 2018,
       "goalCount": {
-        "retrieveDate": "2026-11-21",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2573368578",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2575509645",
         "value": 311
       },
       "startYear": 2009
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-21",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2573368578",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2575509645",
         "value": 98
       },
       "club": "clubs/juventus-fc",
       "endYear": 2021,
       "goalCount": {
-        "retrieveDate": "2026-11-21",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2573368578",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2575509645",
         "value": 81
       },
       "startYear": 2018
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-21",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2573368578",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2575509645",
         "value": 40
       },
       "club": "clubs/manchester-united-f-c",
       "endYear": 2022,
       "goalCount": {
-        "retrieveDate": "2026-11-21",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2573368578",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2575509645",
         "value": 19
       },
       "startYear": 2021
@@ -88,13 +88,13 @@
     {
       "appearanceCount": {
         "retrieveDate": "2026-08-28",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2573368578",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2575509645",
         "value": 117
       },
       "club": "clubs/al-nassr",
       "goalCount": {
         "retrieveDate": "2026-08-28",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2573368578",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2575509645",
         "value": 110
       },
       "startYear": 2023
@@ -105,8 +105,8 @@
   "name": "players/cristiano-ronaldo",
   "nationalTeamCode": "POR",
   "nationalTeamGoalCount": {
-    "retrieveDate": "2026-11-21",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2573368578",
+    "retrieveDate": "2026-11-27",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q11571&oldid=2575509645",
     "value": 146
   },
   "outfieldRatings": {
@@ -137,5 +137,5 @@
   "position": "FORWARD",
   "state": "ACTIVE",
   "tier": "ICON",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-28T06:44:11Z"
 }

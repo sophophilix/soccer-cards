@@ -3,13 +3,13 @@
     {
       "appearanceCount": {
         "retrieveDate": "2026-10-10",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q113704154&oldid=2570943738",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q113704154&oldid=2575562576",
         "value": 109
       },
       "club": "clubs/fc-barcelona",
       "goalCount": {
         "retrieveDate": "2026-10-10",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q113704154&oldid=2570943738",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q113704154&oldid=2575562576",
         "value": 37
       },
       "startYear": 2023
@@ -18,7 +18,7 @@
   "club": "clubs/fc-barcelona",
   "clubGoalCount": {
     "retrieveDate": "2026-10-10",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q113704154&oldid=2570943738",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q113704154&oldid=2575562576",
     "value": 37
   },
   "displayName": "Lamine Yamal",
@@ -26,7 +26,7 @@
   "nationalTeamCode": "ESP",
   "nationalTeamGoalCount": {
     "retrieveDate": "2026-10-07",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q113704154&oldid=2570943738",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q113704154&oldid=2575562576",
     "value": 11
   },
   "outfieldRatings": {
@@ -57,5 +57,5 @@
   "position": "FORWARD",
   "state": "ACTIVE",
   "tier": "RARE",
-  "updateTime": "2026-11-22T18:00:30Z"
+  "updateTime": "2026-11-28T06:44:11Z"
 }

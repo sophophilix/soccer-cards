@@ -1,0 +1,40 @@
+{
+  "club": "clubs/chelsea-f-c-women",
+  "displayName": "Jessie Fleming",
+  "name": "players/jessie-fleming",
+  "nationalTeamCode": "CAN",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-16",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16841707&oldid=2570159358",
+    "value": 10
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 85,
+    "pace": 75,
+    "passing": 85,
+    "physical": 65,
+    "shooting": 85
+  },
+  "photo": {
+    "attribution": {
+      "author": "Hameltion",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:NC_Courage_vs_Portland_Thorns_(Apr_2024)_035_(Fleming).jpg"
+    },
+    "heightPx": 671,
+    "mimeType": "image/webp",
+    "uri": "photos/jessie-fleming.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 83,
+    "control": 82,
+    "defence": 73,
+    "overall": 81
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

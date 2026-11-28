@@ -1,0 +1,121 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19665907&oldid=2556672307",
+        "value": 16
+      },
+      "club": "clubs/southport-f-c",
+      "endYear": 2015,
+      "goalCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19665907&oldid=2556672307",
+        "value": 0
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19665907&oldid=2556672307",
+        "value": 98
+      },
+      "club": "clubs/blackburn-rovers-f-c",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19665907&oldid=2556672307",
+        "value": 0
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19665907&oldid=2556672307",
+        "value": 150
+      },
+      "club": "clubs/brentford-f-c",
+      "endYear": 2024,
+      "goalCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19665907&oldid=2556672307",
+        "value": 0
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19665907&oldid=2556672307",
+        "value": 32
+      },
+      "club": "clubs/arsenal-f-c",
+      "endYear": 2024,
+      "goalCount": {
+        "retrieveDate": "2026-10-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19665907&oldid=2556672307",
+        "value": 0
+      },
+      "startYear": 2023
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19665907&oldid=2556672307",
+        "value": 81
+      },
+      "club": "clubs/arsenal-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19665907&oldid=2556672307",
+        "value": 0
+      },
+      "startYear": 2024
+    }
+  ],
+  "club": "clubs/arsenal-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-10",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19665907&oldid=2556672307",
+    "value": 0
+  },
+  "displayName": "David Raya",
+  "goalkeeperRatings": {
+    "diving": 85,
+    "handling": 75,
+    "kicking": 85,
+    "positioning": 95,
+    "reflexes": 85,
+    "speed": 75
+  },
+  "name": "players/david-raya",
+  "nationalTeamCode": "ESP",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-03",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19665907&oldid=2556672307",
+    "value": 0
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:David_Raya_Argentina_v_Spain_19_July_2026-003_(cropped).jpg"
+    },
+    "heightPx": 765,
+    "mimeType": "image/webp",
+    "uri": "photos/david-raya.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 83,
+    "control": 81,
+    "defence": 85,
+    "overall": 87
+  },
+  "position": "GOALKEEPER",
+  "state": "ACTIVE",
+  "tier": "RARE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

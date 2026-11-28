@@ -1,0 +1,101 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/antiguoko",
+      "endYear": 2011,
+      "startYear": 2006
+    },
+    {
+      "club": "clubs/antiguoko",
+      "endYear": 2013,
+      "startYear": 2011
+    },
+    {
+      "club": "clubs/real-sociedad",
+      "endYear": 2016,
+      "startYear": 2011
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q63384759&oldid=2573114737",
+        "value": 26
+      },
+      "club": "clubs/cd-berio-ft",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q63384759&oldid=2573114737",
+        "value": 2
+      },
+      "startYear": 2016
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q63384759&oldid=2573114737",
+        "value": 180
+      },
+      "club": "clubs/real-sociedad",
+      "endYear": 2025,
+      "goalCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q63384759&oldid=2573114737",
+        "value": 9
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q63384759&oldid=2573114737",
+        "value": 43
+      },
+      "club": "clubs/arsenal-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-09-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q63384759&oldid=2573114737",
+        "value": 5
+      },
+      "startYear": 2025
+    }
+  ],
+  "club": "clubs/arsenal-f-c",
+  "displayName": "Martín Zubimendi",
+  "name": "players/martin-zubimendi",
+  "nationalTeamCode": "ESP",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-07",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q63384759&oldid=2573114737",
+    "value": 3
+  },
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 75,
+    "pace": 75,
+    "passing": 85,
+    "physical": 75,
+    "shooting": 65
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Martin_Zubimendi_Argentina_v_Spain_19_July_2026-012.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/martin-zubimendi.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 71,
+    "control": 79,
+    "defence": 81,
+    "overall": 79
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

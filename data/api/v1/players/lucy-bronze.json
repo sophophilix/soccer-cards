@@ -7,30 +7,30 @@
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-16",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q6698219&oldid=2570204236",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q6698219&oldid=2575578648",
         "value": 24
       },
       "club": "clubs/everton-f-c-women",
       "endYear": 2012,
       "goalCount": {
-        "retrieveDate": "2026-11-16",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q6698219&oldid=2570204236",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q6698219&oldid=2575578648",
         "value": 3
       },
       "startYear": 2010
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-16",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q6698219&oldid=2570204236",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q6698219&oldid=2575578648",
         "value": 28
       },
       "club": "clubs/liverpool-f-c-women",
       "endYear": 2014,
       "goalCount": {
-        "retrieveDate": "2026-11-16",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q6698219&oldid=2570204236",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q6698219&oldid=2575578648",
         "value": 3
       },
       "startYear": 2012
@@ -77,5 +77,5 @@
   "position": "DEFENDER",
   "state": "ACTIVE",
   "tier": "RARE",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-28T06:44:11Z"
 }

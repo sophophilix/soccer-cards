@@ -1,0 +1,86 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q558010&oldid=2572036022",
+        "value": 25
+      },
+      "club": "clubs/vfl-sindelfingen",
+      "endYear": 2011,
+      "goalCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q558010&oldid=2572036022",
+        "value": 0
+      },
+      "startYear": 2008
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q558010&oldid=2572036022",
+        "value": 19
+      },
+      "club": "clubs/ffc-turbine-potsdam",
+      "endYear": 2014,
+      "goalCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q558010&oldid=2572036022",
+        "value": 0
+      },
+      "startYear": 2011
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q558010&oldid=2572036022",
+        "value": 12
+      },
+      "club": "clubs/paris-saint-germain-feminine",
+      "endYear": 2016,
+      "goalCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q558010&oldid=2572036022",
+        "value": 0
+      },
+      "startYear": 2014
+    },
+    {
+      "club": "clubs/paris-saint-germain-fc",
+      "startYear": 2014
+    }
+  ],
+  "club": "clubs/paris-saint-germain-fc",
+  "displayName": "Ann-Katrin Berger",
+  "goalkeeperRatings": {
+    "diving": 85,
+    "handling": 75,
+    "kicking": 75,
+    "positioning": 85,
+    "reflexes": 85,
+    "speed": 75
+  },
+  "name": "players/ann-katrin-berger",
+  "nationalTeamCode": "GER",
+  "photo": {
+    "attribution": {
+      "author": "Steffen Prößdorf",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:2023-04-11_Fussball,_Frauen,_L%C3%A4nderspiel,_Deutschland_-_Brasilien_1DX_0084_by_Stepro.jpg"
+    },
+    "heightPx": 480,
+    "mimeType": "image/webp",
+    "uri": "photos/ann-katrin-berger.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 75,
+    "control": 76,
+    "defence": 83,
+    "overall": 82
+  },
+  "position": "GOALKEEPER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

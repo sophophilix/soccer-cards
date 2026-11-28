@@ -1,0 +1,151 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16902219&oldid=2575404314",
+        "value": 23
+      },
+      "club": "clubs/stromsgodset-tf",
+      "endYear": 2015,
+      "goalCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16902219&oldid=2575404314",
+        "value": 5
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16902219&oldid=2575404314",
+        "value": 8
+      },
+      "club": "clubs/real-madrid-club-de-futbol",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16902219&oldid=2575404314",
+        "value": 0
+      },
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16902219&oldid=2575404314",
+        "value": 38
+      },
+      "club": "clubs/sc-heerenveen",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16902219&oldid=2575404314",
+        "value": 2
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16902219&oldid=2575404314",
+        "value": 31
+      },
+      "club": "clubs/sbv-vitesse",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16902219&oldid=2575404314",
+        "value": 8
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16902219&oldid=2575404314",
+        "value": 31
+      },
+      "club": "clubs/real-sociedad",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16902219&oldid=2575404314",
+        "value": 4
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16902219&oldid=2575404314",
+        "value": 14
+      },
+      "club": "clubs/arsenal-f-c",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16902219&oldid=2575404314",
+        "value": 1
+      },
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16902219&oldid=2575404314",
+        "value": 168
+      },
+      "club": "clubs/arsenal-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16902219&oldid=2575404314",
+        "value": 36
+      },
+      "startYear": 2021
+    }
+  ],
+  "club": "clubs/arsenal-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-10",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16902219&oldid=2575404314",
+    "value": 56
+  },
+  "displayName": "Martin Ødegaard",
+  "name": "players/martin-odegaard",
+  "nationalTeamCode": "NOR",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-05",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16902219&oldid=2575404314",
+    "value": 5
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 85,
+    "pace": 75,
+    "passing": 85,
+    "physical": 65,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Martin_Odegaard_Morocco_v_Norway_7_June_2026-56_(cropped).jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/martin-odegaard.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 78,
+    "control": 82,
+    "defence": 68,
+    "overall": 80
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

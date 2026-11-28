@@ -2,45 +2,45 @@
   "careerSpells": [
     {
       "appearanceCount": {
-        "retrieveDate": "2026-10-30",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2562718695",
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2573836987",
         "value": 62
       },
       "club": "clubs/fc-groningen",
       "endYear": 2013,
       "goalCount": {
-        "retrieveDate": "2026-10-30",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2562718695",
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2573836987",
         "value": 7
       },
       "startYear": 2011
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-10-30",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2562718695",
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2573836987",
         "value": 76
       },
       "club": "clubs/celtic-f-c",
       "endYear": 2015,
       "goalCount": {
-        "retrieveDate": "2026-10-30",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2562718695",
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2573836987",
         "value": 9
       },
       "startYear": 2013
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-10-30",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2562718695",
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2573836987",
         "value": 67
       },
       "club": "clubs/southampton-f-c",
       "endYear": 2018,
       "goalCount": {
-        "retrieveDate": "2026-10-30",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2562718695",
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2573836987",
         "value": 4
       },
       "startYear": 2015
@@ -48,13 +48,13 @@
     {
       "appearanceCount": {
         "retrieveDate": "2026-10-11",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2562718695",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2573836987",
         "value": 278
       },
       "club": "clubs/liverpool-f-c",
       "goalCount": {
         "retrieveDate": "2026-10-11",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2562718695",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2573836987",
         "value": 27
       },
       "startYear": 2018
@@ -63,7 +63,7 @@
   "club": "clubs/liverpool-f-c",
   "clubGoalCount": {
     "retrieveDate": "2026-10-11",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2562718695",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2573836987",
     "value": 47
   },
   "displayName": "Virgil van Dijk",
@@ -71,7 +71,7 @@
   "nationalTeamCode": "NED",
   "nationalTeamGoalCount": {
     "retrieveDate": "2026-10-04",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2562718695",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q133903&oldid=2573836987",
     "value": 14
   },
   "outfieldRatings": {
@@ -102,5 +102,5 @@
   "position": "DEFENDER",
   "state": "ACTIVE",
   "tier": "LEGEND",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-28T06:44:11Z"
 }

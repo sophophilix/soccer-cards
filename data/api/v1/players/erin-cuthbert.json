@@ -1,0 +1,66 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/rangers-w-f-c",
+      "endYear": 2014,
+      "startYear": 2009
+    },
+    {
+      "club": "clubs/glasgow-city-f-c",
+      "endYear": 2016,
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-03",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23771964&oldid=2552668827",
+        "value": 46
+      },
+      "club": "clubs/chelsea-f-c-women",
+      "goalCount": {
+        "retrieveDate": "2026-10-03",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23771964&oldid=2552668827",
+        "value": 14
+      },
+      "startYear": 2017
+    }
+  ],
+  "club": "clubs/chelsea-f-c-women",
+  "displayName": "Erin Cuthbert",
+  "name": "players/erin-cuthbert",
+  "nationalTeamCode": "SCO",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-03",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23771964&oldid=2552668827",
+    "value": 13
+  },
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 75,
+    "pace": 75,
+    "passing": 75,
+    "physical": 85,
+    "shooting": 77
+  },
+  "photo": {
+    "attribution": {
+      "author": "James Boyes from UK",
+      "licenseCode": "CC-BY-2.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Erin_Cuthbert_(49006342112)_(cropped)_2.jpg"
+    },
+    "heightPx": 583,
+    "mimeType": "image/webp",
+    "uri": "photos/erin-cuthbert.webp",
+    "widthPx": 440
+  },
+  "playStats": {
+    "attack": 76,
+    "control": 76,
+    "defence": 83,
+    "overall": 78
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

@@ -1,0 +1,91 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27910301&oldid=2570205380",
+        "value": 46
+      },
+      "club": "clubs/ud-collerense",
+      "endYear": 2014,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27910301&oldid=2570205380",
+        "value": 15
+      },
+      "startYear": 2012
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27910301&oldid=2570205380",
+        "value": 302
+      },
+      "club": "clubs/fc-barcelona-femeni",
+      "endYear": 2024,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27910301&oldid=2570205380",
+        "value": 114
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27910301&oldid=2570205380",
+        "value": 32
+      },
+      "club": "clubs/arsenal-w-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27910301&oldid=2570205380",
+        "value": 16
+      },
+      "startYear": 2024
+    }
+  ],
+  "club": "clubs/arsenal-w-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-16",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27910301&oldid=2570205380",
+    "value": 145
+  },
+  "displayName": "Mariona Caldentey",
+  "name": "players/mariona-caldentey",
+  "nationalTeamCode": "ESP",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-16",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27910301&oldid=2570205380",
+    "value": 27
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 85,
+    "pace": 74,
+    "passing": 85,
+    "physical": 75,
+    "shooting": 87
+  },
+  "photo": {
+    "attribution": {
+      "author": "MichaelEmilio",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Brann_-_Bar%C3%A7a_Femen%C3%AD_CG3A5801_(cropped).jpg"
+    },
+    "heightPx": 664,
+    "mimeType": "image/webp",
+    "uri": "photos/mariona-caldentey.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 84,
+    "control": 83,
+    "defence": 76,
+    "overall": 84
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "RARE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

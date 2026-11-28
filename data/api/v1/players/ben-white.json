@@ -1,0 +1,121 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27839155&oldid=2560821752",
+        "value": 36
+      },
+      "club": "clubs/brighton-hove-albion-f-c",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-10-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27839155&oldid=2560821752",
+        "value": 0
+      },
+      "startYear": 2016
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27839155&oldid=2560821752",
+        "value": 42
+      },
+      "club": "clubs/newport-county-a-f-c",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-10-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27839155&oldid=2560821752",
+        "value": 1
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27839155&oldid=2560821752",
+        "value": 15
+      },
+      "club": "clubs/peterborough-united-f-c",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-10-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27839155&oldid=2560821752",
+        "value": 1
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27839155&oldid=2560821752",
+        "value": 46
+      },
+      "club": "clubs/leeds-united-f-c",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-10-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27839155&oldid=2560821752",
+        "value": 1
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-05-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27839155&oldid=2560821752",
+        "value": 136
+      },
+      "club": "clubs/arsenal-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-05-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27839155&oldid=2560821752",
+        "value": 6
+      },
+      "startYear": 2021
+    }
+  ],
+  "club": "clubs/arsenal-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-05-10",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27839155&oldid=2560821752",
+    "value": 9
+  },
+  "displayName": "Ben White",
+  "name": "players/ben-white",
+  "nationalTeamCode": "ENG",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-03-31",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27839155&oldid=2560821752",
+    "value": 1
+  },
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 75,
+    "pace": 75,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 65
+  },
+  "photo": {
+    "attribution": {
+      "author": "James Boyes from UK",
+      "licenseCode": "CC-BY-2.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Ben_White_2018.jpg"
+    },
+    "heightPx": 641,
+    "mimeType": "image/webp",
+    "uri": "photos/ben-white.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 70,
+    "control": 75,
+    "defence": 80,
+    "overall": 80
+  },
+  "position": "DEFENDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

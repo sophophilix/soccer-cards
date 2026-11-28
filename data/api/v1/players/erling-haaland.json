@@ -2,60 +2,60 @@
   "careerSpells": [
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-16",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2575581457",
         "value": 16
       },
       "club": "clubs/bryne-fk",
       "endYear": 2017,
       "goalCount": {
-        "retrieveDate": "2026-11-16",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2575581457",
         "value": 0
       },
       "startYear": 2016
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-16",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2575581457",
         "value": 39
       },
       "club": "clubs/molde-fk",
       "endYear": 2019,
       "goalCount": {
-        "retrieveDate": "2026-11-16",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2575581457",
         "value": 14
       },
       "startYear": 2017
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-16",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2575581457",
         "value": 16
       },
       "club": "clubs/fc-red-bull-salzburg",
       "endYear": 2020,
       "goalCount": {
-        "retrieveDate": "2026-11-16",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2575581457",
         "value": 17
       },
       "startYear": 2019
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-16",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2575581457",
         "value": 67
       },
       "club": "clubs/borussia-dortmund",
       "endYear": 2022,
       "goalCount": {
-        "retrieveDate": "2026-11-16",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2575581457",
         "value": 62
       },
       "startYear": 2020
@@ -63,13 +63,13 @@
     {
       "appearanceCount": {
         "retrieveDate": "2026-10-12",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2575581457",
         "value": 138
       },
       "club": "clubs/manchester-city-f-c",
       "goalCount": {
         "retrieveDate": "2026-10-12",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2575581457",
         "value": 118
       },
       "startYear": 2022
@@ -78,7 +78,7 @@
   "club": "clubs/manchester-city-f-c",
   "clubGoalCount": {
     "retrieveDate": "2026-10-12",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2575581457",
     "value": 211
   },
   "displayName": "Erling Haaland",
@@ -86,7 +86,7 @@
   "nationalTeamCode": "NOR",
   "nationalTeamGoalCount": {
     "retrieveDate": "2026-10-04",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2570409841",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28967995&oldid=2575581457",
     "value": 65
   },
   "outfieldRatings": {
@@ -99,11 +99,11 @@
   },
   "photo": {
     "attribution": {
-      "author": "Bryan Berlin",
-      "licenseCode": "CC-BY-SA-4.0",
-      "sourceUri": "https://commons.wikimedia.org/wiki/File:Erling_Haaland_France_v_Norway_26_June_26-008_(cropped).jpg"
+      "author": "Jahrenvisuals",
+      "licenseCode": "CC-BY-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Erling_Braut_Haaland_Norway.jpg"
     },
-    "heightPx": 642,
+    "heightPx": 600,
     "mimeType": "image/webp",
     "uri": "photos/erling-haaland.webp",
     "widthPx": 480
@@ -117,5 +117,5 @@
   "position": "FORWARD",
   "state": "ACTIVE",
   "tier": "RARE",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-28T06:44:11Z"
 }

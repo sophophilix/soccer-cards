@@ -2,91 +2,91 @@
   "careerSpells": [
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2572077243",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2575165605",
         "value": 67
       },
       "club": "clubs/everton-f-c",
       "endYear": 2004,
       "goalCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2572077243",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2575165605",
         "value": 15
       },
       "startYear": 2002
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2572077243",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2575165605",
         "value": 393
       },
       "club": "clubs/manchester-united-f-c",
       "endYear": 2017,
       "goalCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2572077243",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2575165605",
         "value": 183
       },
       "startYear": 2004
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2572077243",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2575165605",
         "value": 31
       },
       "club": "clubs/everton-f-c",
       "endYear": 2018,
       "goalCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2572077243",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2575165605",
         "value": 10
       },
       "startYear": 2017
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2572077243",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2575165605",
         "value": 48
       },
       "club": "clubs/d-c-united",
       "endYear": 2019,
       "goalCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2572077243",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2575165605",
         "value": 23
       },
       "startYear": 2018
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2572077243",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2575165605",
         "value": 30
       },
       "club": "clubs/derby-county-f-c",
       "endYear": 2021,
       "goalCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2572077243",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2575165605",
         "value": 6
       },
       "startYear": 2019
     }
   ],
   "clubGoalCount": {
-    "retrieveDate": "2026-11-19",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2572077243",
+    "retrieveDate": "2026-11-26",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2575165605",
     "value": 237
   },
   "displayName": "Wayne Rooney",
   "name": "players/wayne-rooney",
   "nationalTeamCode": "ENG",
   "nationalTeamGoalCount": {
-    "retrieveDate": "2026-11-19",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2572077243",
+    "retrieveDate": "2026-11-26",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q266613&oldid=2575165605",
     "value": 53
   },
   "outfieldRatings": {
@@ -117,5 +117,5 @@
   "position": "FORWARD",
   "state": "RETIRED",
   "tier": "RARE",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-28T06:44:11Z"
 }

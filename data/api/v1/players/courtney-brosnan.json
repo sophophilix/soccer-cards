@@ -1,0 +1,81 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/syracuse-orange-women-s-soccer",
+      "endYear": 2017,
+      "startYear": 2015
+    },
+    {
+      "club": "clubs/le-havre-ac",
+      "endYear": 2019,
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q71332583&oldid=2574497118",
+        "value": 16
+      },
+      "club": "clubs/west-ham-united-f-c-women",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q71332583&oldid=2574497118",
+        "value": 0
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2023-06-18",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q71332583&oldid=2574497118",
+        "value": 18
+      },
+      "club": "clubs/everton-f-c-women",
+      "goalCount": {
+        "retrieveDate": "2023-06-18",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q71332583&oldid=2574497118",
+        "value": 0
+      },
+      "startYear": 2021
+    }
+  ],
+  "club": "clubs/everton-f-c-women",
+  "displayName": "Courtney Brosnan",
+  "goalkeeperRatings": {
+    "diving": 85,
+    "handling": 75,
+    "kicking": 75,
+    "positioning": 75,
+    "reflexes": 85,
+    "speed": 75
+  },
+  "name": "players/courtney-brosnan",
+  "nationalTeamCode": "IRL",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2025-02-25",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q71332583&oldid=2574497118",
+    "value": 0
+  },
+  "photo": {
+    "attribution": {
+      "author": "Ryan Asman",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Courtney-Brosnan.jpg"
+    },
+    "heightPx": 700,
+    "mimeType": "image/webp",
+    "uri": "photos/courtney-brosnan.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 75,
+    "control": 75,
+    "defence": 81,
+    "overall": 80
+  },
+  "position": "GOALKEEPER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

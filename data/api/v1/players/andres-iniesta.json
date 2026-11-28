@@ -2,61 +2,61 @@
   "careerSpells": [
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-01",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2574340062",
         "value": 442
       },
       "club": "clubs/fc-barcelona",
       "endYear": 2018,
       "goalCount": {
-        "retrieveDate": "2026-11-01",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2574340062",
         "value": 35
       },
       "startYear": 2002
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-01",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2574340062",
         "value": 114
       },
       "club": "clubs/vissel-kobe",
       "endYear": 2023,
       "goalCount": {
-        "retrieveDate": "2026-11-01",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2574340062",
         "value": 21
       },
       "startYear": 2018
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-01",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2574340062",
         "value": 20
       },
       "club": "clubs/emirates-club",
       "endYear": 2024,
       "goalCount": {
-        "retrieveDate": "2026-11-01",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2574340062",
         "value": 5
       },
       "startYear": 2023
     }
   ],
   "clubGoalCount": {
-    "retrieveDate": "2026-11-01",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
+    "retrieveDate": "2026-11-24",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2574340062",
     "value": 61
   },
   "displayName": "Andrés Iniesta",
   "name": "players/andres-iniesta",
   "nationalTeamCode": "ESP",
   "nationalTeamGoalCount": {
-    "retrieveDate": "2026-11-01",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2563642926",
+    "retrieveDate": "2026-11-24",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q43729&oldid=2574340062",
     "value": 13
   },
   "outfieldRatings": {
@@ -87,5 +87,5 @@
   "position": "MIDFIELDER",
   "state": "RETIRED",
   "tier": "LEGEND",
-  "updateTime": "2026-11-22T18:00:30Z"
+  "updateTime": "2026-11-28T06:44:11Z"
 }

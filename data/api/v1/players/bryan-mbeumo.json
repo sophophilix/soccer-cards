@@ -1,0 +1,91 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q49561427&oldid=2575104490",
+        "value": 41
+      },
+      "club": "clubs/es-troyes-ac",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q49561427&oldid=2575104490",
+        "value": 11
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q49561427&oldid=2575104490",
+        "value": 222
+      },
+      "club": "clubs/brentford-f-c",
+      "endYear": 2025,
+      "goalCount": {
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q49561427&oldid=2575104490",
+        "value": 65
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-05-03",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q49561427&oldid=2575104490",
+        "value": 30
+      },
+      "club": "clubs/manchester-united-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-05-03",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q49561427&oldid=2575104490",
+        "value": 9
+      },
+      "startYear": 2025
+    }
+  ],
+  "club": "clubs/manchester-united-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-05-03",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q49561427&oldid=2575104490",
+    "value": 85
+  },
+  "displayName": "Bryan Mbeumo",
+  "name": "players/bryan-mbeumo",
+  "nationalTeamCode": "CMR",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-01-10",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q49561427&oldid=2575104490",
+    "value": 7
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 75,
+    "pace": 85,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 84
+  },
+  "photo": {
+    "attribution": {
+      "author": "AFC Bournemouth",
+      "licenseCode": "CC-BY-3.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Bryan_Mbeumo_00-02-31.18.png"
+    },
+    "heightPx": 600,
+    "mimeType": "image/webp",
+    "uri": "photos/bryan-mbeumo.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 82,
+    "control": 76,
+    "defence": 71,
+    "overall": 81
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

@@ -2,30 +2,30 @@
   "careerSpells": [
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-14",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2569170911",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2575155022",
         "value": 41
       },
       "club": "clubs/birmingham-city-f-c",
       "endYear": 2020,
       "goalCount": {
-        "retrieveDate": "2026-11-14",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2569170911",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2575155022",
         "value": 4
       },
       "startYear": 2019
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-14",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2569170911",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2575155022",
         "value": 92
       },
       "club": "clubs/borussia-dortmund",
       "endYear": 2023,
       "goalCount": {
-        "retrieveDate": "2026-11-14",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2569170911",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2575155022",
         "value": 12
       },
       "startYear": 2020
@@ -33,13 +33,13 @@
     {
       "appearanceCount": {
         "retrieveDate": "2026-10-10",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2569170911",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2575155022",
         "value": 95
       },
       "club": "clubs/real-madrid-club-de-futbol",
       "goalCount": {
         "retrieveDate": "2026-10-10",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2569170911",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2575155022",
         "value": 37
       },
       "startYear": 2023
@@ -48,7 +48,7 @@
   "club": "clubs/real-madrid-club-de-futbol",
   "clubGoalCount": {
     "retrieveDate": "2026-10-10",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2569170911",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2575155022",
     "value": 53
   },
   "displayName": "Jude Bellingham",
@@ -56,7 +56,7 @@
   "nationalTeamCode": "ENG",
   "nationalTeamGoalCount": {
     "retrieveDate": "2026-10-07",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2569170911",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66241169&oldid=2575155022",
     "value": 14
   },
   "outfieldRatings": {
@@ -71,9 +71,9 @@
     "attribution": {
       "author": "Bryan Berlin",
       "licenseCode": "CC-BY-SA-4.0",
-      "sourceUri": "https://commons.wikimedia.org/wiki/File:Jude_Bellingham_England_v_Ghana_23_June_2026-061_(cropped).jpg"
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Jude_Bellingham_England_v_Ghana_23_June_2026-061_(second_cropped).jpg"
     },
-    "heightPx": 720,
+    "heightPx": 685,
     "mimeType": "image/webp",
     "uri": "photos/jude-bellingham.webp",
     "widthPx": 480
@@ -87,5 +87,5 @@
   "position": "MIDFIELDER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-28T06:44:11Z"
 }
