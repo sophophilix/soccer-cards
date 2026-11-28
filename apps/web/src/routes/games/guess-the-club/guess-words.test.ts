@@ -12,9 +12,6 @@ test('a spell with games but no goals says goals are not known', () => {
 	expect(spellFacts({ startYear: 2010, endYear: 2010, games: 4 })).toBe(
 		'2010, 4 games, goals not known'
 	);
-});
-
-test('a spell with no count says games are not known', () => {
 	expect(spellFacts({ startYear: 2001, endYear: 2003 })).toBe('2001 to 2003, games not known');
 });
 

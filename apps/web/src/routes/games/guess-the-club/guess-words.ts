@@ -8,12 +8,10 @@ export function questionText(playerName: string): string {
 	return `Which club is hidden in ${playerName}’s career?`;
 }
 
-/** The line after a right pick. */
 export function rightText(clubName: string): string {
 	return `Right! The hidden club was ${endSentence(clubName)}`;
 }
 
-/** The line after a wrong pick. */
 export function wrongText(clubName: string): string {
 	return `Not this one. The hidden club was ${endSentence(clubName)}`;
 }
