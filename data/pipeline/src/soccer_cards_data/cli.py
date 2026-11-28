@@ -42,6 +42,9 @@ def _parser() -> argparse.ArgumentParser:
         version=f"{PROG} {version(DISTRIBUTION)}",
     )
     parser.add_argument("command", nargs="?", help="the pipeline step to run")
+    parser.add_argument(
+        "qids", nargs="*", help="for `check`: the Wikidata items to check"
+    )
     return parser
 
 
@@ -60,10 +63,30 @@ def main(argv: Sequence[str] | None = None) -> NoReturn:
     args = parser.parse_args(argv)
     if args.command is None:
         parser.error("a command is required")
+    if args.command == "check":
+        if not args.qids:
+            parser.error("check needs at least one Q-id")
+        raise SystemExit(_check(args.qids))
+    if args.qids:
+        parser.error(f"unexpected arguments: {args.qids!r}")
     if args.command == "build":
         raise SystemExit(_build())
     # repr() escapes control characters, so the echo can't rewrite the terminal.
     parser.error(f"unknown command: {args.command!r}")
+
+
+def _check(qids: list[str]) -> int:
+    """Print one line per Q-id and return 1 when any would stop the build."""
+    with PoliteClient() as client:
+        try:
+            results = build.check_players(client, qids)
+        except FAILURES as exc:
+            print(f"{PROG}: check failed: {exc}", file=sys.stderr)
+            return 1
+        print(f"{PROG}: {client.requests} requests", file=sys.stderr)
+    for result in results:
+        print(result.line)
+    return 0 if all(r.ok for r in results) else 1
 
 
 def _build() -> int:
