@@ -8,7 +8,7 @@ paths:
   - apps/web/tests/a11y/card-art.spec.ts
 dependencies: []
 max_changed_lines: 150
-status: ready
+status: done
 ---
 
 ## Goal

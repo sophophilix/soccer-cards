@@ -14,7 +14,7 @@ paths:
   - apps/web/vite.config.ts
 dependencies: []
 max_changed_lines: 260
-status: ready
+status: done
 ---
 
 ## Goal

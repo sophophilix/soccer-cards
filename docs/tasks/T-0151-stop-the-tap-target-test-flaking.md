@@ -8,7 +8,7 @@ paths:
   - apps/web/tests/a11y/tap-targets.spec.ts
 dependencies: []
 max_changed_lines: 60
-status: ready
+status: done
 ---
 
 ## Goal

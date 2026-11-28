@@ -9,7 +9,7 @@ paths:
   - apps/api/tests/test_migrations.py
 dependencies: []
 max_changed_lines: 60
-status: ready
+status: done
 ---
 
 ## Goal

@@ -17,7 +17,7 @@ paths:
   - data/api/v1/**
 dependencies: []
 max_changed_lines: 300
-status: ready
+status: done
 ---
 
 ## Goal

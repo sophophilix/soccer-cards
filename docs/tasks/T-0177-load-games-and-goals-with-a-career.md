@@ -11,7 +11,7 @@ paths:
   - packages/game/src/transfer-trail.test.ts
 dependencies: []
 max_changed_lines: 150
-status: ready
+status: done
 ---
 
 ## Goal

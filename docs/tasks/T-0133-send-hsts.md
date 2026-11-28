@@ -9,7 +9,7 @@ paths:
   - apps/web/tests/privacy/headers.spec.ts
 dependencies: []
 max_changed_lines: 100
-status: ready
+status: done
 ---
 
 ## Goal
