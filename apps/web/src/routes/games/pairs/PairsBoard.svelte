@@ -150,9 +150,7 @@
 	}
 	.slot.matched .front {
 		border-radius: 5cqw;
-		box-shadow:
-			0 0 0 0.8cqw var(--ctrl),
-			0 2cqw 6cqw var(--card-shadow);
+		box-shadow: 0 0 0 0.8cqw var(--ctrl);
 	}
 	.tap {
 		position: absolute;
