@@ -96,10 +96,12 @@
 		display: grid;
 		grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
 		gap: clamp(6px, 2vw, 12px);
+		width: 100%;
 		max-width: 560px;
 	}
 	.grid.ten {
 		--cols: 5;
+		max-width: 640px;
 	}
 	.slot {
 		position: relative;
@@ -113,6 +115,7 @@
 		height: 100%;
 		transform-style: preserve-3d;
 	}
+	/* The CSP blocks style attributes, so a face-down card starts turned by its class. */
 	.slot.down .inner {
 		transform: rotateY(180deg);
 	}
@@ -120,11 +123,13 @@
 		position: absolute;
 		inset: 0;
 		backface-visibility: hidden;
+		-webkit-backface-visibility: hidden;
 	}
 	.cover {
 		transform: rotateY(180deg);
 		overflow: hidden;
 		border-radius: 5cqw;
+		box-shadow: 0 2cqw 6cqw var(--card-shadow);
 	}
 	.ground {
 		position: absolute;
@@ -150,14 +155,20 @@
 	}
 	.slot.matched .front {
 		border-radius: 5cqw;
-		box-shadow: 0 0 0 0.8cqw var(--ctrl);
+		box-shadow:
+			0 0 0 0.8cqw var(--ctrl),
+			0 2cqw 6cqw var(--card-shadow);
 	}
 	.tap {
 		position: absolute;
 		inset: 0;
+		margin: 0;
+		padding: 0;
 		border: 0;
 		border-radius: 5cqw;
 		background: none;
+		cursor: pointer;
+		touch-action: manipulation;
 	}
 	.tap:focus-visible {
 		outline: 3px solid var(--focus);
