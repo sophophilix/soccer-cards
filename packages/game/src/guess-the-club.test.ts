@@ -53,7 +53,7 @@ describe('startGuessRound', () => {
 	});
 
 	it('hides the club of the spell with the most games', () => {
-		const [question] = questionsFor([hero, others]);
+		const question = questionsFor([hero, others]).find((item) => item.playerId === 'a');
 
 		expect(question?.hiddenClub).toBe('blue');
 		expect(question?.hiddenSpells).toEqual([1]);
@@ -66,7 +66,9 @@ describe('startGuessRound', () => {
 			['green', 1]
 		]);
 
-		expect(questionsFor([tied, others])[0]?.hiddenClub).toBe('red');
+		expect(questionsFor([tied, others]).find((item) => item.playerId === 't')?.hiddenClub).toBe(
+			'red'
+		);
 	});
 
 	it('never hides a spell with no games count', () => {
@@ -76,11 +78,13 @@ describe('startGuessRound', () => {
 			['green', undefined]
 		]);
 
-		expect(questionsFor([partial, others])[0]?.hiddenClub).toBe('blue');
+		expect(questionsFor([partial, others]).find((item) => item.playerId === 'p')?.hiddenClub).toBe(
+			'blue'
+		);
 	});
 
 	it('deals the hidden club and three clubs the player never played for', () => {
-		const [question] = questionsFor([hero, others]);
+		const question = questionsFor([hero, others]).find((item) => item.playerId === 'a');
 
 		const wrong = question?.options.filter((club) => club !== 'blue') ?? [];
 		expect(question?.options).toHaveLength(GUESS_OPTIONS);
@@ -92,11 +96,11 @@ describe('startGuessRound', () => {
 	it('hides every spell at the hidden club', () => {
 		const returner = aCareer('r', [
 			['red', 30],
-			['blue', 50],
-			['red', 40]
+			['blue', 20],
+			['red', 50]
 		]);
 
-		const [question] = questionsFor([returner, others]);
+		const question = questionsFor([returner, others]).find((item) => item.playerId === 'r');
 
 		expect(question?.hiddenClub).toBe('red');
 		expect(question?.hiddenSpells).toEqual([0, 2]);
