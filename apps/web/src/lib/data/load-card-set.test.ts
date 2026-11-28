@@ -91,7 +91,8 @@ describe('loadCardSet', () => {
 	});
 
 	it('leaves out a player with no national team code, and counts it', async () => {
-		const { nationalTeamCode: _code, ...withoutCode } = goalkeeper;
+		const withoutCode: Partial<typeof goalkeeper> = { ...goalkeeper };
+		delete withoutCode.nationalTeamCode;
 
 		const result = await loadCardSet(aPlayerList([outfield, withoutCode]));
 
