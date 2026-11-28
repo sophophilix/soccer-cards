@@ -32,7 +32,7 @@ def test_the_real_files_load_and_feed_the_formula() -> None:
     players = load_grades()
     overrides = load_overrides(players)
     keepers = [p for p in players.values() if p.group == "goalkeeper"]
-    assert (len(players), len(keepers)) == (64, 9)
+    assert (len(players), len(keepers)) == (104, 16)
     assert sum(o.tier == "ICON" for o in overrides.values()) >= 2
     for entry in players.values():
         keeper = entry.group == "goalkeeper"

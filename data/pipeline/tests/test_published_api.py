@@ -9,7 +9,7 @@ from soccer_cards_data.normalise import is_youth_side
 from soccer_cards_data.validate import validate
 
 API = Path(__file__).resolve().parents[2] / "api/v1"
-PLAYER_COUNT = 64
+PLAYER_COUNT = 104
 
 
 def _json(rel: str) -> Any:
@@ -20,7 +20,7 @@ def test_the_committed_folder_passes_the_schema() -> None:
     validate(API)
 
 
-def test_it_holds_the_first_64_players() -> None:
+def test_it_holds_the_first_104_players() -> None:
     assert len(_json("players.json")["players"]) == PLAYER_COUNT
     assert len(list((API / "players").glob("*.json"))) == PLAYER_COUNT
 
@@ -35,7 +35,7 @@ def test_every_photo_has_a_credit_and_every_credit_a_file() -> None:
     assert on_players <= credited
 
 
-def test_it_holds_63_photos_and_one_avatar() -> None:
+def test_it_holds_a_photo_for_all_but_the_avatars() -> None:
     players = _json("players.json")["players"]
     avatars = [p["displayName"] for p in players if "photo" not in p]
     assert avatars == ["Peter Schmeichel"]
@@ -83,3 +83,12 @@ def test_no_reserve_or_academy_side_is_a_club() -> None:
         "New South Wales Institute of Sport",
     }
     assert not [n for n in names if is_youth_side(n)]
+
+
+def test_one_club_has_ten_players_for_a_team_pack_and_keepers_are_many() -> None:
+    """T-0203: the Premier League batch adds a ten-player club and keepers."""
+    players = _json("players.json")["players"]
+    by_club = Counter(p["club"] for p in players if "club" in p)
+    assert by_club.most_common(1)[0][1] >= 10
+    keepers = [p for p in players if p["position"] == "GOALKEEPER"]
+    assert len(keepers) >= 16
