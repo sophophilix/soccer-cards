@@ -26,6 +26,9 @@ _FOLD = str.maketrans(
     | {"œ": "oe", "þ": "th"}
 )
 
+_NEUTRAL = frozenset({"\u00aa", "\u00ba"})  # Ordinal indicators.
+_JAPANESE = frozenset({"CJK", "HIRAGANA", "KATAKANA"})
+
 
 class LabelError(ValueError):
     """A label can't be used as a name or a slug. The message starts with the Q-id."""
@@ -103,7 +106,27 @@ def assign_slugs(
     return slugs
 
 
+def _scripts(text: str) -> set[str]:
+    """Return the writing systems of the letters in `text`, such as LATIN.
+
+    Modifier letters and the ordinal indicators belong to the script around
+    them, so they add none. Han and kana are one group, as in Japanese names.
+    """
+    scripts = set()
+    for ch in text:
+        if not unicodedata.category(ch).startswith("L") or ch in _NEUTRAL:
+            continue
+        if unicodedata.category(ch) == "Lm":
+            continue
+        script = unicodedata.name(ch, "UNKNOWN").split()[0]
+        scripts.add("JAPANESE" if script in _JAPANESE else script)
+    return scripts
+
+
 def _checked(qid: str, label: str | None) -> str:
     if label is None or not is_plain(label):
         raise LabelError(f"{qid}: label is missing or not plain text")
+    # A look-alike letter, such as a Greek alpha for a Latin A, is not the name.
+    if len(_scripts(label)) > 1:
+        raise LabelError(f"{qid}: label mixes writing systems")
     return label
