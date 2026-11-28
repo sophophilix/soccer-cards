@@ -1,11 +1,7 @@
 import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
 import { createPlayerState } from './index.ts';
-import {
-	answerGuess,
-	finishGuessRound,
-	openGuessRound
-} from './guess-the-club-round.ts';
+import { answerGuess, finishGuessRound, openGuessRound } from './guess-the-club-round.ts';
 
 const OPTIONS = ['red', 'green', 'blue', 'gold'];
 const question = (n: number) => ({
