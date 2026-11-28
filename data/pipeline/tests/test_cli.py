@@ -102,3 +102,44 @@ def test_build_says_how_many_requests_it_made_and_how_long_it_took(
     assert exit_info.value.code == int(fails)
     last = capsys.readouterr().err.splitlines()[-1]
     assert re.fullmatch(r"scdata: 7 requests in \d+\.\d s", last)
+
+
+def test_check_prints_one_line_per_id_and_exits_1_when_one_fails(
+    capsys: pytest.CaptureFixture[str], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def fake(client: PoliteClient, qids: list[str]) -> list[build.Check]:
+        assert qids == ["Q1", "Q2"]
+        return [
+            build.Check("Q1", True, "Q1: ok ARG forward Inter Miami CF"),
+            build.Check("Q2", False, "Q2: needs a usable position"),
+        ]
+
+    monkeypatch.setattr(build, "check_players", fake)
+
+    with pytest.raises(SystemExit) as exit_info:
+        main(["check", "Q1", "Q2"])
+
+    assert exit_info.value.code == 1
+    assert capsys.readouterr().out.splitlines() == [
+        "Q1: ok ARG forward Inter Miami CF",
+        "Q2: needs a usable position",
+    ]
+
+
+def test_check_exits_0_when_every_id_passes(monkeypatch: pytest.MonkeyPatch) -> None:
+    def fake(client: PoliteClient, qids: list[str]) -> list[build.Check]:
+        return [build.Check("Q1", True, "Q1: ok ARG forward Inter Miami CF")]
+
+    monkeypatch.setattr(build, "check_players", fake)
+
+    with pytest.raises(SystemExit) as exit_info:
+        main(["check", "Q1"])
+
+    assert exit_info.value.code == 0
+
+
+def test_check_needs_at_least_one_id() -> None:
+    with pytest.raises(SystemExit) as exit_info:
+        main(["check"])
+
+    assert exit_info.value.code == 2

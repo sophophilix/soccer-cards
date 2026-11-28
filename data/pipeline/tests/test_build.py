@@ -487,3 +487,47 @@ def test_a_registered_slug_is_kept_when_its_club_gains_women(tmp_path: Path) -> 
     assert 'Q16844931 = "inter-miami-cf"' in after  # Never changed or reused.
     clubs = _json(tmp_path / "api/v1/clubs.json")["clubs"]
     assert "clubs/inter-miami-cf" in {c["name"] for c in clubs}
+
+
+def _check(tmp: Path, qids: list[str], net: FakeWikimedia) -> list[build.Check]:
+    fake = httpx.MockTransport(net)
+    with PoliteClient(tmp / "cache", transport=fake, sleep=lambda _: None) as client:
+        return build.check_players(client, qids)
+
+
+def test_a_check_says_ok_with_code_position_and_club(tmp_path: Path) -> None:
+    [result] = _check(tmp_path, ["Q615"], FakeWikimedia())
+
+    assert result.ok
+    assert result.line.startswith("Q615: ok ARG forward ")
+    assert result.line.endswith("Inter Miami CF")
+
+
+def test_a_check_gives_each_reason_and_downloads_nothing(tmp_path: Path) -> None:
+    net = FakeWikimedia()
+    net.positions["Q107365"] = []
+    codeless = FakeWikimedia().without_codes()
+
+    [good, no_position] = _check(tmp_path, ["Q615", "Q107365"], net)
+    [no_code] = _check(tmp_path / "other", ["Q615"], codeless)
+
+    assert good.ok
+    assert not no_position.ok
+    assert no_position.line.startswith("Q107365: needs a usable position")
+    assert not no_code.ok
+    assert no_code.line.startswith("Q615: needs one national team code")
+    assert not any(a.startswith("File:") or "Messi" in a for a in net.asked)
+    assert {p.name for p in tmp_path.iterdir()} == {"cache", "other"}
+
+
+def test_a_check_asks_once_for_a_repeated_id_and_refuses_a_bad_one(
+    tmp_path: Path,
+) -> None:
+    net = FakeWikimedia()
+
+    results = _check(tmp_path, ["Q615", "banana", "Q615"], net)
+
+    assert [r.qid for r in results] == ["Q615", "banana"]
+    assert [r.ok for r in results] == [True, False]
+    assert "not a Wikidata item id" in results[1].line
+    assert net.asked.count("Q615") == 1
