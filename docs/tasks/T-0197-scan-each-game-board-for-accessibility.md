@@ -8,7 +8,8 @@ paths:
   - apps/web/tests/a11y/games.spec.ts
   - apps/web/tests/a11y/home.spec.ts
   - apps/web/tests/connections.spec.ts
-dependencies: []
+dependencies:
+  - T-0202
 max_changed_lines: 300
 status: ready
 ---
