@@ -24,6 +24,28 @@ test('the Games tab is current on /games/', async ({ page }) => {
 	await expect(current).toHaveText('Games');
 });
 
+test('every game name and blurb starts at the same left edge inside its button', async ({
+	page
+}) => {
+	const BORDER_PX = 2;
+	const PADDING_PX = 16;
+	await page.goto('/games');
+
+	const edges = await page.locator('a.gamebtn').evaluateAll((buttons) =>
+		buttons.map((button) => {
+			const name = button.querySelector('b')?.getBoundingClientRect().left ?? Number.NaN;
+			const blurb = button.querySelector('span')?.getBoundingClientRect().left ?? Number.NaN;
+			return { button: button.getBoundingClientRect().left, name, blurb };
+		})
+	);
+
+	expect(edges).toHaveLength(4);
+	for (const edge of edges) {
+		expect(edge.name).toBeCloseTo(edge.button + BORDER_PX + PADDING_PX, 0);
+		expect(edge.blurb).toBeCloseTo(edge.name, 0);
+	}
+});
+
 for (const width of [320, 360, 390]) {
 	test(`five tabs fit at ${String(width)} pixels with no sideways scroll @engines`, async ({
 		page
