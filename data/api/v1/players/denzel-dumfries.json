@@ -1,0 +1,121 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19882816&oldid=2546453060",
+        "value": 67
+      },
+      "club": "clubs/sparta-rotterdam",
+      "endYear": 2017,
+      "goalCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19882816&oldid=2546453060",
+        "value": 2
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19882816&oldid=2546453060",
+        "value": 33
+      },
+      "club": "clubs/sc-heerenveen",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19882816&oldid=2546453060",
+        "value": 3
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19882816&oldid=2546453060",
+        "value": 89
+      },
+      "club": "clubs/psv-eindhoven",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19882816&oldid=2546453060",
+        "value": 13
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19882816&oldid=2546453060",
+        "value": 147
+      },
+      "club": "clubs/inter-milan",
+      "endYear": 2026,
+      "goalCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19882816&oldid=2546453060",
+        "value": 20
+      },
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19882816&oldid=2546453060",
+        "value": 0
+      },
+      "club": "clubs/real-madrid-club-de-futbol",
+      "goalCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19882816&oldid=2546453060",
+        "value": 0
+      },
+      "startYear": 2026
+    }
+  ],
+  "club": "clubs/real-madrid-club-de-futbol",
+  "clubGoalCount": {
+    "retrieveDate": "2026-09-16",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19882816&oldid=2546453060",
+    "value": 38
+  },
+  "displayName": "Denzel Dumfries",
+  "name": "players/denzel-dumfries",
+  "nationalTeamCode": "NED",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-03-31",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19882816&oldid=2546453060",
+    "value": 11
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 75,
+    "pace": 84,
+    "passing": 75,
+    "physical": 85,
+    "shooting": 76
+  },
+  "photo": {
+    "attribution": {
+      "author": "Erjonallaraj",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Edison_ndreca_inter_egnati_(cropped_Denzel_Dumfries).jpg"
+    },
+    "heightPx": 390,
+    "mimeType": "image/webp",
+    "uri": "photos/denzel-dumfries.webp",
+    "widthPx": 313
+  },
+  "playStats": {
+    "attack": 77,
+    "control": 77,
+    "defence": 79,
+    "overall": 81
+  },
+  "position": "DEFENDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:15:55Z"
+}

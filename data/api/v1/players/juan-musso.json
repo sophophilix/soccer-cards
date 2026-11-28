@@ -86,8 +86,8 @@
     "diving": 75,
     "handling": 75,
     "kicking": 75,
-    "positioning": 85,
-    "reflexes": 85,
+    "positioning": 75,
+    "reflexes": 75,
     "speed": 75
   },
   "name": "players/juan-musso",
@@ -110,12 +110,12 @@
   },
   "playStats": {
     "attack": 75,
-    "control": 76,
-    "defence": 80,
-    "overall": 81
+    "control": 75,
+    "defence": 75,
+    "overall": 76
   },
   "position": "GOALKEEPER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-28T08:03:04Z"
+  "updateTime": "2026-11-28T08:15:55Z"
 }

@@ -51,6 +51,11 @@
       "startYear": 2022
     },
     {
+      "club": "clubs/manchester-city-w-f-c",
+      "endYear": 2026,
+      "startYear": 2025
+    },
+    {
       "club": "clubs/fc-barcelona-femeni",
       "startYear": 2026
     }
@@ -92,5 +97,5 @@
   "position": "FORWARD",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-28T08:03:04Z"
+  "updateTime": "2026-11-28T08:15:55Z"
 }

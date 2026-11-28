@@ -561,11 +561,6 @@
       "updateTime": "2026-11-28T08:08:39Z"
     },
     {
-      "displayName": "Ferro Carril Oeste",
-      "name": "clubs/ferro-carril-oeste",
-      "updateTime": "2026-11-28T08:03:04Z"
-    },
-    {
       "displayName": "Feyenoord Rotterdam",
       "name": "clubs/feyenoord-rotterdam",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -669,6 +664,11 @@
       "displayName": "Hertha BSC",
       "name": "clubs/hertha-bsc",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Hibernian F.C.",
+      "name": "clubs/hibernian-f-c",
+      "updateTime": "2026-11-28T08:15:55Z"
     },
     {
       "displayName": "HNK Gorica",
@@ -874,6 +874,11 @@
       "displayName": "Manchester City F.C.",
       "name": "clubs/manchester-city-f-c",
       "updateTime": "2026-11-21T03:57:58Z"
+    },
+    {
+      "displayName": "Manchester City W.F.C.",
+      "name": "clubs/manchester-city-w-f-c",
+      "updateTime": "2026-11-28T08:15:55Z"
     },
     {
       "displayName": "Manchester United F.C.",
@@ -1284,6 +1289,11 @@
       "displayName": "Southport F.C.",
       "name": "clubs/southport-f-c",
       "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "Sparta Rotterdam",
+      "name": "clubs/sparta-rotterdam",
+      "updateTime": "2026-11-28T08:15:55Z"
     },
     {
       "displayName": "Sport Club Corinthians Paulista",

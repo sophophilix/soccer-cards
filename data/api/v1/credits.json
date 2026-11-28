@@ -290,6 +290,15 @@
     },
     {
       "attribution": {
+        "author": "Erjonallaraj",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Edison_ndreca_inter_egnati_(cropped_Denzel_Dumfries).jpg"
+      },
+      "player": "players/denzel-dumfries",
+      "uri": "photos/denzel-dumfries.webp"
+    },
+    {
+      "attribution": {
         "author": "Bryan Berlin",
         "licenseCode": "CC-BY-SA-4.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:Dominik_Livakovic_Croatia_v_Portugal_2_July_2026-063.jpg"
@@ -377,15 +386,6 @@
       },
       "player": "players/francesco-totti",
       "uri": "photos/francesco-totti.webp"
-    },
-    {
-      "attribution": {
-        "author": "Crispybeatle",
-        "licenseCode": "CC0-1.0",
-        "sourceUri": "https://commons.wikimedia.org/wiki/File:Franco_Mastantuono_in_2025_(cropped).jpg"
-      },
-      "player": "players/franco-mastantuono",
-      "uri": "photos/franco-mastantuono.webp"
     },
     {
       "attribution": {
@@ -785,15 +785,6 @@
     },
     {
       "attribution": {
-        "author": "jmmuguerza",
-        "licenseCode": "CC-BY-SA-3.0",
-        "sourceUri": "https://commons.wikimedia.org/wiki/File:Argentina_-_Colombia_2022_(52)_(cropped).jpg"
-      },
-      "player": "players/marcos-acuna",
-      "uri": "photos/marcos-acuna.webp"
-    },
-    {
-      "attribution": {
         "author": "Bryan Berlin",
         "licenseCode": "CC-BY-SA-4.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:Marcus_Rashford_England_v_Panama_27_June_26-047.jpg"
@@ -1007,6 +998,15 @@
       },
       "player": "players/raphinha",
       "uri": "photos/raphinha.webp"
+    },
+    {
+      "attribution": {
+        "author": "LawEnthusiast",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Arda_G%C3%BCler_2025_(cropped).jpg"
+      },
+      "player": "players/rda-guler",
+      "uri": "photos/rda-guler.webp"
     },
     {
       "attribution": {

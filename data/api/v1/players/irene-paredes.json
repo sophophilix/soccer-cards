@@ -50,7 +50,7 @@
     "value": 9
   },
   "outfieldRatings": {
-    "defending": 95,
+    "defending": 85,
     "dribbling": 65,
     "pace": 72,
     "passing": 75,
@@ -60,11 +60,11 @@
   "playStats": {
     "attack": 68,
     "control": 71,
-    "defence": 84,
-    "overall": 81
+    "defence": 79,
+    "overall": 78
   },
   "position": "DEFENDER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-28T08:03:04Z"
+  "updateTime": "2026-11-28T08:15:55Z"
 }

@@ -86,7 +86,7 @@
     "diving": 75,
     "handling": 85,
     "kicking": 75,
-    "positioning": 85,
+    "positioning": 75,
     "reflexes": 75,
     "speed": 75
   },
@@ -110,12 +110,12 @@
   },
   "playStats": {
     "attack": 75,
-    "control": 80,
-    "defence": 79,
-    "overall": 82
+    "control": 79,
+    "defence": 77,
+    "overall": 80
   },
   "position": "GOALKEEPER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-28T08:03:04Z"
+  "updateTime": "2026-11-28T08:15:55Z"
 }

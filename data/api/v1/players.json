@@ -1086,6 +1086,40 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/real-madrid-club-de-futbol",
+      "displayName": "Denzel Dumfries",
+      "name": "players/denzel-dumfries",
+      "nationalTeamCode": "NED",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 75,
+        "pace": 84,
+        "passing": 75,
+        "physical": 85,
+        "shooting": 76
+      },
+      "photo": {
+        "attribution": {
+          "author": "Erjonallaraj",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Edison_ndreca_inter_egnati_(cropped_Denzel_Dumfries).jpg"
+        },
+        "heightPx": 390,
+        "mimeType": "image/webp",
+        "uri": "photos/denzel-dumfries.webp",
+        "widthPx": 313
+      },
+      "playStats": {
+        "attack": 77,
+        "control": 77,
+        "defence": 79,
+        "overall": 81
+      },
+      "position": "DEFENDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/fc-barcelona",
       "displayName": "Dominik Livaković",
       "goalkeeperRatings": {
@@ -1422,40 +1456,6 @@
       },
       "position": "MIDFIELDER",
       "state": "RETIRED",
-      "tier": "BASE"
-    },
-    {
-      "club": "clubs/acf-fiorentina",
-      "displayName": "Franco Mastantuono",
-      "name": "players/franco-mastantuono",
-      "nationalTeamCode": "ARG",
-      "outfieldRatings": {
-        "defending": 65,
-        "dribbling": 75,
-        "pace": 75,
-        "passing": 75,
-        "physical": 75,
-        "shooting": 74
-      },
-      "photo": {
-        "attribution": {
-          "author": "Crispybeatle",
-          "licenseCode": "CC0-1.0",
-          "sourceUri": "https://commons.wikimedia.org/wiki/File:Franco_Mastantuono_in_2025_(cropped).jpg"
-        },
-        "heightPx": 696,
-        "mimeType": "image/webp",
-        "uri": "photos/franco-mastantuono.webp",
-        "widthPx": 480
-      },
-      "playStats": {
-        "attack": 75,
-        "control": 75,
-        "defence": 70,
-        "overall": 73
-      },
-      "position": "MIDFIELDER",
-      "state": "ACTIVE",
       "tier": "BASE"
     },
     {
@@ -1903,7 +1903,7 @@
       "name": "players/irene-paredes",
       "nationalTeamCode": "ESP",
       "outfieldRatings": {
-        "defending": 95,
+        "defending": 85,
         "dribbling": 65,
         "pace": 72,
         "passing": 75,
@@ -1913,8 +1913,8 @@
       "playStats": {
         "attack": 68,
         "control": 71,
-        "defence": 84,
-        "overall": 81
+        "defence": 79,
+        "overall": 78
       },
       "position": "DEFENDER",
       "state": "ACTIVE",
@@ -2267,8 +2267,8 @@
         "diving": 75,
         "handling": 75,
         "kicking": 75,
-        "positioning": 85,
-        "reflexes": 85,
+        "positioning": 75,
+        "reflexes": 75,
         "speed": 75
       },
       "name": "players/juan-musso",
@@ -2286,9 +2286,9 @@
       },
       "playStats": {
         "attack": 75,
-        "control": 76,
-        "defence": 80,
-        "overall": 81
+        "control": 75,
+        "defence": 75,
+        "overall": 76
       },
       "position": "GOALKEEPER",
       "state": "ACTIVE",
@@ -2566,6 +2566,7 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/manchester-city-w-f-c",
       "displayName": "Khadija Shaw",
       "name": "players/khadija-shaw",
       "nationalTeamCode": "JAM",
@@ -2970,40 +2971,6 @@
       "position": "GOALKEEPER",
       "state": "ACTIVE",
       "tier": "LEGEND"
-    },
-    {
-      "club": "clubs/boca-juniors",
-      "displayName": "Marcos Acuña",
-      "name": "players/marcos-acuna",
-      "nationalTeamCode": "ARG",
-      "outfieldRatings": {
-        "defending": 85,
-        "dribbling": 65,
-        "pace": 72,
-        "passing": 75,
-        "physical": 73,
-        "shooting": 65
-      },
-      "photo": {
-        "attribution": {
-          "author": "jmmuguerza",
-          "licenseCode": "CC-BY-SA-3.0",
-          "sourceUri": "https://commons.wikimedia.org/wiki/File:Argentina_-_Colombia_2022_(52)_(cropped).jpg"
-        },
-        "heightPx": 560,
-        "mimeType": "image/webp",
-        "uri": "photos/marcos-acuna.webp",
-        "widthPx": 480
-      },
-      "playStats": {
-        "attack": 67,
-        "control": 71,
-        "defence": 79,
-        "overall": 74
-      },
-      "position": "MIDFIELDER",
-      "state": "ACTIVE",
-      "tier": "BASE"
     },
     {
       "club": "clubs/manchester-united-f-c",
@@ -3840,6 +3807,40 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/real-madrid-club-de-futbol",
+      "displayName": "Αrda Güler",
+      "name": "players/rda-guler",
+      "nationalTeamCode": "TUR",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 75,
+        "passing": 85,
+        "physical": 65,
+        "shooting": 85
+      },
+      "photo": {
+        "attribution": {
+          "author": "LawEnthusiast",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Arda_G%C3%BCler_2025_(cropped).jpg"
+        },
+        "heightPx": 515,
+        "mimeType": "image/webp",
+        "uri": "photos/rda-guler.webp",
+        "widthPx": 441
+      },
+      "playStats": {
+        "attack": 83,
+        "control": 82,
+        "defence": 68,
+        "overall": 79
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/arsenal-f-c",
       "displayName": "Riccardo Calafiori",
       "name": "players/riccardo-calafiori",
@@ -4654,7 +4655,7 @@
         "diving": 75,
         "handling": 85,
         "kicking": 75,
-        "positioning": 85,
+        "positioning": 75,
         "reflexes": 75,
         "speed": 75
       },
@@ -4673,9 +4674,9 @@
       },
       "playStats": {
         "attack": 75,
-        "control": 80,
-        "defence": 79,
-        "overall": 82
+        "control": 79,
+        "defence": 77,
+        "overall": 80
       },
       "position": "GOALKEEPER",
       "state": "ACTIVE",
@@ -4750,6 +4751,7 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/manchester-city-w-f-c",
       "displayName": "Yui Hasegawa",
       "name": "players/yui-hasegawa",
       "nationalTeamCode": "JPN",
