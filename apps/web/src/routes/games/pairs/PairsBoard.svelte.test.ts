@@ -143,9 +143,12 @@ test('a matched card is outlined and an unmatched one is not', async () => {
 	document.documentElement.style.removeProperty('--card-shadow');
 });
 
-const nextFrame = (): Promise<void> => new Promise((done) => requestAnimationFrame(() => {
+const nextFrame = (): Promise<void> =>
+	new Promise((done) =>
+		requestAnimationFrame(() => {
 			done();
-		}));
+		})
+	);
 const turnOf = (screen: { getByTestId: (id: string) => { element: () => Element } }): number =>
 	new DOMMatrix(getComputedStyle(screen.getByTestId('turning-c0').element()).transform).m11;
 
