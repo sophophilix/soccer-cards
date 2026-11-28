@@ -2,76 +2,76 @@
   "careerSpells": [
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2572326718",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2575319580",
         "value": 439
       },
       "club": "clubs/fc-bayern-munich",
       "endYear": 1977,
       "goalCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2572326718",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2575319580",
         "value": 64
       },
       "startYear": 1965
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2572326718",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2575319580",
         "value": 80
       },
       "club": "clubs/new-york-cosmos",
       "endYear": 1980,
       "goalCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2572326718",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2575319580",
         "value": 17
       },
       "startYear": 1977
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2572326718",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2575319580",
         "value": 28
       },
       "club": "clubs/hamburger-sv",
       "endYear": 1982,
       "goalCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2572326718",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2575319580",
         "value": 0
       },
       "startYear": 1980
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2572326718",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2575319580",
         "value": 25
       },
       "club": "clubs/new-york-cosmos",
       "endYear": 1983,
       "goalCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2572326718",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2575319580",
         "value": 2
       },
       "startYear": 1983
     }
   ],
   "clubGoalCount": {
-    "retrieveDate": "2026-11-19",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2572326718",
+    "retrieveDate": "2026-11-27",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2575319580",
     "value": 83
   },
   "displayName": "Franz Beckenbauer",
   "name": "players/franz-beckenbauer",
   "nationalTeamCode": "GER",
   "nationalTeamGoalCount": {
-    "retrieveDate": "2026-11-19",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2572326718",
+    "retrieveDate": "2026-11-27",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q4457&oldid=2575319580",
     "value": 14
   },
   "outfieldRatings": {
@@ -102,5 +102,5 @@
   "position": "DEFENDER",
   "state": "RETIRED",
   "tier": "ICON",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-28T06:44:11Z"
 }

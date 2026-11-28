@@ -1,0 +1,121 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q25175970&oldid=2571121204",
+        "value": 34
+      },
+      "club": "clubs/avai-futebol-clube",
+      "endYear": 2017,
+      "goalCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q25175970&oldid=2571121204",
+        "value": 2
+      },
+      "startYear": 2016
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q25175970&oldid=2571121204",
+        "value": 1
+      },
+      "club": "clubs/es-troyes-ac",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q25175970&oldid=2571121204",
+        "value": 0
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q25175970&oldid=2571121204",
+        "value": 39
+      },
+      "club": "clubs/lille-osc",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q25175970&oldid=2571121204",
+        "value": 2
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q25175970&oldid=2571121204",
+        "value": 1
+      },
+      "club": "clubs/gnk-dinamo-zagreb",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q25175970&oldid=2571121204",
+        "value": 0
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q25175970&oldid=2571121204",
+        "value": 198
+      },
+      "club": "clubs/arsenal-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q25175970&oldid=2571121204",
+        "value": 20
+      },
+      "startYear": 2020
+    }
+  ],
+  "club": "clubs/arsenal-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-10",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q25175970&oldid=2571121204",
+    "value": 24
+  },
+  "displayName": "Gabriel Magalhães",
+  "name": "players/gabriel-magalhaes",
+  "nationalTeamCode": "BRA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-07-05",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q25175970&oldid=2571121204",
+    "value": 1
+  },
+  "outfieldRatings": {
+    "defending": 95,
+    "dribbling": 65,
+    "pace": 75,
+    "passing": 75,
+    "physical": 85,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Gabriel_Magalhaes_Brazil_V_Morocco_13_June_2026-132_(cropped).jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/gabriel-magalhaes.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 73,
+    "control": 72,
+    "defence": 88,
+    "overall": 85
+  },
+  "position": "DEFENDER",
+  "state": "ACTIVE",
+  "tier": "RARE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

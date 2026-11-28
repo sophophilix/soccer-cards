@@ -1,0 +1,56 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/everton-f-c",
+      "endYear": 2019,
+      "startYear": 2015
+    },
+    {
+      "club": "clubs/bolton-wanderers-f-c",
+      "endYear": 2018,
+      "startYear": 2017
+    },
+    {
+      "club": "clubs/wigan-athletic-f-c",
+      "endYear": 2020,
+      "startYear": 2019
+    },
+    {
+      "club": "clubs/fulham-f-c",
+      "startYear": 2020
+    }
+  ],
+  "club": "clubs/fulham-f-c",
+  "displayName": "Antonee Robinson",
+  "name": "players/antonee-robinson",
+  "nationalTeamCode": "USA",
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 75,
+    "pace": 85,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 65
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Antonee_Robinson_Australia_v_USA_19_June_2026-24_(cropped).jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/antonee-robinson.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 72,
+    "control": 76,
+    "defence": 76,
+    "overall": 77
+  },
+  "position": "DEFENDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

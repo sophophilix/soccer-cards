@@ -2,8 +2,8 @@
   "careerSpells": [
     {
       "appearanceCount": {
-        "retrieveDate": "2026-10-18",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q483027&oldid=2558205060",
+        "retrieveDate": "2026-11-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q483027&oldid=2574732406",
         "value": 647
       },
       "club": "clubs/ac-milan",
@@ -15,8 +15,8 @@
   "name": "players/paolo-maldini",
   "nationalTeamCode": "ITA",
   "nationalTeamGoalCount": {
-    "retrieveDate": "2026-10-18",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q483027&oldid=2558205060",
+    "retrieveDate": "2026-11-25",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q483027&oldid=2574732406",
     "value": 7
   },
   "outfieldRatings": {
@@ -47,5 +47,5 @@
   "position": "DEFENDER",
   "state": "RETIRED",
   "tier": "ICON",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-28T06:44:11Z"
 }

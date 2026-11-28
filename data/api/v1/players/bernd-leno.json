@@ -1,0 +1,91 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/vfb-stuttgart",
+      "endYear": 2011,
+      "startYear": 2011
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q309966&oldid=2568727068",
+        "value": 233
+      },
+      "club": "clubs/bayer-04-leverkusen",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q309966&oldid=2568727068",
+        "value": 0
+      },
+      "startYear": 2011
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q309966&oldid=2568727068",
+        "value": 101
+      },
+      "club": "clubs/arsenal-f-c",
+      "endYear": 2022,
+      "goalCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q309966&oldid=2568727068",
+        "value": 0
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q309966&oldid=2568727068",
+        "value": 75
+      },
+      "club": "clubs/fulham-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q309966&oldid=2568727068",
+        "value": 0
+      },
+      "startYear": 2022
+    }
+  ],
+  "club": "clubs/fulham-f-c",
+  "displayName": "Bernd Leno",
+  "goalkeeperRatings": {
+    "diving": 75,
+    "handling": 75,
+    "kicking": 75,
+    "positioning": 75,
+    "reflexes": 85,
+    "speed": 75
+  },
+  "name": "players/bernd-leno",
+  "nationalTeamCode": "GER",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-13",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q309966&oldid=2568727068",
+    "value": 0
+  },
+  "photo": {
+    "attribution": {
+      "author": "Granada",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:20180602_FIFA_Friendly_Match_Austria_vs._Germany_Bernd_Leno_850_0646.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/bernd-leno.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 75,
+    "control": 75,
+    "defence": 78,
+    "overall": 77
+  },
+  "position": "GOALKEEPER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

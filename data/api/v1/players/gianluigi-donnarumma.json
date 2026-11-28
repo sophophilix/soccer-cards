@@ -1,0 +1,91 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20830808&oldid=2569775703",
+        "value": 215
+      },
+      "club": "clubs/ac-milan",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20830808&oldid=2569775703",
+        "value": 0
+      },
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20830808&oldid=2569775703",
+        "value": 104
+      },
+      "club": "clubs/paris-saint-germain-fc",
+      "endYear": 2025,
+      "goalCount": {
+        "retrieveDate": "2026-11-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20830808&oldid=2569775703",
+        "value": 0
+      },
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20830808&oldid=2569775703",
+        "value": 19
+      },
+      "club": "clubs/manchester-city-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-11-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20830808&oldid=2569775703",
+        "value": 0
+      },
+      "startYear": 2025
+    }
+  ],
+  "club": "clubs/manchester-city-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-15",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20830808&oldid=2569775703",
+    "value": 0
+  },
+  "displayName": "Gianluigi Donnarumma",
+  "goalkeeperRatings": {
+    "diving": 85,
+    "handling": 75,
+    "kicking": 75,
+    "positioning": 85,
+    "reflexes": 95,
+    "speed": 75
+  },
+  "name": "players/gianluigi-donnarumma",
+  "nationalTeamCode": "ITA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-15",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20830808&oldid=2569775703",
+    "value": 0
+  },
+  "photo": {
+    "attribution": {
+      "author": "Original: MichaelEmilio / Derivative work: Danyele",
+      "licenseCode": "CC-BY-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Norway_Italy_-_June_2025_B_33_-_Gianluigi_Donnarumma_(close-up).jpg"
+    },
+    "heightPx": 640,
+    "mimeType": "image/webp",
+    "uri": "photos/gianluigi-donnarumma.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 75,
+    "control": 76,
+    "defence": 86,
+    "overall": 87
+  },
+  "position": "GOALKEEPER",
+  "state": "ACTIVE",
+  "tier": "RARE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

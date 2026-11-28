@@ -102,6 +102,74 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/fulham-f-c",
+      "displayName": "Alex Iwobi",
+      "name": "players/alex-iwobi",
+      "nationalTeamCode": "NGA",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 85,
+        "pace": 74,
+        "passing": 85,
+        "physical": 75,
+        "shooting": 75
+      },
+      "photo": {
+        "attribution": {
+          "author": "Антон Зайцев",
+          "licenseCode": "CC-BY-SA-3.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Alex_Iwobi_2019.jpg"
+        },
+        "heightPx": 561,
+        "mimeType": "image/webp",
+        "uri": "photos/alex-iwobi.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 78,
+        "control": 83,
+        "defence": 76,
+        "overall": 83
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/liverpool-f-c",
+      "displayName": "Alexis Mac Allister",
+      "name": "players/alexis-mac-allister",
+      "nationalTeamCode": "ARG",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 75,
+        "pace": 75,
+        "passing": 85,
+        "physical": 75,
+        "shooting": 75
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Alexis_Mac_Allister_Argentina_v_Spain_19_July_2026-162_(cropped).jpg"
+        },
+        "heightPx": 673,
+        "mimeType": "image/webp",
+        "uri": "photos/alexis-mac-allister.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 76,
+        "control": 79,
+        "defence": 76,
+        "overall": 81
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/liverpool-f-c",
       "displayName": "Alisson Becker",
       "goalkeeperRatings": {
@@ -236,6 +304,176 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/fulham-f-c",
+      "displayName": "Antonee Robinson",
+      "name": "players/antonee-robinson",
+      "nationalTeamCode": "USA",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 75,
+        "pace": 85,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 65
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Antonee_Robinson_Australia_v_USA_19_June_2026-24_(cropped).jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/antonee-robinson.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 72,
+        "control": 76,
+        "defence": 76,
+        "overall": 77
+      },
+      "position": "DEFENDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/arsenal-f-c",
+      "displayName": "Ben White",
+      "name": "players/ben-white",
+      "nationalTeamCode": "ENG",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 75,
+        "pace": 75,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 65
+      },
+      "photo": {
+        "attribution": {
+          "author": "James Boyes from UK",
+          "licenseCode": "CC-BY-2.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Ben_White_2018.jpg"
+        },
+        "heightPx": 641,
+        "mimeType": "image/webp",
+        "uri": "photos/ben-white.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 70,
+        "control": 75,
+        "defence": 80,
+        "overall": 80
+      },
+      "position": "DEFENDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/fulham-f-c",
+      "displayName": "Bernd Leno",
+      "goalkeeperRatings": {
+        "diving": 75,
+        "handling": 75,
+        "kicking": 75,
+        "positioning": 75,
+        "reflexes": 85,
+        "speed": 75
+      },
+      "name": "players/bernd-leno",
+      "nationalTeamCode": "GER",
+      "photo": {
+        "attribution": {
+          "author": "Granada",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:20180602_FIFA_Friendly_Match_Austria_vs._Germany_Bernd_Leno_850_0646.jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/bernd-leno.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 75,
+        "control": 75,
+        "defence": 78,
+        "overall": 77
+      },
+      "position": "GOALKEEPER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/manchester-united-f-c",
+      "displayName": "Bruno Fernandes",
+      "name": "players/bruno-fernandes",
+      "nationalTeamCode": "POR",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 75,
+        "pace": 73,
+        "passing": 85,
+        "physical": 75,
+        "shooting": 86
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Bruno_Fernandes_USMNT_v_Portugal_Mar_31_2026-27_(cropped).jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/bruno-fernandes.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 81,
+        "control": 79,
+        "defence": 76,
+        "overall": 82
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/manchester-united-f-c",
+      "displayName": "Bryan Mbeumo",
+      "name": "players/bryan-mbeumo",
+      "nationalTeamCode": "CMR",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 75,
+        "pace": 85,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 84
+      },
+      "photo": {
+        "attribution": {
+          "author": "AFC Bournemouth",
+          "licenseCode": "CC-BY-3.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Bryan_Mbeumo_00-02-31.18.png"
+        },
+        "heightPx": 600,
+        "mimeType": "image/webp",
+        "uri": "photos/bryan-mbeumo.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 82,
+        "control": 76,
+        "defence": 71,
+        "overall": 81
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/arsenal-f-c",
       "displayName": "Bukayo Saka",
       "name": "players/bukayo-saka",
@@ -304,6 +542,108 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/liverpool-f-c",
+      "displayName": "Cody Gakpo",
+      "name": "players/cody-gakpo",
+      "nationalTeamCode": "NED",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 75,
+        "passing": 75,
+        "physical": 85,
+        "shooting": 84
+      },
+      "photo": {
+        "attribution": {
+          "author": "User:Zafer",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Cody_Gakpo_Liverpool_FC_20261103_(1)_(cropped).JPG"
+        },
+        "heightPx": 652,
+        "mimeType": "image/webp",
+        "uri": "photos/cody-gakpo.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 82,
+        "control": 80,
+        "defence": 73,
+        "overall": 82
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/chelsea-f-c",
+      "displayName": "Cole Palmer",
+      "name": "players/cole-palmer",
+      "nationalTeamCode": "ENG",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 75,
+        "passing": 85,
+        "physical": 65,
+        "shooting": 97
+      },
+      "photo": {
+        "attribution": {
+          "author": "The White House",
+          "licenseCode": "CC-PDM-1.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Cole_Palmer_2025_FIFA_Club_World_Cup_Final.jpg"
+        },
+        "heightPx": 513,
+        "mimeType": "image/webp",
+        "uri": "photos/cole-palmer.webp",
+        "widthPx": 286
+      },
+      "playStats": {
+        "attack": 89,
+        "control": 82,
+        "defence": 68,
+        "overall": 80
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/everton-f-c-women",
+      "displayName": "Courtney Brosnan",
+      "goalkeeperRatings": {
+        "diving": 85,
+        "handling": 75,
+        "kicking": 75,
+        "positioning": 75,
+        "reflexes": 85,
+        "speed": 75
+      },
+      "name": "players/courtney-brosnan",
+      "nationalTeamCode": "IRL",
+      "photo": {
+        "attribution": {
+          "author": "Ryan Asman",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Courtney-Brosnan.jpg"
+        },
+        "heightPx": 700,
+        "mimeType": "image/webp",
+        "uri": "photos/courtney-brosnan.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 75,
+        "control": 75,
+        "defence": 81,
+        "overall": 80
+      },
+      "position": "GOALKEEPER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/al-nassr",
       "displayName": "Cristiano Ronaldo",
       "name": "players/cristiano-ronaldo",
@@ -339,6 +679,40 @@
     },
     {
       "club": "clubs/arsenal-f-c",
+      "displayName": "David Raya",
+      "goalkeeperRatings": {
+        "diving": 85,
+        "handling": 75,
+        "kicking": 85,
+        "positioning": 95,
+        "reflexes": 85,
+        "speed": 75
+      },
+      "name": "players/david-raya",
+      "nationalTeamCode": "ESP",
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:David_Raya_Argentina_v_Spain_19_July_2026-003_(cropped).jpg"
+        },
+        "heightPx": 765,
+        "mimeType": "image/webp",
+        "uri": "photos/david-raya.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 83,
+        "control": 81,
+        "defence": 85,
+        "overall": 87
+      },
+      "position": "GOALKEEPER",
+      "state": "ACTIVE",
+      "tier": "RARE"
+    },
+    {
+      "club": "clubs/arsenal-f-c",
       "displayName": "Declan Rice",
       "name": "players/declan-rice",
       "nationalTeamCode": "ENG",
@@ -365,6 +739,40 @@
         "attack": 75,
         "control": 76,
         "defence": 83,
+        "overall": 81
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/liverpool-f-c",
+      "displayName": "Dominik Szoboszlai",
+      "name": "players/dominik-szoboszlai",
+      "nationalTeamCode": "HUN",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 75,
+        "pace": 75,
+        "passing": 85,
+        "physical": 85,
+        "shooting": 86
+      },
+      "photo": {
+        "attribution": {
+          "author": "Timmy96",
+          "licenseCode": "CC0-1.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Dominik_Szoboszlai_04012026_(1).jpg"
+        },
+        "heightPx": 614,
+        "mimeType": "image/webp",
+        "uri": "photos/dominik-szoboszlai.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 82,
+        "control": 80,
+        "defence": 79,
         "overall": 81
       },
       "position": "MIDFIELDER",
@@ -406,6 +814,40 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/chelsea-f-c-women",
+      "displayName": "Erin Cuthbert",
+      "name": "players/erin-cuthbert",
+      "nationalTeamCode": "SCO",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 75,
+        "pace": 75,
+        "passing": 75,
+        "physical": 85,
+        "shooting": 77
+      },
+      "photo": {
+        "attribution": {
+          "author": "James Boyes from UK",
+          "licenseCode": "CC-BY-2.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Erin_Cuthbert_(49006342112)_(cropped)_2.jpg"
+        },
+        "heightPx": 583,
+        "mimeType": "image/webp",
+        "uri": "photos/erin-cuthbert.webp",
+        "widthPx": 440
+      },
+      "playStats": {
+        "attack": 76,
+        "control": 76,
+        "defence": 83,
+        "overall": 78
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/manchester-city-f-c",
       "displayName": "Erling Haaland",
       "name": "players/erling-haaland",
@@ -420,11 +862,11 @@
       },
       "photo": {
         "attribution": {
-          "author": "Bryan Berlin",
-          "licenseCode": "CC-BY-SA-4.0",
-          "sourceUri": "https://commons.wikimedia.org/wiki/File:Erling_Haaland_France_v_Norway_26_June_26-008_(cropped).jpg"
+          "author": "Jahrenvisuals",
+          "licenseCode": "CC-BY-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Erling_Braut_Haaland_Norway.jpg"
         },
-        "heightPx": 642,
+        "heightPx": 600,
         "mimeType": "image/webp",
         "uri": "photos/erling-haaland.webp",
         "widthPx": 480
@@ -540,6 +982,40 @@
       "tier": "ICON"
     },
     {
+      "club": "clubs/arsenal-f-c",
+      "displayName": "Gabriel Magalhães",
+      "name": "players/gabriel-magalhaes",
+      "nationalTeamCode": "BRA",
+      "outfieldRatings": {
+        "defending": 95,
+        "dribbling": 65,
+        "pace": 75,
+        "passing": 75,
+        "physical": 85,
+        "shooting": 75
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Gabriel_Magalhaes_Brazil_V_Morocco_13_June_2026-132_(cropped).jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/gabriel-magalhaes.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 73,
+        "control": 72,
+        "defence": 88,
+        "overall": 85
+      },
+      "position": "DEFENDER",
+      "state": "ACTIVE",
+      "tier": "RARE"
+    },
+    {
       "displayName": "Gianluigi Buffon",
       "goalkeeperRatings": {
         "diving": 95,
@@ -571,6 +1047,74 @@
       "position": "GOALKEEPER",
       "state": "RETIRED",
       "tier": "LEGEND"
+    },
+    {
+      "club": "clubs/manchester-city-f-c",
+      "displayName": "Gianluigi Donnarumma",
+      "goalkeeperRatings": {
+        "diving": 85,
+        "handling": 75,
+        "kicking": 75,
+        "positioning": 85,
+        "reflexes": 95,
+        "speed": 75
+      },
+      "name": "players/gianluigi-donnarumma",
+      "nationalTeamCode": "ITA",
+      "photo": {
+        "attribution": {
+          "author": "Original: MichaelEmilio / Derivative work: Danyele",
+          "licenseCode": "CC-BY-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Norway_Italy_-_June_2025_B_33_-_Gianluigi_Donnarumma_(close-up).jpg"
+        },
+        "heightPx": 640,
+        "mimeType": "image/webp",
+        "uri": "photos/gianluigi-donnarumma.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 75,
+        "control": 76,
+        "defence": 86,
+        "overall": 87
+      },
+      "position": "GOALKEEPER",
+      "state": "ACTIVE",
+      "tier": "RARE"
+    },
+    {
+      "club": "clubs/liverpool-f-c",
+      "displayName": "Giorgi Mamardashvili",
+      "goalkeeperRatings": {
+        "diving": 85,
+        "handling": 75,
+        "kicking": 75,
+        "positioning": 75,
+        "reflexes": 85,
+        "speed": 75
+      },
+      "name": "players/giorgi-mamardashvili",
+      "nationalTeamCode": "GEO",
+      "photo": {
+        "attribution": {
+          "author": "Timmy96",
+          "licenseCode": "CC0-1.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Giorgi_Mamardashvili_04012026_(1).jpg"
+        },
+        "heightPx": 475,
+        "mimeType": "image/webp",
+        "uri": "photos/giorgi-mamardashvili.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 75,
+        "control": 75,
+        "defence": 81,
+        "overall": 82
+      },
+      "position": "GOALKEEPER",
+      "state": "ACTIVE",
+      "tier": "BASE"
     },
     {
       "club": "clubs/fc-bayern-munich",
@@ -708,6 +1252,40 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/crystal-palace-f-c",
+      "displayName": "Ismaïla Sarr",
+      "name": "players/ismaila-sarr",
+      "nationalTeamCode": "SEN",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 95,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 75
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Ismaila_Sarr_France_v_Senegal_16_June_2026-425_(cropped).jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/ismaila-sarr.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 81,
+        "control": 81,
+        "defence": 72,
+        "overall": 80
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/everton-f-c",
       "displayName": "Jack Grealish",
       "name": "players/jack-grealish",
@@ -810,6 +1388,108 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/manchester-city-f-c",
+      "displayName": "Jérémy Doku",
+      "name": "players/jeremy-doku",
+      "nationalTeamCode": "BEL",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 95,
+        "pace": 95,
+        "passing": 75,
+        "physical": 65,
+        "shooting": 72
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:J%C3%A9r%C3%A9my_Doku_USMNT_v_Belgium_Mar_28_2026-27_(cropped).jpg"
+        },
+        "heightPx": 640,
+        "mimeType": "image/webp",
+        "uri": "photos/jeremy-doku.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 82,
+        "control": 84,
+        "defence": 69,
+        "overall": 82
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/chelsea-f-c-women",
+      "displayName": "Jessie Fleming",
+      "name": "players/jessie-fleming",
+      "nationalTeamCode": "CAN",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 85,
+        "pace": 75,
+        "passing": 85,
+        "physical": 65,
+        "shooting": 85
+      },
+      "photo": {
+        "attribution": {
+          "author": "Hameltion",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:NC_Courage_vs_Portland_Thorns_(Apr_2024)_035_(Fleming).jpg"
+        },
+        "heightPx": 671,
+        "mimeType": "image/webp",
+        "uri": "photos/jessie-fleming.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 83,
+        "control": 82,
+        "defence": 73,
+        "overall": 81
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/newcastle-united-f-c",
+      "displayName": "Joelinton",
+      "name": "players/joelinton",
+      "nationalTeamCode": "BRA",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 75,
+        "pace": 74,
+        "passing": 75,
+        "physical": 95,
+        "shooting": 73
+      },
+      "photo": {
+        "attribution": {
+          "author": "Silesia711",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Joelinton_(cropped).jpg"
+        },
+        "heightPx": 659,
+        "mimeType": "image/webp",
+        "uri": "photos/joelinton.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 74,
+        "control": 77,
+        "defence": 86,
+        "overall": 79
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/everton-f-c",
       "displayName": "Jordan Pickford",
       "goalkeeperRatings": {
@@ -844,6 +1524,40 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/manchester-city-f-c",
+      "displayName": "Joško Gvardiol",
+      "name": "players/josko-gvardiol",
+      "nationalTeamCode": "CRO",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 75,
+        "pace": 85,
+        "passing": 75,
+        "physical": 85,
+        "shooting": 75
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Josko_Gvardiol_Croatia_v_Portugal_2_July_2026-262.jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/josko-gvardiol.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 77,
+        "control": 77,
+        "defence": 84,
+        "overall": 84
+      },
+      "position": "DEFENDER",
+      "state": "ACTIVE",
+      "tier": "RARE"
+    },
+    {
       "club": "clubs/real-madrid-club-de-futbol",
       "displayName": "Jude Bellingham",
       "name": "players/jude-bellingham",
@@ -860,9 +1574,9 @@
         "attribution": {
           "author": "Bryan Berlin",
           "licenseCode": "CC-BY-SA-4.0",
-          "sourceUri": "https://commons.wikimedia.org/wiki/File:Jude_Bellingham_England_v_Ghana_23_June_2026-061_(cropped).jpg"
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Jude_Bellingham_England_v_Ghana_23_June_2026-061_(second_cropped).jpg"
         },
-        "heightPx": 720,
+        "heightPx": 685,
         "mimeType": "image/webp",
         "uri": "photos/jude-bellingham.webp",
         "widthPx": 480
@@ -874,6 +1588,74 @@
         "overall": 81
       },
       "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/arsenal-f-c",
+      "displayName": "Jurriën Timber",
+      "name": "players/jurrien-timber",
+      "nationalTeamCode": "NED",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 75,
+        "pace": 85,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 65
+      },
+      "photo": {
+        "attribution": {
+          "author": "Carlo Bruil Fotografie",
+          "licenseCode": "CC-BY-2.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:JURRIEN_TIMBER.jpg"
+        },
+        "heightPx": 626,
+        "mimeType": "image/webp",
+        "uri": "photos/jurrien-timber.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 72,
+        "control": 76,
+        "defence": 81,
+        "overall": 81
+      },
+      "position": "DEFENDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/arsenal-f-c",
+      "displayName": "Kai Havertz",
+      "name": "players/kai-havertz",
+      "nationalTeamCode": "GER",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 75,
+        "pace": 75,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 84
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Kai_Havertz_Ecuador_v_Germany_25_June_2026-118.jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/kai-havertz.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 80,
+        "control": 75,
+        "defence": 70,
+        "overall": 80
+      },
+      "position": "FORWARD",
       "state": "ACTIVE",
       "tier": "BASE"
     },
@@ -904,6 +1686,39 @@
         "attack": 86,
         "control": 78,
         "defence": 65,
+        "overall": 82
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "displayName": "Khadija Shaw",
+      "name": "players/khadija-shaw",
+      "nationalTeamCode": "JAM",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 75,
+        "pace": 75,
+        "passing": 75,
+        "physical": 95,
+        "shooting": 95
+      },
+      "photo": {
+        "attribution": {
+          "author": "Dianaatflourish",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Khadija_Shaw.jpg"
+        },
+        "heightPx": 480,
+        "mimeType": "image/webp",
+        "uri": "photos/khadija-shaw.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 85,
+        "control": 77,
+        "defence": 76,
         "overall": 82
       },
       "position": "FORWARD",
@@ -1250,6 +2065,40 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/arsenal-w-f-c",
+      "displayName": "Mariona Caldentey",
+      "name": "players/mariona-caldentey",
+      "nationalTeamCode": "ESP",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 85,
+        "pace": 74,
+        "passing": 85,
+        "physical": 75,
+        "shooting": 87
+      },
+      "photo": {
+        "attribution": {
+          "author": "MichaelEmilio",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Brann_-_Bar%C3%A7a_Femen%C3%AD_CG3A5801_(cropped).jpg"
+        },
+        "heightPx": 664,
+        "mimeType": "image/webp",
+        "uri": "photos/mariona-caldentey.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 84,
+        "control": 83,
+        "defence": 76,
+        "overall": 84
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "RARE"
+    },
+    {
       "displayName": "Mark Viduka",
       "name": "players/mark-viduka",
       "nationalTeamCode": "AUS",
@@ -1280,6 +2129,74 @@
       },
       "position": "FORWARD",
       "state": "RETIRED",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/arsenal-f-c",
+      "displayName": "Martin Ødegaard",
+      "name": "players/martin-odegaard",
+      "nationalTeamCode": "NOR",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 75,
+        "passing": 85,
+        "physical": 65,
+        "shooting": 75
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Martin_Odegaard_Morocco_v_Norway_7_June_2026-56_(cropped).jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/martin-odegaard.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 78,
+        "control": 82,
+        "defence": 68,
+        "overall": 80
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/arsenal-f-c",
+      "displayName": "Martín Zubimendi",
+      "name": "players/martin-zubimendi",
+      "nationalTeamCode": "ESP",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 75,
+        "pace": 75,
+        "passing": 85,
+        "physical": 75,
+        "shooting": 65
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Martin_Zubimendi_Argentina_v_Spain_19_July_2026-012.jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/martin-zubimendi.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 71,
+        "control": 79,
+        "defence": 81,
+        "overall": 79
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
       "tier": "BASE"
     },
     {
@@ -1351,6 +2268,40 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/arsenal-f-c",
+      "displayName": "Mikel Merino",
+      "name": "players/mikel-merino",
+      "nationalTeamCode": "ESP",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 75,
+        "pace": 74,
+        "passing": 75,
+        "physical": 85,
+        "shooting": 86
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Mikel_Merino_France_v_Spain_7.24.26-241_(cropped).jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/mikel-merino.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 80,
+        "control": 76,
+        "defence": 78,
+        "overall": 78
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "displayName": "Mile Jedinak",
       "name": "players/mile-jedinak",
       "nationalTeamCode": "AUS",
@@ -1416,6 +2367,108 @@
       "position": "FORWARD",
       "state": "ACTIVE",
       "tier": "RARE"
+    },
+    {
+      "club": "clubs/chelsea-f-c",
+      "displayName": "Moisés Caicedo",
+      "name": "players/moises-caicedo",
+      "nationalTeamCode": "ECU",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 75,
+        "pace": 75,
+        "passing": 75,
+        "physical": 85,
+        "shooting": 64
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Moises_Caicedo_Ecuador_v_Germany_25_June_2026-051_(cropped).jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/moises-caicedo.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 70,
+        "control": 76,
+        "defence": 83,
+        "overall": 79
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/manchester-united-f-c",
+      "displayName": "Noussair Mazraoui",
+      "name": "players/noussair-mazraoui",
+      "nationalTeamCode": "MAR",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 75,
+        "pace": 85,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 65
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Noussair_Mazraoui_France_v_Morocco_9_July_2026-125_(cropped).jpg"
+        },
+        "heightPx": 588,
+        "mimeType": "image/webp",
+        "uri": "photos/noussair-mazraoui.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 72,
+        "control": 76,
+        "defence": 81,
+        "overall": 80
+      },
+      "position": "DEFENDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/arsenal-w-f-c",
+      "displayName": "Ona Batlle",
+      "name": "players/ona-batlle",
+      "nationalTeamCode": "ESP",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 75,
+        "pace": 85,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 65
+      },
+      "photo": {
+        "attribution": {
+          "author": "Estevoaei",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Deportivo_Abanca_-_FC_Barcelona_108_(cropped).jpg"
+        },
+        "heightPx": 783,
+        "mimeType": "image/webp",
+        "uri": "photos/ona-batlle.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 72,
+        "control": 76,
+        "defence": 81,
+        "overall": 80
+      },
+      "position": "DEFENDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
     },
     {
       "displayName": "Paolo Maldini",
@@ -1518,6 +2571,40 @@
       "tier": "ICON"
     },
     {
+      "club": "clubs/chelsea-f-c-women",
+      "displayName": "Pernille Harder",
+      "name": "players/pernille-harder",
+      "nationalTeamCode": "DEN",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 72,
+        "passing": 85,
+        "physical": 74,
+        "shooting": 88
+      },
+      "photo": {
+        "attribution": {
+          "author": "Granada",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:20170706_OEFB_AUT-DEN_Pernille_Harder_DSC_8228.jpg"
+        },
+        "heightPx": 721,
+        "mimeType": "image/webp",
+        "uri": "photos/pernille-harder.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 84,
+        "control": 83,
+        "defence": 70,
+        "overall": 82
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "displayName": "Peter Schmeichel",
       "goalkeeperRatings": {
         "diving": 85,
@@ -1538,6 +2625,74 @@
       "position": "GOALKEEPER",
       "state": "RETIRED",
       "tier": "LEGEND"
+    },
+    {
+      "club": "clubs/manchester-city-f-c",
+      "displayName": "Phil Foden",
+      "name": "players/phil-foden",
+      "nationalTeamCode": "ENG",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 75,
+        "passing": 85,
+        "physical": 65,
+        "shooting": 76
+      },
+      "photo": {
+        "attribution": {
+          "author": "Steffen Prößdorf",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:2023-10-04_Fu%C3%9Fball,_M%C3%A4nner,_UEFA_Champions_League,_RB_Leipzig_-_Manchester_City_FC_1DX_2613,_Phil_Foden.jpg"
+        },
+        "heightPx": 624,
+        "mimeType": "image/webp",
+        "uri": "photos/phil-foden.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 79,
+        "control": 82,
+        "defence": 68,
+        "overall": 79
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/arsenal-f-c",
+      "displayName": "Riccardo Calafiori",
+      "name": "players/riccardo-calafiori",
+      "nationalTeamCode": "ITA",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 75,
+        "pace": 75,
+        "passing": 85,
+        "physical": 75,
+        "shooting": 65
+      },
+      "photo": {
+        "attribution": {
+          "author": "Timmy96",
+          "licenseCode": "CC0-1.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:2024_Emirates_Cup_-_Riccardo_Calafiori_(2)_(cropped).jpg"
+        },
+        "heightPx": 646,
+        "mimeType": "image/webp",
+        "uri": "photos/riccardo-calafiori.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 71,
+        "control": 79,
+        "defence": 81,
+        "overall": 81
+      },
+      "position": "DEFENDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
     },
     {
       "club": "clubs/fc-barcelona",
@@ -1738,6 +2893,40 @@
       "position": "MIDFIELDER",
       "state": "RETIRED",
       "tier": "RARE"
+    },
+    {
+      "club": "clubs/arsenal-w-f-c",
+      "displayName": "Stina Blackstenius",
+      "name": "players/stina-blackstenius",
+      "nationalTeamCode": "SWE",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 75,
+        "pace": 84,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 93
+      },
+      "photo": {
+        "attribution": {
+          "author": "MichaelEmilio",
+          "licenseCode": "CC-BY-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Valerenga-Arsenal_WUCL_12-12-2024_CG3A4421_29_(cropped).jpg"
+        },
+        "heightPx": 547,
+        "mimeType": "image/webp",
+        "uri": "photos/stina-blackstenius.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 86,
+        "control": 76,
+        "defence": 71,
+        "overall": 81
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
     },
     {
       "club": "clubs/real-madrid-club-de-futbol",
@@ -1941,6 +3130,40 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/arsenal-f-c",
+      "displayName": "Viktor Gyökeres",
+      "name": "players/viktor-gyokeres",
+      "nationalTeamCode": "SWE",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 75,
+        "pace": 85,
+        "passing": 75,
+        "physical": 95,
+        "shooting": 97
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Viktor_Gyokeres_France_v_Sweden_6.30.26-123_(cropped).jpg"
+        },
+        "heightPx": 767,
+        "mimeType": "image/webp",
+        "uri": "photos/viktor-gyokeres.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 88,
+        "control": 78,
+        "defence": 77,
+        "overall": 85
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "RARE"
+    },
+    {
       "club": "clubs/liverpool-f-c",
       "displayName": "Virgil van Dijk",
       "name": "players/virgil-van-dijk",
@@ -2074,6 +3297,141 @@
       "position": "DEFENDER",
       "state": "ACTIVE",
       "tier": "RARE"
+    },
+    {
+      "club": "clubs/arsenal-f-c",
+      "displayName": "William Saliba",
+      "name": "players/william-saliba",
+      "nationalTeamCode": "FRA",
+      "outfieldRatings": {
+        "defending": 95,
+        "dribbling": 65,
+        "pace": 85,
+        "passing": 75,
+        "physical": 85,
+        "shooting": 65
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:William_Saliba_France_v_Paraguay_4_July_2026-183.jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/william-saliba.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 70,
+        "control": 73,
+        "defence": 89,
+        "overall": 87
+      },
+      "position": "DEFENDER",
+      "state": "ACTIVE",
+      "tier": "RARE"
+    },
+    {
+      "club": "clubs/brighton-hove-albion-f-c",
+      "displayName": "Yankuba Minteh",
+      "name": "players/yankuba-minteh",
+      "nationalTeamCode": "GAM",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 95,
+        "passing": 75,
+        "physical": 65,
+        "shooting": 73
+      },
+      "photo": {
+        "attribution": {
+          "author": "Carlo Bruil Fotografie",
+          "licenseCode": "CC-BY-2.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Go_Ahead_Eagles_-_Feyenoord_-_53679350805_(Yankuba_Minteh).jpg"
+        },
+        "heightPx": 496,
+        "mimeType": "image/webp",
+        "uri": "photos/yankuba-minteh.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 80,
+        "control": 80,
+        "defence": 69,
+        "overall": 79
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/newcastle-united-f-c",
+      "displayName": "Yoane Wissa",
+      "name": "players/yoane-wissa",
+      "nationalTeamCode": "COD",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 75,
+        "pace": 74,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 83
+      },
+      "photo": {
+        "attribution": {
+          "author": "feguifoot",
+          "licenseCode": "CC0-1.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:CAN_2023RD_Congo_2-1_Guin%C3%A9e_9939_(cropped).jpg"
+        },
+        "heightPx": 778,
+        "mimeType": "image/webp",
+        "uri": "photos/yoane-wissa.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 79,
+        "control": 75,
+        "defence": 70,
+        "overall": 76
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "displayName": "Yui Hasegawa",
+      "name": "players/yui-hasegawa",
+      "nationalTeamCode": "JPN",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 75,
+        "pace": 75,
+        "passing": 85,
+        "physical": 65,
+        "shooting": 75
+      },
+      "photo": {
+        "attribution": {
+          "author": "James Boyes from UK",
+          "licenseCode": "CC-BY-2.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Yui_Hasegawa_Lewes_FC_Women_2_West_Ham_Utd_Women_2_Pre_season_22_08_2021-340_(51395930921)_(cropped).jpg"
+        },
+        "heightPx": 640,
+        "mimeType": "image/webp",
+        "uri": "photos/yui-hasegawa.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 76,
+        "control": 78,
+        "defence": 73,
+        "overall": 77
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
     },
     {
       "displayName": "Zinedine Zidane",

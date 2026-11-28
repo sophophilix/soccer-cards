@@ -1,0 +1,121 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q33297140&oldid=2571970008",
+        "value": 58
+      },
+      "club": "clubs/argentinos-juniors",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q33297140&oldid=2571970008",
+        "value": 8
+      },
+      "startYear": 2016
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q33297140&oldid=2571970008",
+        "value": 10
+      },
+      "club": "clubs/argentinos-juniors",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q33297140&oldid=2571970008",
+        "value": 2
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q33297140&oldid=2571970008",
+        "value": 13
+      },
+      "club": "clubs/boca-juniors",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q33297140&oldid=2571970008",
+        "value": 1
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q33297140&oldid=2571970008",
+        "value": 98
+      },
+      "club": "clubs/brighton-hove-albion-f-c",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q33297140&oldid=2571970008",
+        "value": 16
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q33297140&oldid=2571970008",
+        "value": 111
+      },
+      "club": "clubs/liverpool-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-10-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q33297140&oldid=2571970008",
+        "value": 12
+      },
+      "startYear": 2023
+    }
+  ],
+  "club": "clubs/liverpool-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-11",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q33297140&oldid=2571970008",
+    "value": 39
+  },
+  "displayName": "Alexis Mac Allister",
+  "name": "players/alexis-mac-allister",
+  "nationalTeamCode": "ARG",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-06",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q33297140&oldid=2571970008",
+    "value": 7
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 75,
+    "pace": 75,
+    "passing": 85,
+    "physical": 75,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Alexis_Mac_Allister_Argentina_v_Spain_19_July_2026-162_(cropped).jpg"
+    },
+    "heightPx": 673,
+    "mimeType": "image/webp",
+    "uri": "photos/alexis-mac-allister.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 76,
+    "control": 79,
+    "defence": 76,
+    "overall": 81
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

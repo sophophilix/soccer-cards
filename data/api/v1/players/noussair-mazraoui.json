@@ -1,0 +1,41 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/manchester-united-f-c",
+      "startYear": 2024
+    }
+  ],
+  "club": "clubs/manchester-united-f-c",
+  "displayName": "Noussair Mazraoui",
+  "name": "players/noussair-mazraoui",
+  "nationalTeamCode": "MAR",
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 75,
+    "pace": 85,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 65
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Noussair_Mazraoui_France_v_Morocco_9_July_2026-125_(cropped).jpg"
+    },
+    "heightPx": 588,
+    "mimeType": "image/webp",
+    "uri": "photos/noussair-mazraoui.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 72,
+    "control": 76,
+    "defence": 81,
+    "overall": 80
+  },
+  "position": "DEFENDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

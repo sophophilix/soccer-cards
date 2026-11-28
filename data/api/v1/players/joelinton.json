@@ -1,0 +1,106 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20047360&oldid=2562668841",
+        "value": 34
+      },
+      "club": "clubs/sport-club-do-recife",
+      "endYear": 2015,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20047360&oldid=2562668841",
+        "value": 7
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20047360&oldid=2562668841",
+        "value": 41
+      },
+      "club": "clubs/tsg-1899-hoffenheim",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20047360&oldid=2562668841",
+        "value": 12
+      },
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20047360&oldid=2562668841",
+        "value": 77
+      },
+      "club": "clubs/sk-rapid-wien",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20047360&oldid=2562668841",
+        "value": 21
+      },
+      "startYear": 2016
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20047360&oldid=2562668841",
+        "value": 185
+      },
+      "club": "clubs/newcastle-united-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20047360&oldid=2562668841",
+        "value": 22
+      },
+      "startYear": 2019
+    }
+  ],
+  "club": "clubs/newcastle-united-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-30",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20047360&oldid=2562668841",
+    "value": 62
+  },
+  "displayName": "Joelinton",
+  "name": "players/joelinton",
+  "nationalTeamCode": "BRA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-30",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20047360&oldid=2562668841",
+    "value": 1
+  },
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 75,
+    "pace": 74,
+    "passing": 75,
+    "physical": 95,
+    "shooting": 73
+  },
+  "photo": {
+    "attribution": {
+      "author": "Silesia711",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Joelinton_(cropped).jpg"
+    },
+    "heightPx": 659,
+    "mimeType": "image/webp",
+    "uri": "photos/joelinton.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 74,
+    "control": 77,
+    "defence": 86,
+    "overall": 79
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

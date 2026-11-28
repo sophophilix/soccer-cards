@@ -17,15 +17,15 @@
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-10-24",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66606355&oldid=2560381004",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66606355&oldid=2575578610",
         "value": 36
       },
       "club": "clubs/ud-las-palmas",
       "endYear": 2020,
       "goalCount": {
-        "retrieveDate": "2026-10-24",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66606355&oldid=2560381004",
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66606355&oldid=2575578610",
         "value": 4
       },
       "startYear": 2019
@@ -33,13 +33,13 @@
     {
       "appearanceCount": {
         "retrieveDate": "2026-10-10",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66606355&oldid=2560381004",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66606355&oldid=2575578610",
         "value": 173
       },
       "club": "clubs/fc-barcelona",
       "goalCount": {
         "retrieveDate": "2026-10-10",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66606355&oldid=2560381004",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66606355&oldid=2575578610",
         "value": 23
       },
       "startYear": 2020
@@ -51,7 +51,7 @@
   "nationalTeamCode": "ESP",
   "nationalTeamGoalCount": {
     "retrieveDate": "2026-10-07",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66606355&oldid=2560381004",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q66606355&oldid=2575578610",
     "value": 6
   },
   "outfieldRatings": {
@@ -82,5 +82,5 @@
   "position": "MIDFIELDER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-28T06:44:11Z"
 }

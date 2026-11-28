@@ -1,0 +1,91 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q53952196&oldid=2561007001",
+        "value": 39
+      },
+      "club": "clubs/jong-ajax",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-10-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q53952196&oldid=2561007001",
+        "value": 0
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q53952196&oldid=2561007001",
+        "value": 85
+      },
+      "club": "clubs/afc-ajax",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-10-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q53952196&oldid=2561007001",
+        "value": 6
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-03-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q53952196&oldid=2561007001",
+        "value": 62
+      },
+      "club": "clubs/arsenal-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-03-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q53952196&oldid=2561007001",
+        "value": 4
+      },
+      "startYear": 2023
+    }
+  ],
+  "club": "clubs/arsenal-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-03-14",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q53952196&oldid=2561007001",
+    "value": 10
+  },
+  "displayName": "Jurriën Timber",
+  "name": "players/jurrien-timber",
+  "nationalTeamCode": "NED",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-26",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q53952196&oldid=2561007001",
+    "value": 0
+  },
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 75,
+    "pace": 85,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 65
+  },
+  "photo": {
+    "attribution": {
+      "author": "Carlo Bruil Fotografie",
+      "licenseCode": "CC-BY-2.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:JURRIEN_TIMBER.jpg"
+    },
+    "heightPx": 626,
+    "mimeType": "image/webp",
+    "uri": "photos/jurrien-timber.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 72,
+    "control": 76,
+    "defence": 81,
+    "overall": 81
+  },
+  "position": "DEFENDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

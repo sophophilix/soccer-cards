@@ -1,0 +1,106 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q7169410&oldid=2574122898",
+        "value": 27
+      },
+      "club": "clubs/ik-skovbakken",
+      "endYear": 2012,
+      "goalCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q7169410&oldid=2574122898",
+        "value": 22
+      },
+      "startYear": 2010
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q7169410&oldid=2574122898",
+        "value": 88
+      },
+      "club": "clubs/linkopings-fc",
+      "endYear": 2016,
+      "goalCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q7169410&oldid=2574122898",
+        "value": 71
+      },
+      "startYear": 2012
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q7169410&oldid=2574122898",
+        "value": 75
+      },
+      "club": "clubs/vfl-wolfsburg",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q7169410&oldid=2574122898",
+        "value": 68
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q7169410&oldid=2574122898",
+        "value": 16
+      },
+      "club": "clubs/chelsea-f-c-women",
+      "goalCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q7169410&oldid=2574122898",
+        "value": 7
+      },
+      "startYear": 2020
+    }
+  ],
+  "club": "clubs/chelsea-f-c-women",
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-23",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q7169410&oldid=2574122898",
+    "value": 168
+  },
+  "displayName": "Pernille Harder",
+  "name": "players/pernille-harder",
+  "nationalTeamCode": "DEN",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-23",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q7169410&oldid=2574122898",
+    "value": 128
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 85,
+    "pace": 72,
+    "passing": 85,
+    "physical": 74,
+    "shooting": 88
+  },
+  "photo": {
+    "attribution": {
+      "author": "Granada",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:20170706_OEFB_AUT-DEN_Pernille_Harder_DSC_8228.jpg"
+    },
+    "heightPx": 721,
+    "mimeType": "image/webp",
+    "uri": "photos/pernille-harder.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 84,
+    "control": 83,
+    "defence": 70,
+    "overall": 82
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

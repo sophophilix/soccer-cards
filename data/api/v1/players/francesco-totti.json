@@ -7,15 +7,15 @@
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-10-26",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20110&oldid=2560883321",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20110&oldid=2575300545",
         "value": 619
       },
       "club": "clubs/as-roma",
       "endYear": 2017,
       "goalCount": {
-        "retrieveDate": "2026-10-26",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20110&oldid=2560883321",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20110&oldid=2575300545",
         "value": 250
       },
       "startYear": 1993
@@ -25,8 +25,8 @@
   "name": "players/francesco-totti",
   "nationalTeamCode": "ITA",
   "nationalTeamGoalCount": {
-    "retrieveDate": "2026-10-26",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20110&oldid=2560883321",
+    "retrieveDate": "2026-11-26",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q20110&oldid=2575300545",
     "value": 9
   },
   "outfieldRatings": {
@@ -57,5 +57,5 @@
   "position": "MIDFIELDER",
   "state": "RETIRED",
   "tier": "BASE",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-28T06:44:11Z"
 }

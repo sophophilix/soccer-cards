@@ -1,0 +1,106 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q73400656&oldid=2569122182",
+        "value": 13
+      },
+      "club": "clubs/gnk-dinamo-zagreb",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q73400656&oldid=2569122182",
+        "value": 1
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q73400656&oldid=2569122182",
+        "value": 23
+      },
+      "club": "clubs/gnk-dinamo-zagreb",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q73400656&oldid=2569122182",
+        "value": 2
+      },
+      "startYear": 2020
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q73400656&oldid=2569122182",
+        "value": 59
+      },
+      "club": "clubs/rb-leipzig",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q73400656&oldid=2569122182",
+        "value": 3
+      },
+      "startYear": 2020
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q73400656&oldid=2569122182",
+        "value": 88
+      },
+      "club": "clubs/manchester-city-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-09-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q73400656&oldid=2569122182",
+        "value": 12
+      },
+      "startYear": 2023
+    }
+  ],
+  "club": "clubs/manchester-city-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-09-20",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q73400656&oldid=2569122182",
+    "value": 18
+  },
+  "displayName": "Joško Gvardiol",
+  "name": "players/josko-gvardiol",
+  "nationalTeamCode": "CRO",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-07",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q73400656&oldid=2569122182",
+    "value": 4
+  },
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 75,
+    "pace": 85,
+    "passing": 75,
+    "physical": 85,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Josko_Gvardiol_Croatia_v_Portugal_2_July_2026-262.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/josko-gvardiol.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 77,
+    "control": 77,
+    "defence": 84,
+    "overall": 84
+  },
+  "position": "DEFENDER",
+  "state": "ACTIVE",
+  "tier": "RARE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

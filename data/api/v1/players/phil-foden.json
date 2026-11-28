@@ -1,0 +1,61 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q30729096&oldid=2559335020",
+        "value": 229
+      },
+      "club": "clubs/manchester-city-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-09-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q30729096&oldid=2559335020",
+        "value": 68
+      },
+      "startYear": 2016
+    }
+  ],
+  "club": "clubs/manchester-city-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-09-13",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q30729096&oldid=2559335020",
+    "value": 68
+  },
+  "displayName": "Phil Foden",
+  "name": "players/phil-foden",
+  "nationalTeamCode": "ENG",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-03-31",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q30729096&oldid=2559335020",
+    "value": 4
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 85,
+    "pace": 75,
+    "passing": 85,
+    "physical": 65,
+    "shooting": 76
+  },
+  "photo": {
+    "attribution": {
+      "author": "Steffen Prößdorf",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:2023-10-04_Fu%C3%9Fball,_M%C3%A4nner,_UEFA_Champions_League,_RB_Leipzig_-_Manchester_City_FC_1DX_2613,_Phil_Foden.jpg"
+    },
+    "heightPx": 624,
+    "mimeType": "image/webp",
+    "uri": "photos/phil-foden.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 79,
+    "control": 82,
+    "defence": 68,
+    "overall": 79
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:53:19Z"
+}

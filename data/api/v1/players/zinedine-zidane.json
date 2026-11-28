@@ -2,76 +2,76 @@
   "careerSpells": [
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-17",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2570941280",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2575167884",
         "value": 61
       },
       "club": "clubs/as-cannes",
       "endYear": 1992,
       "goalCount": {
-        "retrieveDate": "2026-11-17",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2570941280",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2575167884",
         "value": 6
       },
       "startYear": 1989
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-17",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2570941280",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2575167884",
         "value": 139
       },
       "club": "clubs/fc-girondins-de-bordeaux",
       "endYear": 1996,
       "goalCount": {
-        "retrieveDate": "2026-11-17",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2570941280",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2575167884",
         "value": 28
       },
       "startYear": 1992
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-17",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2570941280",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2575167884",
         "value": 151
       },
       "club": "clubs/juventus-fc",
       "endYear": 2001,
       "goalCount": {
-        "retrieveDate": "2026-11-17",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2570941280",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2575167884",
         "value": 24
       },
       "startYear": 1996
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-17",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2570941280",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2575167884",
         "value": 155
       },
       "club": "clubs/real-madrid-club-de-futbol",
       "endYear": 2006,
       "goalCount": {
-        "retrieveDate": "2026-11-17",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2570941280",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2575167884",
         "value": 37
       },
       "startYear": 2001
     }
   ],
   "clubGoalCount": {
-    "retrieveDate": "2026-11-17",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2570941280",
+    "retrieveDate": "2026-11-26",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2575167884",
     "value": 95
   },
   "displayName": "Zinedine Zidane",
   "name": "players/zinedine-zidane",
   "nationalTeamCode": "FRA",
   "nationalTeamGoalCount": {
-    "retrieveDate": "2026-11-17",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2570941280",
+    "retrieveDate": "2026-11-26",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q1835&oldid=2575167884",
     "value": 31
   },
   "outfieldRatings": {
@@ -102,5 +102,5 @@
   "position": "MIDFIELDER",
   "state": "RETIRED",
   "tier": "ICON",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-28T06:44:11Z"
 }

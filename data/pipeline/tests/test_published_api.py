@@ -9,7 +9,7 @@ from soccer_cards_data.normalise import is_youth_side
 from soccer_cards_data.validate import validate
 
 API = Path(__file__).resolve().parents[2] / "api/v1"
-PLAYER_COUNT = 64
+PLAYER_COUNT = 104
 
 
 def _json(rel: str) -> Any:

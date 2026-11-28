@@ -1,0 +1,116 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28101965&oldid=2568726194",
+        "value": 23
+      },
+      "club": "clubs/lb-chateauroux",
+      "endYear": 2016,
+      "goalCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28101965&oldid=2568726194",
+        "value": 7
+      },
+      "startYear": 2015
+    },
+    {
+      "club": "clubs/angers-sco",
+      "endYear": 2017,
+      "startYear": 2016
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28101965&oldid=2568726194",
+        "value": 15
+      },
+      "club": "clubs/stade-lavallois",
+      "endYear": 2017,
+      "goalCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28101965&oldid=2568726194",
+        "value": 2
+      },
+      "startYear": 2017
+    },
+    {
+      "club": "clubs/a-c-ajaccio",
+      "endYear": 2018,
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28101965&oldid=2568726194",
+        "value": 117
+      },
+      "club": "clubs/f-c-lorient",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28101965&oldid=2568726194",
+        "value": 35
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28101965&oldid=2568726194",
+        "value": 137
+      },
+      "club": "clubs/brentford-f-c",
+      "endYear": 2025,
+      "goalCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28101965&oldid=2568726194",
+        "value": 45
+      },
+      "startYear": 2021
+    },
+    {
+      "club": "clubs/newcastle-united-f-c",
+      "startYear": 2025
+    }
+  ],
+  "club": "clubs/newcastle-united-f-c",
+  "displayName": "Yoane Wissa",
+  "name": "players/yoane-wissa",
+  "nationalTeamCode": "COD",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-13",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28101965&oldid=2568726194",
+    "value": 6
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 75,
+    "pace": 74,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 83
+  },
+  "photo": {
+    "attribution": {
+      "author": "feguifoot",
+      "licenseCode": "CC0-1.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:CAN_2023RD_Congo_2-1_Guin%C3%A9e_9939_(cropped).jpg"
+    },
+    "heightPx": 778,
+    "mimeType": "image/webp",
+    "uri": "photos/yoane-wissa.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 79,
+    "control": 75,
+    "defence": 70,
+    "overall": 76
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

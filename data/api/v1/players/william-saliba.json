@@ -1,0 +1,121 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q56868118&oldid=2575572573",
+        "value": 16
+      },
+      "club": "clubs/as-saint-etienne",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q56868118&oldid=2575572573",
+        "value": 0
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q56868118&oldid=2575572573",
+        "value": 12
+      },
+      "club": "clubs/as-saint-etienne",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q56868118&oldid=2575572573",
+        "value": 0
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-05-18",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q56868118&oldid=2575572573",
+        "value": 131
+      },
+      "club": "clubs/arsenal-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-05-18",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q56868118&oldid=2575572573",
+        "value": 7
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q56868118&oldid=2575572573",
+        "value": 20
+      },
+      "club": "clubs/ogc-nice",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q56868118&oldid=2575572573",
+        "value": 1
+      },
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q56868118&oldid=2575572573",
+        "value": 36
+      },
+      "club": "clubs/olympique-de-marseille",
+      "endYear": 2022,
+      "goalCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q56868118&oldid=2575572573",
+        "value": 0
+      },
+      "startYear": 2021
+    }
+  ],
+  "club": "clubs/arsenal-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-05-18",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q56868118&oldid=2575572573",
+    "value": 8
+  },
+  "displayName": "William Saliba",
+  "name": "players/william-saliba",
+  "nationalTeamCode": "FRA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-07-15",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q56868118&oldid=2575572573",
+    "value": 0
+  },
+  "outfieldRatings": {
+    "defending": 95,
+    "dribbling": 65,
+    "pace": 85,
+    "passing": 75,
+    "physical": 85,
+    "shooting": 65
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:William_Saliba_France_v_Paraguay_4_July_2026-183.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/william-saliba.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 70,
+    "control": 73,
+    "defence": 89,
+    "overall": 87
+  },
+  "position": "DEFENDER",
+  "state": "ACTIVE",
+  "tier": "RARE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

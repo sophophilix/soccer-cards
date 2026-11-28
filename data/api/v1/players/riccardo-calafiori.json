@@ -1,0 +1,121 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q97999586&oldid=2546512233",
+        "value": 10
+      },
+      "club": "clubs/as-roma",
+      "endYear": 2022,
+      "goalCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q97999586&oldid=2546512233",
+        "value": 0
+      },
+      "startYear": 2020
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q97999586&oldid=2546512233",
+        "value": 3
+      },
+      "club": "clubs/genoa-cfc",
+      "endYear": 2022,
+      "goalCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q97999586&oldid=2546512233",
+        "value": 0
+      },
+      "startYear": 2022
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q97999586&oldid=2546512233",
+        "value": 26
+      },
+      "club": "clubs/fc-basel",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q97999586&oldid=2546512233",
+        "value": 1
+      },
+      "startYear": 2022
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q97999586&oldid=2546512233",
+        "value": 30
+      },
+      "club": "clubs/bologna-f-c-1909",
+      "endYear": 2024,
+      "goalCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q97999586&oldid=2546512233",
+        "value": 2
+      },
+      "startYear": 2023
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q97999586&oldid=2546512233",
+        "value": 45
+      },
+      "club": "clubs/arsenal-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q97999586&oldid=2546512233",
+        "value": 3
+      },
+      "startYear": 2024
+    }
+  ],
+  "club": "clubs/arsenal-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-09-16",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q97999586&oldid=2546512233",
+    "value": 6
+  },
+  "displayName": "Riccardo Calafiori",
+  "name": "players/riccardo-calafiori",
+  "nationalTeamCode": "ITA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-09-16",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q97999586&oldid=2546512233",
+    "value": 0
+  },
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 75,
+    "pace": 75,
+    "passing": 85,
+    "physical": 75,
+    "shooting": 65
+  },
+  "photo": {
+    "attribution": {
+      "author": "Timmy96",
+      "licenseCode": "CC0-1.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:2024_Emirates_Cup_-_Riccardo_Calafiori_(2)_(cropped).jpg"
+    },
+    "heightPx": 646,
+    "mimeType": "image/webp",
+    "uri": "photos/riccardo-calafiori.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 71,
+    "control": 79,
+    "defence": 81,
+    "overall": 81
+  },
+  "position": "DEFENDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

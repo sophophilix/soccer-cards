@@ -1,0 +1,46 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/tennessee-lady-volunteers-soccer",
+      "endYear": 2018,
+      "startYear": 2017
+    },
+    {
+      "club": "clubs/girondins-de-bordeaux",
+      "endYear": 2021,
+      "startYear": 2019
+    }
+  ],
+  "displayName": "Khadija Shaw",
+  "name": "players/khadija-shaw",
+  "nationalTeamCode": "JAM",
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 75,
+    "pace": 75,
+    "passing": 75,
+    "physical": 95,
+    "shooting": 95
+  },
+  "photo": {
+    "attribution": {
+      "author": "Dianaatflourish",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Khadija_Shaw.jpg"
+    },
+    "heightPx": 480,
+    "mimeType": "image/webp",
+    "uri": "photos/khadija-shaw.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 85,
+    "control": 77,
+    "defence": 76,
+    "overall": 82
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

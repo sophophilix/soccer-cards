@@ -1,0 +1,76 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q99760796&oldid=2569394534",
+        "value": 19
+      },
+      "club": "clubs/manchester-city-f-c",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q99760796&oldid=2569394534",
+        "value": 0
+      },
+      "startYear": 2020
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q99760796&oldid=2569394534",
+        "value": 102
+      },
+      "club": "clubs/chelsea-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q99760796&oldid=2569394534",
+        "value": 49
+      },
+      "startYear": 2023
+    }
+  ],
+  "club": "clubs/chelsea-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-10",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q99760796&oldid=2569394534",
+    "value": 49
+  },
+  "displayName": "Cole Palmer",
+  "name": "players/cole-palmer",
+  "nationalTeamCode": "ENG",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-03-31",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q99760796&oldid=2569394534",
+    "value": 2
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 85,
+    "pace": 75,
+    "passing": 85,
+    "physical": 65,
+    "shooting": 97
+  },
+  "photo": {
+    "attribution": {
+      "author": "The White House",
+      "licenseCode": "CC-PDM-1.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Cole_Palmer_2025_FIFA_Club_World_Cup_Final.jpg"
+    },
+    "heightPx": 513,
+    "mimeType": "image/webp",
+    "uri": "photos/cole-palmer.webp",
+    "widthPx": 286
+  },
+  "playStats": {
+    "attack": 89,
+    "control": 82,
+    "defence": 68,
+    "overall": 80
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

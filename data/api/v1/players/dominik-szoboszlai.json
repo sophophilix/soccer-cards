@@ -1,0 +1,91 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q30134278&oldid=2568726935",
+        "value": 42
+      },
+      "club": "clubs/fc-liefering",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q30134278&oldid=2568726935",
+        "value": 16
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q30134278&oldid=2568726935",
+        "value": 56
+      },
+      "club": "clubs/fc-red-bull-salzburg",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-11-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q30134278&oldid=2568726935",
+        "value": 16
+      },
+      "startYear": 2018
+    },
+    {
+      "club": "clubs/rb-leipzig",
+      "endYear": 2023,
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q30134278&oldid=2568726935",
+        "value": 110
+      },
+      "club": "clubs/liverpool-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-09-20",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q30134278&oldid=2568726935",
+        "value": 16
+      },
+      "startYear": 2023
+    }
+  ],
+  "club": "clubs/liverpool-f-c",
+  "displayName": "Dominik Szoboszlai",
+  "name": "players/dominik-szoboszlai",
+  "nationalTeamCode": "HUN",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-05",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q30134278&oldid=2568726935",
+    "value": 18
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 75,
+    "pace": 75,
+    "passing": 85,
+    "physical": 85,
+    "shooting": 86
+  },
+  "photo": {
+    "attribution": {
+      "author": "Timmy96",
+      "licenseCode": "CC0-1.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Dominik_Szoboszlai_04012026_(1).jpg"
+    },
+    "heightPx": 614,
+    "mimeType": "image/webp",
+    "uri": "photos/dominik-szoboszlai.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 82,
+    "control": 80,
+    "defence": 79,
+    "overall": 81
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

@@ -2,15 +2,15 @@
   "careerSpells": [
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-11",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q107365&oldid=2567968563",
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q107365&oldid=2574547869",
         "value": 156
       },
       "club": "clubs/schalke-04",
       "endYear": 2011,
       "goalCount": {
-        "retrieveDate": "2026-11-11",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q107365&oldid=2567968563",
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q107365&oldid=2574547869",
         "value": 0
       },
       "startYear": 2006
@@ -18,13 +18,13 @@
     {
       "appearanceCount": {
         "retrieveDate": "2026-10-10",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q107365&oldid=2567968563",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q107365&oldid=2574547869",
         "value": 393
       },
       "club": "clubs/fc-bayern-munich",
       "goalCount": {
         "retrieveDate": "2026-10-10",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q107365&oldid=2567968563",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q107365&oldid=2574547869",
         "value": 0
       },
       "startYear": 2011
@@ -33,7 +33,7 @@
   "club": "clubs/fc-bayern-munich",
   "clubGoalCount": {
     "retrieveDate": "2026-10-10",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q107365&oldid=2567968563",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q107365&oldid=2574547869",
     "value": 0
   },
   "displayName": "Manuel Neuer",
@@ -48,8 +48,8 @@
   "name": "players/manuel-neuer",
   "nationalTeamCode": "GER",
   "nationalTeamGoalCount": {
-    "retrieveDate": "2026-11-11",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q107365&oldid=2567968563",
+    "retrieveDate": "2026-11-24",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q107365&oldid=2574547869",
     "value": 0
   },
   "photo": {
@@ -72,5 +72,5 @@
   "position": "GOALKEEPER",
   "state": "ACTIVE",
   "tier": "LEGEND",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-28T06:44:11Z"
 }

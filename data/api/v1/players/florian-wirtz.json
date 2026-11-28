@@ -2,15 +2,15 @@
   "careerSpells": [
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-09",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q94699949&oldid=2566952577",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q94699949&oldid=2575295757",
         "value": 140
       },
       "club": "clubs/bayer-04-leverkusen",
       "endYear": 2025,
       "goalCount": {
-        "retrieveDate": "2026-11-09",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q94699949&oldid=2566952577",
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q94699949&oldid=2575295757",
         "value": 35
       },
       "startYear": 2020
@@ -18,13 +18,13 @@
     {
       "appearanceCount": {
         "retrieveDate": "2026-10-13",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q94699949&oldid=2566952577",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q94699949&oldid=2575295757",
         "value": 39
       },
       "club": "clubs/liverpool-f-c",
       "goalCount": {
         "retrieveDate": "2026-10-13",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q94699949&oldid=2566952577",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q94699949&oldid=2575295757",
         "value": 5
       },
       "startYear": 2025
@@ -33,7 +33,7 @@
   "club": "clubs/liverpool-f-c",
   "clubGoalCount": {
     "retrieveDate": "2026-10-13",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q94699949&oldid=2566952577",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q94699949&oldid=2575295757",
     "value": 40
   },
   "displayName": "Florian Wirtz",
@@ -41,7 +41,7 @@
   "nationalTeamCode": "GER",
   "nationalTeamGoalCount": {
     "retrieveDate": "2026-10-04",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q94699949&oldid=2566952577",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q94699949&oldid=2575295757",
     "value": 12
   },
   "outfieldRatings": {
@@ -72,5 +72,5 @@
   "position": "MIDFIELDER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-28T06:44:11Z"
 }

@@ -1,0 +1,66 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/fc-metz",
+      "endYear": 2017,
+      "startYear": 2016
+    },
+    {
+      "club": "clubs/stade-rennais-f-c",
+      "endYear": 2019,
+      "startYear": 2017
+    },
+    {
+      "club": "clubs/watford-f-c",
+      "endYear": 2023,
+      "startYear": 2019
+    },
+    {
+      "club": "clubs/olympique-de-marseille",
+      "endYear": 2024,
+      "startYear": 2023
+    },
+    {
+      "club": "clubs/crystal-palace-f-c",
+      "startYear": 2024
+    }
+  ],
+  "club": "clubs/crystal-palace-f-c",
+  "displayName": "Ismaïla Sarr",
+  "name": "players/ismaila-sarr",
+  "nationalTeamCode": "SEN",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-13",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q26924482&oldid=2568858633",
+    "value": 1
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 85,
+    "pace": 95,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Ismaila_Sarr_France_v_Senegal_16_June_2026-425_(cropped).jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/ismaila-sarr.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 81,
+    "control": 81,
+    "defence": 72,
+    "overall": 80
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}

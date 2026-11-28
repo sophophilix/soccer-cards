@@ -1,0 +1,136 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q99529077&oldid=2559545071",
+        "value": 0
+      },
+      "club": "clubs/fc-dinamo-tbilisi",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-10-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q99529077&oldid=2559545071",
+        "value": 0
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q99529077&oldid=2559545071",
+        "value": 28
+      },
+      "club": "clubs/fc-rustavi",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-10-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q99529077&oldid=2559545071",
+        "value": 0
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q99529077&oldid=2559545071",
+        "value": 29
+      },
+      "club": "clubs/fc-lokomotivi-tbilisi",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-10-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q99529077&oldid=2559545071",
+        "value": 0
+      },
+      "startYear": 2020
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q99529077&oldid=2559545071",
+        "value": 93
+      },
+      "club": "clubs/valencia-cf",
+      "endYear": 2024,
+      "goalCount": {
+        "retrieveDate": "2026-10-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q99529077&oldid=2559545071",
+        "value": 0
+      },
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q99529077&oldid=2559545071",
+        "value": 34
+      },
+      "club": "clubs/valencia-cf",
+      "endYear": 2025,
+      "goalCount": {
+        "retrieveDate": "2026-10-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q99529077&oldid=2559545071",
+        "value": 0
+      },
+      "startYear": 2024
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-05-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q99529077&oldid=2559545071",
+        "value": 10
+      },
+      "club": "clubs/liverpool-f-c",
+      "goalCount": {
+        "retrieveDate": "2026-05-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q99529077&oldid=2559545071",
+        "value": 0
+      },
+      "startYear": 2024
+    }
+  ],
+  "club": "clubs/liverpool-f-c",
+  "clubGoalCount": {
+    "retrieveDate": "2026-05-15",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q99529077&oldid=2559545071",
+    "value": 0
+  },
+  "displayName": "Giorgi Mamardashvili",
+  "goalkeeperRatings": {
+    "diving": 85,
+    "handling": 75,
+    "kicking": 75,
+    "positioning": 75,
+    "reflexes": 85,
+    "speed": 75
+  },
+  "name": "players/giorgi-mamardashvili",
+  "nationalTeamCode": "GEO",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-05",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q99529077&oldid=2559545071",
+    "value": 0
+  },
+  "photo": {
+    "attribution": {
+      "author": "Timmy96",
+      "licenseCode": "CC0-1.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Giorgi_Mamardashvili_04012026_(1).jpg"
+    },
+    "heightPx": 475,
+    "mimeType": "image/webp",
+    "uri": "photos/giorgi-mamardashvili.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 75,
+    "control": 75,
+    "defence": 81,
+    "overall": 82
+  },
+  "position": "GOALKEEPER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T06:44:11Z"
+}
