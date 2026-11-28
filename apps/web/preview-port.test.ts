@@ -1,5 +1,5 @@
-import { expect, test } from '@playwright/test';
-import { FIRST_PREVIEW_PORT, LAST_PREVIEW_PORT, choosePreviewPort } from '../preview-port.ts';
+import { expect, test } from 'vitest';
+import { FIRST_PREVIEW_PORT, LAST_PREVIEW_PORT, choosePreviewPort } from './preview-port.ts';
 
 const aFolder = '/home/coach/soccer-cards/.claude/worktrees/agent-one/apps/web';
 const anotherFolder = '/home/coach/soccer-cards/.claude/worktrees/agent-two/apps/web';
