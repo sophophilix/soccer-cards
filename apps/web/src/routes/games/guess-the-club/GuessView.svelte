@@ -1,4 +1,3 @@
-<!-- The Guess the Club view: loads the players and their careers, then plays one round. -->
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import {
@@ -97,7 +96,6 @@
 		const answered = answerGuess(paid, player, index, clubId);
 		if (!answered.ok) return;
 		const { isRight, paid: nextPaid, state } = answered.value;
-		// Only a first answer changes the round, and only a first right answer pays.
 		if (nextPaid !== paid && isRight) rightCount += 1;
 		paid = nextPaid;
 		if (state !== player) persist(state);
