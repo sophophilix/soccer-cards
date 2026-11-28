@@ -6,6 +6,8 @@ interface TrailSpell {
 	readonly displayName: string;
 	readonly startYear: number;
 	readonly endYear?: number;
+	readonly games?: number;
+	readonly goals?: number;
 }
 
 /**
@@ -28,6 +30,13 @@ function isYear(value: unknown): value is number {
 	return typeof value === 'number' && Number.isInteger(value);
 }
 
+/** A sourced count's value, when it is a whole number of 0 or more. */
+function countFrom(raw: unknown): number | undefined {
+	if (typeof raw !== 'object' || raw === null) return undefined;
+	const { value } = raw as Record<string, unknown>;
+	return typeof value === 'number' && Number.isInteger(value) && value >= 0 ? value : undefined;
+}
+
 function spellFrom(raw: unknown, clubNames: ReadonlyMap<string, string>): TrailSpell | undefined {
 	if (typeof raw !== 'object' || raw === null) return undefined;
 	const fields = raw as Record<string, unknown>;
@@ -39,9 +48,17 @@ function spellFrom(raw: unknown, clubNames: ReadonlyMap<string, string>): TrailS
 	if (clubId === '' || clubId.includes('/')) return undefined;
 	const displayName = clubNames.get(clubId);
 	if (displayName === undefined) return undefined;
-	if (endYear === undefined) return { clubId, displayName, startYear };
-	if (!isYear(endYear) || endYear < startYear) return undefined;
-	return { clubId, displayName, startYear, endYear };
+	if (endYear !== undefined && (!isYear(endYear) || endYear < startYear)) return undefined;
+	const games = countFrom(fields.appearanceCount);
+	const goals = countFrom(fields.goalCount);
+	return {
+		clubId,
+		displayName,
+		startYear,
+		...(endYear === undefined ? {} : { endYear }),
+		...(games === undefined ? {} : { games }),
+		...(goals === undefined ? {} : { goals })
+	};
 }
 
 function careerFrom(
