@@ -9,7 +9,7 @@ paths:
   - data/pipeline/tests/test_normalise.py
 dependencies: []
 max_changed_lines: 150
-status: ready
+status: done
 ---
 
 ## Goal

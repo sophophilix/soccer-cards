@@ -10,7 +10,7 @@ paths:
   - apps/web/src/lib/match/**/*.test.ts
 dependencies: []
 max_changed_lines: 400
-status: ready
+status: done
 ---
 
 ## Goal

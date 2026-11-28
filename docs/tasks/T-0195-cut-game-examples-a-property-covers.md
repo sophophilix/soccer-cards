@@ -11,7 +11,7 @@ paths:
   - packages/game/src/cards.test.ts
 dependencies: []
 max_changed_lines: 300
-status: ready
+status: done
 ---
 
 ## Goal

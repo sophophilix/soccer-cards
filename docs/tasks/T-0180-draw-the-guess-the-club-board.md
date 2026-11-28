@@ -11,7 +11,7 @@ paths:
   - apps/web/src/routes/games/guess-the-club/guess-words.test.ts
 dependencies: []
 max_changed_lines: 330
-status: ready
+status: done
 ---
 
 ## Goal

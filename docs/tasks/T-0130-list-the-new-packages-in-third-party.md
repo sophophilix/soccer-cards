@@ -8,7 +8,7 @@ paths:
   - THIRD_PARTY.md
 dependencies: []
 max_changed_lines: 100
-status: ready
+status: done
 ---
 
 ## Goal
