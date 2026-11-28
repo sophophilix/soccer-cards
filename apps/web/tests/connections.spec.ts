@@ -1,9 +1,10 @@
-import { expect, test, type Page } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
 import { createPlayerState } from '@soccer-cards/game';
 import { STATE_KEY } from '../src/lib/state/player-store.ts';
 
 const RATINGS = { pace: 80, shooting: 70, passing: 60, dribbling: 75, defending: 40, physical: 65 };
-const LONG_NAME = 'Real Madrid Club de Fútbol';
+// Long enough to need two lines on a 320 pixel phone.
+const LONG_NAME = 'Real Madrid Club de Fútbol and Athletic Association';
 const START_COINS = 10;
 // Five answers at 1 coin each, and 2 for finishing.
 const ROUND_COINS = 5 + 2;
@@ -185,6 +186,15 @@ test('with no two players sharing a club the game says it cannot start', async (
 	await expect(page.getByRole('link', { name: 'Back to games' })).toHaveAttribute('href', '/games');
 });
 
+/** How many lines a tile's text is set on. */
+async function linesOfText(tile: Locator): Promise<number> {
+	return tile.evaluate((node) => {
+		const range = document.createRange();
+		range.selectNodeContents(node);
+		return new Set([...range.getClientRects()].map((line) => Math.round(line.top))).size;
+	});
+}
+
 for (const width of [320, 390]) {
 	test(`a long club name fits at ${String(width)} pixels with no sideways scroll @engines`, async ({
 		page
@@ -202,5 +212,6 @@ for (const width of [320, 390]) {
 		expect(overflow).toBeLessThanOrEqual(0);
 		expect((box?.x ?? 0) + (box?.width ?? 0)).toBeLessThanOrEqual(width);
 		expect(box?.height).toBeGreaterThan(44);
+		expect(await linesOfText(rightTile(page))).toBeGreaterThan(1);
 	});
 }
