@@ -11,13 +11,14 @@ for (const colorScheme of ['light', 'dark'] as const) {
 			'/match',
 			'/games',
 			'/games/transfer-trail',
+			'/games/connections',
 			'/cards',
 			'/guide'
 		]) {
 			test(`${path} has no accessibility violation`, async ({ page }) => {
 				await page.goto(path);
 				await page.evaluate(async () => document.fonts.ready);
-				// Scan the board, not the line shown while Transfer Trail loads.
+				// Scan the board, not the line shown while a game loads.
 				await expect(page.getByText('Getting the players ready…')).toHaveCount(0);
 
 				const results = await new AxeBuilder({ page }).exclude('[data-art]').analyze();

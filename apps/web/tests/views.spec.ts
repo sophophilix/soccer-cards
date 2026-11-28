@@ -42,6 +42,12 @@ test('/games/transfer-trail shows its own page', async ({ page }) => {
 	await expectView(page, 'Games', { path: 'games/transfer-trail', title: 'Transfer Trail' });
 });
 
+test('/games/connections shows its own page', async ({ page }) => {
+	await page.goto('/games/connections');
+
+	await expectView(page, 'Games', { path: 'games/connections', title: 'Connections' });
+});
+
 test('every tab is at least 44 pixels each way at 320 pixels wide @engines', async ({ page }) => {
 	await page.setViewportSize(NARROW_PHONE);
 	await page.goto('/packs');
