@@ -42,6 +42,13 @@ function summariesOf(body: unknown): readonly unknown[] | undefined {
 	return Array.isArray(body.players) ? body.players : undefined;
 }
 
+/** Adds the player's national team code to the card, when the summary has one. */
+function withNationalTeam(card: Card | undefined, summary: unknown): Card | undefined {
+	if (card === undefined || typeof summary !== 'object' || summary === null) return card;
+	const code = 'nationalTeamCode' in summary ? summary.nationalTeamCode : undefined;
+	return typeof code === 'string' ? { ...card, nationalTeam: code } : card;
+}
+
 /** Fetches players.json and clubs.json from the site and turns them into the checked card set and its faces. */
 export async function loadCardSet(fetchFile: FetchFile): Promise<LoadCardSetResult> {
 	const [fetched, fetchedClubs] = await Promise.all([
@@ -56,7 +63,7 @@ export async function loadCardSet(fetchFile: FetchFile): Promise<LoadCardSetResu
 	const faces = new Map<CardId, CardFace>();
 	const cards: Card[] = [];
 	for (const summary of summaries) {
-		const card = cardFromSummary(summary);
+		const card = withNationalTeam(cardFromSummary(summary), summary);
 		const face = cardFaceFromSummary(summary, clubNames);
 		if (card === undefined || face === undefined) continue;
 		cards.push(card);

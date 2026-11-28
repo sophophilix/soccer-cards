@@ -84,7 +84,7 @@ describe('loadCardSet', () => {
 
 		expect(result).toEqual({
 			ok: false,
-			reason: 'invalid-card',
+			reason: 'invalid-card-field',
 			cardId: toCardId('tavi-brightwell'),
 			field: 'nationalTeam'
 		});
