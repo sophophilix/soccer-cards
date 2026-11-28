@@ -1,7 +1,7 @@
-import { expect, test } from '@playwright/test';
+import { expect, test } from 'vitest';
 import { readFile } from 'node:fs/promises';
 
-const CONFIG_URL = new URL('../../wrangler.jsonc', import.meta.url);
+const CONFIG_URL = new URL('./wrangler.jsonc', import.meta.url);
 
 // A string is kept whole, so a "//" inside one is not taken for a comment.
 const STRING_OR_COMMENT = /("(?:\\.|[^"\\])*")|\/\/[^\n]*|\/\*[\s\S]*?\*\//g;
