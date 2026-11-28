@@ -8,6 +8,8 @@ export {
 	CONNECTIONS_FINISH_COINS,
 	CONNECTIONS_RIGHT_COINS,
 	ECONOMY_VERSION,
+	GUESS_FINISH_COINS,
+	GUESS_RIGHT_COINS,
 	JUMBO_PACK_COST_COINS,
 	STANDARD_PACK_COST_COINS,
 	STARTING_COINS,
@@ -113,3 +115,5 @@ export type {
 } from './pairs.ts';
 export { GUESS_OPTIONS, GUESS_QUESTIONS, startGuessRound } from './guess-the-club.ts';
 export type { GuessQuestion, GuessRound } from './guess-the-club.ts';
+export { answerGuess, finishGuessRound, openGuessRound } from './guess-the-club-round.ts';
+export type { GuessRefusal, GuessResult, PaidGuessRound } from './guess-the-club-round.ts';

@@ -1,5 +1,5 @@
 /** The version of the coin table. A change to any amount raises it (ADR 0010 D1). */
-export const ECONOMY_VERSION = 3;
+export const ECONOMY_VERSION = 4;
 /** The coins a new player starts with. */
 export const STARTING_COINS = 0;
 /** The price of a standard pack once the free packs are used. */
@@ -22,3 +22,7 @@ export const TRAIL_FINISH_COINS = 2;
 export const CONNECTIONS_RIGHT_COINS = 1;
 /** The coins finishing a Connections round pays. */
 export const CONNECTIONS_FINISH_COINS = 2;
+/** The coins a Guess the Club question pays for a right first answer. */
+export const GUESS_RIGHT_COINS = 1;
+/** The coins finishing a Guess the Club round pays. */
+export const GUESS_FINISH_COINS = 2;
