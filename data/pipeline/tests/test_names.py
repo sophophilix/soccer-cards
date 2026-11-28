@@ -187,3 +187,37 @@ def test_every_slug_is_unique_and_fits_the_schema(
     assert len(set(slugs.values())) == len(names)
     for slug in slugs.values():
         assert re.fullmatch(NAME_PATTERN, f"players/{slug}")
+
+
+@pytest.mark.parametrize(
+    "label",
+    [
+        "\u0391rda G\u00fcler",  # Greek capital alpha before Latin letters.
+        "Lionel Mess\u03b9",  # Greek iota at the end.
+        "Lionel Messi".replace("e", "\u0435"),  # Cyrillic e inside a Latin name.
+        "Real \u041cadrid",  # Cyrillic capital Em.
+    ],
+)
+def test_label_mixing_writing_systems_is_refused_with_the_qid(label: str) -> None:
+    with pytest.raises(LabelError, match=r"^Q615: label mixes writing systems"):
+        display_name(replace(FACTS, label=label))
+    with pytest.raises(LabelError, match=r"^Q8682: label mixes writing systems"):
+        club_name("Q8682", label)
+
+
+@pytest.mark.parametrize(
+    "label",
+    [
+        "Arda G\u00fcler",
+        "\u00d8degaard",
+        "\u0141ukasz",
+        "Mbapp\u00e9",
+        "N'Golo Kant\u00e9",
+        "W.F.C.",
+        "Jean-Pierre",
+        "\u039b\u03b9\u03bf\u03bd\u03b5\u03bb \u039c\u03ad\u03c3\u03c3\u03b9",
+        "\u041c\u0435\u0441\u0441\u0438",  # Cyrillic only.
+    ],
+)
+def test_label_in_one_writing_system_is_accepted(label: str) -> None:
+    assert display_name(replace(FACTS, label=label)) == label
