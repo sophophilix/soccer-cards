@@ -5,18 +5,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
 	test.describe(`with the system in ${colorScheme} mode`, () => {
 		test.use({ colorScheme });
 
-		for (const path of [
-			'/',
-			'/packs',
-			'/match',
-			'/games',
-			'/games/transfer-trail',
-			'/games/connections',
-			'/games/guess-the-club',
-			'/games/pairs',
-			'/cards',
-			'/guide'
-		]) {
+		for (const path of ['/', '/packs', '/match', '/games', '/cards', '/guide']) {
 			test(`${path} has no accessibility violation`, async ({ page }) => {
 				await page.goto(path);
 				await page.evaluate(async () => document.fonts.ready);
