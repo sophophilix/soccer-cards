@@ -111,3 +111,5 @@ export type {
 	PairsResult,
 	PairsSize
 } from './pairs.ts';
+export { GUESS_OPTIONS, GUESS_QUESTIONS, startGuessRound } from './guess-the-club.ts';
+export type { GuessQuestion, GuessRound } from './guess-the-club.ts';
