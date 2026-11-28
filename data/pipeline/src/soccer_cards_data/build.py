@@ -7,6 +7,7 @@ Slugs are kept in the committed registry `ids.toml`: a registered slug never
 changes and is never given to another Q-id (ADR 0005 D2).
 """
 
+import contextlib
 import json
 import shutil
 import tempfile
@@ -128,7 +129,8 @@ def check_players(client: PoliteClient, qids: Iterable[str]) -> list[Check]:
         try:
             results.append(_check_player(client, qid))
         except (WikidataError, BuildError, names.LabelError) as exc:
-            results.append(Check(qid, False, f"{qid}: {exc}"))
+            shown = qid if qid.isascii() and qid.isprintable() else ascii(qid)
+            results.append(Check(qid, False, f"{shown}: {exc}"))
     return results
 
 
@@ -145,10 +147,11 @@ def _check_player(client: PoliteClient, qid: str) -> Check:
         ),
         key=lambda s: (s.start or "", s.team),
     )
-    club = names.club_name(open_clubs[-1].team, open_clubs[-1].team_label)
-    return Check(
-        qid, True, f"{qid}: ok {code} {position} {club if open_clubs else 'no club'}"
-    )
+    club = "no club"  # As the build: a missing or unplain club label isn't a refusal.
+    if open_clubs:
+        with contextlib.suppress(names.LabelError):
+            club = names.club_name(open_clubs[-1].team, open_clubs[-1].team_label)
+    return Check(qid, True, f"{qid}: ok {code} {position} {club}")
 
 
 def _any_position(facts: wikidata.PlayerFacts) -> str:

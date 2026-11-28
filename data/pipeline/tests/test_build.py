@@ -33,6 +33,9 @@ class FakeWikimedia:
         self.no_photo, self.image, self.asked = no_photo, image, list[str]()
         self.positions = dict[str, list[str]]()  # Replaces a player's P413.
         self.open_teams = list[str]()  # Teams whose spells have no end date.
+        self.closed_teams = list[str]()  # Teams whose spells get an end date.
+        self.labels = dict[str, str]()  # Replaces an item's English label.
+        self.not_a_footballer = False  # Drops every occupation.
         teams = [FIXTURES / f"wikidata/{q}-teams.json" for q in ("Q615", "Q107365")]
         self.teams = [_json(path) for path in teams]
 
@@ -76,8 +79,20 @@ class FakeWikimedia:
                 value = claim["mainsnak"].get("datavalue", {}).get("value", {})
                 if value.get("id") in self.open_teams:
                     claim.get("qualifiers", {}).pop("P582", None)
+                if value.get("id") in self.closed_teams:
+                    quals = claim["qualifiers"]
+                    quals["P582"] = claims["P54"][0]["qualifiers"]["P582"]
+            if self.not_a_footballer:
+                claims["P106"] = []
+            if params["ids"] in self.labels:
+                label = {"language": "en", "value": self.labels[params["ids"]]}
+                reply["entities"][params["ids"]]["labels"] = {"en": label}
             return httpx.Response(200, json=reply)
         teams = next(t for t in self.teams if ids <= set(t["entities"]))
+        for team_id, entity in teams["entities"].items():
+            if team_id in self.labels:
+                label = {"language": "en", "value": self.labels[team_id]}
+                entity["labels"] = {"en": label}
         return httpx.Response(200, json=teams)
 
 
@@ -531,3 +546,49 @@ def test_a_check_asks_once_for_a_repeated_id_and_refuses_a_bad_one(
     assert [r.ok for r in results] == [True, False]
     assert "not a Wikidata item id" in results[1].line
     assert net.asked.count("Q615") == 1
+
+
+def test_a_check_refuses_a_mixed_script_name_and_a_non_footballer(
+    tmp_path: Path,
+) -> None:
+    mixed = FakeWikimedia()
+    mixed.labels["Q615"] = "Lionel Меssi"  # noqa: RUF001  Cyrillic on purpose.
+    other = FakeWikimedia()
+    other.not_a_footballer = True
+
+    [bad_name] = _check(tmp_path, ["Q615"], mixed)
+    [bad_item] = _check(tmp_path / "other", ["Q615"], other)
+
+    assert not bad_name.ok
+    assert bad_name.line.startswith("Q615: ")
+    assert "Q615" in bad_name.line
+    assert not bad_item.ok
+    assert "not an association football player" in bad_item.line
+
+
+def test_a_check_says_no_club_when_no_spell_is_open(tmp_path: Path) -> None:
+    net = FakeWikimedia()
+    net.closed_teams = ["Q16844931"]
+
+    [result] = _check(tmp_path, ["Q615"], net)
+
+    assert result.ok
+    assert result.line.endswith("no club")
+
+
+def test_a_check_accepts_a_player_whose_club_label_is_not_plain(
+    tmp_path: Path,
+) -> None:
+    net = FakeWikimedia()
+    net.labels["Q16844931"] = "x" * 100
+
+    [result] = _check(tmp_path, ["Q615"], net)
+
+    assert result.ok
+    assert result.line.endswith("no club")
+
+
+def test_a_check_echoes_a_malformed_id_escaped(tmp_path: Path) -> None:
+    [result] = _check(tmp_path, ["Q1\x1b[2J"], FakeWikimedia())
+
+    assert "\x1b" not in result.line
