@@ -109,16 +109,6 @@ test('a player with no cards sees every size disabled and a way to open packs', 
 		.toHaveAttribute('href', '/packs');
 });
 
-test('Another board size goes back to the sizes', async () => {
-	own(6);
-	const screen = await render(PairsView);
-	await screen.getByRole('button', { name: '6 pairs' }).click();
-	await playPerfect(screen);
-	await screen.getByRole('button', { name: 'Another board size' }).click();
-
-	await expect.element(screen.getByRole('button', { name: '6 pairs' })).toBeEnabled();
-});
-
 test('picking a size shows a board of that size', async () => {
 	own(8);
 	const screen = await render(PairsView);

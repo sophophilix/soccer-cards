@@ -33,13 +33,10 @@ test('the finish text asks for fewer turns when there was no bonus', () => {
 	expect(finishText(10, 21)).toContain('You used 21 turns.');
 });
 
-test('a size the player cannot play says how many more different cards it needs', () => {
+test('a size note says what a player still needs, or the coins the board wins', () => {
 	expect(sizeNote(6, 4)).toBe('Collect 2 more different cards to play this.');
 	expect(sizeNote(8, 7)).toBe('Collect 1 more different card to play this.');
 	expect(sizeNote(10, 0)).toBe('Collect 10 more different cards to play this.');
-});
-
-test('a size the player can play says the coins it wins', () => {
 	expect(sizeNote(6, 6)).toBe('Win 3 coins.');
 	expect(sizeNote(8, 20)).toBe('Win 4 coins.');
 	expect(sizeNote(10, 10)).toBe('Win 5 coins.');

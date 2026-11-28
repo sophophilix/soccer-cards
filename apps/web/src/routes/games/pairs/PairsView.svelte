@@ -10,7 +10,7 @@
 	import PairsPlay from './PairsPlay.svelte';
 	import { sizeNote } from './pairs-words.ts';
 
-	type Stage = 'loading' | 'cannot-start' | 'picking' | 'playing';
+	type Stage = 'loading' | 'picking' | 'playing';
 
 	let stage = $state<Stage>('loading');
 	let player = $state.raw<PlayerState>();
@@ -37,8 +37,10 @@
 		const session = await openCollection();
 		player = session.state;
 		if (!session.ok) {
-			// With no cards there is no card set to wait for, so every size shows as disabled.
-			stage = Object.keys(session.state.collection).length === 0 ? 'picking' : 'cannot-start';
+			// Without the card set every size shows as disabled.
+			if (Object.keys(session.state.collection).length > 0)
+				notice = "We can't find the players. Check you are online, then reload.";
+			stage = 'picking';
 			return;
 		}
 		({ store, cardSet, faces } = session);
@@ -64,15 +66,6 @@
 	{#if notice}<p class="banner">{notice}</p>{/if}
 	{#if stage === 'loading'}
 		<p>Getting your cards ready…</p>
-	{:else if stage === 'cannot-start'}
-		<div class="empty">
-			<h2>The game can't start right now</h2>
-			<p>We can't find the players. Check you are online, then try again.</p>
-			<div class="row">
-				<button type="button" class="btn primary" onclick={() => void open()}>Try again</button>
-				<a class="btn" href={resolve('/games')}>Back to games</a>
-			</div>
-		</div>
 	{:else if stage === 'playing' && player !== undefined && cardSet !== undefined && store !== undefined}
 		<div class="row">
 			<button
