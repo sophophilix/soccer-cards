@@ -9,7 +9,7 @@ paths:
   - apps/web/tests/guess-the-club.spec.ts
 dependencies: []
 max_changed_lines: 100
-status: ready
+status: done
 ---
 
 ## Goal

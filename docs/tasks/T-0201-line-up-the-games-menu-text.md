@@ -9,7 +9,7 @@ paths:
   - apps/web/tests/games.spec.ts
 dependencies: []
 max_changed_lines: 80
-status: ready
+status: done
 ---
 
 ## Goal
