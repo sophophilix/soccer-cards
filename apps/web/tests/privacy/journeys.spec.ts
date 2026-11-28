@@ -63,7 +63,9 @@ async function serveCards(page: Page): Promise<void> {
 	const clubs = [
 		{ name: 'clubs/test-club', displayName: 'Test Club' },
 		{ name: 'clubs/second-club', displayName: 'Second Club' },
-		{ name: 'clubs/third-club', displayName: 'Third Club' }
+		{ name: 'clubs/third-club', displayName: 'Third Club' },
+		{ name: 'clubs/fourth-club', displayName: 'Fourth Club' },
+		{ name: 'clubs/fifth-club', displayName: 'Fifth Club' }
 	];
 	const careerSpells = [
 		{ club: 'clubs/test-club', startYear: 2000, endYear: 2004 },
@@ -72,8 +74,16 @@ async function serveCards(page: Page): Promise<void> {
 	];
 	await page.route('**/api/v1/players.json', (route) => route.fulfill({ json: { players } }));
 	await page.route('**/api/v1/clubs.json', (route) => route.fulfill({ json: { clubs } }));
+	// Players whose id ends in 2 have other later clubs, so Connections has clubs to choose from.
+	const otherSpells = [
+		{ club: 'clubs/test-club', startYear: 2000, endYear: 2004 },
+		{ club: 'clubs/fourth-club', startYear: 2004, endYear: 2008 },
+		{ club: 'clubs/fifth-club', startYear: 2008 }
+	];
 	await page.route('**/api/v1/players/*.json', (route) =>
-		route.fulfill({ json: { careerSpells } })
+		route.fulfill({
+			json: { careerSpells: route.request().url().endsWith('2.json') ? otherSpells : careerSpells }
+		})
 	);
 	await page.route('**/api/v1/photos/**', (route) => route.fulfill({ status: 404 }));
 }
@@ -141,6 +151,9 @@ test('every view runs with one origin, no cookie and no security policy violatio
 
 	await page.goto('/games/transfer-trail');
 	await expect(page.getByText('Player 1 of 5')).toBeVisible();
+
+	await page.goto('/games/connections');
+	await expect(page.getByText('Question 1 of 5')).toBeVisible();
 
 	await page.goto('/guide');
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
