@@ -35,7 +35,7 @@ def test_every_photo_has_a_credit_and_every_credit_a_file() -> None:
     assert on_players <= credited
 
 
-def test_it_holds_103_photos_and_one_avatar() -> None:
+def test_it_holds_63_photos_and_one_avatar() -> None:
     players = _json("players.json")["players"]
     avatars = [p["displayName"] for p in players if "photo" not in p]
     assert avatars == ["Peter Schmeichel"]
