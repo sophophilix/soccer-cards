@@ -57,6 +57,9 @@ league. This batch is the La Liga.
 - The output was produced only by `scdata build`.
 - The tests that pin the player count pin the new count, and the tier
   spread still lets `drawPack` run.
+- The tests named for a count, `test_it_holds_the_first_64_players` and
+  `test_it_holds_63_photos_and_one_avatar`, are renamed so their names hold
+  no number (T-0203 left them stale).
 - The report lists the request count and time, the tier spread, the
   national team spread, and every player with an avatar instead of a photo
   and why.
