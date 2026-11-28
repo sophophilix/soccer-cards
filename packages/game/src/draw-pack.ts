@@ -77,7 +77,8 @@ function limitTeams(
 		const tier = byId.get(id)?.tier;
 		const free = cardSet
 			.filter(
-				(card) => card.tier === tier && countOf(card.nationalTeam) < limit && !result.includes(card.id)
+				(card) =>
+					card.tier === tier && countOf(card.nationalTeam) < limit && !result.includes(card.id)
 			)
 			.map((card) => card.id);
 		const [swap] = free.length > 0 ? random.sample(free, 1) : [];

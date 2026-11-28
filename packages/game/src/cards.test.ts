@@ -36,19 +36,21 @@ describe('checkCardSet', () => {
 		expect(result).toEqual({ ok: false, reason: 'invalid-card-field', cardId: 'odd-one', field });
 	});
 
-	it.each([{ nationalTeam: 'au' }, { nationalTeam: 'AUST' }, { nationalTeam: 7 }, { nationalTeam: '' }])(
-		'refuses a card with $nationalTeam as its national team and names the field',
-		(fields) => {
-			const result = checkCardSet([cardWithId('fine'), cardFromData(fields)]);
+	it.each([
+		{ nationalTeam: 'au' },
+		{ nationalTeam: 'AUST' },
+		{ nationalTeam: 7 },
+		{ nationalTeam: '' }
+	])('refuses a card with $nationalTeam as its national team and names the field', (fields) => {
+		const result = checkCardSet([cardWithId('fine'), cardFromData(fields)]);
 
-			expect(result).toEqual({
-				ok: false,
-				reason: 'invalid-card-field',
-				cardId: 'odd-one',
-				field: 'nationalTeam'
-			});
-		}
-	);
+		expect(result).toEqual({
+			ok: false,
+			reason: 'invalid-card-field',
+			cardId: 'odd-one',
+			field: 'nationalTeam'
+		});
+	});
 
 	it('accepts a card with no national team and a card with a three-letter one', () => {
 		const cards = [cardWithId('none'), aCard({ id: toCardId('aus'), nationalTeam: 'AUS' })];

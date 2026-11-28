@@ -1,5 +1,13 @@
 import { describe, expect, it, vi } from 'vitest';
-import { LUCKY_ODDS, PACK_CONTENTS, PACK_TEAM_LIMIT, createRandom, drawPack, packSize, toCardId } from './index.ts';
+import {
+	LUCKY_ODDS,
+	PACK_CONTENTS,
+	PACK_TEAM_LIMIT,
+	createRandom,
+	drawPack,
+	packSize,
+	toCardId
+} from './index.ts';
 import type { Card, CardId, DrawPackResult, Random, Tier } from './index.ts';
 import { aCardSet, aCheckedCardSet, aCheckedCardSetOf } from './testing/cards.ts';
 

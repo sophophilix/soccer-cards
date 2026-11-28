@@ -1,6 +1,13 @@
 import fc from 'fast-check';
 import { describe, expect, it } from 'vitest';
-import { PACK_CONTENTS, PACK_TEAM_LIMIT, TIERS, createRandom, drawPack, packSize } from './index.ts';
+import {
+	PACK_CONTENTS,
+	PACK_TEAM_LIMIT,
+	TIERS,
+	createRandom,
+	drawPack,
+	packSize
+} from './index.ts';
 import type { Card, CardId, DrawPackResult, PackKind } from './index.ts';
 import { aCard, aCardSet, aCheckedCardSet, aCheckedCardSetOf } from './testing/cards.ts';
 
@@ -98,7 +105,9 @@ describe('drawPack properties', () => {
 		it('rolls the same lucky tiers as a draw with no limit', () => {
 			fc.assert(
 				fc.property(teamsSet, kind, seed, (cards, packKind, packSeed) => {
-					const limited = idsOf(drawPack(aCheckedCardSetOf(cards), packKind, createRandom(packSeed)));
+					const limited = idsOf(
+						drawPack(aCheckedCardSetOf(cards), packKind, createRandom(packSeed))
+					);
 					const free = idsOf(
 						drawPack(aCheckedCardSetOf(withoutTeams(cards)), packKind, createRandom(packSeed))
 					);
