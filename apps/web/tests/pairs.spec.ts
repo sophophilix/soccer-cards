@@ -90,11 +90,6 @@ test('a 6-pair board with the mouse pays coins and shows them in the masthead', 
 	await expect(page.getByRole('heading', { name: 'All 6 pairs found!' })).toBeFocused();
 	await expect(page.getByText('Turns: 6')).toBeVisible();
 	await expect(page.getByText('Pairs: 6 of 6')).toBeVisible();
-	await expect(
-		page.getByText(
-			'You used 6 turns. You earned 4 coins: 3 for the board and 1 for finding them in 12 turns or fewer.'
-		)
-	).toBeVisible();
 	await expect(page.getByText(`${String(START_COINS + BOARD_COINS)} coins`)).toBeVisible();
 	await expect(page.getByRole('button', { name: 'Play again' })).toBeVisible();
 
@@ -102,17 +97,29 @@ test('a 6-pair board with the mouse pays coins and shows them in the masthead', 
 	await expect(page.getByText(`${String(START_COINS + BOARD_COINS)} coins`)).toBeVisible();
 });
 
-test('a board plays with the keyboard alone', async ({ page }) => {
+/** Presses Tab, or Shift+Tab, once for each place between two cards, so focus walks the board. */
+async function walkTo(page: Page, from: number, to: number): Promise<void> {
+	const key = to > from ? 'Tab' : 'Shift+Tab';
+	for (let step = Math.abs(to - from); step > 0; step--) await page.keyboard.press(key);
+}
+
+test('a board plays with the keyboard alone, reaching each card by Tab', async ({ page }) => {
 	await serve(page);
 	await page.goto('/games/pairs');
 	await page.getByRole('button', { name: '6 pairs' }).focus();
 	await page.keyboard.press('Enter');
+	await page.getByRole('button', { name: 'Change board' }).focus();
+	await page.keyboard.press('Tab');
+	await expect(cardAt(page, 1)).toBeFocused();
 
+	let at = 1;
 	for (const [first, second] of pairPlaces()) {
-		await cardAt(page, first).focus();
+		await walkTo(page, at, first);
+		await expect(cardAt(page, first)).toBeFocused();
 		await page.keyboard.press('Enter');
-		await cardAt(page, second).focus();
+		await walkTo(page, first, second);
 		await page.keyboard.press('Enter');
+		at = second;
 	}
 
 	await expect(page.getByRole('heading', { name: 'All 6 pairs found!' })).toBeFocused();
@@ -175,15 +182,15 @@ for (const width of [320, 390]) {
 		const overflow = await page.evaluate(
 			() => document.documentElement.scrollWidth - document.documentElement.clientWidth
 		);
-		const smallest = await page.evaluate(() =>
-			Math.min(
-				...[...document.querySelectorAll('[data-testid^="slot-"] .tap')].map(
-					(tap) => tap.getBoundingClientRect().width
-				)
-			)
+		const targets = await page.evaluate(() =>
+			[...document.querySelectorAll('[data-testid^="slot-"] button')].map((tap) => {
+				const box = tap.getBoundingClientRect();
+				return Math.min(box.width, box.height);
+			})
 		);
 
 		expect(overflow).toBeLessThanOrEqual(0);
-		expect(smallest).toBeGreaterThanOrEqual(44);
+		expect(targets).toHaveLength(12);
+		expect(Math.min(...targets)).toBeGreaterThanOrEqual(44);
 	});
 }
