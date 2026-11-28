@@ -1,0 +1,105 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/borussia-monchengladbach",
+      "endYear": 2010,
+      "startYear": 1996
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q160472&oldid=2574246410",
+        "value": 108
+      },
+      "club": "clubs/borussia-monchengladbach",
+      "endYear": 2014,
+      "goalCount": {
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q160472&oldid=2574246410",
+        "value": 0
+      },
+      "startYear": 2011
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q160472&oldid=2574246410",
+        "value": 291
+      },
+      "club": "clubs/fc-barcelona",
+      "goalCount": {
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q160472&oldid=2574246410",
+        "value": 0
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q160472&oldid=2574246410",
+        "value": 2
+      },
+      "club": "clubs/girona-fc",
+      "endYear": 2026,
+      "goalCount": {
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q160472&oldid=2574246410",
+        "value": 0
+      },
+      "startYear": 2026
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q160472&oldid=2574246410",
+        "value": 0
+      },
+      "club": "clubs/afc-ajax",
+      "goalCount": {
+        "retrieveDate": "2026-11-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q160472&oldid=2574246410",
+        "value": 0
+      },
+      "startYear": 2026
+    }
+  ],
+  "club": "clubs/afc-ajax",
+  "displayName": "Marc-André ter Stegen",
+  "goalkeeperRatings": {
+    "diving": 75,
+    "handling": 85,
+    "kicking": 95,
+    "positioning": 75,
+    "reflexes": 85,
+    "speed": 75
+  },
+  "name": "players/marc-andre-ter-stegen",
+  "nationalTeamCode": "GER",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-01-20",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q160472&oldid=2574246410",
+    "value": 0
+  },
+  "photo": {
+    "attribution": {
+      "author": "Government of Catalonia",
+      "licenseCode": "CC0-1.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Marc-Andre_Ter_Stegen_ACCI_FCBARCELONA_Turisme_Catalunya_gira_pretemporada_CATPRESS.jpg"
+    },
+    "heightPx": 600,
+    "mimeType": "image/webp",
+    "uri": "photos/marc-andre-ter-stegen.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 91,
+    "control": 86,
+    "defence": 80,
+    "overall": 80
+  },
+  "position": "GOALKEEPER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

@@ -1,0 +1,121 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q188997&oldid=2573206035",
+        "value": 132
+      },
+      "club": "clubs/arsenal-f-c",
+      "endYear": 2017,
+      "goalCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q188997&oldid=2573206035",
+        "value": 0
+      },
+      "startYear": 2006
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q188997&oldid=2573206035",
+        "value": 28
+      },
+      "club": "clubs/brentford-f-c",
+      "endYear": 2010,
+      "goalCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q188997&oldid=2573206035",
+        "value": 0
+      },
+      "startYear": 2009
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q188997&oldid=2573206035",
+        "value": 72
+      },
+      "club": "clubs/as-roma",
+      "endYear": 2017,
+      "goalCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q188997&oldid=2573206035",
+        "value": 0
+      },
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q188997&oldid=2573206035",
+        "value": 200
+      },
+      "club": "clubs/juventus-fc",
+      "endYear": 2024,
+      "goalCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q188997&oldid=2573206035",
+        "value": 0
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2025-11-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q188997&oldid=2573206035",
+        "value": 24
+      },
+      "club": "clubs/fc-barcelona",
+      "goalCount": {
+        "retrieveDate": "2025-11-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q188997&oldid=2573206035",
+        "value": 0
+      },
+      "startYear": 2024
+    }
+  ],
+  "club": "clubs/fc-barcelona",
+  "clubGoalCount": {
+    "retrieveDate": "2025-11-09",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q188997&oldid=2573206035",
+    "value": 0
+  },
+  "displayName": "Wojciech Szczęsny",
+  "goalkeeperRatings": {
+    "diving": 75,
+    "handling": 85,
+    "kicking": 75,
+    "positioning": 85,
+    "reflexes": 75,
+    "speed": 75
+  },
+  "name": "players/wojciech-szczesny",
+  "nationalTeamCode": "POL",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-21",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q188997&oldid=2573206035",
+    "value": 0
+  },
+  "photo": {
+    "attribution": {
+      "author": "La Gazzetta dello Sport",
+      "licenseCode": "CC-BY-3.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Wojciech_Szcz%C4%99sny.png"
+    },
+    "heightPx": 517,
+    "mimeType": "image/webp",
+    "uri": "photos/wojciech-szczesny.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 75,
+    "control": 80,
+    "defence": 79,
+    "overall": 82
+  },
+  "position": "GOALKEEPER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

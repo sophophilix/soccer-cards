@@ -1,0 +1,90 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q123289726&oldid=2574759904",
+        "value": 45
+      },
+      "club": "clubs/club-atletico-river-plate",
+      "endYear": 2025,
+      "goalCount": {
+        "retrieveDate": "2026-11-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q123289726&oldid=2574759904",
+        "value": 5
+      },
+      "startYear": 2024
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q123289726&oldid=2574759904",
+        "value": 23
+      },
+      "club": "clubs/real-madrid-club-de-futbol",
+      "goalCount": {
+        "retrieveDate": "2026-11-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q123289726&oldid=2574759904",
+        "value": 1
+      },
+      "startYear": 2025
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q123289726&oldid=2574759904",
+        "value": 0
+      },
+      "club": "clubs/acf-fiorentina",
+      "goalCount": {
+        "retrieveDate": "2026-11-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q123289726&oldid=2574759904",
+        "value": 0
+      },
+      "startYear": 2026
+    }
+  ],
+  "club": "clubs/acf-fiorentina",
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-25",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q123289726&oldid=2574759904",
+    "value": 6
+  },
+  "displayName": "Franco Mastantuono",
+  "name": "players/franco-mastantuono",
+  "nationalTeamCode": "ARG",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-25",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q123289726&oldid=2574759904",
+    "value": 0
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 75,
+    "pace": 75,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 74
+  },
+  "photo": {
+    "attribution": {
+      "author": "Crispybeatle",
+      "licenseCode": "CC0-1.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Franco_Mastantuono_in_2025_(cropped).jpg"
+    },
+    "heightPx": 696,
+    "mimeType": "image/webp",
+    "uri": "photos/franco-mastantuono.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 75,
+    "control": 75,
+    "defence": 70,
+    "overall": 73
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

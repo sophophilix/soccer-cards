@@ -1,0 +1,76 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q42728914&oldid=2570856385",
+        "value": 41
+      },
+      "club": "clubs/santos-f-c",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q42728914&oldid=2570856385",
+        "value": 9
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-03-03",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q42728914&oldid=2570856385",
+        "value": 191
+      },
+      "club": "clubs/real-madrid-club-de-futbol",
+      "goalCount": {
+        "retrieveDate": "2026-03-03",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q42728914&oldid=2570856385",
+        "value": 33
+      },
+      "startYear": 2019
+    }
+  ],
+  "club": "clubs/real-madrid-club-de-futbol",
+  "clubGoalCount": {
+    "retrieveDate": "2026-03-03",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q42728914&oldid=2570856385",
+    "value": 42
+  },
+  "displayName": "Rodrygo",
+  "name": "players/rodrygo",
+  "nationalTeamCode": "BRA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2025-11-18",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q42728914&oldid=2570856385",
+    "value": 9
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 85,
+    "pace": 75,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 83
+  },
+  "photo": {
+    "attribution": {
+      "author": "Junta de Andalucía",
+      "licenseCode": "CC-BY-SA-2.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Rodrygo_2023_(cropped).jpg"
+    },
+    "heightPx": 564,
+    "mimeType": "image/webp",
+    "uri": "photos/rodrygo.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 81,
+    "control": 79,
+    "defence": 70,
+    "overall": 80
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

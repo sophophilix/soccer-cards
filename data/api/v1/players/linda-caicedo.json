@@ -1,0 +1,86 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q105723669&oldid=2570203503",
+        "value": 7
+      },
+      "club": "clubs/america-de-cali",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q105723669&oldid=2570203503",
+        "value": 7
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q105723669&oldid=2570203503",
+        "value": 37
+      },
+      "club": "clubs/deportivo-cali",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q105723669&oldid=2570203503",
+        "value": 16
+      },
+      "startYear": 2020
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q105723669&oldid=2570203503",
+        "value": 48
+      },
+      "club": "clubs/real-madrid-femenino",
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q105723669&oldid=2570203503",
+        "value": 10
+      },
+      "startYear": 2023
+    }
+  ],
+  "club": "clubs/real-madrid-femenino",
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-16",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q105723669&oldid=2570203503",
+    "value": 33
+  },
+  "displayName": "Linda Caicedo",
+  "name": "players/linda-caicedo",
+  "nationalTeamCode": "COL",
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 95,
+    "pace": 95,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 85
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Linda_Caicedo_USWNT_v_Colombia_Mar_7_2026-97_(cropped).jpg"
+    },
+    "heightPx": 640,
+    "mimeType": "image/webp",
+    "uri": "photos/linda-caicedo.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 88,
+    "control": 85,
+    "defence": 72,
+    "overall": 85
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "RARE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

@@ -34,6 +34,40 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/real-betis-balompie",
+      "displayName": "Abde Ezzalzouli",
+      "name": "players/abde-ezzalzouli",
+      "nationalTeamCode": "MAR",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 85,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 75
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Abdessamad_Ezzalzouli_Morocco_v_Norway_7_June_2026-38.jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/abde-ezzalzouli.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 79,
+        "control": 80,
+        "defence": 71,
+        "overall": 76
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/ol-lyonnes",
       "displayName": "Ada Hegerberg",
       "name": "players/ada-hegerberg",
@@ -66,6 +100,74 @@
       "position": "FORWARD",
       "state": "ACTIVE",
       "tier": "BASE"
+    },
+    {
+      "club": "clubs/atletico-madrid",
+      "displayName": "Ademola Lookman",
+      "name": "players/ademola-lookman",
+      "nationalTeamCode": "NGA",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 85,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 84
+      },
+      "photo": {
+        "attribution": {
+          "author": "Steffen Prößdorf",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:2019-10-23_Fu%C3%9Fball,_M%C3%A4nner,_UEFA_Champions_League,_RB_Leipzig_-_FC_Zenit_St._Petersburg_1DX_2586_by_Stepro.jpg"
+        },
+        "heightPx": 480,
+        "mimeType": "image/webp",
+        "uri": "photos/ademola-lookman.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 84,
+        "control": 80,
+        "defence": 71,
+        "overall": 83
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/fc-barcelona-femeni",
+      "displayName": "Aitana Bonmatí",
+      "name": "players/aitana-bonmati",
+      "nationalTeamCode": "ESP",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 85,
+        "pace": 75,
+        "passing": 95,
+        "physical": 75,
+        "shooting": 87
+      },
+      "photo": {
+        "attribution": {
+          "author": "Barcex",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:25th_Laureus_World_Sports_Awards_-_Red_Carpet_-_Aitana_Bonmat%C3%AD_-_240422_193345-2_(cropped).jpg"
+        },
+        "heightPx": 566,
+        "mimeType": "image/webp",
+        "uri": "photos/aitana-bonmati.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 85,
+        "control": 87,
+        "defence": 77,
+        "overall": 85
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "RARE"
     },
     {
       "club": "clubs/western-new-york-flash",
@@ -132,6 +234,40 @@
         "overall": 83
       },
       "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/atletico-madrid",
+      "displayName": "Alexander Sørloth",
+      "name": "players/alexander-sorloth",
+      "nationalTeamCode": "NOR",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 65,
+        "pace": 74,
+        "passing": 75,
+        "physical": 95,
+        "shooting": 85
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Alexander_Sorloth_France_v_Norway_26_June_26-048.jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/alexander-sorloth.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 78,
+        "control": 73,
+        "defence": 81,
+        "overall": 81
+      },
+      "position": "FORWARD",
       "state": "ACTIVE",
       "tier": "BASE"
     },
@@ -270,6 +406,40 @@
       "tier": "LEGEND"
     },
     {
+      "club": "clubs/club-atletico-osasuna",
+      "displayName": "Ante Budimir",
+      "name": "players/ante-budimir",
+      "nationalTeamCode": "CRO",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 65,
+        "pace": 72,
+        "passing": 75,
+        "physical": 83,
+        "shooting": 82
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Ante_Budimir_Croatia_v_Portugal_2_July_2026-034.jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/ante-budimir.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 76,
+        "control": 72,
+        "defence": 77,
+        "overall": 75
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/orlando-city-sc",
       "displayName": "Antoine Griezmann",
       "name": "players/antoine-griezmann",
@@ -338,6 +508,40 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/real-betis-balompie",
+      "displayName": "Antony dos Santos",
+      "name": "players/antony-dos-santos",
+      "nationalTeamCode": "BRA",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 75,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 73
+      },
+      "photo": {
+        "attribution": {
+          "author": "FotosLaLiga",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Antony_-_Betis_-_Partido_Betis_vs_Valencia.jpg"
+        },
+        "heightPx": 292,
+        "mimeType": "image/webp",
+        "uri": "photos/antony-dos-santos.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 76,
+        "control": 79,
+        "defence": 70,
+        "overall": 76
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/arsenal-f-c",
       "displayName": "Ben White",
       "name": "players/ben-white",
@@ -402,6 +606,40 @@
         "overall": 77
       },
       "position": "GOALKEEPER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/real-madrid-club-de-futbol",
+      "displayName": "Brahim Díaz",
+      "name": "players/brahim-diaz",
+      "nationalTeamCode": "MAR",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 85,
+        "pace": 75,
+        "passing": 75,
+        "physical": 65,
+        "shooting": 75
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Brahim_Diaz_Morocco_v_Norway_7_June_2026-36.jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/brahim-diaz.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 77,
+        "control": 78,
+        "defence": 72,
+        "overall": 78
+      },
+      "position": "MIDFIELDER",
       "state": "ACTIVE",
       "tier": "BASE"
     },
@@ -542,6 +780,40 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/fc-barcelona-femeni",
+      "displayName": "Cata Coll",
+      "goalkeeperRatings": {
+        "diving": 75,
+        "handling": 85,
+        "kicking": 75,
+        "positioning": 85,
+        "reflexes": 75,
+        "speed": 75
+      },
+      "name": "players/cata-coll",
+      "nationalTeamCode": "ESP",
+      "photo": {
+        "attribution": {
+          "author": "MichaelEmilio",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Brann_-_Bar%C3%A7a_Femen%C3%AD_CG3A5987_(cropped2).jpg"
+        },
+        "heightPx": 480,
+        "mimeType": "image/webp",
+        "uri": "photos/cata-coll.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 75,
+        "control": 80,
+        "defence": 79,
+        "overall": 79
+      },
+      "position": "GOALKEEPER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/liverpool-f-c",
       "displayName": "Cody Gakpo",
       "name": "players/cody-gakpo",
@@ -678,6 +950,40 @@
       "tier": "ICON"
     },
     {
+      "club": "clubs/fc-barcelona",
+      "displayName": "Dani Olmo",
+      "name": "players/dani-olmo",
+      "nationalTeamCode": "ESP",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 75,
+        "passing": 85,
+        "physical": 75,
+        "shooting": 85
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Dani_Olmo_France_v_Spain_7.24.26-176_(cropped).jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/dani-olmo.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 83,
+        "control": 83,
+        "defence": 71,
+        "overall": 80
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/arsenal-f-c",
       "displayName": "David Raya",
       "goalkeeperRatings": {
@@ -774,6 +1080,40 @@
         "control": 80,
         "defence": 79,
         "overall": 81
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/real-madrid-club-de-futbol",
+      "displayName": "Eduardo Camavinga",
+      "name": "players/eduardo-camavinga",
+      "nationalTeamCode": "FRA",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 85,
+        "pace": 75,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 64
+      },
+      "photo": {
+        "attribution": {
+          "author": "Fotografías Archimadrid.es",
+          "licenseCode": "CC-BY-2.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Ofrenda_de_la_Liga_y_la_Champions-13-L.Mill%C3%A1n_(52109790215)_(cropped).jpg"
+        },
+        "heightPx": 697,
+        "mimeType": "image/webp",
+        "uri": "photos/eduardo-camavinga.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 72,
+        "control": 79,
+        "defence": 80,
+        "overall": 80
       },
       "position": "MIDFIELDER",
       "state": "ACTIVE",
@@ -882,6 +1222,74 @@
       "tier": "RARE"
     },
     {
+      "club": "clubs/fc-barcelona-femeni",
+      "displayName": "Ewa Pajor",
+      "name": "players/ewa-pajor",
+      "nationalTeamCode": "POL",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 75,
+        "pace": 75,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 98
+      },
+      "photo": {
+        "attribution": {
+          "author": "MichaelEmilio",
+          "licenseCode": "CC-BY-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:UWCL_2025-26_Final_A26.jpg"
+        },
+        "heightPx": 600,
+        "mimeType": "image/webp",
+        "uri": "photos/ewa-pajor.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 87,
+        "control": 75,
+        "defence": 70,
+        "overall": 84
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "RARE"
+    },
+    {
+      "club": "clubs/real-madrid-club-de-futbol",
+      "displayName": "Ferland Mendy",
+      "name": "players/ferland-mendy",
+      "nationalTeamCode": "FRA",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 65,
+        "pace": 84,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 65
+      },
+      "photo": {
+        "attribution": {
+          "author": "Real Madrid",
+          "licenseCode": "CC-BY-3.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Ferland_Mendy,_June_2019.jpg"
+        },
+        "heightPx": 466,
+        "mimeType": "image/webp",
+        "uri": "photos/ferland-mendy.webp",
+        "widthPx": 371
+      },
+      "playStats": {
+        "attack": 70,
+        "control": 72,
+        "defence": 81,
+        "overall": 80
+      },
+      "position": "DEFENDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/liverpool-f-c",
       "displayName": "Florian Wirtz",
       "name": "players/florian-wirtz",
@@ -949,6 +1357,40 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/acf-fiorentina",
+      "displayName": "Franco Mastantuono",
+      "name": "players/franco-mastantuono",
+      "nationalTeamCode": "ARG",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 75,
+        "pace": 75,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 74
+      },
+      "photo": {
+        "attribution": {
+          "author": "Crispybeatle",
+          "licenseCode": "CC0-1.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Franco_Mastantuono_in_2025_(cropped).jpg"
+        },
+        "heightPx": 696,
+        "mimeType": "image/webp",
+        "uri": "photos/franco-mastantuono.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 75,
+        "control": 75,
+        "defence": 70,
+        "overall": 73
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "displayName": "Franz Beckenbauer",
       "name": "players/franz-beckenbauer",
       "nationalTeamCode": "GER",
@@ -980,6 +1422,74 @@
       "position": "DEFENDER",
       "state": "RETIRED",
       "tier": "ICON"
+    },
+    {
+      "club": "clubs/fc-barcelona",
+      "displayName": "Frenkie de Jong",
+      "name": "players/frenkie-de-jong",
+      "nationalTeamCode": "NED",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 85,
+        "pace": 75,
+        "passing": 85,
+        "physical": 75,
+        "shooting": 64
+      },
+      "photo": {
+        "attribution": {
+          "author": "Yuliia Perekopaiko",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%B0%D1%82%D1%87_%C2%AB%D0%94%D0%B8%D0%BD%D0%B0%D0%BC%D0%BE%C2%BB_-_%C2%AB%D0%91%D0%B0%D1%80%D1%81%D0%B5%D0%BB%D0%BE%D0%BD%D0%B0%C2%BB_0-1._2_%D0%BD%D0%BE%D1%8F%D0%B1%D1%80%D1%8F_2021_%D0%B3%D0%BE%D0%B4%D0%B0._II_%E2%80%94_1289671_(cropped).jpg"
+        },
+        "heightPx": 430,
+        "mimeType": "image/webp",
+        "uri": "photos/frenkie-de-jong.webp",
+        "widthPx": 303
+      },
+      "playStats": {
+        "attack": 73,
+        "control": 83,
+        "defence": 76,
+        "overall": 82
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/fc-barcelona-femeni",
+      "displayName": "Fridolina Rolfö",
+      "name": "players/fridolina-rolfo",
+      "nationalTeamCode": "SWE",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 83,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 74
+      },
+      "photo": {
+        "attribution": {
+          "author": "EL Loko Foto",
+          "licenseCode": "CC-BY-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Fridolina_Rolf%C3%B6_20191116_(cropped).jpg"
+        },
+        "heightPx": 584,
+        "mimeType": "image/webp",
+        "uri": "photos/fridolina-rolfo.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 78,
+        "control": 80,
+        "defence": 71,
+        "overall": 78
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
     },
     {
       "club": "clubs/arsenal-f-c",
@@ -1014,6 +1524,74 @@
       "position": "DEFENDER",
       "state": "ACTIVE",
       "tier": "RARE"
+    },
+    {
+      "club": "clubs/fc-barcelona",
+      "displayName": "Gavi",
+      "name": "players/gavi",
+      "nationalTeamCode": "ESP",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 85,
+        "pace": 75,
+        "passing": 85,
+        "physical": 65,
+        "shooting": 64
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Gavi_France_v_Spain_7.24.26-275_(cropped).jpg"
+        },
+        "heightPx": 610,
+        "mimeType": "image/webp",
+        "uri": "photos/gavi.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 73,
+        "control": 82,
+        "defence": 73,
+        "overall": 79
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/villarreal-cf",
+      "displayName": "Georges Mikautadze",
+      "name": "players/georges-mikautadze",
+      "nationalTeamCode": "GEO",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 75,
+        "pace": 75,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 86
+      },
+      "photo": {
+        "attribution": {
+          "author": "Paté kroute",
+          "licenseCode": "CC0-1.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Mikautadze_asse_ol_2425.png"
+        },
+        "heightPx": 669,
+        "mimeType": "image/webp",
+        "uri": "photos/georges-mikautadze.webp",
+        "widthPx": 403
+      },
+      "playStats": {
+        "attack": 81,
+        "control": 75,
+        "defence": 75,
+        "overall": 80
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
     },
     {
       "displayName": "Gianluigi Buffon",
@@ -1248,6 +1826,29 @@
         "overall": 75
       },
       "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/fc-barcelona-femeni",
+      "displayName": "Irene Paredes",
+      "name": "players/irene-paredes",
+      "nationalTeamCode": "ESP",
+      "outfieldRatings": {
+        "defending": 95,
+        "dribbling": 65,
+        "pace": 72,
+        "passing": 75,
+        "physical": 73,
+        "shooting": 66
+      },
+      "playStats": {
+        "attack": 68,
+        "control": 71,
+        "defence": 84,
+        "overall": 81
+      },
+      "position": "DEFENDER",
       "state": "ACTIVE",
       "tier": "BASE"
     },
@@ -1558,6 +2159,40 @@
       "tier": "RARE"
     },
     {
+      "club": "clubs/atletico-madrid",
+      "displayName": "Juan Musso",
+      "goalkeeperRatings": {
+        "diving": 75,
+        "handling": 75,
+        "kicking": 75,
+        "positioning": 85,
+        "reflexes": 85,
+        "speed": 75
+      },
+      "name": "players/juan-musso",
+      "nationalTeamCode": "ARG",
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Juan_Musso_Argentina_v_Spain_19_July_2026-261.jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/juan-musso.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 75,
+        "control": 76,
+        "defence": 80,
+        "overall": 81
+      },
+      "position": "GOALKEEPER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/real-madrid-club-de-futbol",
       "displayName": "Jude Bellingham",
       "name": "players/jude-bellingham",
@@ -1590,6 +2225,74 @@
       "position": "MIDFIELDER",
       "state": "ACTIVE",
       "tier": "BASE"
+    },
+    {
+      "club": "clubs/fc-barcelona",
+      "displayName": "Jules Koundé",
+      "name": "players/jules-kounde",
+      "nationalTeamCode": "FRA",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 65,
+        "pace": 85,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 65
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Jules_Kounde_France_v_Senegal_16_June_2026-449_(cropped).jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/jules-kounde.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 70,
+        "control": 72,
+        "defence": 81,
+        "overall": 83
+      },
+      "position": "DEFENDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/atletico-madrid",
+      "displayName": "Julián Alvarez",
+      "name": "players/julian-alvarez",
+      "nationalTeamCode": "ARG",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 85,
+        "pace": 85,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 84
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Julian_Alvarez_Argentina_v_Spain_19_July_2026-052_(cropped).jpg"
+        },
+        "heightPx": 736,
+        "mimeType": "image/webp",
+        "uri": "photos/julian-alvarez.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 84,
+        "control": 80,
+        "defence": 76,
+        "overall": 84
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "RARE"
     },
     {
       "club": "clubs/arsenal-f-c",
@@ -1687,6 +2390,74 @@
         "control": 78,
         "defence": 65,
         "overall": 82
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/real-madrid-femenino",
+      "displayName": "Kathellen Sousa",
+      "name": "players/kathellen-sousa",
+      "nationalTeamCode": "BRA",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 65,
+        "pace": 74,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 65
+      },
+      "photo": {
+        "attribution": {
+          "author": "MichaelEmilio",
+          "licenseCode": "CC-BY-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Valerenga_v_Real_Madrid,_2023_-_A_13_(face).jpg"
+        },
+        "heightPx": 480,
+        "mimeType": "image/webp",
+        "uri": "photos/kathellen-sousa.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 68,
+        "control": 71,
+        "defence": 80,
+        "overall": 78
+      },
+      "position": "DEFENDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/fc-barcelona-femeni",
+      "displayName": "Kerolin",
+      "name": "players/kerolin",
+      "nationalTeamCode": "BRA",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 85,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 72
+      },
+      "photo": {
+        "attribution": {
+          "author": "Hameltion",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:NC_Courage_vs_Houston_Dash_(Mar_2024)_315_(cropped).jpg"
+        },
+        "heightPx": 540,
+        "mimeType": "image/webp",
+        "uri": "photos/kerolin.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 78,
+        "control": 80,
+        "defence": 71,
+        "overall": 77
       },
       "position": "FORWARD",
       "state": "ACTIVE",
@@ -1822,6 +2593,74 @@
         "control": 88,
         "defence": 67,
         "overall": 84
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "RARE"
+    },
+    {
+      "club": "clubs/atletico-madrid",
+      "displayName": "Lee Kang-in",
+      "name": "players/lee-kang-in",
+      "nationalTeamCode": "KOR",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 85,
+        "pace": 75,
+        "passing": 85,
+        "physical": 65,
+        "shooting": 75
+      },
+      "photo": {
+        "attribution": {
+          "author": "Republic of Korea from Seoul, Republic of Korea",
+          "licenseCode": "CC-BY-SA-2.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Lee_Kang-in_-_2022_(52551771501)_(cropped).jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/lee-kang-in.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 78,
+        "control": 82,
+        "defence": 73,
+        "overall": 81
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/real-madrid-femenino",
+      "displayName": "Linda Caicedo",
+      "name": "players/linda-caicedo",
+      "nationalTeamCode": "COL",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 95,
+        "pace": 95,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 85
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Linda_Caicedo_USWNT_v_Colombia_Mar_7_2026-97_(cropped).jpg"
+        },
+        "heightPx": 640,
+        "mimeType": "image/webp",
+        "uri": "photos/linda-caicedo.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 88,
+        "control": 85,
+        "defence": 72,
+        "overall": 85
       },
       "position": "FORWARD",
       "state": "ACTIVE",
@@ -1997,6 +2836,40 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/real-madrid-femenino",
+      "displayName": "Maëlle Lakrar",
+      "name": "players/maelle-lakrar",
+      "nationalTeamCode": "FRA",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 65,
+        "pace": 75,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 65
+      },
+      "photo": {
+        "attribution": {
+          "author": "MHSC TV - Montpellier Hérault Sport Club",
+          "licenseCode": "CC-BY-3.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Maelle_Lakrar_2024.png"
+        },
+        "heightPx": 349,
+        "mimeType": "image/webp",
+        "uri": "photos/maelle-lakrar.webp",
+        "widthPx": 307
+      },
+      "playStats": {
+        "attack": 68,
+        "control": 71,
+        "defence": 80,
+        "overall": 78
+      },
+      "position": "DEFENDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/fc-bayern-munich",
       "displayName": "Manuel Neuer",
       "goalkeeperRatings": {
@@ -2029,6 +2902,74 @@
       "position": "GOALKEEPER",
       "state": "ACTIVE",
       "tier": "LEGEND"
+    },
+    {
+      "club": "clubs/afc-ajax",
+      "displayName": "Marc-André ter Stegen",
+      "goalkeeperRatings": {
+        "diving": 75,
+        "handling": 85,
+        "kicking": 95,
+        "positioning": 75,
+        "reflexes": 85,
+        "speed": 75
+      },
+      "name": "players/marc-andre-ter-stegen",
+      "nationalTeamCode": "GER",
+      "photo": {
+        "attribution": {
+          "author": "Government of Catalonia",
+          "licenseCode": "CC0-1.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Marc-Andre_Ter_Stegen_ACCI_FCBARCELONA_Turisme_Catalunya_gira_pretemporada_CATPRESS.jpg"
+        },
+        "heightPx": 600,
+        "mimeType": "image/webp",
+        "uri": "photos/marc-andre-ter-stegen.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 91,
+        "control": 86,
+        "defence": 80,
+        "overall": 80
+      },
+      "position": "GOALKEEPER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/boca-juniors",
+      "displayName": "Marcos Acuña",
+      "name": "players/marcos-acuna",
+      "nationalTeamCode": "ARG",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 65,
+        "pace": 72,
+        "passing": 75,
+        "physical": 73,
+        "shooting": 65
+      },
+      "photo": {
+        "attribution": {
+          "author": "jmmuguerza",
+          "licenseCode": "CC-BY-SA-3.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Argentina_-_Colombia_2022_(52)_(cropped).jpg"
+        },
+        "heightPx": 560,
+        "mimeType": "image/webp",
+        "uri": "photos/marcos-acuna.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 67,
+        "control": 71,
+        "defence": 79,
+        "overall": 74
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
     },
     {
       "club": "clubs/manchester-united-f-c",
@@ -2302,6 +3243,40 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/real-sociedad",
+      "displayName": "Mikel Oyarzabal",
+      "name": "players/mikel-oyarzabal",
+      "nationalTeamCode": "ESP",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 75,
+        "pace": 75,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 86
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Mikel_Oyarzabal_France_v_Spain_7.24.26-161_(cropped).jpg"
+        },
+        "heightPx": 753,
+        "mimeType": "image/webp",
+        "uri": "photos/mikel-oyarzabal.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 81,
+        "control": 75,
+        "defence": 75,
+        "overall": 79
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "displayName": "Mile Jedinak",
       "name": "players/mile-jedinak",
       "nationalTeamCode": "AUS",
@@ -2399,6 +3374,74 @@
         "overall": 79
       },
       "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/atletico-madrid",
+      "displayName": "Morten Hjulmand",
+      "name": "players/morten-hjulmand",
+      "nationalTeamCode": "DEN",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 75,
+        "pace": 75,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 64
+      },
+      "photo": {
+        "attribution": {
+          "author": "Splinter1333",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:MortenHjulmandSporting24.jpg"
+        },
+        "heightPx": 495,
+        "mimeType": "image/webp",
+        "uri": "photos/morten-hjulmand.webp",
+        "widthPx": 255
+      },
+      "playStats": {
+        "attack": 70,
+        "control": 75,
+        "defence": 80,
+        "overall": 78
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/athletic-club",
+      "displayName": "Nico Williams",
+      "name": "players/nico-williams",
+      "nationalTeamCode": "ESP",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 95,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 83
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Nico_Williams_Argentina_v_Spain_19_July_2026-196_(cropped).jpg"
+        },
+        "heightPx": 798,
+        "mimeType": "image/webp",
+        "uri": "photos/nico-williams.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 85,
+        "control": 81,
+        "defence": 72,
+        "overall": 82
+      },
+      "position": "FORWARD",
       "state": "ACTIVE",
       "tier": "BASE"
     },
@@ -2502,6 +3545,74 @@
       "position": "DEFENDER",
       "state": "RETIRED",
       "tier": "ICON"
+    },
+    {
+      "club": "clubs/fc-barcelona-femeni",
+      "displayName": "Patricia Guijarro",
+      "name": "players/patricia-guijarro",
+      "nationalTeamCode": "ESP",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 75,
+        "pace": 75,
+        "passing": 85,
+        "physical": 75,
+        "shooting": 76
+      },
+      "photo": {
+        "attribution": {
+          "author": "MichaelEmilio",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Brann_-_Bar%C3%A7a_Femen%C3%AD_CG3A5987_(cropped).jpg"
+        },
+        "heightPx": 480,
+        "mimeType": "image/webp",
+        "uri": "photos/patricia-guijarro.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 77,
+        "control": 79,
+        "defence": 76,
+        "overall": 79
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/fc-barcelona",
+      "displayName": "Pau Cubarsí",
+      "name": "players/pau-cubarsi",
+      "nationalTeamCode": "ESP",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 65,
+        "pace": 75,
+        "passing": 85,
+        "physical": 75,
+        "shooting": 65
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Pau_Cubarsi_Argentina_v_Spain_19_July_2026-181_(cropped).jpg"
+        },
+        "heightPx": 731,
+        "mimeType": "image/webp",
+        "uri": "photos/pau-cubarsi.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 69,
+        "control": 75,
+        "defence": 81,
+        "overall": 80
+      },
+      "position": "DEFENDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
     },
     {
       "club": "clubs/fc-barcelona",
@@ -2661,6 +3772,40 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/fc-barcelona",
+      "displayName": "Raphinha",
+      "name": "players/raphinha",
+      "nationalTeamCode": "BRA",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 85,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 84
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Raphinha_Brazil_V_Morocco_13_June_2026-133_(cropped).jpg"
+        },
+        "heightPx": 664,
+        "mimeType": "image/webp",
+        "uri": "photos/raphinha.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 84,
+        "control": 80,
+        "defence": 71,
+        "overall": 81
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/arsenal-f-c",
       "displayName": "Riccardo Calafiori",
       "name": "players/riccardo-calafiori",
@@ -2725,6 +3870,74 @@
         "overall": 80
       },
       "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/real-madrid-club-de-futbol",
+      "displayName": "Rodrygo",
+      "name": "players/rodrygo",
+      "nationalTeamCode": "BRA",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 75,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 83
+      },
+      "photo": {
+        "attribution": {
+          "author": "Junta de Andalucía",
+          "licenseCode": "CC-BY-SA-2.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Rodrygo_2023_(cropped).jpg"
+        },
+        "heightPx": 564,
+        "mimeType": "image/webp",
+        "uri": "photos/rodrygo.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 81,
+        "control": 79,
+        "defence": 70,
+        "overall": 80
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/liverpool-f-c",
+      "displayName": "Ronald Araújo",
+      "name": "players/ronald-araujo",
+      "nationalTeamCode": "URU",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 65,
+        "pace": 85,
+        "passing": 75,
+        "physical": 85,
+        "shooting": 65
+      },
+      "photo": {
+        "attribution": {
+          "author": "Werner100359",
+          "licenseCode": "CC0-1.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:FC_Red_Bull_Salzburg_gegen_CF_Barcelona_(Testspiel_4._August_2021)_45_(cropped).jpg"
+        },
+        "heightPx": 724,
+        "mimeType": "image/webp",
+        "uri": "photos/ronald-araujo.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 70,
+        "control": 73,
+        "defence": 84,
+        "overall": 82
+      },
+      "position": "DEFENDER",
       "state": "ACTIVE",
       "tier": "BASE"
     },
@@ -2925,6 +4138,40 @@
         "overall": 81
       },
       "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
+      "club": "clubs/real-sociedad",
+      "displayName": "Takefusa Kubo",
+      "name": "players/takefusa-kubo",
+      "nationalTeamCode": "JPN",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 85,
+        "pace": 75,
+        "passing": 75,
+        "physical": 65,
+        "shooting": 75
+      },
+      "photo": {
+        "attribution": {
+          "author": "Ali Mohammed Mahdi",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Takefusa_Kubo.jpg"
+        },
+        "heightPx": 648,
+        "mimeType": "image/webp",
+        "uri": "photos/takefusa-kubo.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 77,
+        "control": 78,
+        "defence": 72,
+        "overall": 78
+      },
+      "position": "MIDFIELDER",
       "state": "ACTIVE",
       "tier": "BASE"
     },
@@ -3130,6 +4377,40 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/athletic-club",
+      "displayName": "Unai Simón",
+      "goalkeeperRatings": {
+        "diving": 75,
+        "handling": 75,
+        "kicking": 85,
+        "positioning": 85,
+        "reflexes": 85,
+        "speed": 75
+      },
+      "name": "players/unai-simon",
+      "nationalTeamCode": "ESP",
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Unai_Simon_Argentina_v_Spain_19_July_2026-078_(cropped).jpg"
+        },
+        "heightPx": 749,
+        "mimeType": "image/webp",
+        "uri": "photos/unai-simon.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 83,
+        "control": 80,
+        "defence": 80,
+        "overall": 81
+      },
+      "position": "GOALKEEPER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/arsenal-f-c",
       "displayName": "Viktor Gyökeres",
       "name": "players/viktor-gyokeres",
@@ -3162,6 +4443,40 @@
       "position": "FORWARD",
       "state": "ACTIVE",
       "tier": "RARE"
+    },
+    {
+      "club": "clubs/real-madrid-club-de-futbol",
+      "displayName": "Vinícius Júnior",
+      "name": "players/vinicius-junior",
+      "nationalTeamCode": "BRA",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 95,
+        "pace": 95,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 84
+      },
+      "photo": {
+        "attribution": {
+          "author": "Bryan Berlin",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Vin%C3%ADcius_J%C3%BAnior_Brazil_V_Morocco_13_June_2026-207_(cropped).jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/vinicius-junior.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 88,
+        "control": 85,
+        "defence": 72,
+        "overall": 88
+      },
+      "position": "FORWARD",
+      "state": "ACTIVE",
+      "tier": "LEGEND"
     },
     {
       "club": "clubs/liverpool-f-c",
@@ -3331,6 +4646,40 @@
       "position": "DEFENDER",
       "state": "ACTIVE",
       "tier": "RARE"
+    },
+    {
+      "club": "clubs/fc-barcelona",
+      "displayName": "Wojciech Szczęsny",
+      "goalkeeperRatings": {
+        "diving": 75,
+        "handling": 85,
+        "kicking": 75,
+        "positioning": 85,
+        "reflexes": 75,
+        "speed": 75
+      },
+      "name": "players/wojciech-szczesny",
+      "nationalTeamCode": "POL",
+      "photo": {
+        "attribution": {
+          "author": "La Gazzetta dello Sport",
+          "licenseCode": "CC-BY-3.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Wojciech_Szcz%C4%99sny.png"
+        },
+        "heightPx": 517,
+        "mimeType": "image/webp",
+        "uri": "photos/wojciech-szczesny.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 75,
+        "control": 80,
+        "defence": 79,
+        "overall": 82
+      },
+      "position": "GOALKEEPER",
+      "state": "ACTIVE",
+      "tier": "BASE"
     },
     {
       "club": "clubs/brighton-hove-albion-f-c",

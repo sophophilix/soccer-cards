@@ -1,0 +1,71 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/club-deportiu-ribes",
+      "endYear": 2009,
+      "startYear": 2005
+    },
+    {
+      "club": "clubs/cf-cubelles",
+      "endYear": 2012,
+      "startYear": 2010
+    },
+    {
+      "club": "clubs/fc-barcelona",
+      "endYear": 2014,
+      "startYear": 2012
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27995553&oldid=2574928282",
+        "value": 168
+      },
+      "club": "clubs/fc-barcelona-femeni",
+      "goalCount": {
+        "retrieveDate": "2026-11-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27995553&oldid=2574928282",
+        "value": 52
+      },
+      "startYear": 2016
+    }
+  ],
+  "club": "clubs/fc-barcelona-femeni",
+  "displayName": "Aitana Bonmatí",
+  "name": "players/aitana-bonmati",
+  "nationalTeamCode": "ESP",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-25",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27995553&oldid=2574928282",
+    "value": 19
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 85,
+    "pace": 75,
+    "passing": 95,
+    "physical": 75,
+    "shooting": 87
+  },
+  "photo": {
+    "attribution": {
+      "author": "Barcex",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:25th_Laureus_World_Sports_Awards_-_Red_Carpet_-_Aitana_Bonmat%C3%AD_-_240422_193345-2_(cropped).jpg"
+    },
+    "heightPx": 566,
+    "mimeType": "image/webp",
+    "uri": "photos/aitana-bonmati.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 85,
+    "control": 87,
+    "defence": 77,
+    "overall": 85
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "RARE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

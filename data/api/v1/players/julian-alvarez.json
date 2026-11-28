@@ -1,0 +1,106 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q59381180&oldid=2575578012",
+        "value": 57
+      },
+      "club": "clubs/club-atletico-river-plate",
+      "endYear": 2022,
+      "goalCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q59381180&oldid=2575578012",
+        "value": 23
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q59381180&oldid=2575578012",
+        "value": 17
+      },
+      "club": "clubs/club-atletico-river-plate",
+      "endYear": 2022,
+      "goalCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q59381180&oldid=2575578012",
+        "value": 11
+      },
+      "startYear": 2022
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q59381180&oldid=2575578012",
+        "value": 67
+      },
+      "club": "clubs/manchester-city-f-c",
+      "endYear": 2024,
+      "goalCount": {
+        "retrieveDate": "2026-11-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q59381180&oldid=2575578012",
+        "value": 20
+      },
+      "startYear": 2022
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q59381180&oldid=2575578012",
+        "value": 70
+      },
+      "club": "clubs/atletico-madrid",
+      "goalCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q59381180&oldid=2575578012",
+        "value": 25
+      },
+      "startYear": 2024
+    }
+  ],
+  "club": "clubs/atletico-madrid",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-10",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q59381180&oldid=2575578012",
+    "value": 79
+  },
+  "displayName": "Julián Alvarez",
+  "name": "players/julian-alvarez",
+  "nationalTeamCode": "ARG",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-04",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q59381180&oldid=2575578012",
+    "value": 16
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 85,
+    "pace": 85,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 84
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Julian_Alvarez_Argentina_v_Spain_19_July_2026-052_(cropped).jpg"
+    },
+    "heightPx": 736,
+    "mimeType": "image/webp",
+    "uri": "photos/julian-alvarez.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 84,
+    "control": 80,
+    "defence": 76,
+    "overall": 84
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "RARE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

@@ -1,0 +1,86 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/club-deportivo-pamplona",
+      "endYear": 2012,
+      "startYear": 2010
+    },
+    {
+      "club": "clubs/club-atletico-osasuna",
+      "endYear": 2013,
+      "startYear": 2012
+    },
+    {
+      "club": "clubs/athletic-club",
+      "endYear": 2019,
+      "startYear": 2013
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q104414736&oldid=2566967325",
+        "value": 3
+      },
+      "club": "clubs/cd-baskonia",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-11-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q104414736&oldid=2566967325",
+        "value": 0
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q104414736&oldid=2566967325",
+        "value": 163
+      },
+      "club": "clubs/athletic-club",
+      "goalCount": {
+        "retrieveDate": "2026-09-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q104414736&oldid=2566967325",
+        "value": 23
+      },
+      "startYear": 2021
+    }
+  ],
+  "club": "clubs/athletic-club",
+  "displayName": "Nico Williams",
+  "name": "players/nico-williams",
+  "nationalTeamCode": "ESP",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-09-29",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q104414736&oldid=2566967325",
+    "value": 7
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 85,
+    "pace": 95,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 83
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Nico_Williams_Argentina_v_Spain_19_July_2026-196_(cropped).jpg"
+    },
+    "heightPx": 798,
+    "mimeType": "image/webp",
+    "uri": "photos/nico-williams.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 85,
+    "control": 81,
+    "defence": 72,
+    "overall": 82
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

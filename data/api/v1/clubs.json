@@ -26,6 +26,11 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "Admira Wacker",
+      "name": "clubs/admira-wacker",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "AFC Ajax",
       "name": "clubs/afc-ajax",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -59,6 +64,11 @@
       "displayName": "Alfreton Town F.C.",
       "name": "clubs/alfreton-town-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "América de Cali",
+      "name": "clubs/america-de-cali",
+      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "Angers SCO",
@@ -116,9 +126,29 @@
       "updateTime": "2026-11-28T06:44:11Z"
     },
     {
+      "displayName": "Associação Atlética Ponte Preta",
+      "name": "clubs/associacao-atletica-ponte-preta",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "Aston Villa F.C.",
       "name": "clubs/aston-villa-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Atalanta BC",
+      "name": "clubs/atalanta-bc",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
+      "displayName": "Athletic Club",
+      "name": "clubs/athletic-club",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
+      "displayName": "Athletic Club Femenino",
+      "name": "clubs/athletic-club-femenino",
+      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "Atlético Madrid",
@@ -196,6 +226,11 @@
       "updateTime": "2026-11-21T22:00:18Z"
     },
     {
+      "displayName": "Boston River",
+      "name": "clubs/boston-river",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "Bradford City A.F.C.",
       "name": "clubs/bradford-city-a-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -241,6 +276,11 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "C.A. Rentistas",
+      "name": "clubs/c-a-rentistas",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "C.D. Nacional",
       "name": "clubs/c-d-nacional",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -254,6 +294,16 @@
       "displayName": "Carlisle United F.C.",
       "name": "clubs/carlisle-united-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "CD Aurrerá de Vitoria",
+      "name": "clubs/cd-aurrera-de-vitoria",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
+      "displayName": "CD Baskonia",
+      "name": "clubs/cd-baskonia",
+      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "CD Berio FT",
@@ -291,9 +341,19 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "CF Cubelles",
+      "name": "clubs/cf-cubelles",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "CF Rayo Majadahonda",
       "name": "clubs/cf-rayo-majadahonda",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Charlton Athletic F.C.",
+      "name": "clubs/charlton-athletic-f-c",
+      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "Chelsea F.C.",
@@ -316,9 +376,29 @@
       "updateTime": "2026-11-28T06:44:11Z"
     },
     {
+      "displayName": "Club Atlético River Plate",
+      "name": "clubs/club-atletico-river-plate",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "Club Brugge K.V.",
       "name": "clubs/club-brugge-k-v",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Club Deportiu Ribes",
+      "name": "clubs/club-deportiu-ribes",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
+      "displayName": "Club Deportivo Pamplona",
+      "name": "clubs/club-deportivo-pamplona",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
+      "displayName": "Clube de Regatas do Flamengo",
+      "name": "clubs/clube-de-regatas-do-flamengo",
+      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "Coventry City F.C.",
@@ -339,6 +419,11 @@
       "displayName": "Darlington F.C.",
       "name": "clubs/darlington-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Deportivo Cali",
+      "name": "clubs/deportivo-cali",
+      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "Derby County F.C.",
@@ -374,6 +459,11 @@
       "displayName": "F.C. Copenhagen",
       "name": "clubs/f-c-copenhagen",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "F.C. Crotone",
+      "name": "clubs/f-c-crotone",
+      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "F.C. Lorient",
@@ -446,6 +536,11 @@
       "updateTime": "2026-11-28T06:44:11Z"
     },
     {
+      "displayName": "FC Midtjylland",
+      "name": "clubs/fc-midtjylland",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "FC Red Bull Salzburg",
       "name": "clubs/fc-red-bull-salzburg",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -466,6 +561,16 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "FC Tokyo",
+      "name": "clubs/fc-tokyo",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
+      "displayName": "Ferro Carril Oeste",
+      "name": "clubs/ferro-carril-oeste",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "Feyenoord Rotterdam",
       "name": "clubs/feyenoord-rotterdam",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -474,6 +579,11 @@
       "displayName": "1. FFC Turbine Potsdam",
       "name": "clubs/ffc-turbine-potsdam",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "FK Bodø/Glimt",
+      "name": "clubs/fk-bodo-glimt",
+      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "Fleetwood Town F.C.",
@@ -511,6 +621,16 @@
       "updateTime": "2026-11-28T06:44:11Z"
     },
     {
+      "displayName": "Getafe CF",
+      "name": "clubs/getafe-cf",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
+      "displayName": "Girona FC",
+      "name": "clubs/girona-fc",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "Girondins de Bordeaux",
       "name": "clubs/girondins-de-bordeaux",
       "updateTime": "2026-11-28T06:44:11Z"
@@ -536,14 +656,29 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "Grêmio Osasco Audax",
+      "name": "clubs/gremio-osasco-audax",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "Hamburger SV",
       "name": "clubs/hamburger-sv",
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "Hércules CF",
+      "name": "clubs/hercules-cf",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "Hertha BSC",
       "name": "clubs/hertha-bsc",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "HNK Gorica",
+      "name": "clubs/hnk-gorica",
+      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "Hokkaido Consadole Sapporo",
@@ -611,6 +746,11 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "Jitex Mölndal BK",
+      "name": "clubs/jitex-molndal-bk",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "Jong Ajax",
       "name": "clubs/jong-ajax",
       "updateTime": "2026-11-28T06:44:11Z"
@@ -631,9 +771,19 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "KAA Gent",
+      "name": "clubs/kaa-gent",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "Kilmarnock F.C.",
       "name": "clubs/kilmarnock-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "KKPK Medyk Konin",
+      "name": "clubs/kkpk-medyk-konin",
+      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "Kolbotn Fotball",
@@ -651,14 +801,24 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "LASK Linz",
+      "name": "clubs/lask-linz",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "LB Châteauroux",
       "name": "clubs/lb-chateauroux",
       "updateTime": "2026-11-28T06:44:11Z"
     },
     {
-      "displayName": "Le Havre AC",
+      "displayName": "Le Havre AC Women",
       "name": "clubs/le-havre-ac",
-      "updateTime": "2026-11-28T06:44:11Z"
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
+      "displayName": "Le Havre AC",
+      "name": "clubs/le-havre-ac-2",
+      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "Leeds United F.C.",
@@ -826,6 +986,11 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "North Carolina Courage",
+      "name": "clubs/north-carolina-courage",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "Norwich City F.C.",
       "name": "clubs/norwich-city-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -879,6 +1044,11 @@
       "displayName": "Paris Saint-Germain FC",
       "name": "clubs/paris-saint-germain-fc",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Paris Saint-Germain Féminine",
+      "name": "clubs/paris-saint-germain-feminine",
+      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "Parma Calcio 1913",
@@ -941,6 +1111,11 @@
       "updateTime": "2026-11-28T06:44:11Z"
     },
     {
+      "displayName": "Racing Club",
+      "name": "clubs/racing-club",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "Rangers W.F.C.",
       "name": "clubs/rangers-w-f-c",
       "updateTime": "2026-11-28T06:44:11Z"
@@ -951,9 +1126,34 @@
       "updateTime": "2026-11-28T06:44:11Z"
     },
     {
+      "displayName": "RCD Espanyol de Barcelona",
+      "name": "clubs/rcd-espanyol-de-barcelona",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
+      "displayName": "RCD Mallorca",
+      "name": "clubs/rcd-mallorca",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
+      "displayName": "Real Betis Balompié",
+      "name": "clubs/real-betis-balompie",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
+      "displayName": "Real Madrid Castilla",
+      "name": "clubs/real-madrid-castilla",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "Real Madrid Club de Fútbol",
       "name": "clubs/real-madrid-club-de-futbol",
       "updateTime": "2026-11-21T03:57:58Z"
+    },
+    {
+      "displayName": "Real Madrid Femenino",
+      "name": "clubs/real-madrid-femenino",
+      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "Real Sociedad",
@@ -961,14 +1161,29 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "Real Sociedad Women",
+      "name": "clubs/real-sociedad-women",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "Red Bull New York",
       "name": "clubs/red-bull-new-york",
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "RFC Seraing",
+      "name": "clubs/rfc-seraing",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "Roda JC Kerkrade",
       "name": "clubs/roda-jc-kerkrade",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Rosenborg BK",
+      "name": "clubs/rosenborg-bk",
+      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "Ross County F.C.",
@@ -991,6 +1206,11 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "São Paulo FC",
+      "name": "clubs/sao-paulo-fc",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "SBV Vitesse",
       "name": "clubs/sbv-vitesse",
       "updateTime": "2026-11-28T06:44:11Z"
@@ -1006,9 +1226,24 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "SD Eibar",
+      "name": "clubs/sd-eibar",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "Seattle Reign FC",
       "name": "clubs/seattle-reign-fc",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Sevilla FC",
+      "name": "clubs/sevilla-fc",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
+      "displayName": "Sevilla FC Women",
+      "name": "clubs/sevilla-fc-women",
+      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "Shanghai Port F.C.",
@@ -1036,6 +1271,11 @@
       "updateTime": "2026-11-28T06:44:11Z"
     },
     {
+      "displayName": "Sociedade Esportiva Palmeiras",
+      "name": "clubs/sociedade-esportiva-palmeiras",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "South Coast United",
       "name": "clubs/south-coast-united",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -1049,6 +1289,11 @@
       "displayName": "Southport F.C.",
       "name": "clubs/southport-f-c",
       "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "Sport Club Corinthians Paulista",
+      "name": "clubs/sport-club-corinthians-paulista",
+      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "Sport Club do Recife",
@@ -1131,6 +1376,11 @@
       "updateTime": "2026-11-28T06:44:11Z"
     },
     {
+      "displayName": "Tölö IF",
+      "name": "clubs/tolo-if",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "Tottenham Hotspur F.C.",
       "name": "clubs/tottenham-hotspur-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -1181,9 +1431,19 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "US Lecce",
+      "name": "clubs/us-lecce",
+      "updateTime": "2026-11-28T08:03:04Z"
+    },
+    {
       "displayName": "Valencia CF",
       "name": "clubs/valencia-cf",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Valencia CF Mestalla",
+      "name": "clubs/valencia-cf-mestalla",
+      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "VfB Stuttgart",
@@ -1209,6 +1469,11 @@
       "displayName": "Vissel Kobe",
       "name": "clubs/vissel-kobe",
       "updateTime": "2026-11-22T17:33:08Z"
+    },
+    {
+      "displayName": "Vitória S.C.",
+      "name": "clubs/vitoria-s-c",
+      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "Washington Spirit",
@@ -1249,6 +1514,11 @@
       "displayName": "Wigan Athletic F.C.",
       "name": "clubs/wigan-athletic-f-c",
       "updateTime": "2026-11-28T06:44:11Z"
+    },
+    {
+      "displayName": "Yokohama F. Marinos",
+      "name": "clubs/yokohama-f-marinos",
+      "updateTime": "2026-11-28T08:03:04Z"
     },
     {
       "displayName": "Zhejiang Professional F.C.",

@@ -1,0 +1,91 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28973866&oldid=2570753036",
+        "value": 50
+      },
+      "club": "clubs/clube-de-regatas-do-flamengo",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28973866&oldid=2570753036",
+        "value": 11
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28973866&oldid=2570753036",
+        "value": 5
+      },
+      "club": "clubs/real-madrid-castilla",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28973866&oldid=2570753036",
+        "value": 4
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28973866&oldid=2570753036",
+        "value": 250
+      },
+      "club": "clubs/real-madrid-club-de-futbol",
+      "goalCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28973866&oldid=2570753036",
+        "value": 78
+      },
+      "startYear": 2018
+    }
+  ],
+  "club": "clubs/real-madrid-club-de-futbol",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-10",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28973866&oldid=2570753036",
+    "value": 93
+  },
+  "displayName": "Vinícius Júnior",
+  "name": "players/vinicius-junior",
+  "nationalTeamCode": "BRA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-04",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28973866&oldid=2570753036",
+    "value": 14
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 95,
+    "pace": 95,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 84
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Vin%C3%ADcius_J%C3%BAnior_Brazil_V_Morocco_13_June_2026-207_(cropped).jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/vinicius-junior.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 88,
+    "control": 85,
+    "defence": 72,
+    "overall": 88
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "LEGEND",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

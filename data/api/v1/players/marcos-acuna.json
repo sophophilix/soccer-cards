@@ -1,0 +1,71 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17462635&oldid=2568103799",
+        "value": 117
+      },
+      "club": "clubs/ferro-carril-oeste",
+      "endYear": 2014,
+      "goalCount": {
+        "retrieveDate": "2026-11-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17462635&oldid=2568103799",
+        "value": 5
+      },
+      "startYear": 2011
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17462635&oldid=2568103799",
+        "value": 28
+      },
+      "club": "clubs/racing-club",
+      "endYear": 2017,
+      "goalCount": {
+        "retrieveDate": "2026-11-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17462635&oldid=2568103799",
+        "value": 4
+      },
+      "startYear": 2014
+    },
+    {
+      "club": "clubs/boca-juniors",
+      "startYear": 2019
+    }
+  ],
+  "club": "clubs/boca-juniors",
+  "displayName": "Marcos Acuña",
+  "name": "players/marcos-acuna",
+  "nationalTeamCode": "ARG",
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 65,
+    "pace": 72,
+    "passing": 75,
+    "physical": 73,
+    "shooting": 65
+  },
+  "photo": {
+    "attribution": {
+      "author": "jmmuguerza",
+      "licenseCode": "CC-BY-SA-3.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Argentina_-_Colombia_2022_(52)_(cropped).jpg"
+    },
+    "heightPx": 560,
+    "mimeType": "image/webp",
+    "uri": "photos/marcos-acuna.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 67,
+    "control": 71,
+    "defence": 79,
+    "overall": 74
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

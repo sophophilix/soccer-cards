@@ -1,0 +1,121 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-29",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16174734&oldid=2561989537",
+        "value": 26
+      },
+      "club": "clubs/valencia-cf-mestalla",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-10-29",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16174734&oldid=2561989537",
+        "value": 4
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-29",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16174734&oldid=2561989537",
+        "value": 62
+      },
+      "club": "clubs/valencia-cf",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-10-29",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16174734&oldid=2561989537",
+        "value": 3
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-29",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16174734&oldid=2561989537",
+        "value": 66
+      },
+      "club": "clubs/rcd-mallorca",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-10-29",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16174734&oldid=2561989537",
+        "value": 7
+      },
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-29",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16174734&oldid=2561989537",
+        "value": 80
+      },
+      "club": "clubs/paris-saint-germain-fc",
+      "endYear": 2026,
+      "goalCount": {
+        "retrieveDate": "2026-10-29",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16174734&oldid=2561989537",
+        "value": 12
+      },
+      "startYear": 2023
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-29",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16174734&oldid=2561989537",
+        "value": 0
+      },
+      "club": "clubs/atletico-madrid",
+      "goalCount": {
+        "retrieveDate": "2026-10-29",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16174734&oldid=2561989537",
+        "value": 0
+      },
+      "startYear": 2026
+    }
+  ],
+  "club": "clubs/atletico-madrid",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-29",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16174734&oldid=2561989537",
+    "value": 26
+  },
+  "displayName": "Lee Kang-in",
+  "name": "players/lee-kang-in",
+  "nationalTeamCode": "KOR",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-29",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q16174734&oldid=2561989537",
+    "value": 10
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 85,
+    "pace": 75,
+    "passing": 85,
+    "physical": 65,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "Republic of Korea from Seoul, Republic of Korea",
+      "licenseCode": "CC-BY-SA-2.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Lee_Kang-in_-_2022_(52551771501)_(cropped).jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/lee-kang-in.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 78,
+    "control": 82,
+    "defence": 73,
+    "overall": 81
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

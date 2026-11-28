@@ -1,0 +1,70 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/real-sociedad-women",
+      "endYear": 2011,
+      "startYear": 2008
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10524460&oldid=2570199650",
+        "value": 128
+      },
+      "club": "clubs/athletic-club-femenino",
+      "endYear": 2016,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10524460&oldid=2570199650",
+        "value": 21
+      },
+      "startYear": 2011
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10524460&oldid=2570199650",
+        "value": 85
+      },
+      "club": "clubs/paris-saint-germain-feminine",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10524460&oldid=2570199650",
+        "value": 13
+      },
+      "startYear": 2016
+    },
+    {
+      "club": "clubs/fc-barcelona-femeni",
+      "startYear": 2021
+    }
+  ],
+  "club": "clubs/fc-barcelona-femeni",
+  "displayName": "Irene Paredes",
+  "name": "players/irene-paredes",
+  "nationalTeamCode": "ESP",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-16",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10524460&oldid=2570199650",
+    "value": 9
+  },
+  "outfieldRatings": {
+    "defending": 95,
+    "dribbling": 65,
+    "pace": 72,
+    "passing": 75,
+    "physical": 73,
+    "shooting": 66
+  },
+  "playStats": {
+    "attack": 68,
+    "control": 71,
+    "defence": 84,
+    "overall": 81
+  },
+  "position": "DEFENDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}
