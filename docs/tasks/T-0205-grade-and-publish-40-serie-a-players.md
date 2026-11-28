@@ -66,8 +66,9 @@ league. This batch is the Serie A.
 
 - A player Wikidata can't resolve: drop them, pick another, and name the
   Q-id in the report.
-- A player with no senior national team: allowed, and counted as "none" in
-  the spread.
+- A player with no senior national team: the build refuses them, because
+  the API requires a national team code. Drop them, pick another, and name
+  the Q-id in the report.
 - A photo that isn't free or shows advertising: the avatar, with a reason
   in `photos.toml`.
 - Two players with one name: the registry's birth-year slug (ADR 0005 D2).

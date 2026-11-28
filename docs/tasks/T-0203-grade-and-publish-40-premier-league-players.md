@@ -12,7 +12,7 @@ paths:
   - data/pipeline/tests/test_published_api.py
 dependencies: []
 max_changed_lines: 400
-status: ready
+status: done
 ---
 
 ## Goal

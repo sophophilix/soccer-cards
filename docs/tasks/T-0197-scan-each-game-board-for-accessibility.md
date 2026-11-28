@@ -11,7 +11,7 @@ paths:
 dependencies:
   - T-0202
 max_changed_lines: 300
-status: ready
+status: done
 ---
 
 ## Goal

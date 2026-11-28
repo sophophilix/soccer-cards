@@ -24,8 +24,9 @@ stopped with "needs one national team code: found []": Alessia Russo
 (Q27450000), Rose Lavelle (Q22006196), Hannah Hampton (Q62652790), Daphne
 van Domselaar (Q56678133) and Kristoffer Klaesson (Q59166026). Four are
 women. Each has played for a senior national team. The pipeline should find
-their code. A player with truly no senior national team should be published
-without one instead of stopping the whole build.
+their code. The API contract requires `nationalTeamCode` on every player
+summary (`player.schema.json`, `$defs/playerSummary`), so a player with
+truly no senior national team stays out of the set, as now.
 
 ## Context
 
@@ -33,8 +34,8 @@ without one instead of stopping the whole build.
   one code.
 - `wikidata.py`: reads the FIFA code from the team item's `P3441`.
 - `normalise.py` `senior_national_teams` and `current_senior_teams`.
-- `packages/schema/schemas/v1/player.schema.json`: `nationalTeamCode` is
-  optional.
+- `packages/schema/schemas/v1/player.schema.json`: `$defs/playerSummary`
+  requires `nationalTeamCode`, and the site leaves out a player without one.
 - T-0095, T-0104 and T-0106 set the current rules for the code.
 
 ## Acceptance criteria
@@ -47,8 +48,8 @@ without one instead of stopping the whole build.
   when it has one. Otherwise it takes the code of the men's senior team of
   the same country, found through Wikidata, never through a list kept by
   hand.
-- A player with no senior national team at all is built without
-  `nationalTeamCode`, and the build carries on. The report lists them.
+- A player with no senior national team at all still fails the build,
+  with a message that names the player. The contract doesn't change.
 - A player whose current team can't be told still fails the build, as now.
 - No player is added to the set in this task, and the published files
   don't change.
@@ -65,8 +66,8 @@ without one instead of stopping the whole build.
 - unit: `test_wikidata.py` or `test_normalise.py`: a women's national team
   item with no `P3441` gets the code from the men's team of the same
   country, from a recorded fixture.
-- unit: `test_build.py`: a player with no senior national team builds
-  without a code, and the build carries on.
+- unit: `test_build.py`: a player with no senior national team still
+  fails the build, naming the player.
 
 ## Out of scope
 
