@@ -321,11 +321,6 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
-      "displayName": "Como 1907",
-      "name": "clubs/como-1907",
-      "updateTime": "2026-11-28T06:44:11Z"
-    },
-    {
       "displayName": "Coventry City F.C.",
       "name": "clubs/coventry-city-f-c",
       "updateTime": "2026-11-28T06:44:11Z"
@@ -484,11 +479,6 @@
       "displayName": "Fleetwood Town F.C.",
       "name": "clubs/fleetwood-town-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
-    },
-    {
-      "displayName": "Forest Green Rovers F.C.",
-      "name": "clubs/forest-green-rovers-f-c",
-      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "Frankston Pines",
@@ -686,6 +676,11 @@
       "updateTime": "2026-11-21T22:00:18Z"
     },
     {
+      "displayName": "Levante UD Women",
+      "name": "clubs/levante-ud-women",
+      "updateTime": "2026-11-28T06:53:19Z"
+    },
+    {
       "displayName": "Leyton Orient F.C.",
       "name": "clubs/leyton-orient-f-c",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -711,6 +706,11 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
+      "displayName": "Madrid C.F.F.",
+      "name": "clubs/madrid-c-f-f",
+      "updateTime": "2026-11-28T06:53:19Z"
+    },
+    {
       "displayName": "Malmö FF",
       "name": "clubs/malmo-ff",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -724,6 +724,11 @@
       "displayName": "Manchester United F.C.",
       "name": "clubs/manchester-united-f-c",
       "updateTime": "2026-11-21T03:57:58Z"
+    },
+    {
+      "displayName": "Manchester United W.F.C.",
+      "name": "clubs/manchester-united-w-f-c",
+      "updateTime": "2026-11-28T06:53:19Z"
     },
     {
       "displayName": "Melbourne City FC",
@@ -876,11 +881,6 @@
       "updateTime": "2026-11-22T17:33:08Z"
     },
     {
-      "displayName": "Paris Saint-Germain Féminine",
-      "name": "clubs/paris-saint-germain-feminine",
-      "updateTime": "2026-11-28T06:44:11Z"
-    },
-    {
       "displayName": "Parma Calcio 1913",
       "name": "clubs/parma-calcio-1913",
       "updateTime": "2026-11-22T17:33:08Z"
@@ -964,11 +964,6 @@
       "displayName": "Red Bull New York",
       "name": "clubs/red-bull-new-york",
       "updateTime": "2026-11-22T17:33:08Z"
-    },
-    {
-      "displayName": "Rochdale A.F.C.",
-      "name": "clubs/rochdale-a-f-c",
-      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "Roda JC Kerkrade",
@@ -1199,11 +1194,6 @@
       "displayName": "VfL Bochum",
       "name": "clubs/vfl-bochum",
       "updateTime": "2026-11-22T17:33:08Z"
-    },
-    {
-      "displayName": "VfL Sindelfingen",
-      "name": "clubs/vfl-sindelfingen",
-      "updateTime": "2026-11-28T06:44:11Z"
     },
     {
       "displayName": "VfL Wolfsburg",

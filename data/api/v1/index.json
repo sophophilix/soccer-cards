@@ -2,7 +2,7 @@
   "collections": [
     {
       "collectionId": "clubs",
-      "itemCount": 253,
+      "itemCount": 251,
       "schemaId": "clubs.schema.json",
       "uri": "clubs.json"
     },
@@ -19,7 +19,7 @@
       "uri": "players.json"
     }
   ],
-  "dataVersion": 7,
+  "dataVersion": 8,
   "formulaVersion": 1,
-  "generateTime": "2026-11-28T06:44:11Z"
+  "generateTime": "2026-11-28T06:53:19Z"
 }

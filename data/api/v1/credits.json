@@ -74,15 +74,6 @@
     },
     {
       "attribution": {
-        "author": "Steffen Prößdorf",
-        "licenseCode": "CC-BY-SA-4.0",
-        "sourceUri": "https://commons.wikimedia.org/wiki/File:2023-04-11_Fussball,_Frauen,_L%C3%A4nderspiel,_Deutschland_-_Brasilien_1DX_0084_by_Stepro.jpg"
-      },
-      "player": "players/ann-katrin-berger",
-      "uri": "photos/ann-katrin-berger.webp"
-    },
-    {
-      "attribution": {
         "author": "Biser Todorov (User:Biso) from Sofia, Bulgaria",
         "licenseCode": "CC-BY-SA-2.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:Antoine_Griezmann_(51100409504)_(cropped).jpg"
@@ -659,6 +650,15 @@
     },
     {
       "attribution": {
+        "author": "Estevoaei",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Deportivo_Abanca_-_FC_Barcelona_108_(cropped).jpg"
+      },
+      "player": "players/ona-batlle",
+      "uri": "photos/ona-batlle.webp"
+    },
+    {
+      "attribution": {
         "author": "Foad Ashtari",
         "licenseCode": "CC-BY-4.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:Paolo_Maldini_press_conference_in_Tehran_(cropped).jpg"
@@ -695,21 +695,21 @@
     },
     {
       "attribution": {
+        "author": "Steffen Prößdorf",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:2023-10-04_Fu%C3%9Fball,_M%C3%A4nner,_UEFA_Champions_League,_RB_Leipzig_-_Manchester_City_FC_1DX_2613,_Phil_Foden.jpg"
+      },
+      "player": "players/phil-foden",
+      "uri": "photos/phil-foden.webp"
+    },
+    {
+      "attribution": {
         "author": "Timmy96",
         "licenseCode": "CC0-1.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:2024_Emirates_Cup_-_Riccardo_Calafiori_(2)_(cropped).jpg"
       },
       "player": "players/riccardo-calafiori",
       "uri": "photos/riccardo-calafiori.webp"
-    },
-    {
-      "attribution": {
-        "author": "The White House",
-        "licenseCode": "CC-PDM-1.0",
-        "sourceUri": "https://commons.wikimedia.org/wiki/File:Robert_S%C3%A1nchez_FIFA_Club_World_Cup_final_extraction.jpg"
-      },
-      "player": "players/robert-sanchez",
-      "uri": "photos/robert-sanchez.webp"
     },
     {
       "attribution": {

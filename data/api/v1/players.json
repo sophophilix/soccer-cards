@@ -270,40 +270,6 @@
       "tier": "LEGEND"
     },
     {
-      "club": "clubs/paris-saint-germain-fc",
-      "displayName": "Ann-Katrin Berger",
-      "goalkeeperRatings": {
-        "diving": 85,
-        "handling": 75,
-        "kicking": 75,
-        "positioning": 85,
-        "reflexes": 85,
-        "speed": 75
-      },
-      "name": "players/ann-katrin-berger",
-      "nationalTeamCode": "GER",
-      "photo": {
-        "attribution": {
-          "author": "Steffen Prößdorf",
-          "licenseCode": "CC-BY-SA-4.0",
-          "sourceUri": "https://commons.wikimedia.org/wiki/File:2023-04-11_Fussball,_Frauen,_L%C3%A4nderspiel,_Deutschland_-_Brasilien_1DX_0084_by_Stepro.jpg"
-        },
-        "heightPx": 480,
-        "mimeType": "image/webp",
-        "uri": "photos/ann-katrin-berger.webp",
-        "widthPx": 480
-      },
-      "playStats": {
-        "attack": 75,
-        "control": 76,
-        "defence": 83,
-        "overall": 82
-      },
-      "position": "GOALKEEPER",
-      "state": "ACTIVE",
-      "tier": "BASE"
-    },
-    {
       "club": "clubs/orlando-city-sc",
       "displayName": "Antoine Griezmann",
       "name": "players/antoine-griezmann",
@@ -2471,6 +2437,40 @@
       "tier": "BASE"
     },
     {
+      "club": "clubs/arsenal-w-f-c",
+      "displayName": "Ona Batlle",
+      "name": "players/ona-batlle",
+      "nationalTeamCode": "ESP",
+      "outfieldRatings": {
+        "defending": 85,
+        "dribbling": 75,
+        "pace": 85,
+        "passing": 75,
+        "physical": 75,
+        "shooting": 65
+      },
+      "photo": {
+        "attribution": {
+          "author": "Estevoaei",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Deportivo_Abanca_-_FC_Barcelona_108_(cropped).jpg"
+        },
+        "heightPx": 783,
+        "mimeType": "image/webp",
+        "uri": "photos/ona-batlle.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 72,
+        "control": 76,
+        "defence": 81,
+        "overall": 80
+      },
+      "position": "DEFENDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "displayName": "Paolo Maldini",
       "name": "players/paolo-maldini",
       "nationalTeamCode": "ITA",
@@ -2627,6 +2627,40 @@
       "tier": "LEGEND"
     },
     {
+      "club": "clubs/manchester-city-f-c",
+      "displayName": "Phil Foden",
+      "name": "players/phil-foden",
+      "nationalTeamCode": "ENG",
+      "outfieldRatings": {
+        "defending": 65,
+        "dribbling": 85,
+        "pace": 75,
+        "passing": 85,
+        "physical": 65,
+        "shooting": 76
+      },
+      "photo": {
+        "attribution": {
+          "author": "Steffen Prößdorf",
+          "licenseCode": "CC-BY-SA-4.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:2023-10-04_Fu%C3%9Fball,_M%C3%A4nner,_UEFA_Champions_League,_RB_Leipzig_-_Manchester_City_FC_1DX_2613,_Phil_Foden.jpg"
+        },
+        "heightPx": 624,
+        "mimeType": "image/webp",
+        "uri": "photos/phil-foden.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 79,
+        "control": 82,
+        "defence": 68,
+        "overall": 79
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/arsenal-f-c",
       "displayName": "Riccardo Calafiori",
       "name": "players/riccardo-calafiori",
@@ -2657,40 +2691,6 @@
         "overall": 81
       },
       "position": "DEFENDER",
-      "state": "ACTIVE",
-      "tier": "BASE"
-    },
-    {
-      "club": "clubs/como-1907",
-      "displayName": "Robert Sánchez",
-      "goalkeeperRatings": {
-        "diving": 75,
-        "handling": 75,
-        "kicking": 85,
-        "positioning": 85,
-        "reflexes": 75,
-        "speed": 75
-      },
-      "name": "players/robert-sanchez",
-      "nationalTeamCode": "ESP",
-      "photo": {
-        "attribution": {
-          "author": "The White House",
-          "licenseCode": "CC-PDM-1.0",
-          "sourceUri": "https://commons.wikimedia.org/wiki/File:Robert_S%C3%A1nchez_FIFA_Club_World_Cup_final_extraction.jpg"
-        },
-        "heightPx": 600,
-        "mimeType": "image/webp",
-        "uri": "photos/robert-sanchez.webp",
-        "widthPx": 480
-      },
-      "playStats": {
-        "attack": 83,
-        "control": 80,
-        "defence": 77,
-        "overall": 79
-      },
-      "position": "GOALKEEPER",
       "state": "ACTIVE",
       "tier": "BASE"
     },
