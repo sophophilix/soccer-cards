@@ -25,7 +25,9 @@ test('the Games tab is current on /games/', async ({ page }) => {
 });
 
 for (const width of [320, 360, 390]) {
-	test(`five tabs fit at ${String(width)} pixels with no sideways scroll`, async ({ page }) => {
+	test(`five tabs fit at ${String(width)} pixels with no sideways scroll @engines`, async ({
+		page
+	}) => {
 		await page.setViewportSize({ width, height: 700 });
 		await page.goto('/games');
 
