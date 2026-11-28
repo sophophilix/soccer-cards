@@ -11,6 +11,8 @@ export {
 	GUESS_FINISH_COINS,
 	GUESS_RIGHT_COINS,
 	JUMBO_PACK_COST_COINS,
+	PAIRS_BOARD_COINS,
+	PAIRS_FEW_TURNS_BONUS,
 	STANDARD_PACK_COST_COINS,
 	STARTING_COINS,
 	TRAIL_FINISH_COINS,
@@ -113,6 +115,8 @@ export type {
 	PairsResult,
 	PairsSize
 } from './pairs.ts';
+export { payPairsBoard } from './pairs-pay.ts';
+export type { PaidPairsBoard, PairsPayRefusal, PairsPayResult } from './pairs-pay.ts';
 export { GUESS_OPTIONS, GUESS_QUESTIONS, startGuessRound } from './guess-the-club.ts';
 export type { GuessQuestion, GuessRound } from './guess-the-club.ts';
 export { answerGuess, finishGuessRound, openGuessRound } from './guess-the-club-round.ts';
