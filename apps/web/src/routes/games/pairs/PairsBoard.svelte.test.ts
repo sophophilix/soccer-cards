@@ -107,8 +107,11 @@ test.each([
 test('a matched card carries the matched outline', async () => {
 	const screen = await render(PairsBoard, props({ cards: board(6, { 0: 'matched' }) }));
 
-	expect(screen.getByTestId('slot-c0').element().classList.contains('matched')).toBe(true);
-	expect(screen.getByTestId('slot-c1').element().classList.contains('matched')).toBe(false);
+	const shadow = (id: string): string =>
+		getComputedStyle(screen.getByTestId(id).element().querySelector('.front') ?? document.body)
+			.boxShadow;
+	expect(shadow('slot-c0')).not.toBe('none');
+	expect(shadow('slot-c1')).toBe('none');
 });
 
 test('with reduced motion a card changes face with no flip', async () => {
