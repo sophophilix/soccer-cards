@@ -818,9 +818,9 @@
       "displayName": "Cata Coll",
       "goalkeeperRatings": {
         "diving": 75,
-        "handling": 85,
+        "handling": 75,
         "kicking": 75,
-        "positioning": 85,
+        "positioning": 75,
         "reflexes": 75,
         "speed": 75
       },
@@ -839,9 +839,9 @@
       },
       "playStats": {
         "attack": 75,
-        "control": 80,
-        "defence": 79,
-        "overall": 79
+        "control": 75,
+        "defence": 75,
+        "overall": 75
       },
       "position": "GOALKEEPER",
       "state": "ACTIVE",
