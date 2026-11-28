@@ -12,6 +12,7 @@ import shutil
 import tempfile
 import tomllib
 from collections.abc import Iterable, Mapping
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
@@ -20,6 +21,7 @@ from soccer_cards_data.commons import Avatar, check_photo
 from soccer_cards_data.http import PoliteClient
 from soccer_cards_data.ratings import FORMULA_VERSION
 from soccer_cards_data.validate import ValidationError, validate
+from soccer_cards_data.wikidata import WikidataError
 
 API_DIR = Path(__file__).resolve().parents[3] / "api" / "v1"
 MAX_PHOTO_BYTES = 25_000_000  # The largest original photo downloaded.
@@ -103,6 +105,62 @@ def build(
     finally:
         shutil.rmtree(work, ignore_errors=True)
     return tuple(problems)
+
+
+@dataclass(frozen=True)
+class Check:
+    """What `scdata check` says about one Q-id: `line` is ready to print."""
+
+    qid: str
+    ok: bool
+    line: str
+
+
+def check_players(client: PoliteClient, qids: Iterable[str]) -> list[Check]:
+    """Run the build's pre-download checks on these players alone.
+
+    Fetches only the given Q-ids, once each, and writes nothing. A player is
+    refused for the same reasons the build refuses it: no item, no single
+    national team code, no usable position or a label that isn't a plain name.
+    """
+    results = []
+    for qid in dict.fromkeys(qids):
+        try:
+            results.append(_check_player(client, qid))
+        except (WikidataError, BuildError, names.LabelError) as exc:
+            results.append(Check(qid, False, f"{qid}: {exc}"))
+    return results
+
+
+def _check_player(client: PoliteClient, qid: str) -> Check:
+    facts = wikidata.fetch_player(client, qid)
+    names.display_name(facts)
+    code = _team_codes({qid: facts})[qid]
+    position = _any_position(facts)
+    open_clubs = sorted(
+        (
+            s
+            for s in facts.clubs
+            if s.end is None and not normalise.is_youth_side(s.team_label)
+        ),
+        key=lambda s: (s.start or "", s.team),
+    )
+    club = names.club_name(open_clubs[-1].team, open_clubs[-1].team_label)
+    return Check(
+        qid, True, f"{qid}: ok {code} {position} {club if open_clubs else 'no club'}"
+    )
+
+
+def _any_position(facts: wikidata.PlayerFacts) -> str:
+    """Return the card position for either grade group, or fail as the build does."""
+    for group in ("outfield", "goalkeeper"):
+        try:
+            return normalise.card_position(
+                facts, grades.GradeEntry(facts.qid, group, {}, {})
+            )
+        except normalise.NormaliseError:
+            continue
+    raise BuildError(f"needs a usable position: {facts.qid} lists none")
 
 
 def _career_report(records: list[normalise.PlayerRecord]) -> list[str]:

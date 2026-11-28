@@ -499,7 +499,7 @@ def test_a_check_says_ok_with_code_position_and_club(tmp_path: Path) -> None:
     [result] = _check(tmp_path, ["Q615"], FakeWikimedia())
 
     assert result.ok
-    assert result.line.startswith("Q615: ok ARG forward ")
+    assert result.line.startswith("Q615: ok ARG FORWARD ")
     assert result.line.endswith("Inter Miami CF")
 
 
