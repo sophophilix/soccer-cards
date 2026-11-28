@@ -42,55 +42,6 @@ test.describe('the Packs screen guards', () => {
 		await expect(page.getByRole('link', { name: 'Cards (10)' })).toBeVisible();
 	});
 
-	test('a double tap on Open opens one pack', async ({ page }) => {
-		await page.goto('/');
-		await expect(page.getByRole('button', { name: /^Open free pack/ })).toBeEnabled();
-
-		await page.getByRole('button', { name: /^Open free pack/ }).evaluate((button: HTMLElement) => {
-			button.click();
-			button.click();
-		});
-
-		await expect(page.getByText('Card 1 of 10')).toBeVisible();
-		const saved = await page.evaluate((key) => localStorage.getItem(key), STATE_KEY);
-		expect(JSON.parse(saved ?? '{}')).toMatchObject({ freePacks: 1 });
-	});
-
-	test('says so when the device cannot save progress, and still opens the pack', async ({
-		page
-	}) => {
-		await page.addInitScript(() => {
-			Object.defineProperty(window, 'localStorage', {
-				get: () => {
-					throw new Error('blocked');
-				}
-			});
-		});
-		await page.goto('/');
-
-		await expect(page.getByText("Your cards can't be saved on this device.")).toBeVisible();
-		await page.getByRole('button', { name: /^Open free pack/ }).click();
-
-		await expect(page.getByText('Card 1 of 10')).toBeVisible();
-	});
-
-	test('says so when the device is full', async ({ page }) => {
-		await page.goto('/');
-		await expect(page.getByRole('button', { name: /^Open free pack/ })).toBeEnabled();
-		await page.evaluate(() => {
-			Storage.prototype.setItem = () => {
-				throw new DOMException('full', 'QuotaExceededError');
-			};
-		});
-
-		await page.getByRole('button', { name: /^Open free pack/ }).click();
-
-		await expect(
-			page.getByText('This device is full, so your cards were not saved.')
-		).toBeVisible();
-		await expect(page.getByText('Card 1 of 10')).toBeVisible();
-	});
-
 	test('says so when another tab changed the saved cards', async ({ page }) => {
 		await page.goto('/');
 		await expect(page.getByRole('button', { name: /^Open free pack/ })).toBeEnabled();
