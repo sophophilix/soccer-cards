@@ -1,3 +1,4 @@
+import { AxeBuilder } from '@axe-core/playwright';
 import { expect, test, type Page } from '@playwright/test';
 import { createPlayerState } from '@soccer-cards/game';
 import { STATE_KEY } from '../src/lib/state/player-store.ts';
@@ -191,3 +192,31 @@ for (const width of [320, 390]) {
 		expect(box?.height).toBeGreaterThan(44);
 	});
 }
+
+test.describe('with the system in dark mode', () => {
+	test.use({ colorScheme: 'dark' });
+
+	test('the revealed row is readable after a right answer', async ({ page }) => {
+		await serve(page);
+		await page.goto('/games/guess-the-club');
+		await rightTile(page).click();
+		await expect(page.getByText('Right: 1')).toBeVisible();
+
+		const results = await new AxeBuilder({ page }).exclude('[data-art]').analyze();
+
+		expect(results.violations.filter((check) => check.id === 'color-contrast')).toEqual([]);
+		expect(results.incomplete.filter((check) => check.id === 'color-contrast')).toEqual([]);
+	});
+
+	test('the revealed row is readable after a wrong answer', async ({ page }) => {
+		await serve(page);
+		await page.goto('/games/guess-the-club');
+		await wrongTiles(page).first().click();
+		await expect(page.getByText('Right: 0')).toBeVisible();
+
+		const results = await new AxeBuilder({ page }).exclude('[data-art]').analyze();
+
+		expect(results.violations.filter((check) => check.id === 'color-contrast')).toEqual([]);
+		expect(results.incomplete.filter((check) => check.id === 'color-contrast')).toEqual([]);
+	});
+});
