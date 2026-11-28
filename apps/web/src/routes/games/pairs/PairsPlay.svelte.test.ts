@@ -157,6 +157,33 @@ test('a failed save is said in words and the board still finishes', async () => 
 	await expect.element(screen.getByRole('heading', { name: 'All 6 pairs found!' })).toBeVisible();
 });
 
+test('leaving the board mid-mismatch leaves no timer running', async () => {
+	vi.useFakeTimers();
+	const screen = await render(PairsPlay, await props());
+	const names = layout(screen);
+	await tap(screen, 0);
+	await tap(
+		screen,
+		names.findIndex((each) => each !== names[0])
+	);
+	await vi.advanceTimersByTimeAsync(500);
+	await screen.unmount();
+
+	expect(vi.getTimerCount()).toBe(0);
+});
+
+test('Play again takes the old save notice off the fresh board', async () => {
+	const given = await props();
+	vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+		throw new DOMException('full', 'QuotaExceededError');
+	});
+	const screen = await render(PairsPlay, given);
+	await playPerfect(screen);
+	await screen.getByRole('button', { name: 'Play again' }).click();
+
+	await expect.element(screen.getByText(/your coins were not saved/)).not.toBeInTheDocument();
+});
+
 test('Play again deals a fresh face-down board', async () => {
 	const screen = await render(PairsPlay, await props());
 	await playPerfect(screen);

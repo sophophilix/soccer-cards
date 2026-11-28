@@ -61,6 +61,7 @@
 		if (!dealt.ok) return;
 		clearTimeout(settleTimer);
 		board = dealt.value;
+		notice = '';
 		status = { kind: 'first' };
 	}
 
