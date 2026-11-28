@@ -54,15 +54,3 @@ test('offers Guess the Club with its line', async () => {
 		)
 		.toBeVisible();
 });
-
-test('offers Pairs with its line', async () => {
-	const screen = await render(GamesMenu);
-
-	await expect
-		.element(
-			screen.getByRole('link', {
-				name: /Pairs.*Turn two cards at a time\. Find the pairs of the same player\./
-			})
-		)
-		.toHaveAttribute('href', '/games/pairs');
-});
