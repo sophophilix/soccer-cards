@@ -115,7 +115,7 @@ export type {
 	PairsResult,
 	PairsSize
 } from './pairs.ts';
-export { payPairsBoard } from './pairs-pay.ts';
+export { earnsPairsFewTurnsBonus, pairsFewTurnsLimit, payPairsBoard } from './pairs-pay.ts';
 export type { PaidPairsBoard, PairsPayRefusal, PairsPayResult } from './pairs-pay.ts';
 export { GUESS_OPTIONS, GUESS_QUESTIONS, startGuessRound } from './guess-the-club.ts';
 export type { GuessQuestion, GuessRound } from './guess-the-club.ts';
