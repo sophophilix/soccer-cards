@@ -34,11 +34,13 @@
 		onTap(card.id);
 	}
 
-	// A card that mounts face down stays still (its class turns it), so no face shows early.
+	// A card that mounts face down is turned by its class, which GSAP can't see. Turning it to
+	// 180 at once lets GSAP record that, so its first turn up tweens from 180, not from 0 to 0.
 	function turning(isDown: boolean): (inner: HTMLElement) => void {
 		return (inner) => {
 			if (!turned.has(inner)) {
 				turned.add(inner);
+				if (isDown) turnCard(inner, 180);
 				return;
 			}
 			turnCard(inner, isDown ? 180 : 0);
