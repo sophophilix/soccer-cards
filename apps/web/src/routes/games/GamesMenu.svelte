@@ -44,6 +44,7 @@
 
 	.gamebtn {
 		display: grid;
+		justify-content: stretch;
 		gap: 6px;
 		box-sizing: border-box;
 		padding: 14px 16px;
