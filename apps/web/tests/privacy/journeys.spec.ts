@@ -65,7 +65,8 @@ async function serveCards(page: Page): Promise<void> {
 		{ name: 'clubs/second-club', displayName: 'Second Club' },
 		{ name: 'clubs/third-club', displayName: 'Third Club' },
 		{ name: 'clubs/fourth-club', displayName: 'Fourth Club' },
-		{ name: 'clubs/fifth-club', displayName: 'Fifth Club' }
+		{ name: 'clubs/fifth-club', displayName: 'Fifth Club' },
+		{ name: 'clubs/sixth-club', displayName: 'Sixth Club' }
 	];
 	const careerSpells = [
 		{ club: 'clubs/test-club', startYear: 2000, endYear: 2004 },
@@ -80,11 +81,22 @@ async function serveCards(page: Page): Promise<void> {
 		{ club: 'clubs/fourth-club', startYear: 2004, endYear: 2008 },
 		{ club: 'clubs/fifth-club', startYear: 2008 }
 	];
-	await page.route('**/api/v1/players/*.json', (route) =>
-		route.fulfill({
-			json: { careerSpells: route.request().url().endsWith('2.json') ? otherSpells : careerSpells }
-		})
-	);
+	// Players whose id ends in 3 have a club with games and three clubs they never played for,
+	// so Guess the Club has a career to read and clubs to choose from.
+	const gamesSpells = [
+		{ club: 'clubs/test-club', startYear: 2000, endYear: 2004, appearanceCount: { value: 50 } },
+		{ club: 'clubs/sixth-club', startYear: 2004, endYear: 2008 },
+		{ club: 'clubs/fifth-club', startYear: 2008 }
+	];
+	await page.route('**/api/v1/players/*.json', (route) => {
+		const url = route.request().url();
+		const spells = url.endsWith('3.json')
+			? gamesSpells
+			: url.endsWith('2.json')
+				? otherSpells
+				: careerSpells;
+		return route.fulfill({ json: { careerSpells: spells } });
+	});
 	await page.route('**/api/v1/photos/**', (route) => route.fulfill({ status: 404 }));
 }
 
@@ -154,6 +166,9 @@ test('every view runs with one origin, no cookie and no security policy violatio
 
 	await page.goto('/games/connections');
 	await expect(page.getByText('Question 1 of 5')).toBeVisible();
+
+	await page.goto('/games/guess-the-club');
+	await expect(page.getByText(/Question 1 of \d/)).toBeVisible();
 
 	await page.goto('/guide');
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
