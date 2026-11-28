@@ -17,6 +17,8 @@ const HEADERS_FILE = `${BUILD_FOLDER}/_headers`;
 const API_SOURCE_FOLDER = '../../data/api/v1';
 const API_BUILD_FOLDER = `${BUILD_FOLDER}/api/v1`;
 const LIB_COVERAGE_PERCENT = 80;
+// Tests that draw nothing but use browser globals; every other test runs in Node.
+const BROWSER_LOGIC_TESTS = ['src/lib/ui/motion.test.ts', 'src/lib/state/player-store.test.ts'];
 // The style attribute on SvelteKit's route announcer. static/_headers has the same hash.
 const ANNOUNCER_STYLE_HASH = 'sha256-S8qMpvofolR8Mpjy4kQvEm7m1q8clzU4dfDH0AmvZjo=';
 
@@ -102,19 +104,37 @@ export default defineConfig({
 		})
 	],
 	test: {
-		include: ['src/**/*.test.ts'],
-		setupFiles: ['src/testing/property-seed.ts'],
-		browser: {
-			provider: playwright(),
-			enabled: true,
-			headless: true,
-			instances: [{ browser: 'chromium' }]
-		},
 		coverage: {
 			provider: 'v8',
 			include: ['src/lib/**/*.{ts,svelte}'],
 			exclude: ['src/**/*.test.ts'],
 			thresholds: { lines: LIB_COVERAGE_PERCENT, branches: LIB_COVERAGE_PERCENT }
-		}
+		},
+		projects: [
+			{
+				extends: true,
+				test: {
+					name: 'browser',
+					include: ['src/**/*.svelte.test.ts', ...BROWSER_LOGIC_TESTS],
+					setupFiles: ['src/testing/property-seed.ts'],
+					browser: {
+						provider: playwright(),
+						enabled: true,
+						headless: true,
+						instances: [{ browser: 'chromium' }]
+					}
+				}
+			},
+			{
+				extends: true,
+				test: {
+					name: 'node',
+					environment: 'node',
+					include: ['src/**/*.test.ts'],
+					exclude: ['src/**/*.svelte.test.ts', ...BROWSER_LOGIC_TESTS],
+					setupFiles: ['src/testing/property-seed.ts']
+				}
+			}
+		]
 	}
 });
