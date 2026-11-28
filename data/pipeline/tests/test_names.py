@@ -217,6 +217,9 @@ def test_label_mixing_writing_systems_is_refused_with_the_qid(label: str) -> Non
         "Jean-Pierre",
         "\u039b\u03b9\u03bf\u03bd\u03b5\u03bb \u039c\u03ad\u03c3\u03c3\u03b9",
         "\u041c\u0435\u0441\u0441\u0438",  # Cyrillic only.
+        "O\u02bbzbek",  # Latin with an okina (modifier letter).
+        "M\u00aa Jos\u00e9",  # Latin with an ordinal indicator.
+        "\u30b8\u30e7\u30f3\u7530",  # Katakana with Han.
     ],
 )
 def test_label_in_one_writing_system_is_accepted(label: str) -> None:
