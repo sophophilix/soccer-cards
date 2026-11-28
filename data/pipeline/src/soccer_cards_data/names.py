@@ -103,7 +103,19 @@ def assign_slugs(
     return slugs
 
 
+def _scripts(text: str) -> set[str]:
+    """Return the writing systems of the letters in `text`, such as LATIN."""
+    return {
+        unicodedata.name(ch, "UNKNOWN").split()[0]
+        for ch in text
+        if unicodedata.category(ch).startswith("L")
+    }
+
+
 def _checked(qid: str, label: str | None) -> str:
     if label is None or not is_plain(label):
         raise LabelError(f"{qid}: label is missing or not plain text")
+    # A look-alike letter, such as a Greek alpha for a Latin A, is not the name.
+    if len(_scripts(label)) > 1:
+        raise LabelError(f"{qid}: label mixes writing systems")
     return label
