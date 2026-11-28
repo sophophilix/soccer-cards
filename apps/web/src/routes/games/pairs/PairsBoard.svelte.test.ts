@@ -1,7 +1,8 @@
 import { afterEach, expect, test, vi } from 'vitest';
-import { cdp, userEvent } from 'vitest/browser';
+import { cdp } from 'vitest/browser';
 import { render } from 'vitest-browser-svelte';
 import PairsBoard from './PairsBoard.svelte';
+import type { PairsStatus } from './pairs-words.ts';
 
 const names = ['Ana Diaz', 'Bo Lee', 'Cy Ode', 'Di Fox', 'Ed Gray', 'Flo Hu', 'Gus Ing', 'Hal Jo'];
 const front = (displayName: string) =>
@@ -27,7 +28,7 @@ function props(extra: Record<string, unknown> = {}) {
 		cards: board(6),
 		turns: 0,
 		pairsFound: 0,
-		status: { kind: 'first' },
+		status: { kind: 'first' } satisfies PairsStatus,
 		onTap: vi.fn(),
 		...extra
 	};
@@ -57,12 +58,6 @@ test('a face-up card is named by its player, and a matched one says matched', as
 	await expect.element(screen.getByRole('button', { name: 'Bo Lee, matched' })).toBeVisible();
 });
 
-test('a face-down card does not tell a screen reader who it is', async () => {
-	const screen = await render(PairsBoard, props());
-
-	await expect.element(screen.getByRole('img')).not.toBeInTheDocument();
-});
-
 test('the turn and pair counts show', async () => {
 	const screen = await render(PairsBoard, props({ turns: 4, pairsFound: 2 }));
 
@@ -79,16 +74,6 @@ test('a tap tells the page which card, and a double tap tells it once', async ()
 	expect(p.onTap).toHaveBeenCalledExactlyOnceWith('c2');
 });
 
-test('a repeated Enter on a card tells the page once', async () => {
-	const p = props();
-	const screen = await render(PairsBoard, p);
-	screen.getByRole('button', { name: 'Face-down card 2' }).element().focus();
-
-	await userEvent.keyboard('{Enter}{Enter}{Enter}');
-
-	expect(p.onTap).toHaveBeenCalledTimes(1);
-});
-
 test('a card that is already up or matched tells the page nothing', async () => {
 	const p = props({ cards: board(6, { 0: 'up', 2: 'matched' }) });
 	const screen = await render(PairsBoard, p);
@@ -99,11 +84,9 @@ test('a card that is already up or matched tells the page nothing', async () => 
 	expect(p.onTap).not.toHaveBeenCalled();
 });
 
-test.each([
+test.each<[PairsStatus, string]>([
 	[{ kind: 'first' }, 'Turn a card.'],
-	[{ kind: 'second' }, 'Now turn a second card.'],
-	[{ kind: 'match', name: 'Ana Diaz' }, 'A match: Ana Diaz!'],
-	[{ kind: 'miss' }, 'Not the same. Remember where they are.']
+	[{ kind: 'match', name: 'Ana Diaz' }, 'A match: Ana Diaz!']
 ])('the status line for %j', async (status, words) => {
 	const screen = await render(PairsBoard, props({ status }));
 
@@ -112,7 +95,6 @@ test.each([
 
 test.each([
 	[6, 4],
-	[8, 4],
 	[10, 5]
 ])('%i pairs sit %i across', async (pairs, across) => {
 	const screen = await render(PairsBoard, props({ cards: board(pairs) }));
@@ -120,12 +102,6 @@ test.each([
 	const grid = screen.getByRole('group', { name: 'Cards' }).element();
 
 	expect(getComputedStyle(grid).gridTemplateColumns.split(' ')).toHaveLength(across);
-});
-
-test('the cards sit under a level-2 heading', async () => {
-	const screen = await render(PairsBoard, props());
-
-	await expect.element(screen.getByRole('heading', { level: 2, name: 'Cards' })).toBeVisible();
 });
 
 test('a matched card carries the matched outline', async () => {

@@ -8,11 +8,8 @@ test('the status line says what to do next, and what just happened', () => {
 	expect(statusText({ kind: 'miss' })).toBe('Not the same. Remember where they are.');
 });
 
-test('a face-down card is named by its place on the board', () => {
+test('a card is named by its place while down, and by its player once up', () => {
 	expect(cardName({ place: 3, state: 'down' })).toBe('Face-down card 3');
-});
-
-test('a face-up card is named by its player, and a matched one says so', () => {
 	expect(cardName({ place: 3, state: 'up', name: 'Ana Diaz' })).toBe('Ana Diaz');
 	expect(cardName({ place: 3, state: 'matched', name: 'Ana Diaz' })).toBe('Ana Diaz, matched');
 });
