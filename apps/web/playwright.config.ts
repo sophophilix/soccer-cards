@@ -11,6 +11,8 @@ declare const process: {
 	cwd(): string;
 };
 
+const ENGINE_TESTS = /@engines/;
+
 const isCi = Boolean(process.env.CI);
 
 // The local built site (ADR 0001 D8), or the Cloudflare preview in PREVIEW_URL.
@@ -33,8 +35,9 @@ export default defineConfig({
 	},
 	projects: [
 		{ name: 'phone-chromium', use: { ...devices['Pixel 7'] } },
-		{ name: 'phone-webkit', use: { ...devices['iPhone 15'] } },
-		{ name: 'desktop-chromium', use: { ...devices['Desktop Chrome'] } }
+		// Only layout, touch, fonts and tap targets differ by engine (ADR 0011 D2).
+		{ name: 'phone-webkit', use: { ...devices['iPhone 15'] }, grep: ENGINE_TESTS },
+		{ name: 'desktop-chromium', use: { ...devices['Desktop Chrome'] }, grep: ENGINE_TESTS }
 	],
 	...localServer
 });
