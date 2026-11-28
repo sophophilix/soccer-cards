@@ -12,8 +12,7 @@ paths:
   - data/pipeline/tests/test_normalise.py
   - data/pipeline/tests/test_wikidata.py
   - data/pipeline/tests/fixtures/**
-dependencies:
-  - T-0210
+dependencies: []
 max_changed_lines: 300
 status: ready
 ---
@@ -30,6 +29,11 @@ pack (ADR 0010 D4) can't find players who have no club.
 - `.sdlc/reviews/T-0203.reviewer.json`, finding F1 (in the main checkout).
 - The pipeline's rule for a player's current club and how it writes
   `clubs.json`.
+- Found by T-0210: `wikidata.fetch_player` treats any `P54` team with a
+  `P1532` claim as a national team. Manchester City W.F.C. (Q3844288) has
+  a `P1532`, so it is read as a national team with no code, not as a club.
+  That is a likely cause. A national team must be told apart from a club
+  by more than `P1532`.
 
 ## Acceptance criteria
 
@@ -56,4 +60,4 @@ pack (ADR 0010 D4) can't find players who have no club.
 
 ## Out of scope
 
-- National team codes (T-0210), positions, the site.
+- National team codes, positions, the site.
