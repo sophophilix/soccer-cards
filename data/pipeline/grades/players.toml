@@ -930,12 +930,12 @@ passing = [3, "No standout public record for passing"]
 dribbling = [3, "No standout public record for dribbling"]
 defending = [3, "No standout public record for defending"]
 physical = [4, "Widely described as strong and powerful in duels"]
-[outfield.Q108159340] # Arda Guler
+[outfield.Q16174734] # Lee Kang-in
 pace = [3, "No standout public record for pace"]
-shooting = [4, "Scored a long-range goal for Turkey against Georgia at Euro 2024"]
-passing = [4, "Known for accurate passes as an attacking midfielder"]
-dribbling = [4, "Known for close control and quick feet"]
-defending = [2, "Plays as an attacking midfielder, a role that defends less"]
+shooting = [3, "No standout public record for shooting"]
+passing = [4, "Known for accurate passes and set-piece deliveries"]
+dribbling = [4, "Widely described as a skilful dribbler with close control"]
+defending = [3, "No standout public record for defending"]
 physical = [2, "Slim build; he relies on skill, not strength"]
 [outfield.Q27995553] # Aitana Bonmati
 pace = [3, "No standout public record for pace"]

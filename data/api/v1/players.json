@@ -2702,6 +2702,40 @@
       "tier": "RARE"
     },
     {
+      "club": "clubs/atletico-madrid",
+      "displayName": "Lee Kang-in",
+      "name": "players/lee-kang-in",
+      "nationalTeamCode": "KOR",
+      "outfieldRatings": {
+        "defending": 75,
+        "dribbling": 85,
+        "pace": 75,
+        "passing": 85,
+        "physical": 65,
+        "shooting": 75
+      },
+      "photo": {
+        "attribution": {
+          "author": "Republic of Korea from Seoul, Republic of Korea",
+          "licenseCode": "CC-BY-SA-2.0",
+          "sourceUri": "https://commons.wikimedia.org/wiki/File:Lee_Kang-in_-_2022_(52551771501)_(cropped).jpg"
+        },
+        "heightPx": 720,
+        "mimeType": "image/webp",
+        "uri": "photos/lee-kang-in.webp",
+        "widthPx": 480
+      },
+      "playStats": {
+        "attack": 78,
+        "control": 82,
+        "defence": 73,
+        "overall": 81
+      },
+      "position": "MIDFIELDER",
+      "state": "ACTIVE",
+      "tier": "BASE"
+    },
+    {
       "club": "clubs/real-madrid-femenino",
       "displayName": "Linda Caicedo",
       "name": "players/linda-caicedo",
@@ -3803,40 +3837,6 @@
         "overall": 81
       },
       "position": "FORWARD",
-      "state": "ACTIVE",
-      "tier": "BASE"
-    },
-    {
-      "club": "clubs/real-madrid-club-de-futbol",
-      "displayName": "Αrda Güler",
-      "name": "players/rda-guler",
-      "nationalTeamCode": "TUR",
-      "outfieldRatings": {
-        "defending": 65,
-        "dribbling": 85,
-        "pace": 75,
-        "passing": 85,
-        "physical": 65,
-        "shooting": 85
-      },
-      "photo": {
-        "attribution": {
-          "author": "LawEnthusiast",
-          "licenseCode": "CC-BY-SA-4.0",
-          "sourceUri": "https://commons.wikimedia.org/wiki/File:Arda_G%C3%BCler_2025_(cropped).jpg"
-        },
-        "heightPx": 515,
-        "mimeType": "image/webp",
-        "uri": "photos/rda-guler.webp",
-        "widthPx": 441
-      },
-      "playStats": {
-        "attack": 83,
-        "control": 82,
-        "defence": 68,
-        "overall": 79
-      },
-      "position": "MIDFIELDER",
       "state": "ACTIVE",
       "tier": "BASE"
     },

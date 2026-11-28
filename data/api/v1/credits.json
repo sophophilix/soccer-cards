@@ -713,6 +713,15 @@
     },
     {
       "attribution": {
+        "author": "Republic of Korea from Seoul, Republic of Korea",
+        "licenseCode": "CC-BY-SA-2.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Lee_Kang-in_-_2022_(52551771501)_(cropped).jpg"
+      },
+      "player": "players/lee-kang-in",
+      "uri": "photos/lee-kang-in.webp"
+    },
+    {
+      "attribution": {
         "author": "Bryan Berlin",
         "licenseCode": "CC-BY-SA-4.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:Linda_Caicedo_USWNT_v_Colombia_Mar_7_2026-97_(cropped).jpg"
@@ -998,15 +1007,6 @@
       },
       "player": "players/raphinha",
       "uri": "photos/raphinha.webp"
-    },
-    {
-      "attribution": {
-        "author": "LawEnthusiast",
-        "licenseCode": "CC-BY-SA-4.0",
-        "sourceUri": "https://commons.wikimedia.org/wiki/File:Arda_G%C3%BCler_2025_(cropped).jpg"
-      },
-      "player": "players/rda-guler",
-      "uri": "photos/rda-guler.webp"
     },
     {
       "attribution": {
