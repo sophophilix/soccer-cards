@@ -3,6 +3,11 @@
 
 	const GAMES = [
 		{
+			name: 'Pairs',
+			blurb: 'Turn two cards at a time. Find the pairs of the same player.',
+			slug: 'pairs'
+		},
+		{
 			name: 'Transfer Trail',
 			blurb: 'Put a player’s clubs in the order they joined them.',
 			slug: 'transfer-trail'

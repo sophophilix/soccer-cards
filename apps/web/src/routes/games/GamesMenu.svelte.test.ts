@@ -31,11 +31,12 @@ test('links to the page with no rel, so the site treats it as its own', async ()
 		.not.toHaveAttribute('rel');
 });
 
-test('offers Connections after Transfer Trail, as a link to its own page', async () => {
+test('offers Pairs first, as a link to its own page', async () => {
 	const screen = await render(GamesMenu);
 
 	const links = screen.getByRole('link').elements();
 	expect(links.map((link) => link.getAttribute('href'))).toEqual([
+		'/games/pairs',
 		'/games/transfer-trail',
 		'/games/connections',
 		'/games/guess-the-club'

@@ -51,3 +51,11 @@ export function finishText(size: PairsSize, turns: number): string {
 		? `${used}${forBoard} and ${String(PAIRS_FEW_TURNS_BONUS)} for finding them in ${String(fewTurns)} turns or fewer.`
 		: `${used}${forBoard}. Find them in ${String(fewTurns)} turns or fewer next time for ${String(PAIRS_FEW_TURNS_BONUS)} more.`;
 }
+
+/** What sits under a size button: what a player still needs, or what the board wins. */
+export function sizeNote(size: PairsSize, ownedCount: number): string {
+	const short = size - ownedCount;
+	return short > 0
+		? `Collect ${plural(short, 'more different card')} to play this.`
+		: `Win ${plural(PAIRS_BOARD_COINS[size], 'coin')}.`;
+}

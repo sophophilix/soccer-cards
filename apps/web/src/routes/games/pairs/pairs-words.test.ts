@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { cardName, finishText, pairsText, statusText, turnsText } from './pairs-words.ts';
+import { cardName, finishText, pairsText, sizeNote, statusText, turnsText } from './pairs-words.ts';
 
 test('the status line says what to do next, and what just happened', () => {
 	expect(statusText({ kind: 'first' })).toBe('Turn a card.');
@@ -31,4 +31,13 @@ test('the finish text asks for fewer turns when there was no bonus', () => {
 		'You used 17 turns. You earned 4 coins: 4 for the board. Find them in 16 turns or fewer next time for 1 more.'
 	);
 	expect(finishText(10, 21)).toContain('You used 21 turns.');
+});
+
+test('a size note says what a player still needs, or the coins the board wins', () => {
+	expect(sizeNote(6, 4)).toBe('Collect 2 more different cards to play this.');
+	expect(sizeNote(8, 7)).toBe('Collect 1 more different card to play this.');
+	expect(sizeNote(10, 0)).toBe('Collect 10 more different cards to play this.');
+	expect(sizeNote(6, 6)).toBe('Win 3 coins.');
+	expect(sizeNote(8, 20)).toBe('Win 4 coins.');
+	expect(sizeNote(10, 10)).toBe('Win 5 coins.');
 });
