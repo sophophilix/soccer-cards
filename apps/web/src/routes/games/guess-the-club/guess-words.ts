@@ -1,3 +1,4 @@
+import { GUESS_FINISH_COINS, GUESS_RIGHT_COINS } from '@soccer-cards/game';
 import { endSentence } from '../connections/connections-words.ts';
 import { plural, yearsText } from '../transfer-trail/trail-words.ts';
 
@@ -34,4 +35,15 @@ export function spellFacts(spell: {
 	return spell.goals === undefined
 		? `${years}, ${games}, goals not known`
 		: `${years}, ${games}, ${plural(spell.goals, 'goal')}`;
+}
+
+/** What the finish screen says was earned. */
+export function finishText(rightCount: number, questionCount: number): string {
+	const forAnswers = rightCount * GUESS_RIGHT_COINS;
+	const earned = forAnswers + GUESS_FINISH_COINS;
+	return (
+		`You got ${plural(rightCount, 'answer')} right out of ${String(questionCount)}. ` +
+		`You earned ${plural(earned, 'coin')}: ${plural(forAnswers, 'coin')} for the answers ` +
+		`and ${String(GUESS_FINISH_COINS)} for finishing.`
+	);
 }

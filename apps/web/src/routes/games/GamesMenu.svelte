@@ -11,6 +11,11 @@
 			name: 'Connections',
 			blurb: 'Two players. Name a club they both played for.',
 			slug: 'connections'
+		},
+		{
+			name: 'Guess the Club',
+			blurb: 'Read a career with one club hidden. Pick the missing club.',
+			slug: 'guess-the-club'
 		}
 	] as const;
 </script>
