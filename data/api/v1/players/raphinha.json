@@ -1,0 +1,121 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/avai-futebol-clube",
+      "endYear": 2015,
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28861547&oldid=2563303785",
+        "value": 65
+      },
+      "club": "clubs/vitoria-s-c",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28861547&oldid=2563303785",
+        "value": 19
+      },
+      "startYear": 2016
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28861547&oldid=2563303785",
+        "value": 28
+      },
+      "club": "clubs/sporting-cp",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28861547&oldid=2563303785",
+        "value": 6
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28861547&oldid=2563303785",
+        "value": 28
+      },
+      "club": "clubs/stade-rennais-f-c",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28861547&oldid=2563303785",
+        "value": 6
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28861547&oldid=2563303785",
+        "value": 65
+      },
+      "club": "clubs/leeds-united-f-c",
+      "endYear": 2022,
+      "goalCount": {
+        "retrieveDate": "2026-11-01",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28861547&oldid=2563303785",
+        "value": 17
+      },
+      "startYear": 2020
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28861547&oldid=2563303785",
+        "value": 129
+      },
+      "club": "clubs/fc-barcelona",
+      "goalCount": {
+        "retrieveDate": "2026-09-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28861547&oldid=2563303785",
+        "value": 56
+      },
+      "startYear": 2022
+    }
+  ],
+  "club": "clubs/fc-barcelona",
+  "displayName": "Raphinha",
+  "name": "players/raphinha",
+  "nationalTeamCode": "BRA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-09-29",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q28861547&oldid=2563303785",
+    "value": 12
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 85,
+    "pace": 85,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 84
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Raphinha_Brazil_V_Morocco_13_June_2026-133_(cropped).jpg"
+    },
+    "heightPx": 664,
+    "mimeType": "image/webp",
+    "uri": "photos/raphinha.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 84,
+    "control": 80,
+    "defence": 71,
+    "overall": 81
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

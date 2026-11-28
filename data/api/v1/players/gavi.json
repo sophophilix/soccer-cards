@@ -1,0 +1,61 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q108111889&oldid=2557271868",
+        "value": 121
+      },
+      "club": "clubs/fc-barcelona",
+      "goalCount": {
+        "retrieveDate": "2026-09-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q108111889&oldid=2557271868",
+        "value": 6
+      },
+      "startYear": 2021
+    }
+  ],
+  "club": "clubs/fc-barcelona",
+  "clubGoalCount": {
+    "retrieveDate": "2026-09-17",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q108111889&oldid=2557271868",
+    "value": 6
+  },
+  "displayName": "Gavi",
+  "name": "players/gavi",
+  "nationalTeamCode": "ESP",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-07-19",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q108111889&oldid=2557271868",
+    "value": 5
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 85,
+    "pace": 75,
+    "passing": 85,
+    "physical": 65,
+    "shooting": 64
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Gavi_France_v_Spain_7.24.26-275_(cropped).jpg"
+    },
+    "heightPx": 610,
+    "mimeType": "image/webp",
+    "uri": "photos/gavi.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 73,
+    "control": 82,
+    "defence": 73,
+    "overall": 79
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

@@ -11,12 +11,39 @@
     },
     {
       "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Abdessamad_Ezzalzouli_Morocco_v_Norway_7_June_2026-38.jpg"
+      },
+      "player": "players/abde-ezzalzouli",
+      "uri": "photos/abde-ezzalzouli.webp"
+    },
+    {
+      "attribution": {
         "author": "Pierre-Yves Beaudouin",
         "licenseCode": "CC-BY-SA-4.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:20141015_-_PSG-Lyon_-_0662.jpg"
       },
       "player": "players/ada-hegerberg",
       "uri": "photos/ada-hegerberg.webp"
+    },
+    {
+      "attribution": {
+        "author": "Steffen Prößdorf",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:2019-10-23_Fu%C3%9Fball,_M%C3%A4nner,_UEFA_Champions_League,_RB_Leipzig_-_FC_Zenit_St._Petersburg_1DX_2586_by_Stepro.jpg"
+      },
+      "player": "players/ademola-lookman",
+      "uri": "photos/ademola-lookman.webp"
+    },
+    {
+      "attribution": {
+        "author": "Barcex",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:25th_Laureus_World_Sports_Awards_-_Red_Carpet_-_Aitana_Bonmat%C3%AD_-_240422_193345-2_(cropped).jpg"
+      },
+      "player": "players/aitana-bonmati",
+      "uri": "photos/aitana-bonmati.webp"
     },
     {
       "attribution": {
@@ -35,6 +62,15 @@
       },
       "player": "players/alex-iwobi",
       "uri": "photos/alex-iwobi.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Alexander_Sorloth_France_v_Norway_26_June_26-048.jpg"
+      },
+      "player": "players/alexander-sorloth",
+      "uri": "photos/alexander-sorloth.webp"
     },
     {
       "attribution": {
@@ -65,12 +101,39 @@
     },
     {
       "attribution": {
+        "author": "Антон Зайцев",
+        "licenseCode": "CC-BY-SA-3.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Andreas_Christensen_2019.jpg"
+      },
+      "player": "players/andreas-christensen",
+      "uri": "photos/andreas-christensen.webp"
+    },
+    {
+      "attribution": {
         "author": "Bryan Berlin",
         "licenseCode": "CC-BY-SA-4.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:Andr%C3%A9s_Iniesta_Argentina_v_Spain_19_July_2026-034_(cropped).jpg"
       },
       "player": "players/andres-iniesta",
       "uri": "photos/andres-iniesta.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Ante_Budimir_Croatia_v_Portugal_2_July_2026-034.jpg"
+      },
+      "player": "players/ante-budimir",
+      "uri": "photos/ante-budimir.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Anthony_Gordon_England_v_Ghana_23_June_2026-017_(cropped).jpg"
+      },
+      "player": "players/anthony-gordon",
+      "uri": "photos/anthony-gordon.webp"
     },
     {
       "attribution": {
@@ -112,6 +175,15 @@
       "attribution": {
         "author": "Bryan Berlin",
         "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Brahim_Diaz_Morocco_v_Norway_7_June_2026-36.jpg"
+      },
+      "player": "players/brahim-diaz",
+      "uri": "photos/brahim-diaz.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:Bruno_Fernandes_USMNT_v_Portugal_Mar_31_2026-27_(cropped).jpg"
       },
       "player": "players/bruno-fernandes",
@@ -143,6 +215,15 @@
       },
       "player": "players/caitlin-foord",
       "uri": "photos/caitlin-foord.webp"
+    },
+    {
+      "attribution": {
+        "author": "MichaelEmilio",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Brann_-_Bar%C3%A7a_Femen%C3%AD_CG3A5987_(cropped2).jpg"
+      },
+      "player": "players/cata-coll",
+      "uri": "photos/cata-coll.webp"
     },
     {
       "attribution": {
@@ -184,6 +265,15 @@
       "attribution": {
         "author": "Bryan Berlin",
         "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Dani_Olmo_France_v_Spain_7.24.26-176_(cropped).jpg"
+      },
+      "player": "players/dani-olmo",
+      "uri": "photos/dani-olmo.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:David_Raya_Argentina_v_Spain_19_July_2026-003_(cropped).jpg"
       },
       "player": "players/david-raya",
@@ -200,12 +290,39 @@
     },
     {
       "attribution": {
+        "author": "Erjonallaraj",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Edison_ndreca_inter_egnati_(cropped_Denzel_Dumfries).jpg"
+      },
+      "player": "players/denzel-dumfries",
+      "uri": "photos/denzel-dumfries.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Dominik_Livakovic_Croatia_v_Portugal_2_July_2026-063.jpg"
+      },
+      "player": "players/dominik-livakovic",
+      "uri": "photos/dominik-livakovic.webp"
+    },
+    {
+      "attribution": {
         "author": "Timmy96",
         "licenseCode": "CC0-1.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:Dominik_Szoboszlai_04012026_(1).jpg"
       },
       "player": "players/dominik-szoboszlai",
       "uri": "photos/dominik-szoboszlai.webp"
+    },
+    {
+      "attribution": {
+        "author": "Fotografías Archimadrid.es",
+        "licenseCode": "CC-BY-2.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Ofrenda_de_la_Liga_y_la_Champions-13-L.Mill%C3%A1n_(52109790215)_(cropped).jpg"
+      },
+      "player": "players/eduardo-camavinga",
+      "uri": "photos/eduardo-camavinga.webp"
     },
     {
       "attribution": {
@@ -236,6 +353,24 @@
     },
     {
       "attribution": {
+        "author": "MichaelEmilio",
+        "licenseCode": "CC-BY-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:UWCL_2025-26_Final_A26.jpg"
+      },
+      "player": "players/ewa-pajor",
+      "uri": "photos/ewa-pajor.webp"
+    },
+    {
+      "attribution": {
+        "author": "Real Madrid",
+        "licenseCode": "CC-BY-3.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Ferland_Mendy,_June_2019.jpg"
+      },
+      "player": "players/ferland-mendy",
+      "uri": "photos/ferland-mendy.webp"
+    },
+    {
+      "attribution": {
         "author": "Bryan Berlin",
         "licenseCode": "CC-BY-SA-4.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:Florian_Wirtz_Ecuador_v_Germany_25_June_2026-181_(cropped).jpg"
@@ -263,12 +398,48 @@
     },
     {
       "attribution": {
+        "author": "Yuliia Perekopaiko",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:%D0%9C%D0%B0%D1%82%D1%87_%C2%AB%D0%94%D0%B8%D0%BD%D0%B0%D0%BC%D0%BE%C2%BB_-_%C2%AB%D0%91%D0%B0%D1%80%D1%81%D0%B5%D0%BB%D0%BE%D0%BD%D0%B0%C2%BB_0-1._2_%D0%BD%D0%BE%D1%8F%D0%B1%D1%80%D1%8F_2021_%D0%B3%D0%BE%D0%B4%D0%B0._II_%E2%80%94_1289671_(cropped).jpg"
+      },
+      "player": "players/frenkie-de-jong",
+      "uri": "photos/frenkie-de-jong.webp"
+    },
+    {
+      "attribution": {
+        "author": "EL Loko Foto",
+        "licenseCode": "CC-BY-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Fridolina_Rolf%C3%B6_20191116_(cropped).jpg"
+      },
+      "player": "players/fridolina-rolfo",
+      "uri": "photos/fridolina-rolfo.webp"
+    },
+    {
+      "attribution": {
         "author": "Bryan Berlin",
         "licenseCode": "CC-BY-SA-4.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:Gabriel_Magalhaes_Brazil_V_Morocco_13_June_2026-132_(cropped).jpg"
       },
       "player": "players/gabriel-magalhaes",
       "uri": "photos/gabriel-magalhaes.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Gavi_France_v_Spain_7.24.26-275_(cropped).jpg"
+      },
+      "player": "players/gavi",
+      "uri": "photos/gavi.webp"
+    },
+    {
+      "attribution": {
+        "author": "Paté kroute",
+        "licenseCode": "CC0-1.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Mikautadze_asse_ol_2425.png"
+      },
+      "player": "players/georges-mikautadze",
+      "uri": "photos/georges-mikautadze.webp"
     },
     {
       "attribution": {
@@ -389,6 +560,15 @@
     },
     {
       "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Jo%C3%A3o_Cancelo_USMNT_v_Portugal_Mar_31_2026-30_(cropped).jpg"
+      },
+      "player": "players/joao-cancelo",
+      "uri": "photos/joao-cancelo.webp"
+    },
+    {
+      "attribution": {
         "author": "Silesia711",
         "licenseCode": "CC-BY-SA-4.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:Joelinton_(cropped).jpg"
@@ -418,10 +598,37 @@
       "attribution": {
         "author": "Bryan Berlin",
         "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Juan_Musso_Argentina_v_Spain_19_July_2026-261.jpg"
+      },
+      "player": "players/juan-musso",
+      "uri": "photos/juan-musso.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:Jude_Bellingham_England_v_Ghana_23_June_2026-061_(second_cropped).jpg"
       },
       "player": "players/jude-bellingham",
       "uri": "photos/jude-bellingham.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Jules_Kounde_France_v_Senegal_16_June_2026-449_(cropped).jpg"
+      },
+      "player": "players/jules-kounde",
+      "uri": "photos/jules-kounde.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Julian_Alvarez_Argentina_v_Spain_19_July_2026-052_(cropped).jpg"
+      },
+      "player": "players/julian-alvarez",
+      "uri": "photos/julian-alvarez.webp"
     },
     {
       "attribution": {
@@ -449,6 +656,24 @@
       },
       "player": "players/karim-benzema",
       "uri": "photos/karim-benzema.webp"
+    },
+    {
+      "attribution": {
+        "author": "MichaelEmilio",
+        "licenseCode": "CC-BY-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Valerenga_v_Real_Madrid,_2023_-_A_13_(face).jpg"
+      },
+      "player": "players/kathellen-sousa",
+      "uri": "photos/kathellen-sousa.webp"
+    },
+    {
+      "attribution": {
+        "author": "Hameltion",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:NC_Courage_vs_Houston_Dash_(Mar_2024)_315_(cropped).jpg"
+      },
+      "player": "players/kerolin",
+      "uri": "photos/kerolin.webp"
     },
     {
       "attribution": {
@@ -485,6 +710,24 @@
       },
       "player": "players/lamine-yamal",
       "uri": "photos/lamine-yamal.webp"
+    },
+    {
+      "attribution": {
+        "author": "Republic of Korea from Seoul, Republic of Korea",
+        "licenseCode": "CC-BY-SA-2.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Lee_Kang-in_-_2022_(52551771501)_(cropped).jpg"
+      },
+      "player": "players/lee-kang-in",
+      "uri": "photos/lee-kang-in.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Linda_Caicedo_USWNT_v_Colombia_Mar_7_2026-97_(cropped).jpg"
+      },
+      "player": "players/linda-caicedo",
+      "uri": "photos/linda-caicedo.webp"
     },
     {
       "attribution": {
@@ -530,6 +773,15 @@
       },
       "player": "players/mackenzie-arnold",
       "uri": "photos/mackenzie-arnold.webp"
+    },
+    {
+      "attribution": {
+        "author": "MHSC TV - Montpellier Hérault Sport Club",
+        "licenseCode": "CC-BY-3.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Maelle_Lakrar_2024.png"
+      },
+      "player": "players/maelle-lakrar",
+      "uri": "photos/maelle-lakrar.webp"
     },
     {
       "attribution": {
@@ -614,6 +866,15 @@
     },
     {
       "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Mikel_Oyarzabal_France_v_Spain_7.24.26-161_(cropped).jpg"
+      },
+      "player": "players/mikel-oyarzabal",
+      "uri": "photos/mikel-oyarzabal.webp"
+    },
+    {
+      "attribution": {
         "author": "AntalyasporFC",
         "licenseCode": "CC-BY-SA-3.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:Mile_Jedinak_Antalyaspor.JPG"
@@ -641,6 +902,24 @@
     },
     {
       "attribution": {
+        "author": "Splinter1333",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:MortenHjulmandSporting24.jpg"
+      },
+      "player": "players/morten-hjulmand",
+      "uri": "photos/morten-hjulmand.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Nico_Williams_Argentina_v_Spain_19_July_2026-196_(cropped).jpg"
+      },
+      "player": "players/nico-williams",
+      "uri": "photos/nico-williams.webp"
+    },
+    {
+      "attribution": {
         "author": "Bryan Berlin",
         "licenseCode": "CC-BY-SA-4.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:Noussair_Mazraoui_France_v_Morocco_9_July_2026-125_(cropped).jpg"
@@ -665,6 +944,24 @@
       },
       "player": "players/paolo-maldini",
       "uri": "photos/paolo-maldini.webp"
+    },
+    {
+      "attribution": {
+        "author": "MichaelEmilio",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Brann_-_Bar%C3%A7a_Femen%C3%AD_CG3A5987_(cropped).jpg"
+      },
+      "player": "players/patricia-guijarro",
+      "uri": "photos/patricia-guijarro.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Pau_Cubarsi_Argentina_v_Spain_19_July_2026-181_(cropped).jpg"
+      },
+      "player": "players/pau-cubarsi",
+      "uri": "photos/pau-cubarsi.webp"
     },
     {
       "attribution": {
@@ -704,6 +1001,15 @@
     },
     {
       "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Raphinha_Brazil_V_Morocco_13_June_2026-133_(cropped).jpg"
+      },
+      "player": "players/raphinha",
+      "uri": "photos/raphinha.webp"
+    },
+    {
+      "attribution": {
         "author": "Timmy96",
         "licenseCode": "CC0-1.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:2024_Emirates_Cup_-_Riccardo_Calafiori_(2)_(cropped).jpg"
@@ -719,6 +1025,15 @@
       },
       "player": "players/rodri",
       "uri": "photos/rodri.webp"
+    },
+    {
+      "attribution": {
+        "author": "Junta de Andalucía",
+        "licenseCode": "CC-BY-SA-2.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Rodrygo_2023_(cropped).jpg"
+      },
+      "player": "players/rodrygo",
+      "uri": "photos/rodrygo.webp"
     },
     {
       "attribution": {
@@ -773,6 +1088,15 @@
       },
       "player": "players/stina-blackstenius",
       "uri": "photos/stina-blackstenius.webp"
+    },
+    {
+      "attribution": {
+        "author": "Ali Mohammed Mahdi",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Takefusa_Kubo.jpg"
+      },
+      "player": "players/takefusa-kubo",
+      "uri": "photos/takefusa-kubo.webp"
     },
     {
       "attribution": {
@@ -832,10 +1156,28 @@
       "attribution": {
         "author": "Bryan Berlin",
         "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Unai_Simon_Argentina_v_Spain_19_July_2026-078_(cropped).jpg"
+      },
+      "player": "players/unai-simon",
+      "uri": "photos/unai-simon.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
         "sourceUri": "https://commons.wikimedia.org/wiki/File:Viktor_Gyokeres_France_v_Sweden_6.30.26-123_(cropped).jpg"
       },
       "player": "players/viktor-gyokeres",
       "uri": "photos/viktor-gyokeres.webp"
+    },
+    {
+      "attribution": {
+        "author": "Bryan Berlin",
+        "licenseCode": "CC-BY-SA-4.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Vin%C3%ADcius_J%C3%BAnior_Brazil_V_Morocco_13_June_2026-207_(cropped).jpg"
+      },
+      "player": "players/vinicius-junior",
+      "uri": "photos/vinicius-junior.webp"
     },
     {
       "attribution": {
@@ -881,6 +1223,15 @@
       },
       "player": "players/william-saliba",
       "uri": "photos/william-saliba.webp"
+    },
+    {
+      "attribution": {
+        "author": "La Gazzetta dello Sport",
+        "licenseCode": "CC-BY-3.0",
+        "sourceUri": "https://commons.wikimedia.org/wiki/File:Wojciech_Szcz%C4%99sny.png"
+      },
+      "player": "players/wojciech-szczesny",
+      "uri": "photos/wojciech-szczesny.webp"
     },
     {
       "attribution": {

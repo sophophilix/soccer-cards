@@ -1,0 +1,76 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/ud-collerense",
+      "endYear": 2019,
+      "startYear": 2016
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q65619766&oldid=2574069833",
+        "value": 16
+      },
+      "club": "clubs/sevilla-fc-women",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q65619766&oldid=2574069833",
+        "value": 0
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q65619766&oldid=2574069833",
+        "value": 66
+      },
+      "club": "clubs/fc-barcelona-femeni",
+      "goalCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q65619766&oldid=2574069833",
+        "value": 0
+      },
+      "startYear": 2019
+    }
+  ],
+  "club": "clubs/fc-barcelona-femeni",
+  "displayName": "Cata Coll",
+  "goalkeeperRatings": {
+    "diving": 75,
+    "handling": 75,
+    "kicking": 75,
+    "positioning": 75,
+    "reflexes": 75,
+    "speed": 75
+  },
+  "name": "players/cata-coll",
+  "nationalTeamCode": "ESP",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2025-12-21",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q65619766&oldid=2574069833",
+    "value": 0
+  },
+  "photo": {
+    "attribution": {
+      "author": "MichaelEmilio",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Brann_-_Bar%C3%A7a_Femen%C3%AD_CG3A5987_(cropped2).jpg"
+    },
+    "heightPx": 480,
+    "mimeType": "image/webp",
+    "uri": "photos/cata-coll.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 75,
+    "control": 75,
+    "defence": 75,
+    "overall": 75
+  },
+  "position": "GOALKEEPER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:25:43Z"
+}

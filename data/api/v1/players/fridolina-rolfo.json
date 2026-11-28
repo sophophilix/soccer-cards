@@ -1,0 +1,121 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/tolo-if",
+      "endYear": 2010,
+      "startYear": 2008
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5503587&oldid=2571866821",
+        "value": 59
+      },
+      "club": "clubs/jitex-molndal-bk",
+      "endYear": 2013,
+      "goalCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5503587&oldid=2571866821",
+        "value": 16
+      },
+      "startYear": 2011
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5503587&oldid=2571866821",
+        "value": 50
+      },
+      "club": "clubs/linkopings-fc",
+      "endYear": 2016,
+      "goalCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5503587&oldid=2571866821",
+        "value": 16
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5503587&oldid=2571866821",
+        "value": 40
+      },
+      "club": "clubs/fc-bayern-munich-women",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5503587&oldid=2571866821",
+        "value": 18
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5503587&oldid=2571866821",
+        "value": 25
+      },
+      "club": "clubs/vfl-wolfsburg",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5503587&oldid=2571866821",
+        "value": 9
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5503587&oldid=2571866821",
+        "value": 10
+      },
+      "club": "clubs/fc-barcelona-femeni",
+      "goalCount": {
+        "retrieveDate": "2026-11-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5503587&oldid=2571866821",
+        "value": 4
+      },
+      "startYear": 2021
+    }
+  ],
+  "club": "clubs/fc-barcelona-femeni",
+  "displayName": "Fridolina Rolfö",
+  "name": "players/fridolina-rolfo",
+  "nationalTeamCode": "SWE",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-19",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5503587&oldid=2571866821",
+    "value": 19
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 85,
+    "pace": 83,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 74
+  },
+  "photo": {
+    "attribution": {
+      "author": "EL Loko Foto",
+      "licenseCode": "CC-BY-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Fridolina_Rolf%C3%B6_20191116_(cropped).jpg"
+    },
+    "heightPx": 584,
+    "mimeType": "image/webp",
+    "uri": "photos/fridolina-rolfo.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 78,
+    "control": 80,
+    "defence": 71,
+    "overall": 78
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

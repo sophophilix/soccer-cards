@@ -1,0 +1,136 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q18207229&oldid=2557272610",
+        "value": 104
+      },
+      "club": "clubs/n-k-zagreb",
+      "endYear": 2016,
+      "goalCount": {
+        "retrieveDate": "2026-10-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q18207229&oldid=2557272610",
+        "value": 0
+      },
+      "startYear": 2012
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q18207229&oldid=2557272610",
+        "value": 207
+      },
+      "club": "clubs/gnk-dinamo-zagreb",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-10-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q18207229&oldid=2557272610",
+        "value": 0
+      },
+      "startYear": 2016
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q18207229&oldid=2557272610",
+        "value": 57
+      },
+      "club": "clubs/fenerbahce-istanbul",
+      "endYear": 2026,
+      "goalCount": {
+        "retrieveDate": "2026-10-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q18207229&oldid=2557272610",
+        "value": 0
+      },
+      "startYear": 2023
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q18207229&oldid=2557272610",
+        "value": 0
+      },
+      "club": "clubs/girona-fc",
+      "endYear": 2026,
+      "goalCount": {
+        "retrieveDate": "2026-10-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q18207229&oldid=2557272610",
+        "value": 0
+      },
+      "startYear": 2025
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q18207229&oldid=2557272610",
+        "value": 14
+      },
+      "club": "clubs/gnk-dinamo-zagreb",
+      "endYear": 2026,
+      "goalCount": {
+        "retrieveDate": "2026-10-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q18207229&oldid=2557272610",
+        "value": 0
+      },
+      "startYear": 2026
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-08-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q18207229&oldid=2557272610",
+        "value": 1
+      },
+      "club": "clubs/fc-barcelona",
+      "goalCount": {
+        "retrieveDate": "2026-08-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q18207229&oldid=2557272610",
+        "value": 0
+      },
+      "startYear": 2026
+    }
+  ],
+  "club": "clubs/fc-barcelona",
+  "clubGoalCount": {
+    "retrieveDate": "2026-08-27",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q18207229&oldid=2557272610",
+    "value": 0
+  },
+  "displayName": "Dominik Livaković",
+  "goalkeeperRatings": {
+    "diving": 75,
+    "handling": 75,
+    "kicking": 75,
+    "positioning": 75,
+    "reflexes": 85,
+    "speed": 75
+  },
+  "name": "players/dominik-livakovic",
+  "nationalTeamCode": "CRO",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-07",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q18207229&oldid=2557272610",
+    "value": 0
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Dominik_Livakovic_Croatia_v_Portugal_2_July_2026-063.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/dominik-livakovic.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 75,
+    "control": 75,
+    "defence": 78,
+    "overall": 80
+  },
+  "position": "GOALKEEPER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:08:39Z"
+}

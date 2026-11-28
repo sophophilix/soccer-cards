@@ -1,0 +1,91 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23884186&oldid=2557007279",
+        "value": 47
+      },
+      "club": "clubs/le-havre-ac-2",
+      "endYear": 2017,
+      "goalCount": {
+        "retrieveDate": "2026-10-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23884186&oldid=2557007279",
+        "value": 2
+      },
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23884186&oldid=2557007279",
+        "value": 57
+      },
+      "club": "clubs/olympique-lyonnais",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-10-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23884186&oldid=2557007279",
+        "value": 2
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-05-04",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23884186&oldid=2557007279",
+        "value": 133
+      },
+      "club": "clubs/real-madrid-club-de-futbol",
+      "goalCount": {
+        "retrieveDate": "2026-05-04",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23884186&oldid=2557007279",
+        "value": 4
+      },
+      "startYear": 2019
+    }
+  ],
+  "club": "clubs/real-madrid-club-de-futbol",
+  "clubGoalCount": {
+    "retrieveDate": "2026-05-04",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23884186&oldid=2557007279",
+    "value": 8
+  },
+  "displayName": "Ferland Mendy",
+  "name": "players/ferland-mendy",
+  "nationalTeamCode": "FRA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-14",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23884186&oldid=2557007279",
+    "value": 0
+  },
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 65,
+    "pace": 84,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 65
+  },
+  "photo": {
+    "attribution": {
+      "author": "Real Madrid",
+      "licenseCode": "CC-BY-3.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Ferland_Mendy,_June_2019.jpg"
+    },
+    "heightPx": 466,
+    "mimeType": "image/webp",
+    "uri": "photos/ferland-mendy.webp",
+    "widthPx": 371
+  },
+  "playStats": {
+    "attack": 70,
+    "control": 72,
+    "defence": 81,
+    "overall": 80
+  },
+  "position": "DEFENDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

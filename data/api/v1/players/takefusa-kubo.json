@@ -1,0 +1,166 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27067753&oldid=2571057975",
+        "value": 19
+      },
+      "club": "clubs/fc-tokyo",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27067753&oldid=2571057975",
+        "value": 4
+      },
+      "startYear": 2016
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27067753&oldid=2571057975",
+        "value": 5
+      },
+      "club": "clubs/yokohama-f-marinos",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27067753&oldid=2571057975",
+        "value": 1
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27067753&oldid=2571057975",
+        "value": 35
+      },
+      "club": "clubs/rcd-mallorca",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27067753&oldid=2571057975",
+        "value": 4
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27067753&oldid=2571057975",
+        "value": 0
+      },
+      "club": "clubs/real-madrid-club-de-futbol",
+      "endYear": 2022,
+      "goalCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27067753&oldid=2571057975",
+        "value": 0
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27067753&oldid=2571057975",
+        "value": 13
+      },
+      "club": "clubs/villarreal-cf",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27067753&oldid=2571057975",
+        "value": 0
+      },
+      "startYear": 2020
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27067753&oldid=2571057975",
+        "value": 18
+      },
+      "club": "clubs/getafe-cf",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27067753&oldid=2571057975",
+        "value": 1
+      },
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27067753&oldid=2571057975",
+        "value": 28
+      },
+      "club": "clubs/rcd-mallorca",
+      "endYear": 2022,
+      "goalCount": {
+        "retrieveDate": "2026-11-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27067753&oldid=2571057975",
+        "value": 1
+      },
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27067753&oldid=2571057975",
+        "value": 130
+      },
+      "club": "clubs/real-sociedad",
+      "goalCount": {
+        "retrieveDate": "2026-09-13",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27067753&oldid=2571057975",
+        "value": 23
+      },
+      "startYear": 2022
+    }
+  ],
+  "club": "clubs/real-sociedad",
+  "clubGoalCount": {
+    "retrieveDate": "2026-09-13",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27067753&oldid=2571057975",
+    "value": 34
+  },
+  "displayName": "Takefusa Kubo",
+  "name": "players/takefusa-kubo",
+  "nationalTeamCode": "JPN",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-05",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27067753&oldid=2571057975",
+    "value": 7
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 85,
+    "pace": 75,
+    "passing": 75,
+    "physical": 65,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "Ali Mohammed Mahdi",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Takefusa_Kubo.jpg"
+    },
+    "heightPx": 648,
+    "mimeType": "image/webp",
+    "uri": "photos/takefusa-kubo.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 77,
+    "control": 78,
+    "defence": 72,
+    "overall": 78
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

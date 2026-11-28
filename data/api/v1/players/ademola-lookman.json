@@ -1,0 +1,151 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21484766&oldid=2546454429",
+        "value": 45
+      },
+      "club": "clubs/charlton-athletic-f-c",
+      "endYear": 2017,
+      "goalCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21484766&oldid=2546454429",
+        "value": 10
+      },
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21484766&oldid=2546454429",
+        "value": 36
+      },
+      "club": "clubs/everton-f-c",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21484766&oldid=2546454429",
+        "value": 1
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21484766&oldid=2546454429",
+        "value": 22
+      },
+      "club": "clubs/rb-leipzig",
+      "endYear": 2022,
+      "goalCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21484766&oldid=2546454429",
+        "value": 5
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21484766&oldid=2546454429",
+        "value": 34
+      },
+      "club": "clubs/fulham-f-c",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21484766&oldid=2546454429",
+        "value": 4
+      },
+      "startYear": 2020
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21484766&oldid=2546454429",
+        "value": 26
+      },
+      "club": "clubs/leicester-city-f-c",
+      "endYear": 2022,
+      "goalCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21484766&oldid=2546454429",
+        "value": 6
+      },
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21484766&oldid=2546454429",
+        "value": 105
+      },
+      "club": "clubs/atalanta-bc",
+      "endYear": 2026,
+      "goalCount": {
+        "retrieveDate": "2026-09-16",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21484766&oldid=2546454429",
+        "value": 41
+      },
+      "startYear": 2022
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-05-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21484766&oldid=2546454429",
+        "value": 12
+      },
+      "club": "clubs/atletico-madrid",
+      "goalCount": {
+        "retrieveDate": "2026-05-24",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21484766&oldid=2546454429",
+        "value": 4
+      },
+      "startYear": 2026
+    }
+  ],
+  "club": "clubs/atletico-madrid",
+  "clubGoalCount": {
+    "retrieveDate": "2026-05-24",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21484766&oldid=2546454429",
+    "value": 71
+  },
+  "displayName": "Ademola Lookman",
+  "name": "players/ademola-lookman",
+  "nationalTeamCode": "NGA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-09-16",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21484766&oldid=2546454429",
+    "value": 11
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 85,
+    "pace": 85,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 84
+  },
+  "photo": {
+    "attribution": {
+      "author": "Steffen Prößdorf",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:2019-10-23_Fu%C3%9Fball,_M%C3%A4nner,_UEFA_Champions_League,_RB_Leipzig_-_FC_Zenit_St._Petersburg_1DX_2586_by_Stepro.jpg"
+    },
+    "heightPx": 480,
+    "mimeType": "image/webp",
+    "uri": "photos/ademola-lookman.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 84,
+    "control": 80,
+    "defence": 71,
+    "overall": 83
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

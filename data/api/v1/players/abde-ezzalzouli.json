@@ -1,0 +1,106 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q109327842&oldid=2573054119",
+        "value": 22
+      },
+      "club": "clubs/hercules-cf",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q109327842&oldid=2573054119",
+        "value": 2
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q109327842&oldid=2573054119",
+        "value": 14
+      },
+      "club": "clubs/fc-barcelona",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q109327842&oldid=2573054119",
+        "value": 1
+      },
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q109327842&oldid=2573054119",
+        "value": 34
+      },
+      "club": "clubs/club-atletico-osasuna",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q109327842&oldid=2573054119",
+        "value": 6
+      },
+      "startYear": 2022
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q109327842&oldid=2573054119",
+        "value": 4
+      },
+      "club": "clubs/real-betis-balompie",
+      "goalCount": {
+        "retrieveDate": "2026-11-21",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q109327842&oldid=2573054119",
+        "value": 0
+      },
+      "startYear": 2023
+    }
+  ],
+  "club": "clubs/real-betis-balompie",
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-21",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q109327842&oldid=2573054119",
+    "value": 9
+  },
+  "displayName": "Abde Ezzalzouli",
+  "name": "players/abde-ezzalzouli",
+  "nationalTeamCode": "MAR",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-21",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q109327842&oldid=2573054119",
+    "value": 0
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 85,
+    "pace": 85,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Abdessamad_Ezzalzouli_Morocco_v_Norway_7_June_2026-38.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/abde-ezzalzouli.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 79,
+    "control": 80,
+    "defence": 71,
+    "overall": 76
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

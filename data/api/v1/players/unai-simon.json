@@ -1,0 +1,81 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/cd-aurrera-de-vitoria",
+      "endYear": 2011,
+      "startYear": 2010
+    },
+    {
+      "club": "clubs/athletic-club",
+      "endYear": 2016,
+      "startYear": 2011
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23908113&oldid=2573655245",
+        "value": 36
+      },
+      "club": "clubs/cd-baskonia",
+      "endYear": 2016,
+      "goalCount": {
+        "retrieveDate": "2026-11-22",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23908113&oldid=2573655245",
+        "value": 0
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23908113&oldid=2573655245",
+        "value": 243
+      },
+      "club": "clubs/athletic-club",
+      "goalCount": {
+        "retrieveDate": "2026-09-19",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23908113&oldid=2573655245",
+        "value": 0
+      },
+      "startYear": 2018
+    }
+  ],
+  "club": "clubs/athletic-club",
+  "displayName": "Unai Simón",
+  "goalkeeperRatings": {
+    "diving": 75,
+    "handling": 75,
+    "kicking": 85,
+    "positioning": 85,
+    "reflexes": 85,
+    "speed": 75
+  },
+  "name": "players/unai-simon",
+  "nationalTeamCode": "ESP",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-06",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q23908113&oldid=2573655245",
+    "value": 0
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Unai_Simon_Argentina_v_Spain_19_July_2026-078_(cropped).jpg"
+    },
+    "heightPx": 749,
+    "mimeType": "image/webp",
+    "uri": "photos/unai-simon.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 83,
+    "control": 80,
+    "defence": 80,
+    "overall": 81
+  },
+  "position": "GOALKEEPER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

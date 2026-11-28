@@ -1,0 +1,216 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/lask-linz",
+      "endYear": 2008,
+      "startYear": 2008
+    },
+    {
+      "club": "clubs/hnk-gorica",
+      "endYear": 2011,
+      "startYear": 2009
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 66
+      },
+      "club": "clubs/nk-inter-zapresic",
+      "endYear": 2013,
+      "goalCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 19
+      },
+      "startYear": 2011
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 30
+      },
+      "club": "clubs/nk-lokomotiva",
+      "endYear": 2014,
+      "goalCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 19
+      },
+      "startYear": 2013
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 19
+      },
+      "club": "clubs/fc-st-pauli",
+      "endYear": 2016,
+      "goalCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 0
+      },
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 40
+      },
+      "club": "clubs/f-c-crotone",
+      "endYear": 2016,
+      "goalCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 16
+      },
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 11
+      },
+      "club": "clubs/u-c-sampdoria",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 0
+      },
+      "startYear": 2016
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 22
+      },
+      "club": "clubs/f-c-crotone",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 6
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 17
+      },
+      "club": "clubs/f-c-crotone",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 3
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 18
+      },
+      "club": "clubs/rcd-mallorca",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 5
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 36
+      },
+      "club": "clubs/rcd-mallorca",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 13
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 30
+      },
+      "club": "clubs/club-atletico-osasuna",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 11
+      },
+      "startYear": 2020
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 125
+      },
+      "club": "clubs/club-atletico-osasuna",
+      "goalCount": {
+        "retrieveDate": "2026-11-14",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+        "value": 51
+      },
+      "startYear": 2021
+    }
+  ],
+  "club": "clubs/club-atletico-osasuna",
+  "displayName": "Ante Budimir",
+  "name": "players/ante-budimir",
+  "nationalTeamCode": "CRO",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-14",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q17505049&oldid=2569110172",
+    "value": 4
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 65,
+    "pace": 72,
+    "passing": 75,
+    "physical": 83,
+    "shooting": 82
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Ante_Budimir_Croatia_v_Portugal_2_July_2026-034.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/ante-budimir.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 76,
+    "control": 72,
+    "defence": 77,
+    "overall": 75
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

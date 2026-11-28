@@ -1,0 +1,35 @@
+{
+  "club": "clubs/real-madrid-femenino",
+  "displayName": "Kathellen Sousa",
+  "name": "players/kathellen-sousa",
+  "nationalTeamCode": "BRA",
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 65,
+    "pace": 74,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 65
+  },
+  "photo": {
+    "attribution": {
+      "author": "MichaelEmilio",
+      "licenseCode": "CC-BY-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Valerenga_v_Real_Madrid,_2023_-_A_13_(face).jpg"
+    },
+    "heightPx": 480,
+    "mimeType": "image/webp",
+    "uri": "photos/kathellen-sousa.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 68,
+    "control": 71,
+    "defence": 80,
+    "overall": 78
+  },
+  "position": "DEFENDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

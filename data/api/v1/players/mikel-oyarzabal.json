@@ -1,0 +1,66 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/real-sociedad",
+      "endYear": 2015,
+      "startYear": 2011
+    },
+    {
+      "club": "clubs/sd-eibar",
+      "endYear": 2014,
+      "startYear": 2013
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21195147&oldid=2566971850",
+        "value": 357
+      },
+      "club": "clubs/real-sociedad",
+      "goalCount": {
+        "retrieveDate": "2026-10-11",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21195147&oldid=2566971850",
+        "value": 100
+      },
+      "startYear": 2015
+    }
+  ],
+  "club": "clubs/real-sociedad",
+  "displayName": "Mikel Oyarzabal",
+  "name": "players/mikel-oyarzabal",
+  "nationalTeamCode": "ESP",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-06",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q21195147&oldid=2566971850",
+    "value": 31
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 75,
+    "pace": 75,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 86
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Mikel_Oyarzabal_France_v_Spain_7.24.26-161_(cropped).jpg"
+    },
+    "heightPx": 753,
+    "mimeType": "image/webp",
+    "uri": "photos/mikel-oyarzabal.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 81,
+    "control": 75,
+    "defence": 75,
+    "overall": 79
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

@@ -1,0 +1,76 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q62960177&oldid=2561531376",
+        "value": 71
+      },
+      "club": "clubs/stade-rennais-f-c",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-10-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q62960177&oldid=2561531376",
+        "value": 2
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q62960177&oldid=2561531376",
+        "value": 145
+      },
+      "club": "clubs/real-madrid-club-de-futbol",
+      "goalCount": {
+        "retrieveDate": "2026-10-27",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q62960177&oldid=2561531376",
+        "value": 4
+      },
+      "startYear": 2021
+    }
+  ],
+  "club": "clubs/real-madrid-club-de-futbol",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-27",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q62960177&oldid=2561531376",
+    "value": 6
+  },
+  "displayName": "Eduardo Camavinga",
+  "name": "players/eduardo-camavinga",
+  "nationalTeamCode": "FRA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-27",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q62960177&oldid=2561531376",
+    "value": 2
+  },
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 85,
+    "pace": 75,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 64
+  },
+  "photo": {
+    "attribution": {
+      "author": "Fotografías Archimadrid.es",
+      "licenseCode": "CC-BY-2.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Ofrenda_de_la_Liga_y_la_Champions-13-L.Mill%C3%A1n_(52109790215)_(cropped).jpg"
+    },
+    "heightPx": 697,
+    "mimeType": "image/webp",
+    "uri": "photos/eduardo-camavinga.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 72,
+    "control": 79,
+    "defence": 80,
+    "overall": 80
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

@@ -1,0 +1,91 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47170176&oldid=2557985837",
+        "value": 55
+      },
+      "club": "clubs/fc-girondins-de-bordeaux",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-10-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47170176&oldid=2557985837",
+        "value": 2
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47170176&oldid=2557985837",
+        "value": 95
+      },
+      "club": "clubs/sevilla-fc",
+      "endYear": 2022,
+      "goalCount": {
+        "retrieveDate": "2026-10-17",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47170176&oldid=2557985837",
+        "value": 5
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47170176&oldid=2557985837",
+        "value": 131
+      },
+      "club": "clubs/fc-barcelona",
+      "goalCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47170176&oldid=2557985837",
+        "value": 6
+      },
+      "startYear": 2022
+    }
+  ],
+  "club": "clubs/fc-barcelona",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-10",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47170176&oldid=2557985837",
+    "value": 13
+  },
+  "displayName": "Jules Koundé",
+  "name": "players/jules-kounde",
+  "nationalTeamCode": "FRA",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-06",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q47170176&oldid=2557985837",
+    "value": 0
+  },
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 65,
+    "pace": 85,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 65
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Jules_Kounde_France_v_Senegal_16_June_2026-449_(cropped).jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/jules-kounde.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 70,
+    "control": 72,
+    "defence": 81,
+    "overall": 83
+  },
+  "position": "DEFENDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}
