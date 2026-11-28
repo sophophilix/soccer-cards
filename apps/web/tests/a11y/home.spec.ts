@@ -12,6 +12,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
 			'/games',
 			'/games/transfer-trail',
 			'/games/connections',
+			'/games/guess-the-club',
 			'/cards',
 			'/guide'
 		]) {

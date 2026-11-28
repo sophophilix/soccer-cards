@@ -155,6 +155,10 @@ test('every view runs with one origin, no cookie and no security policy violatio
 	await page.goto('/games/connections');
 	await expect(page.getByText('Question 1 of 5')).toBeVisible();
 
+	await page.goto('/games/guess-the-club');
+	// This data has too few clubs to ask a question, so the game says it can't start.
+	await expect(page.getByRole('heading', { name: "The game can't start right now" })).toBeVisible();
+
 	await page.goto('/guide');
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 	await page.waitForLoadState('networkidle');
