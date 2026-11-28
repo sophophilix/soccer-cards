@@ -83,4 +83,3 @@ def test_no_reserve_or_academy_side_is_a_club() -> None:
         "New South Wales Institute of Sport",
     }
     assert not [n for n in names if is_youth_side(n)]
-
