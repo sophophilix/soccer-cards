@@ -42,11 +42,11 @@ function summariesOf(body: unknown): readonly unknown[] | undefined {
 	return Array.isArray(body.players) ? body.players : undefined;
 }
 
-/** Adds the player's national team code to the card, when the summary has one. */
+/** Adds the player's national team code, which the API requires, to the card. */
 function withNationalTeam(card: Card | undefined, summary: unknown): Card | undefined {
-	if (card === undefined || typeof summary !== 'object' || summary === null) return card;
+	if (card === undefined || typeof summary !== 'object' || summary === null) return undefined;
 	const code = 'nationalTeamCode' in summary ? summary.nationalTeamCode : undefined;
-	return typeof code === 'string' ? { ...card, nationalTeam: code } : card;
+	return typeof code === 'string' ? { ...card, nationalTeam: code } : undefined;
 }
 
 /** Fetches players.json and clubs.json from the site and turns them into the checked card set and its faces. */

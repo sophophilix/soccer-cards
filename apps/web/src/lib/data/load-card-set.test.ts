@@ -90,6 +90,15 @@ describe('loadCardSet', () => {
 		});
 	});
 
+	it('leaves out a player with no national team code, and counts it', async () => {
+		const { nationalTeamCode: _code, ...withoutCode } = goalkeeper;
+
+		const result = await loadCardSet(aPlayerList([outfield, withoutCode]));
+
+		expect(result.ok && result.value.map((card) => card.id)).toEqual([toCardId('tavi-brightwell')]);
+		expect(result.ok && result.leftOutCount).toBe(1);
+	});
+
 	it('leaves out a card with an unknown tier and keeps the rest', async () => {
 		const result = await loadCardSet(aPlayerList([outfield, { ...goalkeeper, tier: 'MYTHIC' }]));
 
