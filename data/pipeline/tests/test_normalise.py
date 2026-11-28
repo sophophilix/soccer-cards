@@ -131,6 +131,53 @@ def test_override_sets_the_tier(tier: str) -> None:
     _assert_structure(record)
 
 
+def _womens_club_facts(label: str) -> PlayerFacts:
+    """Read a player with one open spell at the saved women's club, as `label`."""
+    saved = json.loads(
+        (FIXTURES / "womens-club-teams.json").read_text(encoding="utf-8")
+    )
+    saved["entities"]["Q3844288"]["labels"]["en"]["value"] = label
+
+    def item(qid: str) -> dict[str, Any]:
+        value = {"type": "wikibase-entityid", "value": {"id": qid}}
+        return {"rank": "normal", "mainsnak": {"datavalue": value, "snaktype": "value"}}
+
+    claims = {
+        "P106": [item("Q937857")],
+        "P413": [item("Q280658")],
+        "P54": [item("Q3844288")],
+    }
+    entity = {"id": "Q1", "lastrevid": 5, "modified": "2026-11-12T00:00Z"}
+    labels = {"en": {"language": "en", "value": "Invented Player"}}
+    player = {"entities": {"Q1": entity | {"labels": labels, "claims": claims}}}
+
+    class Source:
+        def get_json(self, url: str, params: Mapping[str, str], **_: Any) -> object:
+            return player if params["ids"] == "Q1" else saved
+
+    return fetch_player(Source(), "Q1")
+
+
+def test_an_open_spell_at_a_womens_senior_club_is_the_current_club() -> None:
+    facts = _womens_club_facts("Manchester City W.F.C.")
+
+    record: Any = _build(facts, national_team_code="ENG")
+
+    assert record.club_display_name == "Manchester City W.F.C."
+    assert record.club_qid == "Q3844288"
+    assert record.player["club"] == "clubs/manchester-city-wfc"
+
+
+def test_an_open_spell_at_a_womens_youth_side_is_not_a_current_club() -> None:
+    facts = _womens_club_facts("Manchester City W.F.C. Under-21s")
+
+    record: Any = _build(facts, national_team_code="ENG")
+
+    assert record.club_display_name is None
+    assert record.club_qid is None
+    assert "club" not in record.player
+
+
 def test_player_with_no_spells_is_active_and_reported() -> None:
     record = _build(replace(_facts(), clubs=(), national_teams=()), photo=None)
     _assert_structure(record)

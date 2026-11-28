@@ -1,0 +1,31 @@
+{
+  "entities": {
+    "Q204204": {
+      "claims": {
+        "P1532": [{"mainsnak": {"datavalue": {"type": "wikibase-entityid", "value": {"id": "Q21"}}, "snaktype": "value"}, "rank": "normal"}],
+        "P2094": [{"mainsnak": {"datavalue": {"type": "wikibase-entityid", "value": {"id": "Q606060"}}, "snaktype": "value"}, "rank": "normal"}],
+        "P31": [
+          {"mainsnak": {"datavalue": {"type": "wikibase-entityid", "value": {"id": "Q23905105"}}, "snaktype": "value"}, "rank": "normal"},
+          {"mainsnak": {"datavalue": {"type": "wikibase-entityid", "value": {"id": "Q6979593"}}, "snaktype": "value"}, "rank": "normal"}
+        ],
+        "P3441": [{"mainsnak": {"datavalue": {"type": "string", "value": "ENG"}, "snaktype": "value"}, "rank": "normal"}]
+      },
+      "id": "Q204204",
+      "labels": {"en": {"language": "en", "value": "England women's national football team"}},
+      "type": "item"
+    },
+    "Q3844288": {
+      "claims": {
+        "P1532": [{"mainsnak": {"datavalue": {"type": "wikibase-entityid", "value": {"id": "Q21"}}, "snaktype": "value"}, "rank": "normal"}],
+        "P2094": [{"mainsnak": {"datavalue": {"type": "wikibase-entityid", "value": {"id": "Q606060"}}, "snaktype": "value"}, "rank": "normal"}],
+        "P31": [
+          {"mainsnak": {"datavalue": {"type": "wikibase-entityid", "value": {"id": "Q28140340"}}, "snaktype": "value"}, "rank": "normal"},
+          {"mainsnak": {"datavalue": {"type": "wikibase-entityid", "value": {"id": "Q51481377"}}, "snaktype": "value"}, "rank": "normal"}
+        ]
+      },
+      "id": "Q3844288",
+      "labels": {"en": {"language": "en", "value": "Manchester City W.F.C."}},
+      "type": "item"
+    }
+  }
+}

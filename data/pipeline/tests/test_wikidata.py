@@ -455,3 +455,32 @@ def test_a_club_whose_competition_class_is_womens_football_is_a_womens_side(
 
 def test_a_saved_mens_club_is_not_a_womens_side() -> None:
     assert not any(s.women for s in fetch_player(SavedResponses(), "Q615").clubs)
+
+
+def test_a_womens_club_with_a_country_for_sport_is_a_club_not_a_national_team() -> None:
+    # Saved from Wikidata: Manchester City W.F.C. (Q3844288) has P1532 (England)
+    # but is a women's association football club (Q51481377), and has no P3441.
+    saved = (FIXTURES / "womens-club-teams.json").read_text(encoding="utf-8")
+    player = _player(_spells("Q3844288", "Q204204"))
+    source = SavedResponses({"Q1": player, "teams": json.loads(saved)})
+
+    facts = fetch_player(source, "Q1")
+
+    (club,) = facts.clubs
+    assert (club.team, club.team_label, club.women) == (
+        "Q3844288",
+        "Manchester City W.F.C.",
+        True,
+    )
+    (national,) = facts.national_teams
+    assert (national.team, national.code) == ("Q204204", "ENG")
+    assert facts.skipped == ()
+
+
+def test_a_team_with_a_country_for_sport_and_no_club_class_stays_national() -> None:
+    teams = {"entities": {"Q9": _team("Q9", ["ARG"])}}
+    source = SavedResponses({"Q1": _player(_spells("Q9")), "Q9": teams})
+
+    facts = fetch_player(source, "Q1")
+
+    assert (facts.clubs, [s.team for s in facts.national_teams]) == ((), ["Q9"])
