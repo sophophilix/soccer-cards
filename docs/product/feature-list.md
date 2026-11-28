@@ -104,6 +104,13 @@ Questions for the tech lead:
 2. Should a pack limit cards from one country, for example at most 3 of 8?
    Or is a bigger, balanced set enough?
 
+Decided by the tech lead on 2026-11-28:
+
+- Start wave 1 now with about 200 players, in five batches of 40, one per
+  league (T-0203 to T-0207).
+- A standard pack holds at most 3 cards from one national team, and a
+  jumbo pack scales that to 15 of 50 (T-0208, T-0209).
+
 ### P2. Build a national team and play other countries
 
 A child collects players of one country, such as Australia, and plays that
@@ -116,6 +123,11 @@ Questions for the tech lead:
 2. Does the opposing country play as a computer team made from the full
    player set?
 3. Does a national team match pay coins by the same table as a match win?
+
+Decided by the tech lead on 2026-11-28: a national team is complete with 5
+cards of one country, one of them a goalkeeper. The opponent is a computer
+team picked from that country's players. Questions 2 and 3 go into the
+decision record.
 
 ### P3. Seasonal squads for leagues and cups
 
@@ -135,6 +147,10 @@ Questions for the tech lead:
 4. ADR 0010 D10 bans trademarked competition names. Do we use names such as
    "English top league" and "European Club Cup"?
 
+Decided by the tech lead on 2026-11-28: any N players from the club or
+league complete a squad, and the challenge stays open all year, with no
+deadline. Questions 2 and 4 go into the decision record.
+
 P2 and P3 change the match rules, so each needs a decision record (ADR 0009
 D1 item 4). The lead drafts it after your answers.
 
@@ -143,3 +159,4 @@ D1 item 4). The lead drafts it after your answers.
 | Reviewed at          | Decision | Notes                                                                             |
 | -------------------- | -------- | --------------------------------------------------------------------------------- |
 | 2026-11-28T05:10:40Z | Drafted  | Initial version, from the prototype, ADRs 0008 to 0010, and the tech lead's note. |
+| 2026-11-28T06:22:35Z | Answered | The tech lead answered P1, P2 question 1 and P3 question 1. Briefs T-0203 to T-0209 added. |
