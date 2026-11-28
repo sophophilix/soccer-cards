@@ -165,7 +165,7 @@ def test_an_open_spell_at_a_womens_senior_club_is_the_current_club() -> None:
 
     assert record.club_display_name == "Manchester City W.F.C."
     assert record.club_qid == "Q3844288"
-    assert record.player["club"] == "clubs/manchester-city-wfc"
+    assert record.player["club"] == "clubs/manchester-city-w-f-c"
 
 
 def test_an_open_spell_at_a_womens_youth_side_is_not_a_current_club() -> None:
