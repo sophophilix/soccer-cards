@@ -1,7 +1,15 @@
 import { describe, expect, it, vi } from 'vitest';
-import { LUCKY_ODDS, PACK_CONTENTS, createRandom, drawPack, packSize } from './index.ts';
+import {
+	LUCKY_ODDS,
+	PACK_CONTENTS,
+	PACK_TEAM_LIMIT,
+	createRandom,
+	drawPack,
+	packSize,
+	toCardId
+} from './index.ts';
 import type { Card, CardId, DrawPackResult, Random, Tier } from './index.ts';
-import { aCheckedCardSet } from './testing/cards.ts';
+import { aCardSet, aCheckedCardSet, aCheckedCardSetOf } from './testing/cards.ts';
 
 const SEED = 20261116;
 const PLENTY = { base: 60, rare: 12, legend: 6, icon: 3 };
@@ -144,5 +152,111 @@ describe('drawPack', () => {
 		expect(result).toEqual({ ok: false, reason: 'not-enough-cards', tier });
 		expect(nextInt).not.toHaveBeenCalled();
 		expect(sample).not.toHaveBeenCalled();
+	});
+
+	describe('with a limit on cards from one national team', () => {
+		const teamOf = (cardSet: readonly Card[], id: CardId): string | undefined =>
+			cardSet.find((card) => card.id === id)?.nationalTeam;
+		const countTeam = (cardSet: readonly Card[], ids: readonly CardId[], team: string): number =>
+			ids.filter((id) => teamOf(cardSet, id) === team).length;
+		// Every card of a tier named in `tiers` comes from one team; the rest have none.
+		const withTeams = (counts: typeof PLENTY, tiers: readonly Tier[]): Card[] =>
+			aCardSet(counts).map((card) =>
+				tiers.includes(card.tier) ? { ...card, nationalTeam: 'AUS' } : card
+			);
+		const halfAustralian = (): Card[] =>
+			aCardSet(PLENTY).map((card, index) =>
+				card.tier === 'base' && index % 2 === 0 ? { ...card, nationalTeam: 'AUS' } : card
+			);
+
+		it('states a limit of 3 for a standard pack and 15 for a jumbo pack', () => {
+			expect(PACK_TEAM_LIMIT).toEqual({ standard: 3, jumbo: 15 });
+		});
+
+		it.each([
+			['standard', 3],
+			['jumbo', 15]
+		] as const)('holds at most the limit from one team in a %s pack', (kind, limit) => {
+			const australian = aCardSet({ base: 30, rare: 0, legend: 0 }).map((card) => ({
+				...card,
+				id: toCardId(`aus-${card.id}`),
+				nationalTeam: 'AUS'
+			}));
+			const others = aCardSet({ base: 30, rare: 12, legend: 6, icon: 3 });
+			const cardSet = aCheckedCardSetOf([...australian, ...others]);
+
+			for (let seed = 0; seed < 20; seed += 1) {
+				const ids = idsOf(drawPack(cardSet, kind, createRandom(seed)));
+
+				expect(ids).toHaveLength(packSize(kind));
+				expect(countTeam(cardSet, ids, 'AUS')).toBeLessThanOrEqual(limit);
+			}
+		});
+
+		it('still fills a pack when every card comes from one team', () => {
+			const cardSet = aCheckedCardSetOf(withTeams(PLENTY, ['base', 'rare', 'legend', 'icon']));
+
+			const ids = idsOf(drawPack(cardSet, 'standard', createRandom(SEED)));
+
+			expect(ids).toHaveLength(10);
+			expect(countTeam(cardSet, ids, 'AUS')).toBe(10);
+		});
+
+		it('keeps the rolled tier when the only cards of that tier come from a full team', () => {
+			const cardSet = aCheckedCardSetOf(withTeams(PLENTY, ['rare']));
+
+			const ids = idsOf(drawPack(cardSet, 'standard', aRandomThatRolls([RARE_ROLL, RARE_ROLL])));
+
+			expect(tiersOf(cardSet, ids.slice(8))).toEqual(['rare', 'rare']);
+		});
+
+		it('does not count cards with no national team', () => {
+			const cardSet = aCheckedCardSet(PLENTY);
+
+			const ids = idsOf(drawPack(cardSet, 'standard', aRandomThatRolls([RARE_ROLL, RARE_ROLL])));
+
+			expect(ids).toEqual([
+				'base-1',
+				'base-2',
+				'base-3',
+				'base-4',
+				'base-5',
+				'base-6',
+				'base-7',
+				'base-8',
+				'rare-1',
+				'rare-2'
+			]);
+		});
+
+		it('swaps only the cards over the limit, for cards of the same tier', () => {
+			const cardSet = aCheckedCardSetOf(halfAustralian());
+
+			const ids = idsOf(drawPack(cardSet, 'standard', aRandomThatRolls([RARE_ROLL, RARE_ROLL])));
+
+			expect(tiersOf(cardSet, ids)).toEqual([...repeat('base', 8), 'rare', 'rare']);
+			expect(countTeam(cardSet, ids, 'AUS')).toBe(3);
+			expect(new Set(ids).size).toBe(10);
+		});
+
+		it('gives the same pack for the same seed', () => {
+			const cardSet = aCheckedCardSetOf(halfAustralian());
+
+			expect(drawPack(cardSet, 'standard', createRandom(SEED))).toEqual(
+				drawPack(cardSet, 'standard', createRandom(SEED))
+			);
+		});
+
+		it('fills a small set that repeats base cards from the cards the limit left out', () => {
+			const cards = aCardSet({ base: 2, rare: 1, legend: 1, icon: 1 }).map((card, index) =>
+				index === 0 ? { ...card, nationalTeam: 'AUS' } : card
+			);
+			const cardSet = aCheckedCardSetOf(cards);
+
+			const ids = idsOf(drawPack(cardSet, 'standard', aRandomThatRolls([RARE_ROLL, RARE_ROLL])));
+
+			expect(ids).toHaveLength(10);
+			expect(countTeam(cardSet, ids, 'AUS')).toBeLessThanOrEqual(4);
+		});
 	});
 });
