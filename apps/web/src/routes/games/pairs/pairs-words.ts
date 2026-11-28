@@ -1,4 +1,9 @@
-import { PAIRS_BOARD_COINS, PAIRS_FEW_TURNS_BONUS } from '@soccer-cards/game';
+import {
+	PAIRS_BOARD_COINS,
+	PAIRS_FEW_TURNS_BONUS,
+	earnsPairsFewTurnsBonus,
+	pairsFewTurnsLimit
+} from '@soccer-cards/game';
 import type { PairsSize } from '@soccer-cards/game';
 import { plural } from '../transfer-trail/trail-words.ts';
 
@@ -42,8 +47,8 @@ export function pairsText(found: number, total: number): string {
 
 /** What the finish screen says was earned. */
 export function finishText(size: PairsSize, turns: number): string {
-	const fewTurns = size * 2;
-	const hasBonus = turns <= fewTurns;
+	const fewTurns = pairsFewTurnsLimit(size);
+	const hasBonus = earnsPairsFewTurnsBonus(size, turns);
 	const earned = PAIRS_BOARD_COINS[size] + (hasBonus ? PAIRS_FEW_TURNS_BONUS : 0);
 	const used = `You used ${plural(turns, 'turn')}. You earned ${plural(earned, 'coin')}: `;
 	const forBoard = `${String(PAIRS_BOARD_COINS[size])} for the board`;
