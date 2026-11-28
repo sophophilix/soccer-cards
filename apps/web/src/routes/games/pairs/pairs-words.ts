@@ -1,3 +1,7 @@
+import { PAIRS_BOARD_COINS, PAIRS_FEW_TURNS_BONUS } from '@soccer-cards/game';
+import type { PairsSize } from '@soccer-cards/game';
+import { plural } from '../transfer-trail/trail-words.ts';
+
 /** What the status line says: what to do next, or what the last two cards were. */
 export type PairsStatus =
 	| { readonly kind: 'first' }
@@ -34,4 +38,16 @@ export function turnsText(turns: number): string {
 
 export function pairsText(found: number, total: number): string {
 	return `Pairs: ${String(found)} of ${String(total)}`;
+}
+
+/** What the finish screen says was earned. */
+export function finishText(size: PairsSize, turns: number): string {
+	const fewTurns = size * 2;
+	const hasBonus = turns <= fewTurns;
+	const earned = PAIRS_BOARD_COINS[size] + (hasBonus ? PAIRS_FEW_TURNS_BONUS : 0);
+	const used = `You used ${plural(turns, 'turn')}. You earned ${plural(earned, 'coin')}: `;
+	const forBoard = `${String(PAIRS_BOARD_COINS[size])} for the board`;
+	return hasBonus
+		? `${used}${forBoard} and ${String(PAIRS_FEW_TURNS_BONUS)} for finding them in ${String(fewTurns)} turns or fewer.`
+		: `${used}${forBoard}. Find them in ${String(fewTurns)} turns or fewer next time for ${String(PAIRS_FEW_TURNS_BONUS)} more.`;
 }
