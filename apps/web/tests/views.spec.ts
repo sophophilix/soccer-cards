@@ -54,6 +54,12 @@ test('/games/guess-the-club shows its own page', async ({ page }) => {
 	await expectView(page, 'Games', { path: 'games/guess-the-club', title: 'Guess the Club' });
 });
 
+test('/games/pairs shows its own page', async ({ page }) => {
+	await page.goto('/games/pairs');
+
+	await expectView(page, 'Games', { path: 'games/pairs', title: 'Pairs' });
+});
+
 test('every tab is at least 44 pixels each way at 320 pixels wide @engines', async ({ page }) => {
 	await page.setViewportSize(NARROW_PHONE);
 	await page.goto('/packs');

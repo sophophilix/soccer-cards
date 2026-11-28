@@ -13,6 +13,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
 			'/games/transfer-trail',
 			'/games/connections',
 			'/games/guess-the-club',
+			'/games/pairs',
 			'/cards',
 			'/guide'
 		]) {
@@ -21,6 +22,7 @@ for (const colorScheme of ['light', 'dark'] as const) {
 				await page.evaluate(async () => document.fonts.ready);
 				// Scan the board, not the line shown while a game loads.
 				await expect(page.getByText('Getting the players ready…')).toHaveCount(0);
+				await expect(page.getByText('Getting your cards ready…')).toHaveCount(0);
 
 				const results = await new AxeBuilder({ page }).exclude('[data-art]').analyze();
 
