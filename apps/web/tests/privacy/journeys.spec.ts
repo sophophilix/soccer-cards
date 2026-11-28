@@ -170,6 +170,9 @@ test('every view runs with one origin, no cookie and no security policy violatio
 	await page.goto('/games/guess-the-club');
 	await expect(page.getByText(/Question 1 of \d/)).toBeVisible();
 
+	await page.goto('/games/pairs');
+	await expect(page.getByRole('heading', { name: 'Pairs', level: 2 })).toBeVisible();
+
 	await page.goto('/guide');
 	await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
 	await page.waitForLoadState('networkidle');
