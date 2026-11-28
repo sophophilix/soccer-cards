@@ -7,6 +7,8 @@ import {
 	GUESS_FINISH_COINS,
 	GUESS_RIGHT_COINS,
 	JUMBO_PACK_COST_COINS,
+	PAIRS_BOARD_COINS,
+	PAIRS_FEW_TURNS_BONUS,
 	STANDARD_PACK_COST_COINS,
 	STARTING_COINS,
 	TRAIL_FINISH_COINS,
@@ -15,8 +17,8 @@ import {
 } from './economy.ts';
 
 describe('the economy table (ADR 0010 D1)', () => {
-	it('is version 4', () => {
-		expect(ECONOMY_VERSION).toBe(4);
+	it('is version 5', () => {
+		expect(ECONOMY_VERSION).toBe(5);
 	});
 
 	it('starts a player with 0 coins', () => {
@@ -73,6 +75,14 @@ describe('the economy table (ADR 0010 D1)', () => {
 
 	it('pays 2 coins for finishing a Guess the Club round', () => {
 		expect(GUESS_FINISH_COINS).toBe(2);
+	});
+
+	it('pays 3, 4 and 5 coins for a Pairs board of 6, 8 and 10 pairs', () => {
+		expect(PAIRS_BOARD_COINS).toEqual({ 6: 3, 8: 4, 10: 5 });
+	});
+
+	it('pays 1 coin more for a Pairs board with few turns', () => {
+		expect(PAIRS_FEW_TURNS_BONUS).toBe(1);
 	});
 
 	it('keeps each division reading its win coins from the table', () => {
