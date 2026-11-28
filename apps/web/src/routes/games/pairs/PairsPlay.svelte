@@ -28,7 +28,8 @@
 	}
 	const { size, player: given, cardSet, faces, store, onOtherSize }: Props = $props();
 
-	let player = $state.raw<PlayerState>(given);
+	let paidState = $state.raw<PlayerState>();
+	const player = $derived(paidState ?? given);
 	let board = $state.raw<PaidPairsBoard>();
 	let status = $state.raw<PairsStatus>({ kind: 'first' });
 	let notice = $state('');
@@ -72,8 +73,8 @@
 		const paid = payPairsBoard(finished, player);
 		if (!paid.ok) return;
 		board = paid.value.board;
-		player = paid.value.state;
-		const saved = store.save(player);
+		paidState = paid.value.state;
+		const saved = store.save(paid.value.state);
 		if (!saved.ok) notice = CONNECTIONS_SAVE_NOTICES[saved.reason];
 		await Promise.resolve();
 		heading?.focus();
