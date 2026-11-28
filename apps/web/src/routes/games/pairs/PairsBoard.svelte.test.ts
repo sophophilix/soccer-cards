@@ -161,6 +161,7 @@ test('with reduced motion a card changes face with no flip', async () => {
 test('the first turn of a card that mounted face down starts at 180 degrees and animates to 0', async () => {
 	await emulateReducedMotion('no-preference');
 	const screen = await render(PairsBoard, props());
+	await new Promise((done) => requestAnimationFrame(() => requestAnimationFrame(done)));
 
 	await screen.rerender(props({ cards: board(6, { 0: 'up' }) }));
 
