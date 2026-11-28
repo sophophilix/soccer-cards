@@ -144,6 +144,9 @@
 		border-color: var(--ctrl);
 		background: color-mix(in srgb, var(--ctrl) 18%, var(--surface));
 	}
+	.spells .hit small {
+		color: var(--fg);
+	}
 	.opt.miss {
 		border-color: var(--accent);
 	}
