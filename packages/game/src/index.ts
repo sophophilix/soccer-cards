@@ -102,3 +102,12 @@ export type {
 	ConnectionsResult,
 	PaidConnectionsRound
 } from './connections-round.ts';
+export { PAIRS_SIZES, dealPairs, pairsSizesFor, settleTurn, turnCard } from './pairs.ts';
+export type {
+	PairsBoard,
+	PairsCard,
+	PairsCardState,
+	PairsRefusal,
+	PairsResult,
+	PairsSize
+} from './pairs.ts';

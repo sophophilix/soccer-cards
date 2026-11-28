@@ -17,6 +17,10 @@ export interface Spell {
 	readonly clubId: ClubId;
 	readonly startYear: number;
 	readonly endYear?: number;
+	/** Games played in the spell, when published. */
+	readonly games?: number;
+	/** Goals scored in the spell, when published. */
+	readonly goals?: number;
 }
 
 /** A player's published spells, in the order the career gives them. */

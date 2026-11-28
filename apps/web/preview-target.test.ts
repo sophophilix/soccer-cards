@@ -1,6 +1,6 @@
-import { expect, test } from '@playwright/test';
-import { choosePreviewPort } from '../preview-port.ts';
-import { choosePreviewTarget } from '../preview-target.ts';
+import { expect, test } from 'vitest';
+import { choosePreviewPort } from './preview-port.ts';
+import { choosePreviewTarget } from './preview-target.ts';
 
 const aFolder = '/home/coach/soccer-cards/.claude/worktrees/agent-one/apps/web';
 const aPreview = 'https://0a1b2c3d-soccer-cards.example-coach.workers.dev';

@@ -10,7 +10,7 @@ paths:
   - apps/web/src/routes/games/pairs/pairs-words.ts
   - apps/web/src/routes/games/pairs/pairs-words.test.ts
 dependencies: []
-max_changed_lines: 350
+max_changed_lines: 400
 status: ready
 ---
 

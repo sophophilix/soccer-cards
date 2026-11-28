@@ -19,6 +19,8 @@ const API_BUILD_FOLDER = `${BUILD_FOLDER}/api/v1`;
 const LIB_COVERAGE_PERCENT = 80;
 // Tests that draw nothing but use browser globals; every other test runs in Node.
 const BROWSER_LOGIC_TESTS = ['src/lib/ui/motion.test.ts', 'src/lib/state/player-store.test.ts'];
+// Config tests beside the config files they check; they draw nothing, so they run in Node.
+const CONFIG_TESTS = ['preview-port.test.ts', 'preview-target.test.ts', 'worker-config.test.ts'];
 // The style attribute on SvelteKit's route announcer. static/_headers has the same hash.
 const ANNOUNCER_STYLE_HASH = 'sha256-S8qMpvofolR8Mpjy4kQvEm7m1q8clzU4dfDH0AmvZjo=';
 
@@ -130,7 +132,7 @@ export default defineConfig({
 				test: {
 					name: 'node',
 					environment: 'node',
-					include: ['src/**/*.test.ts'],
+					include: ['src/**/*.test.ts', ...CONFIG_TESTS],
 					exclude: ['src/**/*.svelte.test.ts', ...BROWSER_LOGIC_TESTS],
 					setupFiles: ['src/testing/property-seed.ts']
 				}

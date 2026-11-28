@@ -32,10 +32,55 @@ describe('loadCareer', () => {
 		expect(await loadFrom(record)).toEqual({
 			playerId: 'p-1',
 			spells: [
-				{ clubId: 'bbb', displayName: 'Beta United', startYear: 2010, endYear: 2014 },
+				{ clubId: 'bbb', displayName: 'Beta United', startYear: 2010, endYear: 2014, goals: 3 },
 				{ clubId: 'aaa', displayName: 'Alpha FC', startYear: 2014 }
 			]
 		});
+	});
+
+	it('sets games and goals from the published counts', async () => {
+		const career = await loadFrom(
+			recordWith([
+				{
+					club: 'clubs/aaa',
+					startYear: 2010,
+					appearanceCount: { value: 140 },
+					goalCount: { value: 0 }
+				}
+			])
+		);
+
+		expect(career?.spells).toEqual([
+			{ clubId: 'aaa', displayName: 'Alpha FC', startYear: 2010, games: 140, goals: 0 }
+		]);
+	});
+
+	it('keeps games when goals are missing, and goals when games are missing', async () => {
+		const career = await loadFrom(
+			recordWith([
+				{ club: 'clubs/aaa', startYear: 2010, appearanceCount: { value: 7 } },
+				{ club: 'clubs/bbb', startYear: 2012, goalCount: { value: 2 } }
+			])
+		);
+
+		expect(career?.spells.map(({ games, goals }) => ({ games, goals }))).toEqual([
+			{ games: 7, goals: undefined },
+			{ games: undefined, goals: 2 }
+		]);
+	});
+
+	it.each([
+		['negative', { value: -1 }],
+		['a fraction', { value: 1.5 }],
+		['a string', { value: '4' }],
+		['a bare number', 4],
+		['null', null]
+	])('leaves out a count that is %s and keeps the career', async (_name, count) => {
+		const career = await loadFrom(
+			recordWith([{ club: 'clubs/aaa', startYear: 2010, appearanceCount: count, goalCount: count }])
+		);
+
+		expect(career?.spells).toEqual([{ clubId: 'aaa', displayName: 'Alpha FC', startYear: 2010 }]);
 	});
 
 	it('asks only for the player record on the site origin', async () => {

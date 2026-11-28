@@ -49,6 +49,20 @@ describe('startTrailRound', () => {
 		expect(idsOf([aCareer('twin'), aCareer('twin'), aCareer('solo')])).toEqual(['solo']);
 	});
 
+	it('deals a round from spells that carry games and goals', () => {
+		const career: Career = {
+			playerId: 'counted',
+			spells: [
+				{ clubId: 'red', startYear: 2000, games: 40, goals: 3 },
+				{ clubId: 'green', startYear: 2003, games: 0 },
+				{ clubId: 'blue', startYear: 2006, goals: 9 }
+			]
+		};
+		const result = startTrailRound([career], createRandom(SEED));
+
+		expect(result.ok && result.value.steps[0]?.spells).toEqual(career.spells);
+	});
+
 	it('picks a career whose last spell has no end year', () => {
 		expect(idsOf([aCareer('now')])).toEqual(['now']);
 	});
