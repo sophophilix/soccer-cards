@@ -130,3 +130,34 @@ test('a second board after Another board size adds its coins to the first one', 
 	await expect.element(screen.getByRole('heading', { name: 'All 6 pairs found!' })).toBeVisible();
 	expect(createPlayerStore(browserStorage).load().state.coins).toBe(18);
 });
+
+test('says the players cannot load, with no size notes, when the cards fail to load', async () => {
+	own(8);
+	vi.stubGlobal('fetch', () => Promise.reject(new Error('offline')));
+	const screen = await render(PairsView);
+
+	await expect.element(screen.getByRole('button', { name: 'Try again' })).toBeVisible();
+	await expect.element(screen.getByText(/can't find the players/)).toBeVisible();
+	await expect.element(screen.getByText(/You have no cards yet/)).not.toBeInTheDocument();
+	await expect.element(screen.getByText(/more different cards/)).not.toBeInTheDocument();
+	await expect.element(screen.getByRole('button', { name: '6 pairs' })).not.toBeInTheDocument();
+});
+
+test('says the players cannot load for a player with no saved cards too', async () => {
+	vi.stubGlobal('fetch', () => Promise.reject(new Error('offline')));
+	const screen = await render(PairsView);
+
+	await expect.element(screen.getByText(/can't find the players/)).toBeVisible();
+	await expect.element(screen.getByText(/You have no cards yet/)).not.toBeInTheDocument();
+});
+
+test('Try again loads the sizes once the cards can load', async () => {
+	own(8);
+	vi.stubGlobal('fetch', () => Promise.reject(new Error('offline')));
+	const screen = await render(PairsView);
+	await expect.element(screen.getByRole('button', { name: 'Try again' })).toBeVisible();
+	own(8);
+	await screen.getByRole('button', { name: 'Try again' }).click();
+
+	await expect.element(screen.getByRole('button', { name: '8 pairs' })).toBeEnabled();
+});
