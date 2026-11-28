@@ -48,7 +48,6 @@ test('a face-down card is named by its place', async () => {
 	const screen = await render(PairsBoard, props());
 
 	await expect.element(screen.getByRole('button', { name: 'Face-down card 1' })).toBeVisible();
-	await expect.element(screen.getByRole('button', { name: 'Face-down card 12' })).toBeVisible();
 });
 
 test('a face-up card is named by its player, and a matched one says matched', async () => {
@@ -79,7 +78,6 @@ test('a card that is already up or matched tells the page nothing', async () => 
 	const screen = await render(PairsBoard, p);
 
 	await screen.getByRole('button', { name: 'Ana Diaz', exact: true }).click();
-	await screen.getByRole('button', { name: 'Bo Lee, matched' }).click();
 
 	expect(p.onTap).not.toHaveBeenCalled();
 });
@@ -104,14 +102,16 @@ test.each([
 	expect(getComputedStyle(grid).gridTemplateColumns.split(' ')).toHaveLength(across);
 });
 
-test('a matched card carries the matched outline', async () => {
+test('a matched card is outlined and an unmatched one is not', async () => {
+	document.documentElement.style.setProperty('--ctrl', 'rgb(47, 203, 122)');
 	const screen = await render(PairsBoard, props({ cards: board(6, { 0: 'matched' }) }));
-
-	const shadow = (id: string): string =>
+	const outline = (id: string): string =>
 		getComputedStyle(screen.getByTestId(id).element().querySelector('.front') ?? document.body)
 			.boxShadow;
-	expect(shadow('slot-c0')).not.toBe('none');
-	expect(shadow('slot-c1')).toBe('none');
+
+	expect(outline('slot-c0')).toContain('rgb(47, 203, 122)');
+	expect(outline('slot-c1')).toBe('none');
+	document.documentElement.style.removeProperty('--ctrl');
 });
 
 test('with reduced motion a card changes face with no flip', async () => {

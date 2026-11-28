@@ -20,8 +20,6 @@
 	}
 	const { cards, turns, pairsFound, status, onTap }: Props = $props();
 
-	const isTen = $derived(cards.length === 20);
-
 	let tappedId: string | undefined;
 	let guardTimer: ReturnType<typeof setTimeout> | undefined;
 	const turned = new WeakSet<HTMLElement>();
@@ -54,7 +52,12 @@
 </div>
 <p class="muted" role="status" aria-live="polite">{statusText(status)}</p>
 <h2 class="muted" id="pairs-cards-label">Cards</h2>
-<div class={['grid', isTen && 'ten']} role="group" aria-labelledby="pairs-cards-label" data-art>
+<div
+	class={['grid', cards.length === 20 && 'ten']}
+	role="group"
+	aria-labelledby="pairs-cards-label"
+	data-art
+>
 	{#each cards as card, i (card.id)}
 		<div
 			class={['slot', card.state === 'down' && 'down', card.state === 'matched' && 'matched']}
@@ -93,12 +96,10 @@
 		display: grid;
 		grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
 		gap: clamp(6px, 2vw, 12px);
-		width: 100%;
 		max-width: 560px;
 	}
 	.grid.ten {
 		--cols: 5;
-		max-width: 640px;
 	}
 	.slot {
 		position: relative;
