@@ -18,7 +18,10 @@ async function openHomeWithFonts(page: Page): Promise<void> {
 	await page.evaluate(async () => document.fonts.ready);
 }
 
-test('every font comes from the site as WOFF2 and answers 200', async ({ page, baseURL }) => {
+test('every font comes from the site as WOFF2 and answers 200 @engines', async ({
+	page,
+	baseURL
+}) => {
 	const fonts: { origin: string; isWoff2: boolean; status: number }[] = [];
 	page.on('response', (response) => {
 		if (response.request().resourceType() !== 'font') return;
@@ -39,7 +42,7 @@ test('every font comes from the site as WOFF2 and answers 200', async ({ page, b
 	expect(fonts).toEqual(fonts.map(() => fromTheSite));
 });
 
-test('the heading is in Bowlby One and the body text in Figtree', async ({ page }) => {
+test('the heading is in Bowlby One and the body text in Figtree @engines', async ({ page }) => {
 	await openHomeWithFonts(page);
 
 	expect(await readFirstFontFamily(page, 'h1')).toContain('Bowlby One');
@@ -48,7 +51,7 @@ test('the heading is in Bowlby One and the body text in Figtree', async ({ page 
 	expect(await page.evaluate(() => document.fonts.check('400 16px "Figtree"'))).toBe(true);
 });
 
-test('every font shows fallback text while it loads', async ({ page }) => {
+test('every font shows fallback text while it loads @engines', async ({ page }) => {
 	await openHomeWithFonts(page);
 
 	const displays = await page.evaluate(() => [...document.fonts].map((font) => font.display));
@@ -56,7 +59,9 @@ test('every font shows fallback text while it loads', async ({ page }) => {
 	expect(new Set(displays)).toEqual(new Set(['swap']));
 });
 
-test('the page reads and fits at 320 pixels wide when no font file arrives', async ({ page }) => {
+test('the page reads and fits at 320 pixels wide when no font file arrives @engines', async ({
+	page
+}) => {
 	await page.route('**/*.woff2', (route) => route.abort());
 	await page.setViewportSize(NARROW_PHONE);
 

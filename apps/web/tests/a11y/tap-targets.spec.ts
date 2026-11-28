@@ -15,14 +15,16 @@ async function findSmallTargets(page: Page): Promise<string[]> {
 	);
 }
 
-test('every link and button on the home page is at least 44 pixels each way', async ({ page }) => {
+test('every link and button on the home page is at least 44 pixels each way @engines', async ({
+	page
+}) => {
 	await page.goto('/');
 	await expect(page.getByRole('heading', { level: 1 })).toHaveText('Packs');
 
 	expect(await findSmallTargets(page)).toEqual([]);
 });
 
-test('every link and button on the not-found page is at least 44 pixels each way', async ({
+test('every link and button on the not-found page is at least 44 pixels each way @engines', async ({
 	page
 }) => {
 	await page.goto('/no-such-page');
@@ -31,7 +33,7 @@ test('every link and button on the not-found page is at least 44 pixels each way
 	expect(await findSmallTargets(page)).toEqual([]);
 });
 
-test('a short link inside a sentence is at least 44 pixels each way', async ({ page }) => {
+test('a short link inside a sentence is at least 44 pixels each way @engines', async ({ page }) => {
 	await page.goto('/');
 	// The coin count is drawn by the browser after the app has taken over the page. Nodes added
 	// before that are thrown away when it does.
@@ -49,7 +51,7 @@ test('a short link inside a sentence is at least 44 pixels each way', async ({ p
 	expect(await findSmallTargets(page)).toEqual([]);
 });
 
-test('the not-found page has no sideways scroll at 320 pixels wide', async ({ page }) => {
+test('the not-found page has no sideways scroll at 320 pixels wide @engines', async ({ page }) => {
 	await page.setViewportSize(NARROW_PHONE);
 	await page.goto('/no-such-page');
 	await expect(page.getByRole('link', { name: 'Go to Packs' })).toBeVisible();

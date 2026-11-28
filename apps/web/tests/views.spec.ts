@@ -42,7 +42,7 @@ test('/games/transfer-trail shows its own page', async ({ page }) => {
 	await expectView(page, 'Games', { path: 'games/transfer-trail', title: 'Transfer Trail' });
 });
 
-test('every tab is at least 44 pixels each way at 320 pixels wide', async ({ page }) => {
+test('every tab is at least 44 pixels each way at 320 pixels wide @engines', async ({ page }) => {
 	await page.setViewportSize(NARROW_PHONE);
 	await page.goto('/packs');
 
@@ -56,7 +56,7 @@ test('every tab is at least 44 pixels each way at 320 pixels wide', async ({ pag
 	);
 });
 
-test.describe('on a touch screen', () => {
+test.describe('on a touch screen @engines', () => {
 	test.use({ hasTouch: true });
 
 	test('a tap on each tab moves to its view', async ({ page }) => {

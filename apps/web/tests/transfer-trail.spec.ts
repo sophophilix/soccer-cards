@@ -139,7 +139,9 @@ test('with reduced motion nothing on the board animates', async ({ page }) => {
 });
 
 for (const width of [320, 390]) {
-	test(`the board fits at ${String(width)} pixels with no sideways scroll`, async ({ page }) => {
+	test(`the board fits at ${String(width)} pixels with no sideways scroll @engines`, async ({
+		page
+	}) => {
 		await page.setViewportSize({ width, height: 700 });
 		await serve(page);
 		await page.goto('/games/transfer-trail');
