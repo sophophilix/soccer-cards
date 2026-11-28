@@ -20,7 +20,7 @@ def test_the_committed_folder_passes_the_schema() -> None:
     validate(API)
 
 
-def test_it_holds_the_first_104_players() -> None:
+def test_it_holds_the_first_64_players() -> None:
     assert len(_json("players.json")["players"]) == PLAYER_COUNT
     assert len(list((API / "players").glob("*.json"))) == PLAYER_COUNT
 
