@@ -1,5 +1,18 @@
 import { expect, test } from 'vitest';
-import { markText, questionText, rightText, spellFacts, wrongText } from './guess-words.ts';
+import {
+	finishText,
+	markText,
+	questionText,
+	rightText,
+	spellFacts,
+	wrongText
+} from './guess-words.ts';
+
+test('the finish text says what was earned from the economy table', () => {
+	expect(finishText(3, 5)).toBe(
+		'You got 3 answers right out of 5. You earned 5 coins: 3 coins for the answers and 2 for finishing.'
+	);
+});
 
 test('a spell shows years, games and goals', () => {
 	expect(spellFacts({ startYear: 2008, endYear: 2012, games: 30, goals: 1 })).toBe(
