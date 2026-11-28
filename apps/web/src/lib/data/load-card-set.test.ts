@@ -71,6 +71,35 @@ describe('loadCardSet', () => {
 		expect(result.ok && result.leftOutCount).toBe(0);
 	});
 
+	it('gives each card the national team code of its player', async () => {
+		const result = await loadCardSet(
+			aPlayerList([{ ...outfield, nationalTeamCode: 'AUS' }, goalkeeper])
+		);
+
+		expect(result.ok && result.value.map((card) => card.nationalTeam)).toEqual(['AUS', 'SCO']);
+	});
+
+	it('refuses a list with a national team code that is not three capital letters', async () => {
+		const result = await loadCardSet(aPlayerList([{ ...outfield, nationalTeamCode: 'aus' }]));
+
+		expect(result).toEqual({
+			ok: false,
+			reason: 'invalid-card-field',
+			cardId: toCardId('tavi-brightwell'),
+			field: 'nationalTeam'
+		});
+	});
+
+	it('leaves out a player with no national team code, and counts it', async () => {
+		const withoutCode: Partial<typeof goalkeeper> = { ...goalkeeper };
+		delete withoutCode.nationalTeamCode;
+
+		const result = await loadCardSet(aPlayerList([outfield, withoutCode]));
+
+		expect(result.ok && result.value.map((card) => card.id)).toEqual([toCardId('tavi-brightwell')]);
+		expect(result.ok && result.leftOutCount).toBe(1);
+	});
+
 	it('leaves out a card with an unknown tier and keeps the rest', async () => {
 		const result = await loadCardSet(aPlayerList([outfield, { ...goalkeeper, tier: 'MYTHIC' }]));
 
