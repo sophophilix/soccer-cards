@@ -14,8 +14,20 @@ paths:
   - data/pipeline/tests/fixtures/**
 dependencies: []
 max_changed_lines: 300
-status: ready
+status: superseded
 ---
+
+## Outcome (2026-11-28)
+
+Closed without a change. The data-implementer read the five real Wikidata
+records. None of the five has a senior national team in `P54`: Russo,
+Lavelle and van Domselaar have only youth teams there, and Hampton and
+Klaesson have none. Their senior caps aren't recorded as spells. The only way
+to code them would be the player's own `P1532` country, which would also let
+youth-only players in. That would change the rule that a card needs a senior
+national team, so the lead kept the current rule and these players stay out.
+A cause the agent found on the way (a club with a stray `P1532` read as a
+national team) moves to T-0211.
 
 ## Goal
 
