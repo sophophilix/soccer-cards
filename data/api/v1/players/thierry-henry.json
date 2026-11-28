@@ -2,106 +2,106 @@
   "careerSpells": [
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2572317739",
+        "retrieveDate": "2026-11-28",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2575710512",
         "value": 105
       },
       "club": "clubs/as-monaco-fc",
       "endYear": 1999,
       "goalCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2572317739",
+        "retrieveDate": "2026-11-28",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2575710512",
         "value": 20
       },
       "startYear": 1994
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2572317739",
+        "retrieveDate": "2026-11-28",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2575710512",
         "value": 16
       },
       "club": "clubs/juventus-fc",
       "endYear": 1999,
       "goalCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2572317739",
+        "retrieveDate": "2026-11-28",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2575710512",
         "value": 3
       },
       "startYear": 1999
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2572317739",
+        "retrieveDate": "2026-11-28",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2575710512",
         "value": 377
       },
       "club": "clubs/arsenal-f-c",
       "endYear": 2007,
       "goalCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2572317739",
+        "retrieveDate": "2026-11-28",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2575710512",
         "value": 228
       },
       "startYear": 1999
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2572317739",
+        "retrieveDate": "2026-11-28",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2575710512",
         "value": 80
       },
       "club": "clubs/fc-barcelona",
       "endYear": 2010,
       "goalCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2572317739",
+        "retrieveDate": "2026-11-28",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2575710512",
         "value": 35
       },
       "startYear": 2007
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2572317739",
+        "retrieveDate": "2026-11-28",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2575710512",
         "value": 122
       },
       "club": "clubs/red-bull-new-york",
       "endYear": 2014,
       "goalCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2572317739",
+        "retrieveDate": "2026-11-28",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2575710512",
         "value": 51
       },
       "startYear": 2010
     },
     {
       "appearanceCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2572317739",
+        "retrieveDate": "2026-11-28",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2575710512",
         "value": 4
       },
       "club": "clubs/arsenal-f-c",
       "endYear": 2012,
       "goalCount": {
-        "retrieveDate": "2026-11-19",
-        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2572317739",
+        "retrieveDate": "2026-11-28",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2575710512",
         "value": 1
       },
       "startYear": 2012
     }
   ],
   "clubGoalCount": {
-    "retrieveDate": "2026-11-19",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2572317739",
+    "retrieveDate": "2026-11-28",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2575710512",
     "value": 338
   },
   "displayName": "Thierry Henry",
   "name": "players/thierry-henry",
   "nationalTeamCode": "FRA",
   "nationalTeamGoalCount": {
-    "retrieveDate": "2026-11-19",
-    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2572317739",
+    "retrieveDate": "2026-11-28",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45901&oldid=2575710512",
     "value": 51
   },
   "outfieldRatings": {
@@ -132,5 +132,5 @@
   "position": "FORWARD",
   "state": "RETIRED",
   "tier": "LEGEND",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-28T08:03:04Z"
 }

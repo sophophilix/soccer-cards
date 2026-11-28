@@ -107,6 +107,21 @@
     },
     {
       "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+        "value": 15
+      },
+      "club": "clubs/hibernian-f-c",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
+        "value": 0
+      },
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
         "retrieveDate": "2025-11-29",
         "sourceUri": "https://www.wikidata.org/w/index.php?title=Q10544594&oldid=2562658983",
         "value": 141
@@ -177,5 +192,5 @@
   "position": "MIDFIELDER",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-22T17:33:08Z"
+  "updateTime": "2026-11-28T08:15:55Z"
 }

@@ -1,0 +1,106 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45179405&oldid=2567182062",
+        "value": 65
+      },
+      "club": "clubs/everton-f-c",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-11-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45179405&oldid=2567182062",
+        "value": 7
+      },
+      "startYear": 2017
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45179405&oldid=2567182062",
+        "value": 11
+      },
+      "club": "clubs/preston-north-end-f-c",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45179405&oldid=2567182062",
+        "value": 0
+      },
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45179405&oldid=2567182062",
+        "value": 111
+      },
+      "club": "clubs/newcastle-united-f-c",
+      "endYear": 2026,
+      "goalCount": {
+        "retrieveDate": "2026-11-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45179405&oldid=2567182062",
+        "value": 24
+      },
+      "startYear": 2023
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45179405&oldid=2567182062",
+        "value": 7
+      },
+      "club": "clubs/fc-barcelona",
+      "goalCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45179405&oldid=2567182062",
+        "value": 1
+      },
+      "startYear": 2026
+    }
+  ],
+  "club": "clubs/fc-barcelona",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-10",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45179405&oldid=2567182062",
+    "value": 32
+  },
+  "displayName": "Anthony Gordon",
+  "name": "players/anthony-gordon",
+  "nationalTeamCode": "ENG",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-03",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q45179405&oldid=2567182062",
+    "value": 7
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 85,
+    "pace": 85,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 73
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Anthony_Gordon_England_v_Ghana_23_June_2026-017_(cropped).jpg"
+    },
+    "heightPx": 677,
+    "mimeType": "image/webp",
+    "uri": "photos/anthony-gordon.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 78,
+    "control": 80,
+    "defence": 71,
+    "overall": 78
+  },
+  "position": "FORWARD",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:08:39Z"
+}

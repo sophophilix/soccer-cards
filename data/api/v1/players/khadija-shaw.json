@@ -9,8 +9,13 @@
       "club": "clubs/girondins-de-bordeaux",
       "endYear": 2021,
       "startYear": 2019
+    },
+    {
+      "club": "clubs/manchester-city-w-f-c",
+      "startYear": 2021
     }
   ],
+  "club": "clubs/manchester-city-w-f-c",
   "displayName": "Khadija Shaw",
   "name": "players/khadija-shaw",
   "nationalTeamCode": "JAM",
@@ -42,5 +47,5 @@
   "position": "FORWARD",
   "state": "ACTIVE",
   "tier": "BASE",
-  "updateTime": "2026-11-28T06:44:11Z"
+  "updateTime": "2026-11-28T08:15:55Z"
 }

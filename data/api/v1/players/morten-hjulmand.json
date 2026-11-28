@@ -1,0 +1,106 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q55761514&oldid=2555409140",
+        "value": 68
+      },
+      "club": "clubs/admira-wacker",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-10-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q55761514&oldid=2555409140",
+        "value": 1
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q55761514&oldid=2555409140",
+        "value": 91
+      },
+      "club": "clubs/us-lecce",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-10-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q55761514&oldid=2555409140",
+        "value": 0
+      },
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q55761514&oldid=2555409140",
+        "value": 85
+      },
+      "club": "clubs/sporting-cp",
+      "endYear": 2026,
+      "goalCount": {
+        "retrieveDate": "2026-10-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q55761514&oldid=2555409140",
+        "value": 8
+      },
+      "startYear": 2023
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q55761514&oldid=2555409140",
+        "value": 0
+      },
+      "club": "clubs/atletico-madrid",
+      "goalCount": {
+        "retrieveDate": "2026-10-09",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q55761514&oldid=2555409140",
+        "value": 0
+      },
+      "startYear": 2026
+    }
+  ],
+  "club": "clubs/atletico-madrid",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-09",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q55761514&oldid=2555409140",
+    "value": 9
+  },
+  "displayName": "Morten Hjulmand",
+  "name": "players/morten-hjulmand",
+  "nationalTeamCode": "DEN",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-03-31",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q55761514&oldid=2555409140",
+    "value": 1
+  },
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 75,
+    "pace": 75,
+    "passing": 75,
+    "physical": 75,
+    "shooting": 64
+  },
+  "photo": {
+    "attribution": {
+      "author": "Splinter1333",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:MortenHjulmandSporting24.jpg"
+    },
+    "heightPx": 495,
+    "mimeType": "image/webp",
+    "uri": "photos/morten-hjulmand.webp",
+    "widthPx": 255
+  },
+  "playStats": {
+    "attack": 70,
+    "control": 75,
+    "defence": 80,
+    "overall": 78
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

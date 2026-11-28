@@ -1,0 +1,76 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27916814&oldid=2562508044",
+        "value": 51
+      },
+      "club": "clubs/ud-collerense",
+      "endYear": 2015,
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27916814&oldid=2562508044",
+        "value": 7
+      },
+      "startYear": 2013
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27916814&oldid=2562508044",
+        "value": 82
+      },
+      "club": "clubs/fc-barcelona-femeni",
+      "goalCount": {
+        "retrieveDate": "2026-10-30",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27916814&oldid=2562508044",
+        "value": 22
+      },
+      "startYear": 2015
+    }
+  ],
+  "club": "clubs/fc-barcelona-femeni",
+  "clubGoalCount": {
+    "retrieveDate": "2026-10-30",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27916814&oldid=2562508044",
+    "value": 29
+  },
+  "displayName": "Patricia Guijarro",
+  "name": "players/patricia-guijarro",
+  "nationalTeamCode": "ESP",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-30",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q27916814&oldid=2562508044",
+    "value": 10
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 75,
+    "pace": 75,
+    "passing": 85,
+    "physical": 75,
+    "shooting": 76
+  },
+  "photo": {
+    "attribution": {
+      "author": "MichaelEmilio",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Brann_-_Bar%C3%A7a_Femen%C3%AD_CG3A5987_(cropped).jpg"
+    },
+    "heightPx": 480,
+    "mimeType": "image/webp",
+    "uri": "photos/patricia-guijarro.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 77,
+    "control": 79,
+    "defence": 76,
+    "overall": 79
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

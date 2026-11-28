@@ -1,0 +1,96 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/rcd-espanyol-de-barcelona",
+      "endYear": 2007,
+      "startYear": 2006
+    },
+    {
+      "club": "clubs/fc-barcelona",
+      "endYear": 2014,
+      "startYear": 2007
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19560313&oldid=2575209016",
+        "value": 80
+      },
+      "club": "clubs/gnk-dinamo-zagreb",
+      "endYear": 2020,
+      "goalCount": {
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19560313&oldid=2575209016",
+        "value": 20
+      },
+      "startYear": 2015
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19560313&oldid=2575209016",
+        "value": 107
+      },
+      "club": "clubs/rb-leipzig",
+      "endYear": 2024,
+      "goalCount": {
+        "retrieveDate": "2026-11-26",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19560313&oldid=2575209016",
+        "value": 17
+      },
+      "startYear": 2020
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19560313&oldid=2575209016",
+        "value": 66
+      },
+      "club": "clubs/fc-barcelona",
+      "goalCount": {
+        "retrieveDate": "2026-10-10",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19560313&oldid=2575209016",
+        "value": 17
+      },
+      "startYear": 2024
+    }
+  ],
+  "club": "clubs/fc-barcelona",
+  "displayName": "Dani Olmo",
+  "name": "players/dani-olmo",
+  "nationalTeamCode": "ESP",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-07",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q19560313&oldid=2575209016",
+    "value": 12
+  },
+  "outfieldRatings": {
+    "defending": 65,
+    "dribbling": 85,
+    "pace": 75,
+    "passing": 85,
+    "physical": 75,
+    "shooting": 85
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Dani_Olmo_France_v_Spain_7.24.26-176_(cropped).jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/dani-olmo.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 83,
+    "control": 83,
+    "defence": 71,
+    "overall": 80
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

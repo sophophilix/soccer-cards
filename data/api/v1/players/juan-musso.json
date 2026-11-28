@@ -1,0 +1,121 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5951550&oldid=2573922575",
+        "value": 23
+      },
+      "club": "clubs/racing-club",
+      "endYear": 2018,
+      "goalCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5951550&oldid=2573922575",
+        "value": 0
+      },
+      "startYear": 2016
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5951550&oldid=2573922575",
+        "value": 102
+      },
+      "club": "clubs/udinese-calcio",
+      "endYear": 2021,
+      "goalCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5951550&oldid=2573922575",
+        "value": 0
+      },
+      "startYear": 2018
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5951550&oldid=2573922575",
+        "value": 69
+      },
+      "club": "clubs/atalanta-bc",
+      "endYear": 2025,
+      "goalCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5951550&oldid=2573922575",
+        "value": 0
+      },
+      "startYear": 2021
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5951550&oldid=2573922575",
+        "value": 2
+      },
+      "club": "clubs/atletico-madrid",
+      "endYear": 2025,
+      "goalCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5951550&oldid=2573922575",
+        "value": 0
+      },
+      "startYear": 2024
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5951550&oldid=2573922575",
+        "value": 5
+      },
+      "club": "clubs/atletico-madrid",
+      "goalCount": {
+        "retrieveDate": "2026-11-23",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5951550&oldid=2573922575",
+        "value": 0
+      },
+      "startYear": 2025
+    }
+  ],
+  "club": "clubs/atletico-madrid",
+  "clubGoalCount": {
+    "retrieveDate": "2026-11-23",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5951550&oldid=2573922575",
+    "value": 0
+  },
+  "displayName": "Juan Musso",
+  "goalkeeperRatings": {
+    "diving": 75,
+    "handling": 75,
+    "kicking": 75,
+    "positioning": 75,
+    "reflexes": 75,
+    "speed": 75
+  },
+  "name": "players/juan-musso",
+  "nationalTeamCode": "ARG",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-23",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q5951550&oldid=2573922575",
+    "value": 0
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Juan_Musso_Argentina_v_Spain_19_July_2026-261.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/juan-musso.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 75,
+    "control": 75,
+    "defence": 75,
+    "overall": 76
+  },
+  "position": "GOALKEEPER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:15:55Z"
+}

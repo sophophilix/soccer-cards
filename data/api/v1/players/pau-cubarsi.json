@@ -1,0 +1,61 @@
+{
+  "careerSpells": [
+    {
+      "club": "clubs/girona-fc",
+      "endYear": 2018,
+      "startYear": 2014
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-08",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q118473161&oldid=2574874829",
+        "value": 94
+      },
+      "club": "clubs/fc-barcelona",
+      "goalCount": {
+        "retrieveDate": "2026-11-08",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q118473161&oldid=2574874829",
+        "value": 1
+      },
+      "startYear": 2023
+    }
+  ],
+  "club": "clubs/fc-barcelona",
+  "displayName": "Pau Cubarsí",
+  "name": "players/pau-cubarsi",
+  "nationalTeamCode": "ESP",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-11-15",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q118473161&oldid=2574874829",
+    "value": 0
+  },
+  "outfieldRatings": {
+    "defending": 85,
+    "dribbling": 65,
+    "pace": 75,
+    "passing": 85,
+    "physical": 75,
+    "shooting": 65
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Pau_Cubarsi_Argentina_v_Spain_19_July_2026-181_(cropped).jpg"
+    },
+    "heightPx": 731,
+    "mimeType": "image/webp",
+    "uri": "photos/pau-cubarsi.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 69,
+    "control": 75,
+    "defence": 81,
+    "overall": 80
+  },
+  "position": "DEFENDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}

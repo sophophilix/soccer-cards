@@ -1,0 +1,91 @@
+{
+  "careerSpells": [
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q26973015&oldid=2574867450",
+        "value": 5
+      },
+      "club": "clubs/manchester-city-f-c",
+      "endYear": 2019,
+      "goalCount": {
+        "retrieveDate": "2026-11-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q26973015&oldid=2574867450",
+        "value": 0
+      },
+      "startYear": 2016
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-09-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q26973015&oldid=2574867450",
+        "value": 110
+      },
+      "club": "clubs/real-madrid-club-de-futbol",
+      "goalCount": {
+        "retrieveDate": "2026-09-15",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q26973015&oldid=2574867450",
+        "value": 14
+      },
+      "startYear": 2019
+    },
+    {
+      "appearanceCount": {
+        "retrieveDate": "2026-11-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q26973015&oldid=2574867450",
+        "value": 91
+      },
+      "club": "clubs/ac-milan",
+      "endYear": 2023,
+      "goalCount": {
+        "retrieveDate": "2026-11-25",
+        "sourceUri": "https://www.wikidata.org/w/index.php?title=Q26973015&oldid=2574867450",
+        "value": 13
+      },
+      "startYear": 2020
+    }
+  ],
+  "club": "clubs/real-madrid-club-de-futbol",
+  "clubGoalCount": {
+    "retrieveDate": "2026-09-15",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q26973015&oldid=2574867450",
+    "value": 27
+  },
+  "displayName": "Brahim Díaz",
+  "name": "players/brahim-diaz",
+  "nationalTeamCode": "MAR",
+  "nationalTeamGoalCount": {
+    "retrieveDate": "2026-10-05",
+    "sourceUri": "https://www.wikidata.org/w/index.php?title=Q26973015&oldid=2574867450",
+    "value": 15
+  },
+  "outfieldRatings": {
+    "defending": 75,
+    "dribbling": 85,
+    "pace": 75,
+    "passing": 75,
+    "physical": 65,
+    "shooting": 75
+  },
+  "photo": {
+    "attribution": {
+      "author": "Bryan Berlin",
+      "licenseCode": "CC-BY-SA-4.0",
+      "sourceUri": "https://commons.wikimedia.org/wiki/File:Brahim_Diaz_Morocco_v_Norway_7_June_2026-36.jpg"
+    },
+    "heightPx": 720,
+    "mimeType": "image/webp",
+    "uri": "photos/brahim-diaz.webp",
+    "widthPx": 480
+  },
+  "playStats": {
+    "attack": 77,
+    "control": 78,
+    "defence": 72,
+    "overall": 78
+  },
+  "position": "MIDFIELDER",
+  "state": "ACTIVE",
+  "tier": "BASE",
+  "updateTime": "2026-11-28T08:03:04Z"
+}
