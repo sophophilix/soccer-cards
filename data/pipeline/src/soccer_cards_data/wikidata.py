@@ -1,7 +1,8 @@
 """Read one footballer's facts from Wikidata (CC0, ADR 0006 D1).
 
 Two requests per player: the player's item, then the teams it names, whose
-`P1532` (country for sport) marks a national team, and whose `P3441` gives a
+`P1532` (country for sport) marks a national team unless the team is a
+football club (`P31`), and whose `P3441` gives a
 national team's FIFA code. The code is on the team, not on the country: England,
 Scotland and Wales have one but no ISO code. Positions and honours stay
 Wikidata item ids; naming them belongs to the normalise stage. The photo is
@@ -39,6 +40,10 @@ _ITEM = "wikibase-entityid"
 # A spell's qualifiers: start, end, matches played, goals and as-of date.
 _SPELL_QUALIFIERS = ("P580", "P582", "P1350", "P1351", "P585")
 WOMENS_FOOTBALL = "Q606060"  # Competition class (P2094): women's association football.
+# Instance of (P31): an association football club, men's and women's. Some clubs
+# carry `P1532` too, such as Manchester City W.F.C. (England), so it alone doesn't
+# make a national team. No national team is an instance of these.
+FOOTBALL_CLUBS = frozenset(("Q476028", "Q51481377"))
 _COUNTS = {"P1350", "P1351"}  # Qualifiers that are quantities. The rest are dates.
 _PARAMS = {"action": "wbgetentities", "languages": "en|mul", "format": "json"}
 
@@ -176,7 +181,9 @@ def fetch_player(source: JsonSource, qid: str) -> PlayerFacts:
             as_of=found["P585"] or as_of,
         )
         # Checked only on the 16 teams in the fixtures: all national ones have it.
-        if "P1532" in team_claims:
+        # A football club that also names a country is still a club.
+        kinds = _values(team_claims, "P31", _ITEM, skipped)
+        if "P1532" in team_claims and not FOOTBALL_CLUBS.intersection(kinds):
             code = _fifa_code(team_claims, f"P54 {team} P3441", skipped)
             national.append(replace(spell, code=code))
         else:
