@@ -35,8 +35,26 @@ test('offers Connections after Transfer Trail, as a link to its own page', async
 	const screen = await render(GamesMenu);
 
 	const links = screen.getByRole('link').elements();
-	expect(links.map((link) => link.getAttribute('href'))).toEqual([
+	expect(links.map((link) => link.getAttribute('href')).slice(0, 2)).toEqual([
 		'/games/transfer-trail',
 		'/games/connections'
 	]);
+});
+
+test('offers Guess the Club after Connections, with its line', async () => {
+	const screen = await render(GamesMenu);
+
+	const links = screen.getByRole('link').elements();
+	expect(links.map((link) => link.getAttribute('href'))).toEqual([
+		'/games/transfer-trail',
+		'/games/connections',
+		'/games/guess-the-club'
+	]);
+	await expect
+		.element(
+			screen.getByRole('link', {
+				name: /Guess the Club.*Read a career with one club hidden\. Pick the missing club\./
+			})
+		)
+		.toBeVisible();
 });
